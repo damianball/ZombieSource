@@ -9,7 +9,6 @@
   <title>Bootstrap, from Twitter</title>
   <meta name="description" content="">
   <meta name="author" content="">
-  <script src="http://lesscss.googlecode.com/files/less-1.0.18.min.js"></script>
   <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
  <?php
   echo link_tag("css/style.css");
