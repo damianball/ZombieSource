@@ -64,3 +64,11 @@
       background-image: -webkit-linear-gradient(top, #FF8000, #FF4500);
     }
 
+    .infoitem{
+      padding: 10px;
+    }
+
+    #graph1 {
+      width: 200px;
+    }
+
