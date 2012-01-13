@@ -1,0 +1,8 @@
+Domain Name:	www.zombiesource.org
+This is a global key. It will work across all domains.
+
+Public Key:	6Le4QswSAAAAACcHVKdPZLDTHEJGXjzCT23KVq8D
+Use this in the JavaScript code that is served to your users
+
+Private Key:	6Le4QswSAAAAAKWNuEz0OX1Shzf3G8LI15t91mUh
+Use this when communicating between your server and our server. Be sure to keep it a secret.
