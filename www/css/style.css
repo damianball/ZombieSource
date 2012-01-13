@@ -53,10 +53,13 @@
       #homepage_data{
         float: left;
       }
-      #title{
+      #title1{
         float: left;
       }
 
+      #title2{
+        margin-left: 30px;
+      }
       #new{
          float: left;
          margin-right: 15px;
@@ -104,6 +107,9 @@
       margin-left: 80px;
       width: 150px;
       height: 400px;
+      float: left;
+    }
+    #fields{
       float: left;
     }
 

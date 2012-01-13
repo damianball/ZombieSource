@@ -8,7 +8,7 @@
       <div id = "title">
          <div id = "new"> <h2> New here? You should </h2> </div>
          <div class="linkbutton">
-            <a href=" <?php echo site_url("register"); ?>">
+            <a href=" <?php echo site_url("auth/register"); ?>">
                <button id = test class="btn success"> Register </button>
             </a>
          </div> 
