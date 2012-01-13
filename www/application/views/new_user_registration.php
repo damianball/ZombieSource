@@ -35,9 +35,12 @@
                 </form>
               </div>  
               <div class="actions">
-                <button class="btn success"> Next Step </button>
-              </div>         
-          </div>
+                <div class="linkbutton">
+                  <a href=" <?php echo site_url("register/step_two"); ?>">
+                     <button id = test class="btn success"> Register </button>
+                  </a>
+                </div>         
+            </div>
           <div class="span4">
             <h3>Info</h3>
             Game Day: February 6th - 12th
