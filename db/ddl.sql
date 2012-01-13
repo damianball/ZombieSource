@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `zombiesource` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `zombiesource`;
+CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `zsource_dev`;
 -- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
 --
 -- Host: localhost    Database: zombiesource
@@ -26,9 +26,9 @@ DROP TABLE IF EXISTS `game_state`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game_state` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,6 +77,36 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `player`
+--
+
+DROP TABLE IF EXISTS `player`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `player` (
+  `id` varchar(36) COLLATE utf8_bin NOT NULL,
+  `userid` int(11) NOT NULL,
+  `gameid` varchar(36) COLLATE utf8_bin NOT NULL,
+  `original_zombie` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `player_users` (`userid`),
+  KEY `player_game` (`gameid`),
+  CONSTRAINT `player_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
+  CONSTRAINT `player_game` FOREIGN KEY (`gameid`) REFERENCES `game` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `player`
+--
+
+LOCK TABLES `player` WRITE;
+/*!40000 ALTER TABLE `player` DISABLE KEYS */;
+/*!40000 ALTER TABLE `player` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `login_attempts`
 --
 
@@ -102,29 +132,57 @@ LOCK TABLES `login_attempts` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `player`
+-- Table structure for table `player_data`
 --
 
-DROP TABLE IF EXISTS `player`;
+DROP TABLE IF EXISTS `player_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `player` (
-  `id` varchar(36) NOT NULL,
-  `userid` int(11) DEFAULT NULL,
-  `gameid` varchar(36) DEFAULT NULL,
-  `original_zombie` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `player_data` (
+  `playerid` varchar(36) COLLATE utf8_bin NOT NULL,
+  `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `value` varchar(512) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`playerid`,`name`),
+  CONSTRAINT `player_data_player` FOREIGN KEY (`playerid`) REFERENCES `player` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `player`
+-- Dumping data for table `player_data`
 --
 
-LOCK TABLES `player` WRITE;
-/*!40000 ALTER TABLE `player` DISABLE KEYS */;
-/*!40000 ALTER TABLE `player` ENABLE KEYS */;
+LOCK TABLES `player_data` WRITE;
+/*!40000 ALTER TABLE `player_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `player_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `game`
+--
+
+DROP TABLE IF EXISTS `game`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `game` (
+  `id` varchar(36) COLLATE utf8_bin NOT NULL,
+  `name` varchar(512) COLLATE utf8_bin NOT NULL,
+  `game_stateid` int(11) NOT NULL,
+  `timezoneid` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `game_game_state` (`game_stateid`),
+  KEY `game_timezone` (`timezoneid`),
+  CONSTRAINT `game_timezone` FOREIGN KEY (`timezoneid`) REFERENCES `timezone` (`id`),
+  CONSTRAINT `game_game_state` FOREIGN KEY (`game_stateid`) REFERENCES `game_state` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `game`
+--
+
+LOCK TABLES `game` WRITE;
+/*!40000 ALTER TABLE `game` DISABLE KEYS */;
+/*!40000 ALTER TABLE `game` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -135,12 +193,13 @@ DROP TABLE IF EXISTS `game_setting`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game_setting` (
-  `gameid` varchar(36) NOT NULL,
-  `name` varchar(512) NOT NULL DEFAULT '',
-  `value` varchar(1024) DEFAULT NULL,
-  `editable_state_list` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`gameid`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `gameid` varchar(36) COLLATE utf8_bin NOT NULL,
+  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+  `value` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+  `editable_state_list` varchar(512) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`gameid`,`name`),
+  CONSTRAINT `game_setting_game` FOREIGN KEY (`gameid`) REFERENCES `game` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +208,6 @@ CREATE TABLE `game_setting` (
 
 LOCK TABLES `game_setting` WRITE;
 /*!40000 ALTER TABLE `game_setting` DISABLE KEYS */;
-INSERT INTO `game_setting` VALUES ('6917e8a4-3db3-11e1-b778-000c295b88cf','gameendtime','20110212',NULL),('6917e8a4-3db3-11e1-b778-000c295b88cf','gamestarttime','20120127',NULL),('727b142a-3db3-11e1-b778-000c295b88cf','gamestarttime','20120112',NULL);
 /*!40000 ALTER TABLE `game_setting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,10 +246,10 @@ DROP TABLE IF EXISTS `timezone`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `timezone` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) DEFAULT NULL,
-  `offset_from_utc` int(11) DEFAULT NULL,
+  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+  `offset_from_utc` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,4 +321,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-12 23:59:45
+-- Dump completed on 2012-01-13  1:34:45
