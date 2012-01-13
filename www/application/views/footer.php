@@ -1,10 +1,4 @@
-      </div>
-
-      <footer>
-        <p>&copy; Company 2011</p>
-      </footer>
-
+      </div> <!-- /content -->
     </div> <!-- /container -->
-
   </body>
 </html>
