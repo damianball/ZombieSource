@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `zombiesource` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `zombiesource`;
+CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `zsource_dev`;
 -- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
 --
 -- Host: localhost    Database: zombiesource
