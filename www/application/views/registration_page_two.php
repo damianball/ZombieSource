@@ -9,7 +9,9 @@
                   <fieldset>
                   <div class="clearfix">
                   <label id = test >Safety Waiver</label>
-                      <button class="btn primary" href = "www.google.com" > Read Me </button>
+                      <form>
+                      <input type = button class="btn primary" VALUE="READ ME" ONCLICK="window.location.href='http://www.computerhope.com'" ></button>
+                      </form>
                   </div> 
                <div class="clearfix">
                       <label>Agreements</label>
@@ -39,10 +41,14 @@
                         <label>Age</label>
                         <div class="input">
                             <select>
-                                <option></option>
-                                <option>18</option>
-                                <option>19</option>
-                                <option>20</option>
+                              <option></option>
+                                <?php
+                                  for($i = 10; $i < 114; $i = $i + 1 ){
+                                      echo "<option> ";
+                                      echo $i;
+                                      echo "</option> ";
+                                  }
+                                ?>
                             </select>
                       </div>
                     </div>
