@@ -28,7 +28,7 @@ CREATE TABLE `game_state` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,6 +37,7 @@ CREATE TABLE `game_state` (
 
 LOCK TABLES `game_state` WRITE;
 /*!40000 ALTER TABLE `game_state` DISABLE KEYS */;
+INSERT INTO `game_state` VALUES (1,'Open');
 /*!40000 ALTER TABLE `game_state` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,6 +210,7 @@ CREATE TABLE `game` (
 
 LOCK TABLES `game` WRITE;
 /*!40000 ALTER TABLE `game` DISABLE KEYS */;
+INSERT INTO `game` VALUES ('9a051bbc-3ebc-11e1-b778-000c295b88cf','Humans vs Zombies: Dead of Winter',1,1);
 /*!40000 ALTER TABLE `game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +278,7 @@ CREATE TABLE `timezone` (
   `name` varchar(128) COLLATE utf8_bin NOT NULL,
   `offset_from_utc` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,6 +287,7 @@ CREATE TABLE `timezone` (
 
 LOCK TABLES `timezone` WRITE;
 /*!40000 ALTER TABLE `timezone` DISABLE KEYS */;
+INSERT INTO `timezone` VALUES (1,'Pacific Time (US & Canada)',-8);
 /*!40000 ALTER TABLE `timezone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-14  4:53:33
+-- Dump completed on 2012-01-14  6:34:23

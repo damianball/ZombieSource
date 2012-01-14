@@ -18,7 +18,7 @@ class Profile extends CI_Controller {
 		// is logged in?
         if ($this->tank_auth->is_logged_in()) { 
 			// is waiver signed
-			$playerid = $this->Player_model->getPlayerID($userid, $gameid);
+			$playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 			if ($playerid > 0 && $this->Player_model->getPlayerData($playerid, 'waiver_is_signed')) { 
 				$this->load->view('header');
 				$this->load->view('profile_page');
@@ -33,7 +33,7 @@ class Profile extends CI_Controller {
 				if ($this->form_validation->run()) {
 					//store data
 					
-					$this->Player_model->createPlayerInGame($userid, $gameid);
+					$this->Player_model->createPlayerInGame($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 					$playerid = $this->Player_model->getPlayerID($userid, $gameid);
 					$this->Player_model->setPlayerData($playerid, 'waiver_is_signed', 'TRUE');
 					$this->Player_model->setPlayerData($playerid, 'sig', $this->validation->sig);
