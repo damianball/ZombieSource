@@ -3,11 +3,11 @@
 </div>
 <div class = "row" >
    <div class="main">
-	Username: <? echo $data['username']; ?></br>
-	E-mail: <? //echo $data['email']; ?></br>
-	Age: <? echo $data['age']; ?></br>
-	Gender: <? echo $data['gender']; ?></br>
-	Major: <? echo $data['major']; ?></br>
+	Username: <? echo $username; ?></br>
+	E-mail: <? //echo email; ?></br>
+	Age: <? echo $age; ?></br>
+	Gender: <? echo $gender; ?></br>
+	Major: <? echo $major; ?></br>
    </div>
    <div class="sidebar">
       <h3>Info</h3>
