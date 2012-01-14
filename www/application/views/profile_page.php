@@ -3,7 +3,7 @@
 </div>
 <div class = "row" >
    <div class="main">
-	<div class = "profileitem"> Username: <? echo $username; ?></br>
+	Username: <? echo $username; ?></br>
 	E-mail: <? echo $email; ?></br>
 	Age: <? echo $age; ?></br>
 	Gender: <? echo $gender; ?></br>
