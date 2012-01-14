@@ -8,10 +8,13 @@
                 <form>
                   <fieldset>
                   <div class="clearfix">
-                  <label id = test >Safety Waiver</label>
-                      <form>
-                      <input type = button class="btn primary" VALUE="READ ME" ONCLICK="window.location.href='http://www.computerhope.com'" ></button>
-                      </form>
+                    <label id = test >Safety Waiver</label>
+                    <div class = "linkbutton">
+                    <a href = "http://dl.dropbox.com/u/30973/dean_of_students_waiver.pdf">
+                      <button class="btn primary"> READ ME </button>
+                    </a>
+                    </div>
+                  </form>
                   </div> 
                <div class="clearfix">
                       <label>Agreements</label>
@@ -29,6 +32,10 @@
                               </li>
                           </ul>
                       </div>
+                  </div>
+                  <label>Signature</label>
+                  <div class="input">
+                    <input type="text" />
                   </div>
                   </fieldset>
                 </form>

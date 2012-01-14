@@ -37,7 +37,9 @@
 
       /* Styles you shouldn't keep as they are for displaying this base example only */
       .main {
-        float: left
+        float: left;
+        width: 600px;
+        margin-left: 15px;
       }
       .sidebar {
         min-height: 500px;
@@ -50,9 +52,7 @@
         border-left: 1px solid #eee;
       }
 
-      #homepage_data{
-        float: left;
-      }
+
       #title1{
         float: left;
       }
@@ -88,30 +88,71 @@
       }
       #register_button{
       }
+      .linkbutton{
+        padding-left: 15px;
+        float: left;
+      }
+
+      #signout{
+        padding: 10px;
+      }
     .btn.success {
       background-color: #FF4500;
       background-image: -webkit-linear-gradient(top, #FF8000, #FF4500);
     }
-
+    .alert-message.info{
+      background-color: #0064CD;
+      background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    }
     .infoitem{
       padding: 10px;
     }
 
+    #homepage_data{
+      float: left;
+    }
+    .homepage_graph{
+      float: left; 
+    }
     #graph1 {
       width: 100px;
       float: left;
       height: 200px;
     }
+    #graph2{
+      width: 100px;
+      margin-top:50px;
+      margin-left:20px;
+
+    }
+    #graphbox{
+    }
 
     #countdown_box {
-      padding-top: 20px;
-      padding-left: 30px;
-      margin-left: 80px;
-      width: 150px;
+      width: auto;
       height: 400px;
       float: left;
     }
     #fields{
       float: left;
     }
+    #label{
+      width: 250px;
+      padding-left: 20px;
+    }
+    #largenumber{
+      size: 40px;
+    }
+  #info1{
+    float: left;
+    width: 250px;
+  }
+  #info2{
+    float: left;
+    width: 250px;
+
+  }
+  #row{
+    width: auto;
+  }
 

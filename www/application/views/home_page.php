@@ -2,13 +2,18 @@
 
 <div class="page-header">
  <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+
 </div>
+
 <div class = "row" >
    <div class="main">
+
       <div id = "title">
       <?php
       if($this->tank_auth->is_logged_in()){
-         echo '<h2> Welcome <h2>';
+         echo '<div class="alert-message info">
+                  <p><strong>Hey!</strong> Visit your profile to sign the safety waiver </p>
+               </div>';
       }
       else {
          echo ' 
@@ -21,16 +26,25 @@
           }
       ?>
       </div>
-      <div class="info">
-         <div id = "homepage_data">
-            <div id = "graph1" class = "homepage_graph"></div>
-            <div id = "countdown_box">
-               <h3> 
-               <div id = "countdown"></div>
-               <h3>
-             </div>
-
+      <div id = "graphbox">
+         <div id="info1">
+            <div id = "label">
+            <h2> Sign Ups: </h2>
+            </div>
+            <div id = "homepage_data">
+               <div id = "graph2" class = "homepage_graph">
+                  <span style = "font-size: 50px;"> 62 </span>
+               </div>
+               <div id = "graph1" class = "homepage_graph"></div>
+            </div>
          </div>
+         <div id="info2">
+            <div id = "countdown_box">
+               <h3><div id = "countdown"></div><h3>
+            </div>
+         </div>
+
+
       </div>
    </div>
    <div class="sidebar">
@@ -139,10 +153,10 @@
        var minutes = Math.floor( (distance % _hour) / _minute );
        var seconds = Math.floor( (distance % _minute) / _second );
 
-       document.getElementById('countdown').innerHTML = 'Days: ' + days + '<br />';
-       document.getElementById('countdown').innerHTML += 'Hours: ' + hours+ '<br />';
-       document.getElementById('countdown').innerHTML += 'Minutes: ' + minutes+ '<br />';
-       document.getElementById('countdown').innerHTML += 'Seconds: ' + seconds+ '<br />';
+       document.getElementById('countdown').innerHTML =  days + ' days, ';
+       document.getElementById('countdown').innerHTML += hours+ ' hours ';
+       document.getElementById('countdown').innerHTML +='until outbreak ';
+
       }
 
       timer = setInterval(showRemaining, 1000);

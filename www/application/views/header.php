@@ -32,7 +32,7 @@
                echo '
                     <li> <a href="' . site_url("profile") . '">Profile</a> </li>
                     </ul>
-                    <div class="pull-right">
+                    <div id = "signout" class="pull-right">
                         <a href="' . site_url("auth/logout") . '">
                           <button class="btn success"> Sign Out </button>
                         </a>

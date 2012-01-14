@@ -26,9 +26,16 @@ class Profile extends CI_Controller {
 
     public function profile()
     {
-        $this->load->view('header');
-        $this->load->view('profile_page');
-        $this->load->view('footer');
-    }
 
+        if (true) { 
+            $this->load->view('header');
+            $this->load->view('registration_page_two');
+            $this->load->view('footer');
+        }
+        else{
+            $this->load->view('header');
+            $this->load->view('profile_page');
+            $this->load->view('footer');
+        }
+    }
 }
