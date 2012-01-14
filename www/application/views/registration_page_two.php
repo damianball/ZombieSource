@@ -24,6 +24,7 @@
                           <ul class="inputs-list">
                               <li>
                                   <label>
+									<?php echo form_error('waiver'); ?>
                                       <input type="checkbox" name="waiver" value="signed" />
                                       I accept the terms of the Safety Waiver
                                   </label>
@@ -37,7 +38,8 @@
                   </div>
                   <label>Signature</label>
                   <div class="input">
-                    <input type="text" name="sig"  />
+					<?php echo form_error('sig'); ?>
+                    <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
                   </div>
                   </fieldset>
               </div> 
@@ -47,6 +49,7 @@
                     <div class="clearfix">
                         <label>Age</label>
                         <div class="input">
+							<?php echo form_error('age'); ?>
                             <select name = "age">
                               <option> </option>
                                 <?php
@@ -62,6 +65,7 @@
                     <div class="clearfix">
                         <label>Gender</label>
                         <div class="input" >
+							<?php echo form_error('gender'); ?>
                             <select name = "gender">
                                 <option></option>
                                 <option value = "male" >Male</option>
@@ -73,7 +77,8 @@
                     <div class="clearfix">
                         <label>Major</label>
                         <div class="input">
-                            <input type="text" name = "major" />
+							<?php echo form_error('major'); ?>
+                            <input type="text" name = "major" value="<?php echo set_value('major'); ?>"/>
                         </div>
                     </div>
       
