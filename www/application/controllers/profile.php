@@ -21,7 +21,13 @@ class Profile extends CI_Controller {
 			$playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 			if ($playerid > 0 && $this->Player_model->getPlayerData($playerid, 'waiver_is_signed')) { 
 				$this->load->view('header');
-				$this->load->view('profile_page');
+				$data = array();
+				$data['username'] = $this->tank_auth->get_username();
+				//$data['email'] = 'Intentionally left blank';
+				$data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
+				$data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
+				$data['major'] = $this->Player_model->getPlayerData($playerid, 'major');
+				$this->load->view('profile_page',$data);
 				$this->load->view('footer');
 			}else{
 				$this->form_validation->set_rules('waiver', 'Waiver', 'trim|required|xss_clean');
