@@ -31,7 +31,7 @@
             </div>
             <div id = "homepage_data">
                <div id = "graph2" class = "homepage_graph">
-                  <span style = "font-size: 50px;"> 62 </span>
+                  <span style = "font-size: 50px;"><? echo $count; ?> </span>
                </div>
                <div id = "graph1" class = "homepage_graph"></div>
             </div>

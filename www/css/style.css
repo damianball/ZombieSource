@@ -127,6 +127,9 @@
     }
     #graphbox{
     }
+    #contact{
+      margin-left: 50%;
+    }
 
     #countdown_box {
       width: auto;
@@ -156,9 +159,11 @@
   }
 
   .clearfix{
-    margin: 15px;
+    margin: 15ppagx;
   }
 
 label{
-  margin-right: 10px;
+  margin
+  -right: 10px;
 }
+

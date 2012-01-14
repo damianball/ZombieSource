@@ -1,4 +1,4 @@
 registration successful!
 <br>
-Please Confirm your email address to login
+(No email confirmations neccessary while in beta)
 <br>

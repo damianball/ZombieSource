@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Home extends CI_Controller {
+
     /**
      * Index Page for this controller.
      *
@@ -16,18 +17,20 @@ class Home extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
-     
     public function index()
     {
         $this->load->model('Player_model','',TRUE);
 
         $user_id = $this->tank_auth->get_user_id();
         $player_id = $this->Player_model->getPlayerID($user_id,'9a051bbc-3ebc-11e1-b778-000c295b88cf');
-        $data = array('waiver' => $this->Player_model->getPlayerData($player_id,'waiver_is_signed'));
+        $data = array('waiver' => $this->Player_model->getPlayerData($player_id,'waiver_is_signed'),
+            'count' => $this->Player_model->getNumberOfPlayersInGame('9a051bbc-3ebc-11e1-b778-000c295b88cf'));
 
         $this->load->view('header');
         $this->load->view('home_page', $data);
         $this->load->view('footer');
+
+
     }
 
 }
