@@ -40,6 +40,14 @@ class Users extends CI_Model
 		if ($query->num_rows() == 1) return $query->row();
 		return NULL;
 	}
+	
+	function get_email_by_userid($user_id){
+		$this->db->select('email');
+		$this->db->where('id', $user_id);
+		$query = $this->db->get($this->table_name);
+		if ($query->num_rows() == 1) return $query->row();
+		return NULL;
+	}
 
 	/**
 	 * Get user record by login (username or email)

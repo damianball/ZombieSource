@@ -23,7 +23,7 @@ class Profile extends CI_Controller {
 				$this->load->view('header');
 				$data = array();
 				$data['username'] = $this->tank_auth->get_username();
-				//$data['email'] = 'Intentionally left blank';
+				$data['email'] = $this->tank_auth->get_email();
 				$data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
 				$data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
 				$data['major'] = $this->Player_model->getPlayerData($playerid, 'major');

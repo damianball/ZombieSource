@@ -148,6 +148,11 @@ class Tank_auth
 	{
 		return $this->ci->session->userdata('username');
 	}
+	
+	function get_email()
+	{
+		return $this->ci->users->get_email_by_userid($this->ci->session->userdata('user_id'));
+	}
 
 	/**
 	 * Create new user on the site and return some data about it:

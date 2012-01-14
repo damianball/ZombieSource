@@ -4,7 +4,7 @@
 <div class = "row" >
    <div class="main">
 	Username: <? echo $username; ?></br>
-	E-mail: <? //echo email; ?></br>
+	E-mail: <? echo email; ?></br>
 	Age: <? echo $age; ?></br>
 	Gender: <? echo $gender; ?></br>
 	Major: <? echo $major; ?></br>
