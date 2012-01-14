@@ -34,7 +34,7 @@ class Profile extends CI_Controller {
 					//store data
 					
 					$this->Player_model->createPlayerInGame($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
-					$playerid = $this->Player_model->getPlayerID($userid, $gameid);
+					$playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 					$this->Player_model->setPlayerData($playerid, 'waiver_is_signed', 'TRUE');
 					$this->Player_model->setPlayerData($playerid, 'sig', $this->validation->sig);
 					$this->Player_model->setPlayerData($playerid, 'age', $this->validation->age);
