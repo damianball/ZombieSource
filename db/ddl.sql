@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `zsource_dev`;
+CREATE DATABASE  IF NOT EXISTS `zombiesource` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+USE `zombiesource`;
 -- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
 --
 -- Host: localhost    Database: zombiesource
@@ -107,6 +107,31 @@ LOCK TABLES `player` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_data`
+--
+
+DROP TABLE IF EXISTS `user_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_data` (
+  `userid` int(11) NOT NULL,
+  `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `timestamp` datetime NOT NULL,
+  `value` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`userid`,`name`,`timestamp`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_data`
+--
+
+LOCK TABLES `user_data` WRITE;
+/*!40000 ALTER TABLE `user_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `login_attempts`
 --
 
@@ -141,8 +166,9 @@ DROP TABLE IF EXISTS `player_data`;
 CREATE TABLE `player_data` (
   `playerid` varchar(36) COLLATE utf8_bin NOT NULL,
   `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `timestamp` datetime NOT NULL,
   `value` varchar(512) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`playerid`,`name`),
+  PRIMARY KEY (`playerid`,`name`,`timestamp`),
   CONSTRAINT `player_data_player` FOREIGN KEY (`playerid`) REFERENCES `player` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -321,4 +347,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-13  1:34:45
+-- Dump completed on 2012-01-14  4:35:54
