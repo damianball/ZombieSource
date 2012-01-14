@@ -87,13 +87,14 @@ CREATE TABLE `player` (
   `id` varchar(36) COLLATE utf8_bin NOT NULL,
   `userid` int(11) NOT NULL,
   `gameid` varchar(36) COLLATE utf8_bin NOT NULL,
+  `datecreated` datetime NOT NULL,
   `original_zombie` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `player_users` (`userid`),
   KEY `player_game` (`gameid`),
-  CONSTRAINT `player_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
-  CONSTRAINT `player_game` FOREIGN KEY (`gameid`) REFERENCES `game` (`id`)
+  CONSTRAINT `player_game` FOREIGN KEY (`gameid`) REFERENCES `game` (`id`),
+  CONSTRAINT `player_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -347,4 +348,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-14  4:35:54
+-- Dump completed on 2012-01-14  4:53:33

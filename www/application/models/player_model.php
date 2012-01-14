@@ -42,6 +42,28 @@ class Player_model extends CI_Model{
 		
 		return $added;
 	}
-	public function createPlayerInGame($userid, $gameid){}
+	public function createPlayerInGame($userid, $gameid){
+		$added = false;
+			
+		//date created
+		$datecreated = gmdate("Y-m-d H:i:s", time());
+			
+		//get new UUID
+		$query = $this->db->query('SELECT UUID() as "uuid"');
+		$uuid = $query->row()->{'uuid'};
+			
+		//insert new player
+		$data = array(
+			'id' => $uuid,
+			'userid' => $userid,
+			'gameid' => $gameid,
+			'datecreated' => $datecreated,
+			'original_zombie' => NULL
+		);
+		$this->db->insert('player',$data);
+		$added = true;
+				
+		return $added;
+	}
 }
 ?>
