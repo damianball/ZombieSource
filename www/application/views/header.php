@@ -34,7 +34,7 @@
                     </ul>
                     <div id = "signout" class="pull-right">
                         <a href="' . site_url("auth/logout") . '">
-                          <button class="btn success"> Sign Out </button>
+                          <button class="btn success">' . $this->tank_auth->get_username() . ' - sign out </button>
                         </a>
                     </div>';
             }

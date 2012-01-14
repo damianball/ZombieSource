@@ -10,7 +10,7 @@
 
       <div id = "title">
       <?php
-      if($this->tank_auth->is_logged_in()){
+      if($waiver != "TRUE"){
          echo '<div class="alert-message info">
                   <p><strong>Hey!</strong> Visit your profile to sign the safety waiver </p>
                </div>';

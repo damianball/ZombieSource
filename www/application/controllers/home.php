@@ -19,8 +19,14 @@ class Home extends CI_Controller {
      */
     public function index()
     {
+        $this->load->model('Player_model','',TRUE);
+
+        $user_id = $this->tank_auth->get_user_id();
+        $player_id = $this->Player_model->getPlayerID($user_id,'9a051bbc-3ebc-11e1-b778-000c295b88cf');
+        $data = array('waiver' => $this->Player_model->getPlayerData($player_id,'waiver_is_signed'));
+
         $this->load->view('header');
-        $this->load->view('home_page');
+        $this->load->view('home_page', $data);
         $this->load->view('footer');
     }
 
