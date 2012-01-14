@@ -24,15 +24,29 @@
     <div class="topbar">
       <div class="fill">
         <div class="container">
-          <a class="brand" href="#"> HvZ </a>
+          <a class="brand" > HvZ </a>
           <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-          </ul>
-          <form action="" class="pull-right">
-            <input class="input-small" type="text" placeholder="Username">
-            <input class="input-small" type="password" placeholder="Password">
-            <button class="btn" type="submit">Sign in</button>
-          </form>
+            <li> <a href = "<?php echo site_url("home"); ?> ">Home</a> </li>
+          <?php 
+            if($this->tank_auth->is_logged_in()){
+               echo '
+                    <li> <a href="' . site_url("profile") . '">Profile</a> </li>
+                    </ul>
+                    <div class="pull-right">
+                        <a href="' . site_url("auth/logout") . '">
+                          <button class="btn success"> Sign Out </button>
+                        </a>
+                    </div>';
+            }
+            else {
+               echo ' </ul>
+                        <form action = "'. site_url("auth/login") .'" method="post" accept-charset="utf-8" class="pull-right">
+                          <input placeholder="Username" class="input-small" type="text" name="login" value="" id="login" maxlength="80" size="30"  />
+                          <input placeholder="Password" class="input-small" type="password" name="password" value="" id="password" size="30"  />
+                          <button class="btn success" type="submit">Sign in</button>
+                      </form>';
+                }
+          ?>
         </div>
       </div>
     </div>

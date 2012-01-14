@@ -2,16 +2,7 @@
 
 class Auth extends CI_Controller
 {
-	function __construct()
-	{
-		parent::__construct();
 
-		$this->load->helper(array('form', 'url'));
-		$this->load->library('form_validation');
-		$this->load->library('security');
-		$this->load->library('tank_auth');
-		$this->lang->load('tank_auth');
-	}
 
 	function index()
 	{
@@ -22,6 +13,20 @@ class Auth extends CI_Controller
 		}
 	}
 
+	function success(){
+		$this->load->view('header');
+        $this->load->view('registration_success');
+        $this->load->view('footer');
+	}
+
+
+	function login_fail(){
+		$this->load->view('header');
+        $this->load->view('login_fail');
+        $this->load->view('footer');
+	}
+
+
 	/**
 	 * Login user on the site
 	 *
@@ -29,6 +34,7 @@ class Auth extends CI_Controller
 	 */
 	function login()
 	{
+
 		if ($this->tank_auth->is_logged_in()) {									// logged in
 			redirect('');
 
@@ -68,7 +74,7 @@ class Auth extends CI_Controller
 						$this->form_validation->set_value('remember'),
 						$data['login_by_username'],
 						$data['login_by_email'])) {								// success
-					redirect('');
+					redirect('home');
 
 				} else {
 					$errors = $this->tank_auth->get_error_message();
@@ -78,8 +84,9 @@ class Auth extends CI_Controller
 					} elseif (isset($errors['not_activated'])) {				// not activated user
 						redirect('/auth/send_again/');
 
-					} else {													// fail
+					} else {				// fail
 						foreach ($errors as $k => $v)	$data['errors'][$k] = $this->lang->line($v);
+						redirect('auth/login_fail', $data);
 					}
 				}
 			}
@@ -92,7 +99,7 @@ class Auth extends CI_Controller
 					$data['captcha_html'] = $this->_create_captcha();
 				}
 			}
-			$this->load->view('auth/login_form', $data);
+			redirect("home");
 		}
 	}
 
@@ -104,7 +111,7 @@ class Auth extends CI_Controller
 	function logout()
 	{
 		$this->tank_auth->logout();
-
+		redirect("home");
 		$this->_show_message($this->lang->line('auth_message_logged_out'));
 	}
 
@@ -116,7 +123,7 @@ class Auth extends CI_Controller
 	function register()
 	{
 		if ($this->tank_auth->is_logged_in()) {									// logged in
-			redirect('');
+			redirect('/profile');
 
 		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
 			redirect('/auth/send_again/');
@@ -170,7 +177,7 @@ class Auth extends CI_Controller
 							$this->_send_email('welcome', $data['email'], $data);
 						}
 						unset($data['password']); // Clear password (just for any case)
-
+						redirect("auth/success");
 						$this->_show_message($this->lang->line('auth_message_registration_completed_2').' '.anchor('/auth/login/', 'Login'));
 					}
 				} else {
@@ -188,9 +195,9 @@ class Auth extends CI_Controller
 			$data['use_username'] = $use_username;
 			$data['captcha_registration'] = $captcha_registration;
 			$data['use_recaptcha'] = $use_recaptcha;
-			// $this->load->view('auth/register_form', $data);
 			$this->load->view('header');
-			$this->load->view('new_user_registration', $data);
+			$this->load->view('auth/register_form', $data);
+			// // $this->load->view('new_user_registration', $data);
 			$this->load->view('footer');
 		}
 	}

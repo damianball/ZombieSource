@@ -82,9 +82,11 @@
         height: 1px;
       }
       #test{
-        padding: 10px;
+        padding-left: px;
         color: @orange;
 
+      }
+      #register_button{
       }
     .btn.success {
       background-color: #FF4500;

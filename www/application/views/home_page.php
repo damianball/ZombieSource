@@ -6,13 +6,21 @@
 <div class = "row" >
    <div class="main">
       <div id = "title">
-         <div id = "new"> <h2> New here? You should </h2> </div>
-         <div class="linkbutton">
-            <a href=" <?php echo site_url("auth/register"); ?>">
-               <button id = test class="btn success"> Register </button>
-            </a>
-         </div> 
-      </div> 
+      <?php
+      if($this->tank_auth->is_logged_in()){
+         echo '<h2> Welcome <h2>';
+      }
+      else {
+         echo ' 
+               <div id = "new"> <h2> New here? You should </h2> </div>
+               <div class="linkbutton">
+                  <a href="' . site_url("auth/register") . '"> 
+                     <button id = test class="btn success"> Register </button>
+                  </a>
+               </div>';
+          }
+      ?>
+      </div>
       <div class="info">
          <div id = "homepage_data">
             <div id = "graph1" class = "homepage_graph"></div>
