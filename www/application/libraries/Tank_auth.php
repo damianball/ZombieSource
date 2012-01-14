@@ -151,7 +151,8 @@ class Tank_auth
 	
 	function get_email()
 	{
-		return $this->ci->users->get_email_by_userid($this->ci->session->userdata('user_id'));
+		$data = $this->ci->users->get_email_by_userid($this->ci->session->userdata('user_id'))
+		return $data['email'];
 	}
 
 	/**
