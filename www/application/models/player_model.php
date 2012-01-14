@@ -65,5 +65,16 @@ class Player_model extends CI_Model{
 				
 		return $added;
 	}
+	
+	public function getNumberOfPlayersInGame($gameid){
+		$query = $this->db->query('SELECT COUNT(id) as count FROM player WHERE gameid = '.$this->db->escape($gameid));
+		$result = $query->row();
+		$count = "";
+		if(isset($result->{'count'})){
+			$count = $result->{'count'};
+		}
+		
+		return $count;
+	}
 }
 ?>
