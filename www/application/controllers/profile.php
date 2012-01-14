@@ -28,9 +28,18 @@ class Profile extends CI_Controller {
     {
 
         if (true) { 
-            $this->load->view('header');
-            $this->load->view('registration_page_two');
-            $this->load->view('footer');
+
+            if(array_key_exists('waiver', $_POST) && $_POST['waiver'] == "signed")
+            {
+ 
+            //store data
+
+            }
+            else{
+                $this->load->view('header');
+                $this->load->view('registration_page_two');
+                $this->load->view('footer');
+            }
         }
         else{
             $this->load->view('header');
@@ -38,4 +47,5 @@ class Profile extends CI_Controller {
             $this->load->view('footer');
         }
     }
+
 }

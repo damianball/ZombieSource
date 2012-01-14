@@ -5,8 +5,10 @@
           <div class="span10">
             <h2> Sign Safety Waiver (Required) </h2>
               <div class="span12">
-                <form>
-                  <fieldset>
+              <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
+                   echo form_open($this->uri->uri_string())
+               ?>
+
                   <div class="clearfix">
                     <label id = test >Safety Waiver</label>
                     <div class = "linkbutton">
@@ -14,19 +16,19 @@
                       <button class="btn primary"> READ ME </button>
                     </a>
                     </div>
-                  </form>
                   </div> 
+
                <div class="clearfix">
                       <label>Agreements</label>
                       <div class="input">
                           <ul class="inputs-list">
                               <li>
                                   <label>
-                                      <input type="checkbox" />
+                                      <input type="checkbox" name="waiver" value="signed" />
                                       I accept the terms of the Safety Waiver
                                   </label>
                                   <label>
-                                      <input type="checkbox" />
+                                      <input type="checkbox" name="awesome" value="yes">
                                       I am awesome
                                   </label>
                               </li>
@@ -35,23 +37,21 @@
                   </div>
                   <label>Signature</label>
                   <div class="input">
-                    <input type="text" />
+                    <input type="text" name="sig"  />
                   </div>
                   </fieldset>
-                </form>
               </div> 
             <h2> Profile Information (Optional) </h2>
               <div class="span12">
-                <form>
                   <fieldset>
                     <div class="clearfix">
                         <label>Age</label>
                         <div class="input">
-                            <select>
-                              <option></option>
+                            <select name = "age">
+                              <option> </option>
                                 <?php
                                   for($i = 10; $i < 114; $i = $i + 1 ){
-                                      echo "<option> ";
+                                      echo "<option value =". $i . " > ";
                                       echo $i;
                                       echo "</option> ";
                                   }
@@ -61,33 +61,26 @@
                     </div>
                     <div class="clearfix">
                         <label>Gender</label>
-                        <div class="input">
-                            <select>
+                        <div class="input" >
+                            <select name = "gender">
                                 <option></option>
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
+                                <option value = "male" >Male</option>
+                                <option value = "female" >Female</option>
+                                <option value = "other" >Other</option>
                             </select>
                       </div>
                     </div>
                     <div class="clearfix">
                         <label>Major</label>
                         <div class="input">
-                            <input type="text" />
+                            <input type="text" name = "major" />
                         </div>
                     </div>
-                    <div class="clearfix">
-                        <label> Profile Picture </label>
-                        <div class="input">
-                            <input type="file" class="input-file" />
-                        </div>
-                    </div>
-
+      
                     <div class="actions">
-                        <button id = test class="btn success"> Save and Finish </button>
+                        <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
                     </div>                   
                   </fieldset>
-                </form>
               </div>  
           </div>
         </div>
