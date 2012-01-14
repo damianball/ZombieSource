@@ -36,10 +36,10 @@ class Profile extends CI_Controller {
 					$this->Player_model->createPlayerInGame($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 					$playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 					$this->Player_model->setPlayerData($playerid, 'waiver_is_signed', 'TRUE');
-					$this->Player_model->setPlayerData($playerid, 'sig', $this->validation->sig);
-					$this->Player_model->setPlayerData($playerid, 'age', $this->validation->age);
-					$this->Player_model->setPlayerData($playerid, 'gender', $this->validation->gender);
-					$this->Player_model->setPlayerData($playerid, 'major', $this->validation->major);
+					$this->Player_model->setPlayerData($playerid, 'sig', $this->form_validation->sig);
+					$this->Player_model->setPlayerData($playerid, 'age', $this->form_validation->age);
+					$this->Player_model->setPlayerData($playerid, 'gender', $this->form_validation->gender);
+					$this->Player_model->setPlayerData($playerid, 'major', $this->form_validation->major);
 					redirect('profile');
 				}
 				else{
