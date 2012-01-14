@@ -28,23 +28,11 @@ $captcha = array(
 );
 ?>
 
-adsfasdfsd
-<table>
-    <tr>
-
-        <td style="color: red;"><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?></td>
-    </tr>
-    <tr>
-
-        <td style="color: red;"><?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']])?$errors[$password['name']]:''; ?></td>
-    </tr>
-
-    <tr>
-        <td colspan="3">
-            <?php echo form_checkbox($remember); ?>
-            <?php echo form_label('Remember me', $remember['id']); ?>
-            <?php echo anchor('/auth/forgot_password/', 'Forgot password'); ?>
-            <?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>
-        </td>
-    </tr>
-</table>
+Login Failed! <br>
+<?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?>
+<?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']])?$errors[$password['name']]:''; ?>
+<p>
+<p>
+<?php echo anchor('/auth/forgot_password/', 'Forgot password'); ?>
+<p>
+<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>

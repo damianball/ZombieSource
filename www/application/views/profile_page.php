@@ -3,10 +3,10 @@
 </div>
 <div class = "row" >
    <div class="main">
-	Username: <? echo $data['username']; ?></br>
-	E-mail: <? echo $data['email']; ?></br>
-	Age: <? echo $data['age']; ?></br>
-	Gender: <? echo $data['gender']; ?></br>
+	Username: <? //echo $data['username']; ?></br>
+	E-mail: <? //echo $data['email']; ?></br>
+	Age: <?// echo $data['age']; ?></br>
+	// Gender: <? //echo $data['gender']; ?></br>
    </div>
    <div class="sidebar">
       <h3>Info</h3>

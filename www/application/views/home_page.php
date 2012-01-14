@@ -17,12 +17,10 @@
       }
       else {
          echo ' 
-               <div id = "new"> <h2> New here? You should </h2> </div>
-               <div class="linkbutton">
-                  <a href="' . site_url("auth/register") . '"> 
-                     <button id = test class="btn success"> Register </button>
-                  </a>
-               </div>';
+               <div class="alert-message success">
+                  <p><strong>Hey!</strong> Welcome to our beta, don\'t feel bad if something breaks </p>
+               </div>
+             ';
           }
       ?>
       </div>
@@ -39,9 +37,23 @@
             </div>
          </div>
          <div id="info2">
-            <div id = "countdown_box">
-               <h3><div id = "countdown"></div><h3>
-            </div>
+         <?php
+            if($this->tank_auth->is_logged_in()){
+               echo '<div id = "countdown_box">
+                        <h3><div id = "countdown"></div><h3>
+                     </div>';
+            }
+            else {
+               echo '
+                 <div id = "new"> <h2> New here? You should </h2> </div>
+                  <div class="linkbutton">
+                     <a href="' . site_url("auth/register") . '"> 
+                        <button id = test class="btn success"> Register </button>
+                     </a>
+                  </div>
+                   ';
+                }
+         ?>
          </div>
 
 
@@ -118,9 +130,14 @@
                      color: "#FF8000"
                   },
                   {
+                     name: 'female',    
+                     y: 38,
+                     color: "#FF2000"
+                  },
+                  {
                      name: 'other',    
                      y: 2,
-                     color: "#FF2000"
+                     color: "#FF1000"
                   }
 
                ]
