@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title> Braaaaains</title>
+  <title>Braaaaains</title>
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
@@ -24,9 +24,9 @@
     <div class="topbar">
       <div class="fill">
         <div class="container">
-          <a class="brand" > HvZ </a>
+          <a class="brand">ZombieSource</a>
           <ul class="nav">
-            <li> <a href = "<?php echo site_url("home"); ?> ">Home</a> </li>
+            <li><a href = "<?php echo site_url("home"); ?> ">Home</a></li>
           <?php 
             if($this->tank_auth->is_logged_in()){
                echo '
