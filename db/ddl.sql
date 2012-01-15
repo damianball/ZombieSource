@@ -1,6 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
-USE `zsource_dev`;
--- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
+CREATE DATABASE  IF NOT EXISTS `zombiesource` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+USE `zombiesource`;
+-- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
 --
 -- Host: localhost    Database: zombiesource
 -- ------------------------------------------------------
@@ -91,9 +91,9 @@ CREATE TABLE `player` (
   `datecreated` datetime NOT NULL,
   `original_zombie` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `player_users` (`userid`),
+  UNIQUE KEY `user_game_unique` (`userid`,`gameid`) USING BTREE,
   KEY `player_game` (`gameid`),
+  KEY `player_users` (`userid`) USING BTREE,
   CONSTRAINT `player_game` FOREIGN KEY (`gameid`) REFERENCES `game` (`id`),
   CONSTRAINT `player_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -351,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-14  6:34:23
+-- Dump completed on 2012-01-14 16:01:23
