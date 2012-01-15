@@ -79,7 +79,11 @@ class Player_model extends CI_Model{
 	
 	// both name and value must match exactly(upper/lower)
 	public function getNumberOfPlayersInGameByNVP($gameid,$name,$value){
-		$query = $this->db->query('SELECT COUNT(*) as count FROM player_data LEFT JOIN (player) ON (player.id = player_data.playerid) WHERE player_data.name = '.$this->db->escape($name).' AND player_data.value = '.$this->db->escape($value).' AND player.gameid = '.$this->db->escape($gameid);
+		$query = $this->db->query('SELECT COUNT(*) as count FROM player_data 
+									LEFT JOIN (player) ON (player.id = player_data.playerid) 
+									WHERE player_data.name = '.$this->db->escape($name).' 
+									AND player_data.value = '.$this->db->escape($value).' 
+									AND player.gameid = '.$this->db->escape($gameid));
 		$result = $query->row();
 		$count = "";
 		if(isset($result->{'count'})){
