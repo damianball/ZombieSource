@@ -24,8 +24,12 @@ class Home extends CI_Controller {
         $user_id = $this->tank_auth->get_user_id();
         $player_id = $this->Player_model->getPlayerID($user_id,'9a051bbc-3ebc-11e1-b778-000c295b88cf');
         $data = array('waiver' => $this->Player_model->getPlayerData($player_id,'waiver_is_signed'),
-            'count' => $this->Player_model->getNumberOfPlayersInGame('9a051bbc-3ebc-11e1-b778-000c295b88cf'));
-
+            'count' => $this->Player_model->getNumberOfPlayersInGame('9a051bbc-3ebc-11e1-b778-000c295b88cf'),
+			'male' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','male'),
+			'female' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','female'),
+			'other' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','other'),
+			'noresponse' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','')
+		);
         $this->load->view('header');
         $this->load->view('home_page', $data);
         $this->load->view('footer');

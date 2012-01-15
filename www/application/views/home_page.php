@@ -120,23 +120,23 @@
                name: 'Browser share',
                data: [
                    {
-                     name: 'male',    
-                     y: 60,
+                     name: 'Male',    
+                     y: <? echo $male; ?>,
                      color: "#FF4500"
                    },
                   {
-                     name: 'female',    
-                     y: 38,
+                     name: 'Female',    
+                     y: <? echo $female; ?>,
                      color: "#FF8000"
                   },
                   {
-                     name: 'female',    
-                     y: 38,
+                     name: 'Other',    
+                     y: <? echo $other; ?>,
                      color: "#FF2000"
                   },
                   {
-                     name: 'other',    
-                     y: 2,
+                     name: 'No Response',    
+                     y: <? echo $noresponse; ?>,
                      color: "#FF1000"
                   }
 
