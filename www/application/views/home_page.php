@@ -85,7 +85,7 @@
       </div>
       <div class = "tinyline"></div>
       <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
+         <a href = "https://docs.google.com/open?id=1vYy1nVvFoE3HOjKs7olWDFl-rgW2eXIfp4Ms7_nyVqetArbXm6x8OD5MQh2l"> Rules </a>
       </div>
    </div>
 </div>
