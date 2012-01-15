@@ -85,7 +85,7 @@
                         <label>Original Zombie Pool</label>
                         <div class="input">
                             <label>
-								<input type="checkbox" name="originalzombiepool" value="yes"> Enter me into the Original Zombie Pool
+								<input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
                             </label>
                         </div>
                     </div>
