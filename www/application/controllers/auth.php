@@ -20,6 +20,12 @@ class Auth extends CI_Controller
 	}
 
 
+	function email_success(){
+		$this->load->view('header');
+        $this->load->view('email_conformation_success');
+        $this->load->view('footer');
+	}
+
 	function login_fail(){
 		$this->load->view('header');
         $this->load->view('login_fail');
@@ -169,7 +175,8 @@ class Auth extends CI_Controller
 
 						unset($data['password']); // Clear password (just for any case)
 
-						$this->_show_message($this->lang->line('auth_message_registration_completed_1'));
+						// $this->_show_message($this->lang->line('auth_message_registration_completed_1'));
+						redirect("auth/success");
 
 					} else {
 						if ($this->config->item('email_account_details', 'tank_auth')) {	// send "welcome" email
@@ -177,8 +184,8 @@ class Auth extends CI_Controller
 							$this->_send_email('welcome', $data['email'], $data);
 						}
 						unset($data['password']); // Clear password (just for any case)
-						redirect("auth/success");
 						$this->_show_message($this->lang->line('auth_message_registration_completed_2').' '.anchor('/auth/login/', 'Login'));
+
 					}
 				} else {
 					$errors = $this->tank_auth->get_error_message();
@@ -252,6 +259,7 @@ class Auth extends CI_Controller
 		// Activate user
 		if ($this->tank_auth->activate_user($user_id, $new_email_key)) {		// success
 			$this->tank_auth->logout();
+			redirect("auth/email_success");
 			$this->_show_message($this->lang->line('auth_message_activation_completed').' '.anchor('/auth/login/', 'Login'));
 
 		} else {																// fail
