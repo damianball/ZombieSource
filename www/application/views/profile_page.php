@@ -3,11 +3,23 @@
 </div>
 <div class = "row" >
    <div class="main">
-	Username: <? echo $username; ?></br>
-	E-mail: <? echo $email; ?></br>
-	Age: <? echo $age; ?></br>
-	Gender: <? echo $gender; ?></br>
-	Major: <? echo $major; ?></br>
+
+
+	<div class = "line"> 
+      Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
+   </div>
+   <div class = "line"> 
+      Email: <span class = "profile_data_item"> <? echo $email; ?> </span>
+   </div>  
+   <div class = "line"> 
+      Age: <span class = "profile_data_item"> <? echo $age; ?> </span>
+   </div>   <div class = "line"> 
+      Gender: <span class = "profile_data_item"> <? echo $gender; ?> </span>
+   </div>
+   <div class = "line"> 
+      Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
+   </div>
+
    </div>
    <div class="sidebar">
       <h3>Info</h3>

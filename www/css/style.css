@@ -104,6 +104,10 @@
       background-color: #0064CD;
       background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
     }
+    .alert-message.success{
+      background-color: #04819e;
+      background-image: -webkit-linear-gradient(top, #04819e, #04819e);
+    }
     .infoitem{
       padding: 10px;
     }
@@ -166,3 +170,15 @@ label{
   margin
   -right: 10px;
 }
+
+.line {
+  font-weight: bold;
+  line-height: 36px;
+  font-size: 24px;
+}
+.profile_data_item{
+  font-weight: normal;
+  line-height: 36px;
+  font-size: 22px;
+}
+

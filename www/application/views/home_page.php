@@ -27,7 +27,7 @@
       <div id = "graphbox">
          <div id="info1">
             <div id = "label">
-            <h2> Sign Ups: </h2>
+            <h2> Player Count: </h2>
             </div>
             <div id = "homepage_data">
                <div id = "graph2" class = "homepage_graph">
@@ -130,14 +130,14 @@
                      color: "#FF8000"
                   },
                   {
-                     name: 'female',    
+                     name: 'other',    
                      y: 38,
                      color: "#FF2000"
                   },
                   {
-                     name: 'other',    
+                     name: 'no response',    
                      y: 2,
-                     color: "#FF1000"
+                     color: "#FF9900"
                   }
 
                ]
