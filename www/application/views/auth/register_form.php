@@ -15,6 +15,10 @@ $email = array(
     'maxlength' => 80,
     'size'  => 30,
 );
+$emailsuffixoptions = array(
+	'1' => 'vandals.uidaho.edu',
+	'2' => 'uidaho.edu'
+);
 $password = array(
     'name'  => 'password',
     'id'    => 'password',
@@ -58,7 +62,7 @@ $captcha = array(
                 <?php } ?>
                 <tr>
                     <td><?php echo form_label('Email Address', $email['id']); ?></td>
-                    <td><?php echo form_input($email); ?></td>
+                    <td><?php echo form_input($email); ?> @ <? echo form_dropdown('emailsuffix', $emailsuffixoptions, '1'); ?></td>
                     <td style="color: red;"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']])?$errors[$email['name']]:''; ?></td>
                 </tr>
                 <tr>
