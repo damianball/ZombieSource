@@ -11,7 +11,7 @@
       <div id = "title">
       <?php
       if($waiver != "TRUE" && $this->tank_auth->is_logged_in()){
-         echo $waiver . '<div class="alert-message info">
+         echo $waiver . '<div class="alert-message danger">
                   <p><strong>Hey!</strong> Visit your profile to sign the safety waiver </p>
                </div>';
       }
@@ -125,11 +125,13 @@
                      name: 'Male',    
                      y: <? echo $male; ?>,
                      color: "#39869B"
+
                    },
                   {
                      name: 'Female',    
                      y: <? echo $female; ?>,
                      color: "#46A1B9"
+
                   },
                   {
                      name: 'Other',    
@@ -140,6 +142,7 @@
                      name: 'No Response',    
                      y: <? echo $noresponse; ?>,
                      color: "#B5D4E0"
+
                   }
 
                ]
