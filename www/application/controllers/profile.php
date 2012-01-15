@@ -35,6 +35,7 @@ class Profile extends CI_Controller {
 				$this->form_validation->set_rules('age', 'Age', 'integer|trim|xss_clean');
 				$this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
 				$this->form_validation->set_rules('major', 'Major', 'trim|xss_clean');
+				$this->form_validation->set_rules('originalzombiepool', 'OriginalZombiePool', 'trim|xss_clean');
 
 				if ($this->form_validation->run()) {
 					//store data
@@ -46,6 +47,7 @@ class Profile extends CI_Controller {
 					$this->Player_model->setPlayerData($playerid, 'age', $this->input->post('age'));
 					$this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
 					$this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
+					$this->Player_model->setPlayerData($playerid, 'originalzombiepool', $this->input->post('originalzombiepool'));
 					redirect('profile');
 				}
 				else{

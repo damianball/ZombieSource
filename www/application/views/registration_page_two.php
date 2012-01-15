@@ -81,7 +81,14 @@
                             <input type="text" name = "major" value="<?php echo set_value('major'); ?>"/>
                         </div>
                     </div>
-      
+                    <div class="clearfix">
+                        <label>Original Zombie Pool</label>
+                        <div class="input">
+                            <label>
+								<input type="checkbox" name="originalzombiepool" value="yes"> Enter me into the Original Zombie Pool
+                            </label>
+                        </div>
+                    </div>
                     <div class="actions">
                         <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
                     </div>                   
