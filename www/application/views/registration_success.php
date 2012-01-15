@@ -1,4 +1,4 @@
-registration successful!
+<h3>Success!</h3>
 <br>
-(No email confirmations neccessary while in beta)
+<h2>Please check your email to complete your registration <h2>
 <br>
