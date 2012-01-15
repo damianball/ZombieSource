@@ -45,11 +45,13 @@
             }
             else {
                echo '
-                 <div id = "new"> <h2> New here? You should </h2> </div>
+                 
+                 <div id = "new"> <h2> New here? <br/> You should </h2> 
                   <div class="linkbutton">
                      <a href="' . site_url("auth/register") . '"> 
                         <button id = test class="btn success"> Register </button>
                      </a>
+                  </div>
                   </div>
                    ';
                 }
@@ -120,24 +122,24 @@
                name: 'Browser share',
                data: [
                    {
-                     name: 'male',    
-                     y: 60,
-                     color: "#FF4500"
+                     name: 'Male',    
+                     y: <? echo $male; ?>,
+                     color: "#39869B"
                    },
                   {
-                     name: 'female',    
-                     y: 38,
-                     color: "#FF8000"
+                     name: 'Female',    
+                     y: <? echo $female; ?>,
+                     color: "#46A1B9"
                   },
                   {
-                     name: 'other',    
-                     y: 38,
-                     color: "#FF2000"
+                     name: 'Other',    
+                     y: <? echo $other; ?>,
+                     color: "#7CBBCF"
                   },
                   {
-                     name: 'no response',    
-                     y: 2,
-                     color: "#FF9900"
+                     name: 'No Response',    
+                     y: <? echo $noresponse; ?>,
+                     color: "#B5D4E0"
                   }
 
                ]

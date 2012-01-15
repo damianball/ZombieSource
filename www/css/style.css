@@ -62,11 +62,17 @@
       }
       #new{
          float: left;
+         padding: 15px;
          margin-right: 15px;
          margin-left: 20px;
+         background-color: #B5D4E0;
+         border-color: #39869B;
+         border-width: 1px;
+         border-style:solid;
+
       }
       .linkbutton {
-        float: right;
+        padding: 8px;
       }
       .topbar .btn {
         border: 0;
@@ -82,17 +88,12 @@
         height: 1px;
       }
       #test{
-        padding-left: px;
         color: @orange;
-
+        margin-left: auto;
+        margin-right: auto;
       }
       #register_button{
       }
-      .linkbutton{
-        padding-left: 15px;
-        float: left;
-      }
-
       #signout{
         padding: 10px;
       }
