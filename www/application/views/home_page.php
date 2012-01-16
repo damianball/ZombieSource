@@ -104,7 +104,7 @@
             },
             tooltip: {
                formatter: function() {
-                  return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                  return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
                }
             },
             plotOptions: {
