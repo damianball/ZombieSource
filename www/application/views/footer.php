@@ -1,7 +1,14 @@
       </div> <!-- /content -->
     </div> <!-- /container -->
-    <div id = "contact" > brains@zombiesource.org
-    <div>
+    <div id = "contact" > brains@zombiesource.org</div>
+	<script type="text/javascript">
+	  var uvOptions = {};
+	  (function() {
+		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/kY4Uk6lBdCWArPMvC3D13w.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+	  })();
+	</script>
 	<script type="text/javascript">
 
 	  var _gaq = _gaq || [];
