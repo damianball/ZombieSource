@@ -75,7 +75,8 @@
       <div class = "tinyline"></div>
       <div class = "infoitem">
          <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
+         Jan 30th  and Feb 3rd<br>
+         Ag Sci 106, 6:00 pm
       </div>
       <div class = "tinyline"></div>
       <div class = "infoitem">
