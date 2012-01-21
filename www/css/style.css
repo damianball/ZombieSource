@@ -107,7 +107,7 @@
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FF8000), color-stop(100%, #FF4500));
       background-image: -o-linear-gradient(top, #FF8000, #FF4500);
       background-image: linear-gradient(top, #FF8000, #FF4500);
-
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8000', endColorstr='#FF4500', GradientType=0);
     }
     
     .alert-message.info{
@@ -120,7 +120,7 @@
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
       background-image: -o-linear-gradient(top, #049cdb, #0064cd);
       background-image: linear-gradient(top, #049cdb, #0064cd);
-
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#049cdb', endColorstr='#0064cd', GradientType=0);
     }
     .alert-message.success{
       background-color: #04819e;
@@ -132,7 +132,7 @@
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #04819e), color-stop(100%, #04819e));
       background-image: -o-linear-gradient(top, #04819e, #04819e);
       background-image: linear-gradient(top, #04819e, #04819e);
-      
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04819e', endColorstr='#04819e', GradientType=0);
     }
     .infoitem{
       padding: 10px;
