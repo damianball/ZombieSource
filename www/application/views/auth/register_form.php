@@ -45,7 +45,7 @@ $captcha = array(
 </div>
 <div class = "row" >
    <div class="main">
-      <div id = "title2">
+      <div id = "title">
       <h2>New User Registration </h2>
       </div>
       <div id = "fields">

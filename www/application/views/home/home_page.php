@@ -1,26 +1,13 @@
+
 <div class="page-header">
- <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+<h1>Humans vs Zombies <small> Dead of Winter </small></h1>
 </div>
 <div class = "row" >
    <div class="main">
       <div id = "title">
-      <?php
-      if($waiver != "TRUE" && $this->tank_auth->is_logged_in()){
-         echo $waiver . '<div class="alert-message danger">
-                  <p><strong>Hey!</strong> Visit your profile to sign the safety waiver </p>
-               </div>';
-      }
-      else {
-         echo ' 
-               <div class="alert-message success">
-                  <p><strong>Hey!</strong> Welcome to our beta, don\'t feel bad if something breaks </p>
-               </div>
-             ';
-          }
-      ?>
-      </div>
+      <?php echo $home_banner ?></div>
       <div id = "graphbox">
-         <div id="info1">
+         <div class="info_box">
             <div id = "label">
             <h2> Player Count: </h2>
             </div>
@@ -31,26 +18,8 @@
                <div id = "graph1" class = "homepage_graph"></div>
             </div>
          </div>
-         <div id="info2">
-         <?php
-            if($this->tank_auth->is_logged_in()){
-               echo '<div id = "countdown_box">
-                        <h3><div id = "countdown"></div><h3>
-                     </div>';
-            }
-            else {
-               echo '
-                 
-                 <div id = "new"> <h2> New here? <br/> You should </h2> 
-                  <div class="linkbutton">
-                     <a href="' . site_url("auth/register") . '" id = "test" class = "btn success"> 
-                        Register
-                     </a>
-                  </div>
-                  </div>
-                   ';
-                }
-         ?>
+         <div class="info_box">
+         <?php echo $home_content ?>
          </div>
       </div>
    </div>
@@ -142,6 +111,6 @@
       });
    });
   </script>
-  <script type="text/javascript" src="js/GenderPieChart.js"></script>
+  <script type="text/javascript" src="js/CountDown.js"></script>
 
 

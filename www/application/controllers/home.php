@@ -47,7 +47,7 @@ class Home extends CI_Controller {
 
          //load the content variables
          $layout_data['top_bar'] = $top_bar;
-         $layout_data['content_body'] = $this->load->view('home_page', $data, true);
+         $layout_data['content_body'] = $this->load->view('home/home_page', $data, true);
          $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
          $this->load->view('layouts/main', $layout_data);
     }
