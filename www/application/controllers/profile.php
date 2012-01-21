@@ -51,6 +51,8 @@ class Profile extends CI_Controller {
         $this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
         $this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
         $this->Player_model->setPlayerData($playerid, 'originalzombiepool', $this->input->post('originalzombiepool'));
+        #$this->Player_model->setPlayerData($playerid, 'originalzombiepool', $this->input->post('originalzombiepool'));
+
         redirect('profile');
       }
       else{
