@@ -2,42 +2,53 @@
 
 class Home extends CI_Controller {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     *      http://example.com/index.php/welcome
-     *  - or -  
-     *      http://example.com/index.php/welcome/index
-     *  - or -
-     * Since this controller is set as the default controller in 
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
     public function index()
     {
+        // $is_logged_in = false;
+        $is_logged_in = $this->tank_auth->is_logged_in();
+
         $this->load->model('Player_model','',TRUE);
-
         $user_id = $this->tank_auth->get_user_id();
-        $player_id = $this->Player_model->getPlayerID($user_id,'9a051bbc-3ebc-11e1-b778-000c295b88cf');
-        $data = array('waiver' => $this->Player_model->getPlayerData($player_id,'waiver_is_signed'),
-            'count' => $this->Player_model->getNumberOfPlayersInGame('9a051bbc-3ebc-11e1-b778-000c295b88cf'),
-			'male' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','male'),
-			'female' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','female'),
-			'other' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','other'),
-			'noresponse' => $this->Player_model->getNumberOfPlayersInGameByNVP('9a051bbc-3ebc-11e1-b778-000c295b88cf','gender','')
-		);
-        $this->load->view('header');
-        $this->load->view('home_page', $data);
-        $this->load->view('footer');
 
+        $player_id = $this->Player_model->getPlayerID($user_id,GAME_KEY);
+        $waiver = $this->Player_model->getPlayerData($player_id,'waiver_is_signed');
+        $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
+        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
+        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
+        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
+        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
 
+        if($is_logged_in){
+            $home_content = $this->load->view('home/logged_in_home','', true);
+            $top_bar = $this->load->view('layouts/logged_in_topbar','', true);
+            if(!$waiver){
+              $home_banner = $this->load->view('home/waiver_banner','', true);
+            }
+            else{
+              $home_banner = $this->load->view('home/beta_banner','', true);
+            }
+        }
+        else{ 
+            $home_content = $this->load->view('home/logged_out_home','', true); 
+            $top_bar = $this->load->view('layouts/logged_out_topbar','', true);
+            $home_banner = $this->load->view('home/beta_banner','', true);
+        }
+
+        $data = array('waiver'       => $waiver,
+                      'count'        => $num_players,
+			                'male'         => $num_males,
+			                'female'       => $num_females,
+			                'other'        => $num_other_gender,
+			                'noresponse'   => $num_no_gender_response,
+                      'home_banner'  => $home_banner,
+                      'home_content' => $home_content
+
+		    );
+
+         //load the content variables
+         $layout_data['top_bar'] = $top_bar;
+         $layout_data['content_body'] = $this->load->view('home_page', $data, true);
+         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+         $this->load->view('layouts/main', $layout_data);
     }
-
-}
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+ }

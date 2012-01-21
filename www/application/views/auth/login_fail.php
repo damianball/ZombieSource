@@ -33,6 +33,6 @@ Login Failed! <br>
 <?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']])?$errors[$password['name']]:''; ?>
 <p>
 <p>
-<?php echo anchor('/auth/forgot_password/', 'Forgot password'); ?>
+<?php echo anchor('/auth/forgot_password/', 'Reset Password'); ?>
 <p>
 <?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>

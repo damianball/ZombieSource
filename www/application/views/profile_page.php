@@ -3,8 +3,6 @@
 </div>
 <div class = "row" >
    <div class="main">
-
-
 	<div class = "line"> 
       Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
    </div>
@@ -19,7 +17,6 @@
    <div class = "line"> 
       Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
    </div>
-
    </div>
    <div class="sidebar">
       <h3>Info</h3>

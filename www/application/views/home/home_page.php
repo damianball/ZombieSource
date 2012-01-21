@@ -1,11 +1,24 @@
-
 <div class="page-header">
-<h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+ <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
 </div>
 <div class = "row" >
    <div class="main">
       <div id = "title">
-      <?php echo $home_banner ?></div>
+      <?php
+      if($waiver != "TRUE" && $this->tank_auth->is_logged_in()){
+         echo $waiver . '<div class="alert-message danger">
+                  <p><strong>Hey!</strong> Visit your profile to sign the safety waiver </p>
+               </div>';
+      }
+      else {
+         echo ' 
+               <div class="alert-message success">
+                  <p><strong>Hey!</strong> Welcome to our beta, don\'t feel bad if something breaks </p>
+               </div>
+             ';
+          }
+      ?>
+      </div>
       <div id = "graphbox">
          <div id="info1">
             <div id = "label">
@@ -19,7 +32,25 @@
             </div>
          </div>
          <div id="info2">
-         <?php echo $home_content ?>
+         <?php
+            if($this->tank_auth->is_logged_in()){
+               echo '<div id = "countdown_box">
+                        <h3><div id = "countdown"></div><h3>
+                     </div>';
+            }
+            else {
+               echo '
+                 
+                 <div id = "new"> <h2> New here? <br/> You should </h2> 
+                  <div class="linkbutton">
+                     <a href="' . site_url("auth/register") . '" id = "test" class = "btn success"> 
+                        Register
+                     </a>
+                  </div>
+                  </div>
+                   ';
+                }
+         ?>
          </div>
       </div>
    </div>
@@ -111,6 +142,6 @@
       });
    });
   </script>
-  <script type="text/javascript" src="js/CountDown.js"></script>
+  <script type="text/javascript" src="js/GenderPieChart.js"></script>
 
 
