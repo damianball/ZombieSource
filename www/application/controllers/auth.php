@@ -12,7 +12,7 @@ class Auth extends CI_Controller
 		}
 	}
 
-	function success(){
+	function registration_success(){
     $layout_data['top_bar'] = $this->load->view('layouts/logged_out_topbar','', true);
     $layout_data['content_body'] = $this->load->view('auth/registration_success','', true);
     $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
@@ -199,7 +199,7 @@ function login()
 						unset($data['password']); // Clear password (just for any case)
 
 						// $this->_show_message($this->lang->line('auth_message_registration_completed_1'));
-						redirect("auth/success");
+						redirect("auth/registration_success");
 
 					} else {
 						if ($this->config->item('email_account_details', 'tank_auth')) {	// send "welcome" email
