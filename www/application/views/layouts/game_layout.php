@@ -19,7 +19,8 @@
       <div class = "leftnav"> 
        <div class="game_nav_options">
            <div class = "navitem" <?= $player_list_active; ?>> <a href = "<?php echo site_url("game"); ?> ">Player List</a> </div>
-           <div class = "navitem" <?= $log_kill_active; ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
+           <div class = "navitem" <?= $team_list_active; ?>><a href = "<?php echo site_url("game/teams"); ?> ">Teams list</a> </div>
+           <div class = "navitem" <?= $register_kill_active; ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
            <div class = "navitem" <?= $game_stats_active; ?>> <a href = "<?php echo site_url("game/stats"); ?> ">Game stats</a> </div>
        </div>
       </div>

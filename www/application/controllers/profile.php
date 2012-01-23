@@ -27,6 +27,7 @@ class Profile extends CI_Controller {
       $data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
       $data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
       $data['major'] = $this->Player_model->getPlayerData($playerid, 'major');
+      $data['profile_pic_url'] = "http://i.imgur.com/rmX9I.png";
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile_page', $data, true);
@@ -64,7 +65,7 @@ class Profile extends CI_Controller {
     }
   }
 
-  public function profile()
+  public function edit()
   {
 
 

@@ -1,5 +1,14 @@
 /*
-body
+   Add the following to your CSS file should you wish the cursor to
+   "wait" while the script is processing the sort
+
+body.sort-active *
+        {
+        cursor:wait;
+        }
+*/
+
+/*body
         {
         padding:0;
         border:0;
@@ -10,6 +19,9 @@ body
         color:#545454;
         min-width: 800px;
         }*/
+
+
+
 h2 span
         {
         font-variant:small-caps;
@@ -112,7 +124,8 @@ th
         text-transform: uppercase;
         text-align: left;
         padding: 8px 12px 4px 12px;
-        background: #606060 url(../media/bg_header.jpg) no-repeat;
+
+        background: #CAE8EA url(../images/bg_header.jpg) no-repeat;
         vertical-align:middle;
         }
 td.total
@@ -144,16 +157,16 @@ th.sortable-sortEnglishDateTime
 
         {
         cursor:pointer;
-        background: #606060 url(../media/bg_header_sortable.jpg) no-repeat;
+        background: #CAE8EA url(../images/bg_header_sortable.jpg) no-repeat;
         padding: 8px 12px 4px 16px;
         }
 th.forwardSort
         {
-        background:#606060 url(../media/bg_header_down.jpg) no-repeat 0 0;
+        background:#CAE8EA url(../images/bg_header_down.jpg) no-repeat 0 0;
         }
 th.reverseSort
         {
-        background:#606060 url(../media/bg_header_up.jpg) no-repeat 0 0;
+        background:#CAE8EA url(../images/bg_header_up.jpg) no-repeat 0 0;
         }
 table thead th.forwardSort a,
 table thead th.reverseSort a
@@ -165,7 +178,7 @@ table thead th.reverseSort a
 These styles should be added when very long tables are expected
 th.sort-active
         {
-        background:#606060 url(../media/bg_header_sorting.jpg) no-repeat 0 0;
+        background:#CAE8EA url(../images/bg_header_sorting.jpg) no-repeat 0 0;
         cursor:wait;
         }
 th.sort-active a
@@ -177,7 +190,7 @@ th.sort-active a
 th a
         {
         text-decoration:none;
-        color: #FFF;
+        color: #4f6b72;
         background:transparent;
         }
 td a
@@ -188,8 +201,9 @@ td a
         }
 td img
         {
-        margin:0 auto;
-        border:3px solid #ddd;
+/*        margin:0 auto;
+*/        border:3px solid #ddd;
+          margin: 0px;
         }
 td a:hover
         {
@@ -202,8 +216,8 @@ td
         font: normal 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
         border-right: 1px solid #C1DAD7;
         border-bottom: 1px solid #C1DAD7;
-        padding: 6px 12px 6px 12px;
-        color: #4f6b72;
+/*        padding: 6px 12px 6px 12px;
+*/        color: #4f6b72;
         }
 td.lft
         {
@@ -220,21 +234,21 @@ tr.alt
    will produce 1000 http requests for the image in question) */
 tr[class="alt"] td
         {
-        background: #F5FAFA url(../media/td_alt.jpg) no-repeat;
+        background: #F5FAFA url(../images/td_alt.jpg) no-repeat;
         }
 td[class~="alt"]
         {
-        background: #edf3f3 url(../media/col_alt.jpg) no-repeat !important;
+        background: #edf3f3 url(../images/col_alt.jpg) no-repeat !important;
         }
 /* Poor old Internet Explorer won't see the next two rules either as it doesn't get :first-child */
 tbody tr.alt td:first-child
         {
-        background: #F5FAFA url(../media/bullet2.gif) no-repeat;
+        background: #F5FAFA url(../images/bullet2.gif) no-repeat;
         font-weight:bold;
         }
 tbody tr td:first-child
         {
-        background: #fff url(../media/bullet1.gif) no-repeat;
+        background: #fff url(../images/bullet1.gif) no-repeat;
         font-weight:bold;
         }
 /* Image free rules for Internet Explorer < 7 */
@@ -247,3 +261,8 @@ tbody tr td:first-child
         {
         background-color:#edf3f3;
         }
+
+td {
+  margin: 0px;
+  padding: 0px;
+}
