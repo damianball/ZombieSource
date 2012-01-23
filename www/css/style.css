@@ -24,7 +24,9 @@
 
   /* The white background content wrapper */
   .content {
+    float: left;
     background-color: #fff;
+    width: 100%;
     padding: 20px;
     margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
     -webkit-border-radius: 0 0 6px 6px;
@@ -109,10 +111,17 @@
     padding-left: 19px;
     border-left: 1px solid #eee;
   }
+  #signout{
+    margin-top: 5px;
+  }
 
-
-  #title{
+   #feed_friends{
+    width: 100%;
+    padding-left: 55px;
     margin-left: 30px;
+
+    font-weight: bold;
+    font-size: 15px;
   }
 
   /* buttons that are just hrefs not forms */
@@ -201,6 +210,89 @@
     height: 10px;
     font-size: 9px;
   }
+
+
+  /*================================================
+  #
+  #    game page template
+  #
+  #=================================================*/
+
+
+  .leftnav {
+    float: left;
+    position: relative;
+    width: 100px;
+    height: auto;
+    margin-left: -122px;
+    margin-top: 100px;
+
+
+    background-color: #222;
+background-color: #222;
+background-repeat: repeat-x;
+background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#222222));
+background-image: -moz-linear-gradient(top, #333333, #222222);
+background-image: -ms-linear-gradient(top, #333333, #222222);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #222222));
+background-image: -webkit-linear-gradient(top, #333333, #222222);
+background-image: -o-linear-gradient(top, #333333, #222222);
+background-image: linear-gradient(top, #333333, #222222);
+
+/*
+   border-left-style: solid;
+   border-top-style: solid;
+   border-bottom-style: solid;
+*/
+/*   border-color: #FF4500;
+*/
+ }
+
+ .navitem{
+
+   width: 70px;
+   padding-top: 5px;
+   padding-bottom: 5px;
+   padding-left: 15px;
+   padding-right: 5px;
+   margin: 5px;
+
+
+ }
+
+ .navitem a{
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: normal;
+  color: #FFF;
+ }
+
+ #selected{
+
+  background-color: #606060;
+
+ }
+
+
+  /*================================================
+  #
+  #    list players page
+  #
+  #=================================================*/
+
+
+  #sortable_tables{
+    float: left;
+    margin: auto;
+  }
+
+  .hvz_table{
+    float: left;
+    margin-left: 100px;
+  }
+
+
 
   /*================================================
   #

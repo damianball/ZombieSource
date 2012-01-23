@@ -1,9 +1,18 @@
  <script type="text/javascript" src="js/tablesort.js"></script>
   <link rel="stylesheet" href="css/table_style.css">
 
-<!--   <?php echo $game_table; ?>
- -->
-<table id="test1" cellpadding="0" cellspacing="0" border="0" class="sortable-onload-5-6r rowstyle-alt colstyle-alt no-arrow">
+  <div id = "sortable_tables" >
+    <div class = "hvz_table" >
+      <?php echo $human_table; ?>
+    </div>
+    <div class = "hvz_table" >
+      <?php echo $zombie_table; ?>
+    </div>
+  </div>
+
+
+
+<!-- <table id="test1" cellpadding="0" cellspacing="0" border="0" class="sortable-onload-5-6r rowstyle-alt colstyle-alt no-arrow">
   <caption>The Numbers Weekly World Chart (2007-03-08)</caption>
   <thead>
     <tr>
@@ -630,4 +639,4 @@
       <td>$2,982,563,398</td>
     </tr>
   </tfoot>
-</table>
+</table> -->

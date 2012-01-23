@@ -112,7 +112,7 @@ th
         text-transform: uppercase;
         text-align: left;
         padding: 8px 12px 4px 12px;
-        background: #CAE8EA url(../media/bg_header.jpg) no-repeat;
+        background: #606060 url(../media/bg_header.jpg) no-repeat;
         vertical-align:middle;
         }
 td.total
@@ -144,16 +144,16 @@ th.sortable-sortEnglishDateTime
 
         {
         cursor:pointer;
-        background: #CAE8EA url(../media/bg_header_sortable.jpg) no-repeat;
+        background: #606060 url(../media/bg_header_sortable.jpg) no-repeat;
         padding: 8px 12px 4px 16px;
         }
 th.forwardSort
         {
-        background:#CAE8EA url(../media/bg_header_down.jpg) no-repeat 0 0;
+        background:#606060 url(../media/bg_header_down.jpg) no-repeat 0 0;
         }
 th.reverseSort
         {
-        background:#CAE8EA url(../media/bg_header_up.jpg) no-repeat 0 0;
+        background:#606060 url(../media/bg_header_up.jpg) no-repeat 0 0;
         }
 table thead th.forwardSort a,
 table thead th.reverseSort a
@@ -165,7 +165,7 @@ table thead th.reverseSort a
 These styles should be added when very long tables are expected
 th.sort-active
         {
-        background:#CAE8EA url(../media/bg_header_sorting.jpg) no-repeat 0 0;
+        background:#606060 url(../media/bg_header_sorting.jpg) no-repeat 0 0;
         cursor:wait;
         }
 th.sort-active a
@@ -177,7 +177,7 @@ th.sort-active a
 th a
         {
         text-decoration:none;
-        color: #4f6b72;
+        color: #FFF;
         background:transparent;
         }
 td a
