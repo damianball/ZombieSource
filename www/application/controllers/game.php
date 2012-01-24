@@ -79,7 +79,6 @@ class game extends CI_Controller {
 
 
     function stats(){
-
      $layout_data['team_list_active'] =  " ";
      $layout_data['player_list_active'] = "";
      $layout_data['register_kill_active'] = "";
@@ -94,18 +93,48 @@ class game extends CI_Controller {
 
 
     function register_kill(){
+      $user_id = $this->tank_auth->get_user_id();
+      if(!$this->Player_model->isActiveZombie($user_id)){
+         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+         $layout_data['content_body'] = $this->load->view('game/invalid_zombie','', true);
+         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+         $this->load->view('layouts/game_layout', $layout_data);
+       // load view you aren't a zombie
+       exit();
+      }
 
+      $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|callback_validate_human_code');
+      //success
+      if ($this->form_validation->run()) {
+        //store data
+        $this->Player_model->createPlayerInGame($this->tank_auth->get_user_id(), GAME_KEY);
+        $playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), GAME_KEY);
+        $this->Player_model->setPlayerData($playerid, 'waiver_is_signed', 'TRUE');
+        $this->Player_model->setPlayerData($playerid, 'sig', $this->input->post('sig'));
+        $this->Player_model->setPlayerData($playerid, 'age', $this->input->post('age'));
+        $this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
+        $this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
+        $this->Player_model->setPlayerData($playerid, 'originalzombiepool', $this->input->post('originalzombiepool'));
+        #$this->Player_model->setPlayerData($playerid, 'originalzombiepool', $this->input->post('originalzombiepool'));
+        redirect('game');
 
-     $layout_data['team_list_active'] =  " ";
-     $layout_data['player_list_active'] = "";
-     $layout_data['register_kill_active'] = 'id = "selected"';
-     $layout_data['game_stats_active'] = "";
+      }else{
+         //display the regular page, with errors
+         $layout_data['team_list_active'] =  "";
+         $layout_data['player_list_active'] = "";
+         $layout_data['register_kill_active'] = 'id = "selected"';
+         $layout_data['game_stats_active'] = "";
 
-     $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-     $layout_data['content_body'] = $this->load->view('game/register_kill','', true);
-     $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-     $this->load->view('layouts/game_layout', $layout_data);
-      
+         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+         $layout_data['content_body'] = $this->load->view('game/register_kill','', true);
+         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+         $this->load->view('layouts/game_layout', $layout_data);
+      }      
+    }
+
+    public function validate_human_code(){
+        
+      //  
     }
 
 

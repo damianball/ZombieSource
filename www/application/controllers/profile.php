@@ -30,7 +30,7 @@ class Profile extends CI_Controller {
       $data['profile_pic_url'] = "http://i.imgur.com/rmX9I.png";
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile_page', $data, true);
+      $layout_data['content_body'] = $this->load->view('profile/profile_page', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
 
@@ -68,7 +68,10 @@ class Profile extends CI_Controller {
   public function edit()
   {
 
-
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('profile/edit_profile_page', $data, true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
+      $this->load->view('layouts/main', $layout_data);
   }
 
 }
