@@ -92,5 +92,15 @@ class Player_model extends CI_Model{
 		
 		return $count;
 	}
+        
+        // @TODO: write isActiveHuman
+        public function isActiveHuman($playerid){
+            
+        }
+        
+        // @TODO: write isActiveZombie
+        public function isActiveZombie($playerid){
+            return true;
+        }
 }
 ?>

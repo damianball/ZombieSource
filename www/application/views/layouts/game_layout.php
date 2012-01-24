@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,16 +15,15 @@
     <div class="topbar"> <?= $top_bar; ?></div>
     <div class="container">
       <div class = "leftnav"> 
-       <div class="game_nav_options">
-           <div class = "navitem" <?= $player_list_active; ?>> <a href = "<?php echo site_url("game"); ?> ">Player List</a> </div>
-           <div class = "navitem" <?= $team_list_active; ?>><a href = "<?php echo site_url("game/teams"); ?> ">Teams list</a> </div>
-           <div class = "navitem" <?= $register_kill_active; ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
-           <div class = "navitem" <?= $game_stats_active; ?>> <a href = "<?php echo site_url("game/stats"); ?> ">Game stats</a> </div>
+       <div class="game_nav_options"> 
+           <div class = "navitem" <?= ($active_sidebar == 'playerlist' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game"); ?> ">Player List</a> </div>
+           <div class = "navitem" <?= ($active_sidebar == 'teamlist' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/teams"); ?> ">Teams list</a> </div>
+           <div class = "navitem" <?= ($active_sidebar == 'logkill' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
+           <div class = "navitem" <?= ($active_sidebar == 'stats' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game/stats"); ?> ">Game stats</a> </div>
        </div>
       </div>
       <div class="content"> <?= $content_body; ?> </div>
     <div>
     <?= $footer; ?>
   </body>
-</html>
-
+    </html>

@@ -33,11 +33,7 @@ class game extends CI_Controller {
         $data = array('game_table' => $game_table);
 
         $layout_data = array();
-        $layout_data['team_list_active'] =  " ";
-        $layout_data['player_list_active'] = 'id = "selected"';
-        $layout_data['register_kill_active'] = " ";
-        $layout_data['game_stats_active'] = " ";
-
+        $layout_data['active_sidebar'] = 'playerlist';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -49,7 +45,8 @@ class game extends CI_Controller {
             array('data' => 'Avatar'),
             array('data' => 'Squad', 'class' => 'sortable'),
             array('data' => 'Size', 'class' => 'sortable'),
-            array('data' => 'Team Kills', 'class' => 'sortable'));
+            array('data' => 'Team Kills', 'class' => 'sortable')
+        );
 
         for($i=0; $i<10; $i=$i+1){
             $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
@@ -63,11 +60,7 @@ class game extends CI_Controller {
         $data = array('game_table' => $game_table);
 
         $layout_data = array();
-        $layout_data['team_list_active'] = 'id = "selected"';
-        $layout_data['player_list_active'] =  " ";
-        $layout_data['register_kill_active'] = " ";
-        $layout_data['game_stats_active'] = " ";
-
+        $layout_data['active_sidebar'] = 'teamlist';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/team_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -76,11 +69,7 @@ class game extends CI_Controller {
 
     public function stats() {
         $layout_data = array();
-        $layout_data['team_list_active'] =  " ";
-        $layout_data['player_list_active'] = "";
-        $layout_data['register_kill_active'] = "";
-        $layout_data['game_stats_active'] = 'id = "selected"';
-
+        $layout_data['active_sidebar'] = 'stats';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_stats','', true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -89,6 +78,7 @@ class game extends CI_Controller {
 
     public function register_kill() {
         $zombie_id = $this->tank_auth->get_user_id();
+        $this->load->model('Player_model');
         if(!$this->Player_model->isActiveZombie($zombie_id)) {
             $layout_data = array();
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
@@ -99,31 +89,35 @@ class game extends CI_Controller {
             exit();
         }
 
-        $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|callback_validate_human_code');
-        //success
+        $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        // on success, try to log the tag
+        $form_error = '';
         if ($this->form_validation->run()) {
-
+            //$this->load->library('Exceptions');
             $human_code = $this->input->post('human_code');
             $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-            $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
-
-            redirect('game');
-        } else {
-            //display the regular page, with errors
-            $layout_data['team_list_active'] =  "";
-            $layout_data['player_list_active'] = "";
-            $layout_data['register_kill_active'] = 'id = "selected"';
-            $layout_data['game_stats_active'] = "";
-
-            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('game/register_kill','', true);
-            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-            $this->load->view('layouts/game_layout', $layout_data);
-        }      
+            try{
+                $this->load->model('Tag_model');
+                $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
+                redirect('game');
+            } catch (DatastoreException $e){
+                $form_error = $e->getMessage();
+            }
+        }
+        $error_data['form_error'] = $form_error;
+        
+        //display the regular page, with errors
+        $layout_data['active_sidebar'] = 'logkill';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/register_kill',$error_data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/game_layout', $layout_data);     
     }
 
     public function validate_human_code() {
-
+        $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');
+        return true;
     }
 
     public function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {

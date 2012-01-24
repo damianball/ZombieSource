@@ -1,4 +1,5 @@
 <?php
+require_once('application/libraries/Exceptions.php');
 
 /*
  *---------------------------------------------------------------
