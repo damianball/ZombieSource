@@ -1,44 +1,20 @@
-
 <div class = "row" >
-      <h2> Register a Kill </h2>
-        <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
-             echo form_open($this->uri->uri_string())
-         ?>
-
-         <div class="clearfix">
-            <label>Human Code</label>
-            <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
-            </div>
-        </div> 
-      
-        <div id = "feed_friends"> Feed friends (optional)  </div>
-         <div class="clearfix">
-
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
-            </div>
-        </div> 
-         <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
-            </div>
-         </div>         
-          <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
-            </div>
-         </div>    
-        <div class="actions">
-          <input type="submit" value = "Submit kill" class = "btn success"/></form> 
-      </div>   
+   <div class="main">
+   <img src=<? echo $profile_pic_url ?>  />
+	<div class = "line"> 
+      Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
+   </div>
+   <div class = "line"> 
+      Email: <span class = "profile_data_item"> <? echo $email; ?> (not public) </span>
+   </div>  
+   <div class = "line"> 
+      Age: <span class = "profile_data_item"> <? echo $age; ?> </span>
+   </div>   <div class = "line"> 
+      Gender: <span class = "profile_data_item"> <? echo $gender; ?> </span>
+   </div>
+   <div class = "line"> 
+      Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
+   </div>
 
    </div>
    <div class="sidebar">
@@ -69,6 +45,3 @@
       </div>
    </div>
 </div>
-
-
-
