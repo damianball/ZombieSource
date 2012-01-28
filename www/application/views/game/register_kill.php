@@ -17,22 +17,22 @@
          <div class="clearfix">
             <label>Username</label>
             <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
+              <?php echo form_error('friend1'); ?>
+              <input type="text" name="friend1" value="<?php echo set_value('friend1'); ?>"/>
             </div>
         </div> 
          <div class="clearfix">
             <label>Username</label>
             <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
+              <?php echo form_error('friend2'); ?>
+              <input type="text" name="friend2" value="<?php echo set_value('friend2'); ?>"/>
             </div>
          </div>         
           <div class="clearfix">
             <label>Username</label>
             <div class="input">
-              <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
+              <?php echo form_error('friend3'); ?>
+              <input type="text" name="friend3" value="<?php echo set_value('friend3'); ?>"/>
             </div>
          </div>    
         <div class="actions">

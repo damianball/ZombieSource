@@ -116,7 +116,6 @@ class game extends CI_Controller {
 
     function register_new_team(){
 
-
         //display the regular page, with errors
         $layout_data['active_sidebar'] = 'logkill';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);

@@ -4,7 +4,7 @@
     Edit Profile
   </a>
   <div id = "gravatar"> 
-    <img src=<? echo $profile_pic_url ?>  /><br>
+    <? echo $profile_pic_url ?></br>
       Edit your profile to set your Gravatar
   </div>
   <div class = "line"> 
