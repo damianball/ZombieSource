@@ -4,7 +4,6 @@ class game extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-
         if(!$this->tank_auth->is_logged_in()){
             redirect('/auth/login');
         }
@@ -43,7 +42,7 @@ class game extends CI_Controller {
     public function teams(){
         $this->table->set_heading(
             array('data' => 'Avatar'),
-            array('data' => 'Squad', 'class' => 'sortable'),
+            array('data' => 'Squad', 'class' => 'sortable', 'class' => "medium_width_column"),
             array('data' => 'Size', 'class' => 'sortable'),
             array('data' => 'Team Kills', 'class' => 'sortable')
         );
@@ -51,7 +50,7 @@ class game extends CI_Controller {
         for($i=0; $i<10; $i=$i+1){
             $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
             $this->table->add_row(
-                array($gravatar, 'Team Name', rand(0,10) ,rand(0,20))
+                array($gravatar, 'Team the =best really long team name in the worldName', rand(0,10) ,rand(0,20))
             );       
         }
 
@@ -113,6 +112,17 @@ class game extends CI_Controller {
         $layout_data['content_body'] = $this->load->view('game/register_kill',$error_data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/game_layout', $layout_data);     
+    }
+
+    function register_new_team(){
+
+
+        //display the regular page, with errors
+        $layout_data['active_sidebar'] = 'logkill';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data); 
     }
 
     public function validate_human_code() {

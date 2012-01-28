@@ -65,11 +65,79 @@ class Profile extends CI_Controller {
     }
   }
 
-  public function edit()
+  public function edit_profile()
   {
 
+        $data = array();
+        $data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
+        $data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
+        $data['major'] = $this->Player_model->getPlayerData($playerid, 'major');
+        $data['email'] = $this->tank_auth->get_email();
+        $data['gravatar_email'] = $this->Player_model->getPlayerData($playerid, 'gravatar_email');
+
+
+      $this->form_validation->set_rules('age', 'Age', 'integer|trim|xss_clean');
+      $this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
+      $this->form_validation->set_rules('major', 'Major', 'trim|xss_clean');
+      $this->form_validation->set_rules('email', 'Email', 'trim|xss_clean');
+      $this->form_validation->set_rules('gravatar_email', 'Gravatar Email', 'trim|xss_clean');
+
+      if ($this->form_validation->run()) {
+
+        //save the data
+        $playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), GAME_KEY);
+        $this->Player_model->setPlayerData($playerid, 'age', $this->input->post('age'));
+        $this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
+        $this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
+        $this->Player_model->setPlayerData($playerid, 'gravatar_email', $this->input->post('gravatar_email'));
+        $this->Player_model->setPlayerData($playerid, 'email', $this->input->post('gravatar_email'));
+        redirect("profile");
+      }
+
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/edit_profile_page', $data, true);
+      $layout_data['content_body'] = $this->load->view('profile/edit_profile_page', '', true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
+      $this->load->view('layouts/main', $layout_data);
+  }
+
+
+  public function public_profile()
+  {
+      $playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), GAME_KEY);
+      $data = array();
+      $data['username'] = $this->tank_auth->get_username();
+      $data['email'] = $this->tank_auth->get_email();
+      $data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
+      $data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
+      $data['major'] = $this->Player_model->getPlayerData($playerid, 'major');
+      //get kills
+      //get status
+      $data['profile_pic_url'] = "http://i.imgur.com/rmX9I.png";
+
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('profile/public_profile', $data, true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
+      $this->load->view('layouts/main', $layout_data);
+  }
+
+    public function team_public_profile()
+  {
+      //how many members
+      //total kills
+      //description
+      //team gravatar
+
+      $playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), GAME_KEY);
+      $data = array();
+      $data['username'] = $this->tank_auth->get_username();
+      $data['email'] = $this->tank_auth->get_email();
+      $data['age'] = $this->Player_model->getPlayerData($playerid, 'age');
+      $data['gender'] = $this->Player_model->getPlayerData($playerid, 'gender');
+      $data['major'] = $this->Player_model->getPlayerData($playerid, 'major');
+      $data['profile_pic_url'] = "http://i.imgur.com/rmX9I.png";
+
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('profile/public_profile', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }

@@ -1,18 +1,15 @@
 <div class = "row" >
    <div class="main">
-  <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn success"> 
-    Edit Profile
-  </a>
+  <div id = "player_status" class = "alert-message warning"> 
+    HUMAN 
+  </div>
+
   <div id = "gravatar"> 
     <img src=<? echo $profile_pic_url ?>  /><br>
-      Edit your profile to set your Gravatar
   </div>
   <div class = "line"> 
     Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
   </div>
-  <div class = "line"> 
-    Email: <span class = "profile_data_item"> <? echo $email; ?> (not public) </span>
-  </div>  
   <div class = "line"> 
     Age: <span class = "profile_data_item"> <? echo $age; ?> </span>
   </div>   <div class = "line"> 
@@ -21,12 +18,8 @@
   <div class = "line"> 
     Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
   </div>
-
-  <div id ="human_code"> 
-    <div id = "code_text"> Human Code! <a href = #> Print </a> </div>
-    <div id = "color_box"> 
-      <div id = "code"> RJF345FK </div>  
-    </div>
+  <div class = "line"> 
+    Team: <span class = "profile_data_item">  </span>
   </div>
 
    </div>

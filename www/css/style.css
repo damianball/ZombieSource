@@ -289,10 +289,61 @@ background-image: linear-gradient(top, #333333, #222222);
 
   .hvz_table{
     float: left;
-    margin-left: 100px;
+    margin-left: 50px;
   }
 
+  /*================================================
+  #
+  #    Teams
+  #
+  #=================================================*/
 
+#sortable_tables{
+  width: 50%;
+}
+
+#manage_teams{
+  width: 350px;
+  height: 200px;
+  float: right;
+
+  background-color: #B5D4E0;
+  border-color: #39869B;
+  border-width: 1px;
+  border-style:solid;
+  font-size: 20px;
+  font-color: #39869B;
+  padding: 20px;
+
+}
+.team_box{
+  text-align: center;
+  font-size: 20px;
+  font-color: #39869B;
+  text-align: left;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.medium_width_column{
+  max-width: 100px;
+}
+
+.tiny_column{
+  width: 25px;
+}
+
+#create_new_team{
+  !important
+  width: 100%;
+  margin-left: auto; !important
+  margin-right: auto; !important
+  float: none;
+}
+
+#textarea{
+  float: right;
+}
 
   /*================================================
   #
@@ -332,6 +383,74 @@ background-image: linear-gradient(top, #333333, #222222);
   line-height: 36px;
   font-size: 22px;
   }
+  #gravatar a:link{
+    color: #286F8D;
+  }
+
+  #edit_profile{
+    float: right;
+  }
+
+  #human_code{
+    margin-top: 25px;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  #human_code a:link{
+    color: #286F8D;
+  }
+  #code_text{
+    margin-right: auto;
+    margin-left: auto;
+    width: 300px;
+    height: 20px;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  #color_box{
+    margin-right: auto;
+    margin-left: auto;
+    width: 200px;
+    height: 50px;
+    padding-top: 22px;
+
+    background-color: #B5D4E0;
+    border-color: #39869B;
+    border-width: 1px;
+    border-style:solid;
+    text-align: center;
+    font-size: 36px;
+
+  }
+
+  #setup_gravatar{
+    margin-left: 144px;
+    color: #286F8D;
+  }
+
+    /*================================================
+  #
+  #    public profile
+  #
+  #=================================================*/
+
+#player_status{
+  float: right;
+  font-size: 30px;
+}
+
+
+  /*================================================
+  #
+  #    Other
+  #
+  #=================================================*/
+ 
+ .clearfix label{
+  margin-right: 10px;
+ }
 
 
 
