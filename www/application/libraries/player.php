@@ -1,17 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Player extends CI_Controller {
+class Player extends CI_Controller{
   var $playerid;
   var $userid;
   var $data = array();
 
-  public function __construct($userid = null)
-  {
+  public function __construct($userid = null){
+      
       parent::__construct();
 
       if($userid != null){
         $this->load->model('Player_model','',TRUE);
-
         $this->userid = $userid;
         $this->playerid = $this->Player_model->getPlayerID($this->userid, GAME_KEY);
         
@@ -21,9 +20,13 @@ class Player extends CI_Controller {
         $this->data['gender'] = $this->data("gender");
         $this->data['major'] = $this->data("major");
         $this->data['profile_pic_url'] = $this->gravatar(); 
+        $this->data['gravatar_email'] = $this->data('gravatar_email');
+
       }
   }
-
+  public function current_team(){
+    return 5;
+  }
 
   public function waiver_is_signed(){
     return ($this->data('waiver_is_signed') == "TRUE");
@@ -67,5 +70,4 @@ class Player extends CI_Controller {
       }
       return $url;
   }
-
 }

@@ -1,26 +1,19 @@
 <div class = "row" >
    <div class="main">
-  <div id = "player_status" class = "alert-message warning"> 
-    HUMAN 
+  <div id = "player_status" class = "alert-message success"> 
+    Join Team
   </div>
 
   <div id = "gravatar"> 
     <? echo $profile_pic_url ?> </br>
   </div>
   <div class = "line"> 
-    Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
+    Name: <span class = "profile_data_item"> <? echo $name; ?> </span>
   </div>
   <div class = "line"> 
-    Age: <span class = "profile_data_item"> <? echo $age; ?> </span>
-  </div>   <div class = "line"> 
-    Gender: <span class = "profile_data_item"> <? echo $gender; ?> </span>
-  </div>
-  <div class = "line"> 
-    Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
-  </div>
-  <div class = "line"> 
-    Team: <span class = "profile_data_item">  </span>
-  </div>
+    description: <span class = "profile_data_item"> <? echo $description; ?> </span>
+  </div>    
+
 
    </div>
    <div class="sidebar">
