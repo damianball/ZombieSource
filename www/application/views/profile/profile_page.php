@@ -5,6 +5,7 @@
   </a>
   <div id = "gravatar"> 
     <? echo $profile_pic_url ?></br>
+
       Edit your profile to set your Gravatar
   </div>
   <div class = "line"> 

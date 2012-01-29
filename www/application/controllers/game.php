@@ -116,10 +116,34 @@ class game extends CI_Controller {
 
     function register_new_team(){
 
+
+      $playerid = $this->Player_model->getPlayerID($this->tank_auth->get_user_id(), GAME_KEY);
+      $data = array();
+      $this->form_validation->set_rules('team_name', 'Team Name', 'integer|trim|xss_clean|required');
+      $this->form_validation->set_rules('team_gravatar_email', 'Team Photo', 'email|trim|xss_clean');
+      $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
+
+      if ($this->form_validation->run()) {
+        //save the data
+        if($data['age'] != $this->input->post('age')){
+          $this->Player_model->setPlayerData($playerid, 'age', $this->input->post('age'));
+        }
+        if($data['gender'] != $this->input->post('gender')){
+          $this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
+        }
+        if($data['major'] != $this->input->post('major')){
+          $this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
+        }
+        if($data['gravatar_email'] != $this->input->post('gravatar_email')){
+          $this->Player_model->setPlayerData($playerid, 'gravatar_email', $this->input->post('gravatar_email'));
+        }
+        redirect("profile");
+      }
+
         //display the regular page, with errors
         $layout_data['active_sidebar'] = 'logkill';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
+        $layout_data['content_body'] = $this->load->view('game/register_new_team', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data); 
     }
