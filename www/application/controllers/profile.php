@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Profile extends CI_Controller {
-  var $logged_in_player;
-  var $logged_in_players_team;
+  // var $logged_in_player;
+  // var $logged_in_players_team;
 
   function __construct()
   {
@@ -19,11 +19,10 @@ class Profile extends CI_Controller {
       $this->load->library('player');
       $this->load->library('team');
 
-      $userid = $this->tank_auth->get_user_id();
-      $this->logged_in_player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      // $this->logged_in_player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       // @TODO: what if team is null?
-      $teamid = $this->logged_in_player->current_team();      
-      $this->logged_in_players_team = new team($teamid);
+      // $teamid = $this->logged_in_player->current_team();      
+      // $this->logged_in_players_team = new team($teamid);
   }
 
   public function index()
@@ -32,8 +31,16 @@ class Profile extends CI_Controller {
     // $player->save("username",$this->tank_auth->get_username());
     // $player->save("email",$this->tank_auth->get_email());
 
-   $player = $this->logged_in_player;
-   if($player->waiverSigned()){
+   // $player = $this->logged_in_player;
+   // $userid = $this->tank_auth->get_user_id();
+   // $this->Player_model->getPlayerID();
+    $userid = $this->tank_auth->get_user_id();
+    $isPlayer = FALSE;
+    try{
+      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $isPlayer = TRUE;
+    } catch (UnexpectedValueException $e){}
+   if($isPlayer){
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile/profile_page', $player->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
@@ -70,7 +77,12 @@ class Profile extends CI_Controller {
 
   public function edit_profile()
   {
-      $player = $this->logged_in_player;
+      $userid = $this->tank_auth->get_user_id();
+      try{
+        $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      } catch (UnexpectedValueException $e){
+        redirect("home");
+      }
       $this->form_validation->set_rules('age', 'Age', 'integer|greater_than[11]|less_than[120]|trim|xss_clean');
       $this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
       $this->form_validation->set_rules('major', 'Major', 'trim|xss_clean');

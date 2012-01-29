@@ -1,5 +1,5 @@
 <?php
-class Team_model extends CI_Model{
+class Player_team_model extends CI_Model{
     private $table_name = 'player_to_team';
     private $teamFields = array(
         'playerid' => 'uuid',

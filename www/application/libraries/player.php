@@ -91,7 +91,7 @@ class Player extends CI_Controller{
   }
 
   public function saveData($key, $value){
-    return $this->Player_model->setPlayerData($this->playerid, $key, $value);
+    $this->Player_model->setPlayerData($this->playerid, $key, $value);
   }
 
   public function join_game($params){
@@ -101,7 +101,7 @@ class Player extends CI_Controller{
     }
   }
   
-  public function getPlayerId(){
+  public function getPlayerID(){
 	    return $this->playerid;
   }
 

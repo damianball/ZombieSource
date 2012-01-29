@@ -4,22 +4,22 @@
       <h2> Register a New Team </h2>
         <div class="span12">
               <?php 
-             echo form_open($this->uri->uri_string())
+              echo form_open($this->uri->uri_string());
               ?>
             <fieldset>
               <div class="clearfix">
-                  <label>Name</label>
+                  <label>Team Name</label>
                   <div class="input">
-                      <?php echo form_error('major'); ?>
-                      <input type="text" name = "major" value="<?php echo set_value('major'); ?>"/>
+                      <?php echo form_error('team_name'); ?>
+                      <input type="text" name = "team_name" value=""/>
                   </div>
               </div>
 
               <div class="clearfix">
                   <label>Photo (Gravatar Email)</label>
                   <div class="input">
-                      <?php echo form_error('major'); ?>
-                      <input type="text" name = "major" value="<?php echo set_value('major'); ?>"/>
+                      <?php echo form_error('team_gravatar_email'); ?>
+                      <input type="text" name = "team_gravatar_email" value=""/>
                   </div>
                   <a id = "setup_gravatar" href= "https://en.gravatar.com/site/signup/">
                    Click here to set up a Gravatar 
@@ -28,8 +28,8 @@
               <div class="clearfix">
                   <label>Description</label>
                   <div class="input">
-                      <?php echo form_error('major'); ?>
-                      <textarea name="description" cols="40" rows="5" value="<?php echo set_value('Description'); ?>"></textarea></br>
+                      <?php echo form_error('description'); ?>
+                      <textarea name="description" cols="40" rows="5" value=""></textarea></br>
                   </div>
               </div>
               

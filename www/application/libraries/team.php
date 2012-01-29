@@ -1,44 +1,62 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Team extends CI_Controller {
-  var $teamid;
-  var $data = array();
+  private $teamid;
 
   public function __construct($teamid = null)
   {
       parent::__construct();
+      $this->load->model('Team_model', '', true);
+      $this->load->model('Player_team_model', '', true);
 
+  }
+
+  public static function getTeamByTeamID($teamid){
       if($teamid != null){
-        $this->teamid = $teamid;
-        $this->load->model('Team_model');
-
-        $this->data['name'] = $this->name();
-        $this->data['description'] = $this->description();
-        $this->data['profile_pic_url'] = $this->gravatar();
+          $instance = new self();
+          $instance->teamid = $teamid;
+          return $instance;
+      } else {
+          throw new Exception("Teamid cannot be null.");
       }
+  }
+
+  public static function getNewTeam($name, $playerid){
+          $instance = new self();
+          $instance->teamid = $instance->Team_model->createTeam($name, GAME_KEY);
+          $instance->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
+          return $instance;
   }
 
   public function getDataArray(){
       $data = array();
-      $data['name'] = $this->getData('name')
-      $data['description'] = $this->getData('name')
+      $data['name'] = $this->getData('name');
+      $data['description'] = $this->getData('name');
       $data['profile_pic_url'] = $this->getGravatarHTML();
       $data['gravatar_email'] = $this->getData('gravatar_email');
       return $data;
   }
 
+  public function getTeamID(){
+    return $this->teamid;
+  }
+
   public function getData($key){
-    return $this->Team_model->
+    return $this->Team_model->getTeamData($this->teamid, $key);
+  }
+
+  public function setData($key, $value){
+    $this->Team_model->setTeamData($this->teamid, $key, $value);
   }
 
   public function getGravatarHTML($size = 250){
     $gravatar_email = $this->getData('gravatar_email');
-    $email = $this->getUser()->getEmail();
-    if($gravatar_email){
+    $team_name = $this->getData('name');
+    if($gravatar_email && $gravatar_email != ''){
       return $this->build_gravatar($gravatar_email, $size, 'identicon', 'x', true);
     }
     else{
-      return $this->build_gravatar($email, $size, 'identicon', 'x', true);
+      return $this->build_gravatar(md5($team_name), $size, 'identicon', 'x', true);
     }
   }
 

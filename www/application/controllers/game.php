@@ -132,29 +132,32 @@ class game extends CI_Controller {
     }
 
     function register_new_team(){
-
-      $team = new Team();
-      $this->logged_in_player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      // $userid = $this->tank_auth->get_user_id();
+      // $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       $this->form_validation->set_rules('team_name', 'Team Name', 'integer|trim|xss_clean|required');
       $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
       $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 
       if ($this->form_validation->run()) {
         //save the data
-          $team->save();
-        // $player->saveData('gender',$this->input->post('gender'));
-        // $player->saveData('gender',$this->input->post('gender'));
-        // $player->saveData('gender',$this->input->post('gender'));
+        // $name = $this->input->post('team_name');
+        // $gravatar_email = $this->input->post('team_gravatar_email');
+        // $description = $this->input->post('description');
 
-        // redirect("game");
+        // $team = Team::getNewTeam($name, $player->getPlayerID());
+        // $team->setData('gravatar_email', $gravatar_email);
+        // $team->setData('description', $description);
+
+        // redirect("team/".$team->getTeamID());
+        redirect('home');
       }
 
-        //display the regular page, with errors
-        $layout_data['active_sidebar'] = 'logkill';
-        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
-        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/main', $layout_data); 
+      //display the regular page, with errors
+      $layout_data['active_sidebar'] = 'logkill';
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+      $this->load->view('layouts/main', $layout_data); 
     }
 
     public function validate_human_code() {

@@ -10,8 +10,13 @@ class Home extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $user_id = $this->tank_auth->get_user_id();
 
-        $player_id = $this->Player_model->getPlayerID($user_id,GAME_KEY);
-        $waiver = $this->Player_model->getPlayerData($player_id,'waiver_is_signed');
+        $isPlayer = FALSE;
+        try{
+          $player_id = $this->Player_model->getPlayerID($user_id,GAME_KEY);
+          $isPlayer = TRUE;
+        } catch (UnexpectedValueException $e){
+          
+        }
         $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
         $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
         $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
@@ -21,7 +26,7 @@ class Home extends CI_Controller {
         if($is_logged_in){
             $home_content = $this->load->view('home/logged_in_home','', true);
             $top_bar = $this->load->view('layouts/logged_in_topbar','', true);
-            if(!$waiver){
+            if(!$isPlayer){
               $home_banner = $this->load->view('home/waiver_banner','', true);
             }
             else{
@@ -34,7 +39,7 @@ class Home extends CI_Controller {
             $home_banner = $this->load->view('home/beta_banner','', true);
         }
 
-        $data = array('waiver'       => $waiver,
+        $data = array(
                       'count'        => $num_players,
 			                'male'         => $num_males,
 			                'female'       => $num_females,
