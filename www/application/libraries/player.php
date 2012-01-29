@@ -13,7 +13,7 @@ class Player extends CI_Controller{
   public function getUser(){
       if($this->userid == null){
           if($this->playerid == null){
-              throw new UnexpectedValueException('userid cannot be null');
+              throw new UnexpectedValueException('userid and playerid cannot be null');
           }
           return User::getUserByPlayerID($this->playerid);
       }
@@ -31,14 +31,25 @@ class Player extends CI_Controller{
   }
 
   public static function getPlayerByUserIDGameID($userid, $gameid){
-      if($userid != null && $gameid != null){
-          $instance = new self();
-          $instance->userid = $userid;
-          $instance->playerid = $instance->Player_model->getPlayerID($userid, $gameid);
-          return $instance;
-      } else {
+      if(!$userid || !$gameid){
           throw new Exception("Userid nor Gameid can be null.");
       }
+      $instance = new self();
+      $instance->userid = $userid;
+      $instance->playerid = $instance->Player_model->getPlayerID($userid, $gameid);
+      return $instance;
+  }
+
+  public static function getNewPlayerByJoiningGame($userid, $gameid, $params){
+      if(!$userid || !gameid){
+          throw new UnexpectedValueException('userid and gameid cannot be null');
+      }
+      $instance = new self();
+      $instance->Player_model->createPlayerInGame($userid, $gameid);
+      foreach($params as $key => $value){
+          $instance->saveData($key, $value);
+      }
+      return $instance;
   }
 
   public function getDataArray(){
@@ -74,13 +85,6 @@ class Player extends CI_Controller{
     return $this->Player_model->setPlayerData($this->playerid, $key, $value);
   }
 
-  public function join_game($params){
-    $this->Player_model->createPlayerInGame($this->userid, GAME_KEY);
-    foreach($params as $key => $value){
-        $this->saveData($key, $value);
-    }
-  }
-  
   public function getPlayerId(){
 	    return $this->playerid;
   }
