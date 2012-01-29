@@ -11,10 +11,10 @@ class Profile extends CI_Controller {
       if(!$this->tank_auth->is_logged_in()){
         redirect('/auth/login');
       }
-      $this->load->helper(array('form', 'url'));
-      $this->load->library('security');
-      $this->load->library('tank_auth');
-      $this->lang->load('tank_auth');
+      // $this->load->helper(array('form', 'url'));
+      // $this->load->library('security');
+      // $this->load->library('tank_auth');
+      // $this->lang->load('tank_auth');
       $this->load->model('Player_model','',TRUE);
       $this->load->library('player');
       $this->load->library('team');
@@ -132,10 +132,10 @@ class Profile extends CI_Controller {
 
       $get = $this->uri->uri_to_assoc(1);
       $teamid = $get['team'];
-      $team = new team($teamid);
+      $team = Team::getTeamByTeamID($teamid);
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $team->data, true);
+      $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $team->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }

@@ -28,7 +28,6 @@ class Player_team_model extends CI_Model{
         $uuid = $query->row()->{'uuid'};
 
         $data = array(
-            'id' => $uuid,
             'teamid' => $teamid,
             'playerid' => $playerid,
             'datecreated' => $datecreated

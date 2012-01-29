@@ -8,6 +8,7 @@ class game extends CI_Controller {
             redirect('/auth/login');
         }
         $this->load->model('Player_model','',TRUE);
+        $this->load->model('Team_model','',TRUE);
         $this->load->library('player', null);
         $this->load->library('team', null);
 
@@ -19,17 +20,10 @@ class game extends CI_Controller {
         $this->table->set_heading(
         array('data' => 'Avatar'),
         array('data' => 'Player', 'class' => 'sortable'),
-        array('data' => 'Squad', 'class' => 'sortable'),
+        array('data' => 'Team', 'class' => 'sortable'),
         array('data' => 'Status', 'class' => 'sortable'),
         array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
-
-        // for($i=0; $i<10; $i=$i+1){
-        //     $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
-        //     $this->table->add_row(
-        //         array($gravatar, 'User', 'blue', 'zombie',rand(0,20), '6 hours ago')
-        //     );       
-        // }
 
         $players = $this->Player_model->getActivePlayers();
         foreach($players as $i){
@@ -38,9 +32,9 @@ class game extends CI_Controller {
                        $player->getGravatarHTML(50),
                        $player->getLinkToProfile(),
                        $player->getTeam(),
-                       $player->getStatus(),
-                       $player->getKills(),
-                       $player->TimeSinceLastFeed() . ' hours ago');
+                       "Human", #$player->getStatus(),
+                       "N/A", #$player->getKills(),
+                       "N/A"); #$player->TimeSinceLastFeed() . ' hours ago');
           $this->table->add_row($row);
         }
 
@@ -64,11 +58,15 @@ class game extends CI_Controller {
             array('data' => 'Team Kills', 'class' => 'sortable')
         );
 
-        for($i=0; $i<10; $i=$i+1){
-            $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
-            $this->table->add_row(
-                array($gravatar, 'Team the =best really long team name in the worldName', rand(0,10) ,rand(0,20))
-            );       
+        $teams = $this->Team_model->getAllTeams();
+        foreach($teams as $i){
+          $team = Team::getTeamByTeamID($i['id']);
+          $row = array(
+                       $team->getGravatarHTML(50),
+                       $team->getLinkToProfile(),
+                       $team->teamSize(),
+                       "N/A");#$team->totalTeamKills());
+          $this->table->add_row($row);
         }
 
         //-- Display Table
@@ -131,25 +129,24 @@ class game extends CI_Controller {
         $this->load->view('layouts/game_layout', $layout_data);     
     }
 
-    function register_new_team(){
-      // $userid = $this->tank_auth->get_user_id();
-      // $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+    public function register_new_team(){
+      $userid = $this->tank_auth->get_user_id();
+      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
       $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
       $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 
       if ($this->form_validation->run()) {
-        //save the data
-        // $name = $this->input->post('team_name');
-        // $gravatar_email = $this->input->post('team_gravatar_email');
-        // $description = $this->input->post('description');
+        // save the data
+        $name = $this->input->post('team_name');
+        $gravatar_email = $this->input->post('team_gravatar_email');
+        $description = $this->input->post('description');
 
-        // $team = Team::getNewTeam($name, $player->getPlayerID());
-        // $team->setData('gravatar_email', $gravatar_email);
-        // $team->setData('description', $description);
+        $team = Team::getNewTeam($name, $player->getPlayerID());
+        $team->setData('gravatar_email', $gravatar_email);
+        $team->setData('description', $description);
 
-        // redirect("team/".$team->getTeamID());
-        redirect('home');
+        redirect("team/".$team->getTeamID());
       }
 
       //display the regular page, with errors
@@ -159,6 +156,58 @@ class game extends CI_Controller {
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data); 
     }
+
+    public function join_team(){
+      $data = array();
+      $userid = $this->tank_auth->get_user_id();
+      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $teamid = $this->input->post('teamid');
+      $data['teamid'] = $teamid;
+      $currentTeam = $player->getTeamID();
+      $newTeam = Team::getTeamByTeamID($teamid);
+      if($currentTeam){
+        $player->leaveCurrentTeam();
+        $player->joinTeam($teamid);
+        $data['message'] = "Successfully left " . $currentTeam->getData('name') . " and joined " . $newTeam->getData('name');
+        
+      }else{
+        $data['message'] = "Successfullyjoined " . $newTeam->getData('name');
+        $player->joinTeam($teamid);
+      }
+
+      $layout_data['active_sidebar'] = 'logkill';
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('helper/team_helper', $data, true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+      $this->load->view('layouts/main', $layout_data); 
+
+      // @TODO: get old team
+
+      // @TODO: check for size limit on incoming team (game_setting)
+
+    }
+
+    public function leave_team(){
+      $userid = $this->tank_auth->get_user_id();
+      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $teamid = $this->input->post('teamid');
+      $currentTeam = $player->getTeamID();
+      if($currentTeam){
+        $player->leaveCurrentTeam(); 
+        $data['message'] = "Successfully left " . $currentTeam->getData('name');
+       
+      }else{
+        $data['message'] = "could not leave team because you were not on team";
+      }
+
+      $layout_data['active_sidebar'] = 'logkill';
+      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+      $layout_data['content_body'] = $this->load->view('helper/team_helper', $data, true);
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+      $this->load->view('layouts/main', $layout_data); 
+
+    }
+
 
     public function validate_human_code() {
         $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');

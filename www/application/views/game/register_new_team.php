@@ -31,8 +31,7 @@
                       <?php echo form_error('description'); ?>
                       <textarea name="description" cols="40" rows="5" value=""></textarea></br>
                   </div>
-              </div>
-              
+              </div>    
             </fieldset>
                 <div class="actions">
                   <input type="submit" value = "Save and Finish" class = "btn success"/></form> 

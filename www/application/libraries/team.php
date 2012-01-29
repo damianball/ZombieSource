@@ -30,12 +30,30 @@ class Team extends CI_Controller {
 
   public function getDataArray(){
       $data = array();
-      $data['name'] = $this->getData('name');
-      $data['description'] = $this->getData('name');
+      $data['team_name'] = $this->getData('name');
+      $data['description'] = $this->getData('description');
       $data['profile_pic_url'] = $this->getGravatarHTML();
-      $data['gravatar_email'] = $this->getData('gravatar_email');
+      $data['team_gravatar_email'] = $this->getData('gravatar_email');
+      $data['teamid'] = $this->getTeamID();
+
       return $data;
   }
+
+  public function getLinkToProfile(){
+    $name = $this->getData('name');
+    $id = $this->getTeamID();
+    $link = "<a href = \"" . site_url("/team/$id") .  "\"> $name </a>";
+    return $link; 
+  }
+
+  public function teamSize(){
+    return 10;
+  }
+
+   public function totalTeamKills(){
+    return 10;
+  }
+
 
   public function getTeamID(){
     return $this->teamid;

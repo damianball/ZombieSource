@@ -1,14 +1,16 @@
 <div class = "row" >
    <div class="main">
-  <div id = "player_status" class = "alert-message success"> 
-    Join Team
-  </div>
+      <?php 
+        echo form_open('game/join_team');
+      ?>
+      <input name = "teamid" style = "display: none;" value " <?php echo $teamid ?>" > </input>
+      <input type="submit" value = "Join This Team" id = "player_status" class = "alert-message success"/></form> 
 
   <div id = "gravatar"> 
     <? echo $profile_pic_url ?> </br>
   </div>
   <div class = "line"> 
-    Name: <span class = "profile_data_item"> <? echo $name; ?> </span>
+    Name: <span class = "profile_data_item"> <? echo $team_name; ?> </span>
   </div>
   <div class = "line"> 
     description: <span class = "profile_data_item"> <? echo $description; ?> </span>

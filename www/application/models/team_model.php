@@ -23,6 +23,13 @@ class Team_model extends CI_Model{
         parent::__construct();
     }
 
+    //hack from chandler, @damian will want to rewrite
+    public function getAllTeams(){
+        $query = $this->db->query('SELECT id FROM team');
+        $result = $query->result_array();
+        return $result;
+    }
+
     public function createTeam($name, $gameid){
         if($name == null || $name == ''){
             throw new UnexpectedValueException('game name cannot be null');
@@ -48,8 +55,10 @@ class Team_model extends CI_Model{
         // @TODO: how do we know the query succeeded?
         $this->db->insert($this->table_name,$data);
 
-        return $this->db->insert_id();
+        return $uuid;
     }
+
+
 
     private function populateTeamData($teamid){
         if(!$teamid){
@@ -61,7 +70,7 @@ class Team_model extends CI_Model{
         $this->db->where('id',$teamid);
         $query = $this->db->get();
         if ($query->num_rows() == 1){
-            $this->teamData = $query->result_array();
+            $this->teamData = $query->row_array();
         } else {
             throw new DatastoreException('Too many (or few) results for teamid '.$teamid);
         }

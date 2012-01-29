@@ -39,7 +39,7 @@
 */
 
 $route['user/:num'] = "profile/public_profile";
-$route['team/:num'] = "profile/team_public_profile";
+$route['team/:any'] = "profile/team_public_profile";
 $route['team/new'] = "game/register_new_team";
 
 $route['default_controller'] = "home";
