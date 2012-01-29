@@ -63,7 +63,7 @@ class Profile extends CI_Controller {
                           'major' => $this->input->post('major'),
                           'OriginalZombiePool' => $this->input->post('originalzombiepool'));
 
-          $this->player->join_game($params);
+          $player = Player::getNewPlayerByJoiningGame($userid, GAME_KEY, $params);
           redirect('profile');
         }
         else{
