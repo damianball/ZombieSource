@@ -134,7 +134,7 @@ class game extends CI_Controller {
     function register_new_team(){
       // $userid = $this->tank_auth->get_user_id();
       // $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
-      $this->form_validation->set_rules('team_name', 'Team Name', 'integer|trim|xss_clean|required');
+      $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
       $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
       $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 

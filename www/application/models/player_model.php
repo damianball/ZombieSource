@@ -70,9 +70,8 @@ class Player_model extends CI_Model{
 			'original_zombie' => NULL
 		);
 		$this->db->insert('player',$data);
-		$playerid = $this->db->insert_id();
 				
-		return $playerid;
+		return $uuid;
 	}
 	
 	public function getNumberOfPlayersInGame($gameid){

@@ -73,7 +73,7 @@ class Player extends CI_Controller{
   public function getHumanCode(){
     // if(!$this->getData("human_code") || $this->getData("human_code") == ''){
       $human_code = $this->newHumanCode();
-      $this->saveData('human_code', $human_code);
+      // $this->saveData('human_code', $human_code);
     // }
     return $this->getData("human_code");
   }
