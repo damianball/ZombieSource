@@ -14,7 +14,7 @@ class User_player_model extends CI_Model{
             $this->db->from('users');
             $this->db->join('player','player.userid = users.id');
             $this->db->where('player.id', $playerid);
-            $query = $this->db->get('users');
+            $query = $this->db->get('player');
             if ($query->num_rows() == 1) return $query->row();
             return NULL;
         } else {
