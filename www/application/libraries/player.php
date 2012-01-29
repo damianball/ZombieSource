@@ -1,13 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Player extends CI_Controller{
+class Player{
   private $playerid = null;
   private $userid = null;
+  private $ci = null;
 
   public function __construct(){
-      parent::__construct();
-      $this->load->model('Player_model','',TRUE);
-      $this->load->library('User');
+      //parent::__construct();
+      $this->ci =& get_instance();
+      $this->ci->load->model('Player_model','',TRUE);
+      $this->ci->load->library('User');
   }
 
   public function getUser(){
@@ -36,7 +38,7 @@ class Player extends CI_Controller{
       }
       $instance = new self();
       $instance->userid = $userid;
-      $instance->playerid = $instance->Player_model->getPlayerID($userid, $gameid);
+      $instance->playerid = $instance->ci->Player_model->getPlayerID($userid, $gameid);
       return $instance;
   }
 
@@ -96,14 +98,14 @@ class Player extends CI_Controller{
 
   public function getData($key){
       if($this->playerid != null){
-        return $this->Player_model->getPlayerData($this->playerid, $key);
+        return $this->ci->Player_model->getPlayerData($this->playerid, $key);
       } else {
         throw new Exception('Playerid cannot be null');
       }
   }
 
   public function saveData($key, $value){
-    $this->Player_model->setPlayerData($this->playerid, $key, $value);
+    $this->ci->Player_model->setPlayerData($this->playerid, $key, $value);
   }
 
   public function getPlayerID(){

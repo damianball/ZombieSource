@@ -7,7 +7,7 @@
       <h2> Update Profile Information </h2>
         <div class="span12">
             <?php 
-             echo form_open($this->uri->uri_string())
+             echo form_open($this->uri->uri_string());
               ?>
             <fieldset>
               <div class="clearfix">
@@ -21,7 +21,7 @@
                                 if($i == $age){
                                   echo "<option SELECTED value =". $i . " > ";
                                   echo $i;
-                                  echo "</option> ";  
+                                  echo "</option> ";
                                 }else{
                                   echo "<option value =". $i . " > ";
                                   echo $i;
@@ -62,7 +62,7 @@
               <div class="clearfix">
                   <label>Photo (Gravatar Email)</label>
                   <div class="input">
-                      <?php echo form_error('gravatar_email'); ?>
+                      <td style="color: red;"><?php echo form_error('gravatar_email'); ?></td>
                       <input type="text" name = "gravatar_email" value="<?php echo $gravatar_email; ?>"/>
                   </div>
                   <a id = "setup_gravatar" href= "https://en.gravatar.com/site/signup/">
@@ -71,8 +71,9 @@
               </div>                 
             </fieldset>
                 <div class="actions">
-                  <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
-              </div>          
-        </div>  
+                  <input type="submit" value = "Save and Finish" class = "btn success"/>
+              </div>
+            </form>
+        </div>
     </div>
  </div>

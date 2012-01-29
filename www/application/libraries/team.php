@@ -1,13 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Team extends CI_Controller {
-  private $teamid;
+class Team{
+  private $teamid = null;
+  private $ci = null;
 
   public function __construct($teamid = null)
   {
-      parent::__construct();
-      $this->load->model('Team_model', '', true);
-      $this->load->model('Player_team_model', '', true);
+      //parent::__construct();
+      $this->ci =& get_instance();
+      $this->ci->load->model('Team_model', '', true);
+      $this->ci->load->model('Player_team_model', '', true);
 
   }
 
@@ -23,8 +25,8 @@ class Team extends CI_Controller {
 
   public static function getNewTeam($name, $playerid){
           $instance = new self();
-          $instance->teamid = $instance->Team_model->createTeam($name, GAME_KEY);
-          $instance->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
+          $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
+          $instance->ci->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
           return $instance;
   }
 
@@ -42,11 +44,11 @@ class Team extends CI_Controller {
   }
 
   public function getData($key){
-    return $this->Team_model->getTeamData($this->teamid, $key);
+    return $this->ci->Team_model->getTeamData($this->teamid, $key);
   }
 
   public function setData($key, $value){
-    $this->Team_model->setTeamData($this->teamid, $key, $value);
+    $this->ci->Team_model->setTeamData($this->teamid, $key, $value);
   }
 
   public function getGravatarHTML($size = 250){

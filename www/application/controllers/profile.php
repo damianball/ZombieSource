@@ -83,10 +83,11 @@ class Profile extends CI_Controller {
       } catch (UnexpectedValueException $e){
         redirect("home");
       }
-      $this->form_validation->set_rules('age', 'Age', 'integer|greater_than[11]|less_than[120]|trim|xss_clean');
+
+      $this->form_validation->set_rules('age', 'Age', 'integer|trim|xss_clean');
       $this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
       $this->form_validation->set_rules('major', 'Major', 'trim|xss_clean');
-      $this->form_validation->set_rules('gravatar_email', 'Gravatar Email', 'trim|xss_clean|valid_email'); 
+      $this->form_validation->set_rules('gravatar_email', 'Gravatar Email', 'trim|xss_clean|valid_email');
 
       if ($this->form_validation->run()) {
         //save the data
@@ -107,7 +108,7 @@ class Profile extends CI_Controller {
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile/edit_profile', $player->getDataArray(), true);
-      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
+      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data);
   }
 
