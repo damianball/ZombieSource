@@ -111,7 +111,7 @@ class Player extends CI_Controller{
   public function getGravatarHTML($size = 150){
     $gravatar_email = $this->getData('gravatar_email');
     $email = $this->getUser()->getEmail();
-    if($gravatar_email){
+    if($gravatar_email && $gravatar_email != ''){
       return $this->build_gravatar($gravatar_email, $size, 'identicon', 'x', true);
     }
     else{

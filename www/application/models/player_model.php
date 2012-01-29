@@ -15,11 +15,11 @@ class Player_model extends CI_Model{
 		return $id;
 	}
 
-  public function getActivePlayers(){
-    $query = $this->db->query('SELECT id FROM player ORDER BY id DESC');
-    $result = $query->result_array();
-    return $result;
-  }
+    public function getActivePlayers(){
+        $query = $this->db->query('SELECT id FROM player');
+        $result = $query->result_array();
+        return $result;
+    }
 
 	public function getPlayerData($playerid, $name){
 		$query = $this->db->query('SELECT value FROM player_data WHERE playerid = '.$this->db->escape($playerid).' AND name = '.$this->db->escape($name).' ORDER BY timestamp DESC LIMIT 1');
