@@ -118,9 +118,28 @@ class Player{
     $link = "<a href = \"" . site_url("/user/$id") .  "\"> $username </a>";
     return $link; 
   }
-  public function getTeam(){
-    return "team";
-    
+
+  // @TODO: write this function
+  public function getGameID(){}
+
+  public function getTeamID(){
+    $this->ci->load->model('Player_team_model');
+    try{
+        return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
+    } catch (PlayerNotMemberOfAnyTeamException $e){
+        return null;
+    }
+  }
+
+  public function joinTeam($teamid){
+      if(!$teamid) throw new UnexpectedValueException("teamid cannot be null");
+      $this->ci->load->model('Player_team_model');
+      $this->ci->Player_team_model->addPlayerToTeam($teamid, $this->playerid);
+  }
+
+  public function leaveCurrentTeam(){
+      $this->ci->load->model('Player_team_model');
+      $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
   }
 
   public function getStatus(){
