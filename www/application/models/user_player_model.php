@@ -10,12 +10,12 @@ class User_player_model extends CI_Model{
 
     public function getUserIDByPlayerID($playerid){
         if($playerid != null){
-            $this->db->select('id');
+            $this->db->select('users.id as id');
             $this->db->from('users');
             $this->db->join('player','player.userid = users.id');
             $this->db->where('player.id', $playerid);
-            $query = $this->db->get('player');
-            if ($query->num_rows() == 1) return $query->row();
+            $query = $this->db->get();
+            if ($query->num_rows() == 1) return $query->row()->id;
             return NULL;
         } else {
             throw new UnexpectedValueException('playerid cannot be null');

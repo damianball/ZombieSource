@@ -15,10 +15,7 @@ class Team extends CI_Controller {
         $this->data['name'] = $this->name();
         $this->data['description'] = $this->description();
         $this->data['profile_pic_url'] = $this->gravatar();
-
       }
-
-
   }
 
   public function name(){

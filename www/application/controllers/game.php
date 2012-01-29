@@ -7,6 +7,7 @@ class game extends CI_Controller {
         if(!$this->tank_auth->is_logged_in()){
             redirect('/auth/login');
         }
+        $this->load->model('Player_model','',TRUE);
         $this->load->library('player', null);
     }
 
@@ -26,6 +27,17 @@ class game extends CI_Controller {
             $this->table->add_row(
                 array($gravatar, 'User', 'blue', 'zombie',rand(0,20), '6 hours ago')
             );       
+        }
+
+        $players = $this->Player_model->getActivePlayers();
+        foreach($players as $i){
+          $player = Player::getPlayerByPlayerID($i['id']);
+  
+          $row = array($player->getLinkToProfile(),
+                       $player->getTeam(),
+                       $player->getStatus(),
+                       $player->getKills(),
+                       $player->TimeSinceLastFeed() . ' hours ago');
         }
 
         //-- Display Table

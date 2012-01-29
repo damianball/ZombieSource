@@ -82,7 +82,31 @@ class Player extends CI_Controller{
   }
   
   public function getPlayerId(){
-	return $this->playerid;
+	    return $this->playerid;
+  }
+
+  public function getLinkToProfile(){
+    $username = $this->getUser()->getUsername();
+    $id = $this->getUser()->getUserID();
+    $link = "<a href = \"" . site_url("/user/$id") .  "\"> $username </a>";
+    return $link; 
+  }
+  public function getTeam(){
+    return "team";
+    
+  }
+
+  public function getStatus(){
+    return "zombie";
+    
+  }
+
+  public function TimeSinceLastFeed(){
+    return "6";
+  }
+
+  public function getKills(){
+    return "6";
   }
 
   public function getGravatarHTML(){
