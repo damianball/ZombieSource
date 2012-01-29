@@ -1,18 +1,22 @@
 <?php
 class Player_model extends CI_Model{
+    private $table_name = 'player';
+
 	function __construct(){
 		parent::__construct();
 	}
 	
 	public function getPlayerID($userid, $gameid){
-		$query = $this->db->query('SELECT id FROM player WHERE userid = '.$this->db->escape($userid).' AND gameid = '.$this->db->escape($gameid));
-		$result = $query->row();
-		$id = "";
-		if(isset($result->{'id'})){
-			$id = $result->{'id'};
-		}
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('userid',$userid);
+        $this->db->where('gameid',$gameid);
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new UnexpectedValueException('Did not find a playerid for userid '.$userid.' and gameid'.$gameid);
+        }
 		
-		return $id;
+		return $query->row()->id;
 	}
 
     public function getActivePlayers(){

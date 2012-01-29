@@ -89,6 +89,9 @@ class Team_model extends CI_Model{
         );
         $this->db->where('id',$teamid);
         $this->db->update($this->table_name,$data);
+
+        // clear the data, because it's stale
+        $this->teamData = null;
     }
 }
 ?>
