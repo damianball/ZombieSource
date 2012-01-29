@@ -97,10 +97,9 @@ class Player extends CI_Controller{
   }
 
   public function getStatus(){
-    return "zombie";
-    
+    return "zombie"; 
   }
-
+  
   public function TimeSinceLastFeed(){
     return "6";
   }
@@ -109,14 +108,14 @@ class Player extends CI_Controller{
     return "6";
   }
 
-  public function getGravatarHTML(){
+  public function getGravatarHTML($size = 150){
     $gravatar_email = $this->getData('gravatar_email');
-    $email = $this->getData('email');
+    $email = $this->getUser()->getEmail();
     if($gravatar_email){
-      return $this->build_gravatar($gravatar_email, 150, 'identicon', 'x', true);
+      return $this->build_gravatar($gravatar_email, $size, 'identicon', 'x', true);
     }
     else{
-      return $this->build_gravatar($email, 150, 'identicon', 'x', true);
+      return $this->build_gravatar($email, $size, 'identicon', 'x', true);
     }
   }
 

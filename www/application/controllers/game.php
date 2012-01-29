@@ -22,22 +22,24 @@ class game extends CI_Controller {
         array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
-        for($i=0; $i<10; $i=$i+1){
-            $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
-            $this->table->add_row(
-                array($gravatar, 'User', 'blue', 'zombie',rand(0,20), '6 hours ago')
-            );       
-        }
+        // for($i=0; $i<10; $i=$i+1){
+        //     $gravatar = $this->get_gravatar(md5($i), 50, 'identicon', 'x', true);
+        //     $this->table->add_row(
+        //         array($gravatar, 'User', 'blue', 'zombie',rand(0,20), '6 hours ago')
+        //     );       
+        // }
 
         $players = $this->Player_model->getActivePlayers();
         foreach($players as $i){
           $player = Player::getPlayerByPlayerID($i['id']);
-  
-          $row = array($player->getLinkToProfile(),
+          $row = array(
+                       $player->getGravatarHTML(50),
+                       $player->getLinkToProfile(),
                        $player->getTeam(),
                        $player->getStatus(),
                        $player->getKills(),
                        $player->TimeSinceLastFeed() . ' hours ago');
+          $this->table->add_row($row);
         }
 
         //-- Display Table
