@@ -1,12 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class User{
     private $userid = null;
-
+    private $ci = null;
     function __construct()
     {
-        parent::__construct();
-        $this->load->model('User_model','',TRUE);
+        //parent::__construct();
+        $this->ci =& get_instance();
+        $this->ci->load->model('User_model','',TRUE);
     }
 
     public function getUserID(){
@@ -30,18 +31,17 @@ class User extends CI_Controller {
         if($playerid == null){
             throw new UnexpectedValueException('playerid cannot be null');
         }
-        $ci =& get_instance();
-        $ci->load->model('User_player_model','',TRUE);
         $instance = new self();
-        $instance->userid = $ci->User_player_model->getUserIDByPlayerID($playerid);
+        $instance->ci->load->model('User_player_model','',TRUE);
+        $instance->userid = $instance->ci->User_player_model->getUserIDByPlayerID($playerid);
         return $instance;
     }
 
     public function getEmail(){
-        return $this->User_model->getEmailByUserID($this->getUserID());
+        return $this->ci->User_model->getEmailByUserID($this->getUserID());
     }
 
     public function getUsername(){
-        return $this->User_model->getUsernameByUserID($this->getUserID());
+        return $this->ci->User_model->getUsernameByUserID($this->getUserID());
     }
 }

@@ -1,13 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Player extends CI_Controller{
+class Player{
   private $playerid = null;
   private $userid = null;
+  private $ci = null;
 
   public function __construct(){
-      parent::__construct();
-      $this->load->model('Player_model','',TRUE);
-      $this->load->library('User');
+      //parent::__construct();
+      $this->ci =& get_instance();
+      $this->ci->load->model('Player_model','',TRUE);
+      $this->ci->load->library('User');
   }
 
   public function getUser(){
@@ -36,7 +38,7 @@ class Player extends CI_Controller{
       }
       $instance = new self();
       $instance->userid = $userid;
-      $instance->playerid = $instance->Player_model->getPlayerID($userid, $gameid);
+      $instance->playerid = $instance->ci->Player_model->getPlayerID($userid, $gameid);
       return $instance;
   }
 
@@ -96,14 +98,14 @@ class Player extends CI_Controller{
 
   public function getData($key){
       if($this->playerid != null){
-        return $this->Player_model->getPlayerData($this->playerid, $key);
+        return $this->ci->Player_model->getPlayerData($this->playerid, $key);
       } else {
         throw new Exception('Playerid cannot be null');
       }
   }
 
   public function saveData($key, $value){
-    $this->Player_model->setPlayerData($this->playerid, $key, $value);
+    $this->ci->Player_model->setPlayerData($this->playerid, $key, $value);
   }
 
   public function getPlayerID(){
@@ -116,9 +118,28 @@ class Player extends CI_Controller{
     $link = "<a href = \"" . site_url("/user/$id") .  "\"> $username </a>";
     return $link; 
   }
-  public function getTeam(){
-    return "team";
-    
+
+  // @TODO: write this function
+  public function getGameID(){}
+
+  public function getTeamID(){
+    $this->ci->load->model('Player_team_model');
+    try{
+        return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
+    } catch (PlayerNotMemberOfAnyTeamException $e){
+        return null;
+    }
+  }
+
+  public function joinTeam($teamid){
+      if(!$teamid) throw new UnexpectedValueException("teamid cannot be null");
+      $this->ci->load->model('Player_team_model');
+      $this->ci->Player_team_model->addPlayerToTeam($teamid, $this->playerid);
+  }
+
+  public function leaveCurrentTeam(){
+      $this->ci->load->model('Player_team_model');
+      $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
   }
 
   public function getStatus(){
