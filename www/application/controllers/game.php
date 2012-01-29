@@ -31,7 +31,7 @@ class game extends CI_Controller {
           $row = array(
                        $player->getGravatarHTML(50),
                        $player->getLinkToProfile(),
-                       $player->getTeam(),
+                       "team",#$player->getTeam(),
                        "Human", #$player->getStatus(),
                        "N/A", #$player->getKills(),
                        "N/A"); #$player->TimeSinceLastFeed() . ' hours ago');
@@ -168,16 +168,16 @@ class game extends CI_Controller {
       if($currentTeam){
         $player->leaveCurrentTeam();
         $player->joinTeam($teamid);
-        $data['message'] = "Successfully left " . $currentTeam->getData('name') . " and joined " . $newTeam->getData('name');
+        $data['message'] = "Successfully left " . $currentTeam;#->getData('name') . " and joined " . $newTeam->getData('name');
         
       }else{
-        $data['message'] = "Successfullyjoined " . $newTeam->getData('name');
+        $data['message'] = "Successfully joined " . $newTeam->getData('name');
         $player->joinTeam($teamid);
       }
 
       $layout_data['active_sidebar'] = 'logkill';
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('helper/team_helper', $data, true);
+      $layout_data['content_body'] = $this->load->view('helpers/team_helper', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data); 
 

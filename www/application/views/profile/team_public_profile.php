@@ -1,9 +1,12 @@
 <div class = "row" >
    <div class="main">
+
+<!--       <form action="http://postcatcher.in/catchers/4f255ebf07c5140100000005" method="post" accept-charset="utf-8"> 
+ -->      
       <?php 
         echo form_open('game/join_team');
       ?>
-      <input name = "teamid" style = "display: none;" value " <?php echo $teamid ?>" > </input>
+      <input name = "teamid" style = "display: none;" value = "<?php echo $teamid ?>"> </input>
       <input type="submit" value = "Join This Team" id = "player_status" class = "alert-message success"/></form> 
 
   <div id = "gravatar"> 

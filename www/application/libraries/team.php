@@ -62,11 +62,11 @@ class Team{
   }
 
   public function getData($key){
-    return $this->ci->Team_model->getTeamData($this->teamid, $key);
+    return $this->ci->Team_model->getTeamData($this->getTeamID(), $key);
   }
 
   public function setData($key, $value){
-    $this->ci->Team_model->setTeamData($this->teamid, $key, $value);
+    $this->ci->Team_model->setTeamData($this->getTeamID(), $key, $value);
   }
 
   public function getGravatarHTML($size = 250){

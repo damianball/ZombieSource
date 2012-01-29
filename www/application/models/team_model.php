@@ -72,7 +72,7 @@ class Team_model extends CI_Model{
         if ($query->num_rows() == 1){
             $this->teamData = $query->row_array();
         } else {
-            throw new DatastoreException('Too many (or few) results for teamid '.$teamid);
+            throw new DatastoreException('Too many (or few) row results - '.$query->num_rows().' - for teamid '.$teamid.' query: '.$this->db->last_query());
         }
     }
 
@@ -80,9 +80,9 @@ class Team_model extends CI_Model{
         if(!array_key_exists($name,$this->teamFields)){
             throw new UnexpectedValueException($name.' is not a valid field');
         }
-        if(!$this->teamData){
+        // if(!$this->teamData){
             $this->populateTeamData($teamid);
-        }
+        // }
         return $this->teamData[$name];
     }
 
