@@ -3,6 +3,9 @@
     <div class="span10">
       <h2> Register a New Team </h2>
         <div class="span12">
+              <?php 
+             echo form_open($this->uri->uri_string())
+              ?>
             <fieldset>
               <div class="clearfix">
                   <label>Name</label>

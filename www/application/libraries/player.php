@@ -50,12 +50,32 @@ class Player extends CI_Controller{
       $data['major'] = $this->getData("major");
       $data['profile_pic_url'] = $this->getGravatarHTML();
       $data['gravatar_email'] = $this->getData('gravatar_email');
-
+      $data['human_code'] = $this->getHumanCode();
       return $data;
   }
 
   public function current_team(){
     return 5;
+  }
+
+  public function getHumanCode(){
+    // if(!$this->getData("human_code") || $this->getData("human_code") == ''){
+      $human_code = $this->newHumanCode();
+      $this->saveData('human_code', $human_code);
+    // }
+    return $this->getData("human_code");
+  }
+
+  public function newHumanCode(){
+     $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      do {
+        $string = '';
+        for ($i = 0; $i < 5; $i++) {
+          $string .= $characters[rand(0, strlen($characters) - 1)];
+        } 
+      }while(false);
+      //$this->Player_model->humanCodeExists($string)
+      return $string;
   }
 
   public function waiverSigned(){
@@ -99,7 +119,7 @@ class Player extends CI_Controller{
   public function getStatus(){
     return "zombie"; 
   }
-  
+
   public function TimeSinceLastFeed(){
     return "6";
   }

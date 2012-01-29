@@ -26,7 +26,7 @@
   <div id ="human_code"> 
     <div id = "code_text"> Human Code! <a href = #> Print </a> </div>
     <div id = "color_box"> 
-      <div id = "code"> RJF345FK </div>  
+      <div id = "code">  <?php echo $human_code ?> </div>  
     </div>
   </div>
 

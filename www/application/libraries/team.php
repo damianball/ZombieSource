@@ -18,37 +18,41 @@ class Team extends CI_Controller {
       }
   }
 
-  public function name(){
-    return "world";
+  public function getDataArray(){
+      $data = array();
+      $data['name'] = $this->getData('name')
+      $data['description'] = $this->getData('name')
+      $data['profile_pic_url'] = $this->getGravatarHTML();
+      $data['gravatar_email'] = $this->getData('gravatar_email');
+      return $data;
   }
 
-  public function description(){
-    return "world";
+  public function getData($key){
+    return $this->Team_model->
   }
 
-  public function members(){
-    return "world";
-  }
-
-  public function gravatar_email(){
-    return "world";
-  }
-
-  public function gravatar(){
-      return $this->build_gravatar($this->gravatar_email(), 250, 'identicon', 'x', true);
-  }
-
-  public function build_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-    $url = 'http://www.gravatar.com/avatar/';
-    $url .= md5( strtolower( trim( $email ) ) );
-    $url .= "?s=$s&d=$d&r=$r";
-    if ( $img ) {
-        $url = '<img src="' . $url . '"';
-        foreach ( $atts as $key => $val )
-            $url .= ' ' . $key . '="' . $val . '"';
-        $url .= ' />';
+  public function getGravatarHTML($size = 250){
+    $gravatar_email = $this->getData('gravatar_email');
+    $email = $this->getUser()->getEmail();
+    if($gravatar_email){
+      return $this->build_gravatar($gravatar_email, $size, 'identicon', 'x', true);
     }
-    return $url;
+    else{
+      return $this->build_gravatar($email, $size, 'identicon', 'x', true);
+    }
+  }
+
+   public function build_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
+      $url = 'http://www.gravatar.com/avatar/';
+      $url .= md5( strtolower( trim( $email ) ) );
+      $url .= "?s=$s&d=$d&r=$r";
+      if ( $img ) {
+          $url = '<img src="' . $url . '"';
+          foreach ( $atts as $key => $val )
+              $url .= ' ' . $key . '="' . $val . '"';
+          $url .= ' />';
+      }
+      return $url;
   }
 
 }
