@@ -26,7 +26,6 @@ define('DIR_WRITE_MODE', 0777);
 | These modes are used when working with fopen()/popen()
 |
 */
-define('GAME_KEY', '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 define('FOPEN_READ',							'rb');
 define('FOPEN_READ_WRITE',						'r+b');
 define('FOPEN_WRITE_CREATE_DESTRUCTIVE',		'wb'); // truncates existing file data, use with care
@@ -36,6 +35,12 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+
+// Game settings
+define('GAME_KEY', '9a051bbc-3ebc-11e1-b778-000c295b88cf');
+
+// Analytics settings
+define('LOGFILE', '/tmp/zombiesource.log');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

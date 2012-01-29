@@ -78,7 +78,7 @@ class game extends CI_Controller {
 
     public function register_kill() {
         $zombie_id = $this->tank_auth->get_user_id();
-        $this->load->model('Player_model');
+        $this->load->model('Player_model','',TRUE);
         if(!$this->Player_model->isActiveZombie($zombie_id)) {
             $layout_data = array();
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);

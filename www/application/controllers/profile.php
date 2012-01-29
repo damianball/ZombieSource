@@ -20,10 +20,10 @@ class Profile extends CI_Controller {
       $this->load->library('team');
 
       $userid = $this->tank_auth->get_user_id();
-      $this->logged_in_player = new Player($userid);
+      $this->logged_in_player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      // @TODO: what if team is null?
       $teamid = $this->logged_in_player->current_team();      
       $this->logged_in_players_team = new team($teamid);
-
   }
 
   public function index()
@@ -33,9 +33,9 @@ class Profile extends CI_Controller {
     // $player->save("email",$this->tank_auth->get_email());
 
    $player = $this->logged_in_player;
-   if($player->waiver_is_signed()){
+   if($player->waiverSigned()){
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/profile_page', $player->data, true);
+      $layout_data['content_body'] = $this->load->view('profile/profile_page', $player->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
    }
@@ -78,23 +78,23 @@ class Profile extends CI_Controller {
 
       if ($this->form_validation->run()) {
         //save the data
-        if($data['age'] != $this->input->post('age')){
-          $this->Player_model->setPlayerData($playerid, 'age', $this->input->post('age'));
+        if($player->getData('age') != $this->input->post('age')){
+          $player->saveData('age',$this->input->post('age'));
         }
-        if($data['gender'] != $this->input->post('gender')){
-          $this->Player_model->setPlayerData($playerid, 'gender', $this->input->post('gender'));
+        if($player->getData('gender') != $this->input->post('gender')){
+          $player->saveData('gender',$this->input->post('gender'));
         }
-        if($data['major'] != $this->input->post('major')){
-          $this->Player_model->setPlayerData($playerid, 'major', $this->input->post('major'));
+        if($player->getData('major') != $this->input->post('major')){
+          $player->saveData('major',$this->input->post('major'));
         }
-        if($data['gravatar_email'] != $this->input->post('gravatar_email')){
-          $this->Player_model->setPlayerData($playerid, 'gravatar_email', $this->input->post('gravatar_email'));
+        if($player->getData('gravatar_email') != $this->input->post('gravatar_email')){
+          $player->saveData('gravatar_email',$this->input->post('gravatar_email'));
         }
         redirect("profile");
       }
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/edit_profile', $player->data, true);
+      $layout_data['content_body'] = $this->load->view('profile/edit_profile', $player->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }
@@ -104,7 +104,7 @@ class Profile extends CI_Controller {
   {
       $get = $this->uri->uri_to_assoc(1);
       $userid = $get['user'];
-      $player = new player($userid);
+      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile/public_profile', $player->data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
@@ -127,18 +127,4 @@ class Profile extends CI_Controller {
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }
-
-      public function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-        $url = 'http://www.gravatar.com/avatar/';
-        $url .= md5( strtolower( trim( $email ) ) );
-        $url .= "?s=$s&d=$d&r=$r";
-        if ( $img ) {
-            $url = '<img src="' . $url . '"';
-            foreach ( $atts as $key => $val )
-                $url .= ' ' . $key . '="' . $val . '"';
-            $url .= ' />';
-        }
-        return $url;
-    }
-
 }

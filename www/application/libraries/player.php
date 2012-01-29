@@ -1,55 +1,83 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Player extends CI_Controller{
-  var $playerid;
-  var $userid;
-  var $data = array();
+  private $playerid = null;
+  private $userid = null;
+  //var $data = array();
 
-  public function __construct($userid = null){
-      
+  public function __construct(){
       parent::__construct();
+      $this->load->model('Player_model','',TRUE);
+  }
 
-      if($userid != null){
-        $this->load->model('Player_model','',TRUE);
-        $this->userid = $userid;
-        $this->playerid = $this->Player_model->getPlayerID($this->userid, GAME_KEY);
-        
-        $this->data['username'] = $this->data("username");
-        $this->data['email'] = $this->data("email");
-        $this->data['age'] = $this->data("age");
-        $this->data['gender'] = $this->data("gender");
-        $this->data['major'] = $this->data("major");
-        $this->data['profile_pic_url'] = $this->gravatar(); 
-        $this->data['gravatar_email'] = $this->data('gravatar_email');
-
+  public static function getPlayerByPlayerID($playerid){
+      if($playerid != null){
+          $instance = new self();
+          $instance->playerid = $playerid;
+          return $instance;
+      } else {
+          throw new Exception("Playerid cannot be null.");
       }
   }
+
+  public static function getPlayerByUserIDGameID($userid, $gameid){
+      if($userid != null && $gameid != null){
+          $instance = new self();
+          $instance->userid = $userid;
+          $instance->playerid = $instance->Player_model->getPlayerID($userid, $gameid);
+          return $instance;
+      } else {
+          throw new Exception("Userid nor Gameid can be null.");
+      }
+  }
+
+  public function getDataArray(){
+      $data = array();
+      $data['username'] = $this->getData("username");
+      $data['email'] = $this->getData("email");
+      $data['age'] = $this->getData("age");
+      $data['gender'] = $this->getData("gender");
+      $data['major'] = $this->getData("major");
+      $data['profile_pic_url'] = $this->getGravatarHTML();
+      $data['gravatar_email'] = $this->getData('gravatar_email');
+
+      return $data;
+  }
+
   public function current_team(){
     return 5;
   }
 
-  public function waiver_is_signed(){
-    return ($this->data('waiver_is_signed') == "TRUE");
+  public function waiverSigned(){
+    return ($this->getData('waiver_is_signed') == "TRUE");
   }
 
-  public function data($key){
-    return $this->Player_model->getPlayerData($this->playerid, $key);
+  public function getData($key){
+      if($this->playerid != null){
+        return $this->Player_model->getPlayerData($this->playerid, $key);
+      } else {
+        throw new Exception('Playerid cannot be null');
+      }
   }
 
-  public function save($key, $value){
+  public function saveData($key, $value){
     return $this->Player_model->setPlayerData($this->playerid, $key, $value);
   }
 
   public function join_game($params){
     $this->Player_model->createPlayerInGame($this->userid, GAME_KEY);
-    foreach($parmas as $key => $value){
-        $this->save($key, $value);
+    foreach($params as $key => $value){
+        $this->saveData($key, $value);
     }
   }
+  
+  public function getPlayerId(){
+	return $this->playerid;
+  }
 
-  public function gravatar(){
-    $gravatar_email = $this->data('gravatar_email');
-    $email = $this->data('email');
+  public function getGravatarHTML(){
+    $gravatar_email = $this->getData('gravatar_email');
+    $email = $this->getData('email');
     if($gravatar_email){
       return $this->build_gravatar($gravatar_email, 150, 'identicon', 'x', true);
     }
