@@ -71,7 +71,7 @@ class Profile extends CI_Controller {
   public function edit_profile()
   {
       $player = $this->logged_in_player;
-      $this->form_validation->set_rules('age', 'Age', 'integer|trim|xss_clean');
+      $this->form_validation->set_rules('age', 'Age', 'integer|greater_than[11]|less_than[120]|trim|xss_clean');
       $this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
       $this->form_validation->set_rules('major', 'Major', 'trim|xss_clean');
       $this->form_validation->set_rules('gravatar_email', 'Gravatar Email', 'trim|xss_clean|valid_email'); 
@@ -106,7 +106,7 @@ class Profile extends CI_Controller {
       $userid = $get['user'];
       $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/public_profile', $player->data, true);
+      $layout_data['content_body'] = $this->load->view('profile/public_profile', $player->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }

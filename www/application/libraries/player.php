@@ -3,11 +3,21 @@
 class Player extends CI_Controller{
   private $playerid = null;
   private $userid = null;
-  //var $data = array();
 
   public function __construct(){
       parent::__construct();
       $this->load->model('Player_model','',TRUE);
+      $this->load->library('User');
+  }
+
+  public function getUser(){
+      if($this->userid == null){
+          if($this->playerid == null){
+              throw new UnexpectedValueException('userid cannot be null');
+          }
+          return User::getUserByPlayerID($this->playerid);
+      }
+      return User::getUserByUserID($this->userid);
   }
 
   public static function getPlayerByPlayerID($playerid){
@@ -33,8 +43,8 @@ class Player extends CI_Controller{
 
   public function getDataArray(){
       $data = array();
-      $data['username'] = $this->getData("username");
-      $data['email'] = $this->getData("email");
+      $data['username'] = $this->getUser()->getUsername();
+      $data['email'] = $this->getUser()->getEmail();
       $data['age'] = $this->getData("age");
       $data['gender'] = $this->getData("gender");
       $data['major'] = $this->getData("major");
