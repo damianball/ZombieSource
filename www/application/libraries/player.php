@@ -45,7 +45,8 @@ class Player extends CI_Controller{
           throw new UnexpectedValueException('userid and gameid cannot be null');
       }
       $instance = new self();
-      $instance->Player_model->createPlayerInGame($userid, $gameid);
+      $playerid = $instance->Player_model->createPlayerInGame($userid, $gameid);
+      $instance->playerid = $playerid;
       foreach($params as $key => $value){
           $instance->saveData($key, $value);
       }

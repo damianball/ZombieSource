@@ -36,8 +36,6 @@ class Player_model extends CI_Model{
 		return $value;
 	}
 	public function setPlayerData($playerid, $name, $value){
-		$added = false;
-
 		//date created
 		$datecreated = gmdate("Y-m-d H:i:s", time());
 
@@ -72,9 +70,9 @@ class Player_model extends CI_Model{
 			'original_zombie' => NULL
 		);
 		$this->db->insert('player',$data);
-		$added = true;
+		$playerid = $this->db->insert_id();
 				
-		return $added;
+		return $playerid;
 	}
 	
 	public function getNumberOfPlayersInGame($gameid){
