@@ -27,7 +27,7 @@ class game extends CI_Controller {
 
         $players = $this->Player_model->getActivePlayers();
         foreach($players as $i){
-          $player = Player::getPlayerByPlayerID($i['id']);
+          $player = $this->player->getPlayerByPlayerID($i['id']);
           $row = array(
                        $player->getGravatarHTML(50),
                        $player->getLinkToProfile(),
@@ -131,7 +131,7 @@ class game extends CI_Controller {
 
     public function register_new_team(){
       $userid = $this->tank_auth->get_user_id();
-      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
       $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
       $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
@@ -160,7 +160,7 @@ class game extends CI_Controller {
     public function join_team(){
       $data = array();
       $userid = $this->tank_auth->get_user_id();
-      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
       $data['teamid'] = $teamid;
       $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
@@ -189,7 +189,7 @@ class game extends CI_Controller {
 
     public function leave_team(){
       $userid = $this->tank_auth->get_user_id();
-      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
       $currentTeam = $player->getTeamID();
       if($currentTeam){

@@ -17,7 +17,7 @@ class User{
         return $this->userid;
     }
 
-    public static function getUserByUserID($userid){
+    public function getUserByUserID($userid){
         if($userid != null){
             $instance = new self();
             $instance->userid = $userid;
@@ -27,7 +27,7 @@ class User{
         }
     }
 
-    public static function getUserByPlayerID($playerid){
+    public function getUserByPlayerID($playerid){
         if($playerid == null){
             throw new UnexpectedValueException('playerid cannot be null');
         }

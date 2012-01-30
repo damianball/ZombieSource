@@ -37,7 +37,7 @@ class Profile extends CI_Controller {
     $userid = $this->tank_auth->get_user_id();
     $isPlayer = FALSE;
     try{
-      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player =$this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $isPlayer = TRUE;
     } catch (UnexpectedValueException $e){}
    if($isPlayer){
@@ -63,7 +63,7 @@ class Profile extends CI_Controller {
                           'major' => $this->input->post('major'),
                           'OriginalZombiePool' => $this->input->post('originalzombiepool'));
 
-          $player = Player::getNewPlayerByJoiningGame($userid, GAME_KEY, $params);
+          $player = $this->player->getNewPlayerByJoiningGame($userid, GAME_KEY, $params);
           redirect('profile');
         }
         else{
@@ -79,7 +79,7 @@ class Profile extends CI_Controller {
   {
       $userid = $this->tank_auth->get_user_id();
       try{
-        $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+        $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       } catch (UnexpectedValueException $e){
         redirect("home");
       }
@@ -117,7 +117,7 @@ class Profile extends CI_Controller {
   {
       $get = $this->uri->uri_to_assoc(1);
       $userid = $get['user'];
-      $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile/public_profile', $player->getDataArray(), true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          

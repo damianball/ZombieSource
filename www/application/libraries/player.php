@@ -17,12 +17,12 @@ class Player{
           if($this->playerid == null){
               throw new UnexpectedValueException('userid and playerid cannot be null');
           }
-          return User::getUserByPlayerID($this->playerid);
+          return $this->user->getUserByPlayerID($this->playerid);
       }
-      return User::getUserByUserID($this->userid);
+      return $this->user->getUserByUserID($this->userid);
   }
 
-  public static function getPlayerByPlayerID($playerid){
+  public function getPlayerByPlayerID($playerid){
       if($playerid != null){
           $instance = new self();
           $instance->playerid = $playerid;
@@ -32,7 +32,7 @@ class Player{
       }
   }
 
-  public static function getPlayerByUserIDGameID($userid, $gameid){
+  public function getPlayerByUserIDGameID($userid, $gameid){
       if(!$userid || !$gameid){
           throw new Exception("Userid nor Gameid can be null.");
       }
@@ -42,7 +42,7 @@ class Player{
       return $instance;
   }
 
-  public static function getNewPlayerByJoiningGame($userid, $gameid, $params){
+  public  function getNewPlayerByJoiningGame($userid, $gameid, $params){
       if(!$userid || !$gameid){
           throw new UnexpectedValueException('userid and gameid cannot be null');
       }
