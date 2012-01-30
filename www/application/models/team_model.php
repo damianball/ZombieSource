@@ -48,7 +48,11 @@ class Team_model extends CI_Model{
             'id' => $uuid,
             'gameid' => $gameid,
             'name' => $name,
-            'datecreated' => $datecreated
+            'datecreated' => $datecreated,
+            'private' => null,
+            'regcode' => null,
+            'gravatar_email' => null,
+            'description' => null
         );
 
         // @TODO: check that game/name pair is unique
