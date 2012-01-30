@@ -68,10 +68,6 @@ class Player{
       return $data;
   }
 
-  public function current_team(){
-    return 5;
-  }
-
   public function getHumanCode(){
     // if(!$this->getData("human_code") || $this->getData("human_code") == ''){
       $human_code = $this->newHumanCode();
@@ -121,6 +117,17 @@ class Player{
 
   // @TODO: write this function
   public function getGameID(){}
+
+  public function isMemberOfTeam($teamid){
+    if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
+    $isMember = FALSE;
+    try{
+        if($teamid == $this->getTeamID()) $isMember = TRUE;
+    } catch (PlayerNotMemberOfAnyTeamException $e){
+
+    }
+    return $isMember;
+  }
 
   public function getTeamID(){
     $this->ci->load->model('Player_team_model');
