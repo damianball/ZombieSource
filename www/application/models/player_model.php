@@ -28,7 +28,7 @@ class Player_model extends CI_Model{
 	public function getPlayerData($playerid, $name){
 		$query = $this->db->query('SELECT value FROM player_data WHERE playerid = '.$this->db->escape($playerid).' AND name = '.$this->db->escape($name).' ORDER BY timestamp DESC LIMIT 1');
 		$result = $query->row();
-		$value = "";
+		$value = null;
 		if(isset($result->{'value'})){
 			$value = $result->{'value'};
 		}

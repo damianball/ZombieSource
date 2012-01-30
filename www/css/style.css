@@ -436,6 +436,18 @@ background-image: linear-gradient(top, #333333, #222222);
     color: #286F8D;
   }
 
+/*  #buttons{
+    width: 100px;
+    height: 20px;
+    background-color: #000;
+  }
+*/
+  .profile_button{
+    margin: 10px;
+    width: 100px;
+    height: 30px;
+  }
+
     /*================================================
   #
   #    public profile

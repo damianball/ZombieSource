@@ -1,20 +1,17 @@
 <div class = "row" >
-   <div class="main">  
-      <?php 
-        echo $team_profile_buttons;
-      ?>
-      
-  <div id = "gravatar"> 
-    <? echo $profile_pic_url ?> </br>
-  </div>
-  <div class = "line"> 
-    Name: <span class = "profile_data_item"> <? echo $team_name; ?> </span>
-  </div>
-  <div class = "line"> 
-    description: <span class = "profile_data_item"> <? echo $description; ?> </span>
-  </div>    
-
-
+  <div class="main">  
+    <?php 
+      echo $team_profile_buttons;
+    ?>
+    <div id = "gravatar"> 
+      <? echo $profile_pic_url ?> </br>
+    </div>
+    <div class = "line"> 
+      Name: <span class = "profile_data_item"> <? echo $team_name; ?> </span>
+    </div>
+    <div class = "line"> 
+      description: <span class = "profile_data_item"> <? echo $description; ?> </span>
+    </div>    
    </div>
    <div class="sidebar">
       <h3>Info</h3>

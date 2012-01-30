@@ -71,10 +71,10 @@ class Player{
   }
 
   public function getHumanCode(){
-    // if(!$this->getData("human_code") || $this->getData("human_code") == ''){
+    if(!$this->humanCodeExists()){
       $human_code = $this->newHumanCode();
-      // $this->saveData('human_code', $human_code);
-    // }
+      $this->saveData('human_code', $human_code);
+    }
     return $this->getData("human_code");
   }
 
@@ -178,7 +178,15 @@ class Player{
   }
 
   public function canEditTeam($teamid){
-    return isMemberOfTeam($teamid);
+      return isMemberOfTeam($teamid);
+  }
+
+  public function humanCodeExists(){
+      $isCode = FALSE;
+      if($this->getData("human_code")){
+          $isCode = TRUE;
+      }
+      return $isCode;
   }
 
   public function getStatus(){

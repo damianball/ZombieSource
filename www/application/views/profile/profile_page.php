@@ -25,7 +25,7 @@
   <div class = "line"> Team: <? echo $link_to_team; ?> </div>
 
   <div id ="human_code"> 
-    <div id = "code_text"> Human Code! <a href = #> Print </a> </div>
+    <div id = "code_text"> Human Code! </div>
     <div id = "color_box"> 
       <div id = "code">  <?php echo $human_code ?> </div>  
     </div>
