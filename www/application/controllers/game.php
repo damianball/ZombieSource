@@ -60,7 +60,7 @@ class game extends CI_Controller {
 
         $teams = $this->Team_model->getAllTeams();
         foreach($teams as $i){
-          $team = Team::getTeamByTeamID($i['id']);
+          $team = $this->team->getTeamByTeamID($i['id']);
           $row = array(
                        $team->getGravatarHTML(50),
                        $team->getLinkToProfile(),
@@ -142,7 +142,7 @@ class game extends CI_Controller {
         $gravatar_email = $this->input->post('team_gravatar_email');
         $description = $this->input->post('description');
 
-        $team = Team::getNewTeam($name, $player->getPlayerID());
+        $team = $this->Team->getNewTeam($name, $player->getPlayerID());
         $team->setData('gravatar_email', $gravatar_email);
         $team->setData('description', $description);
 
@@ -163,12 +163,12 @@ class game extends CI_Controller {
       $player = Player::getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
       $data['teamid'] = $teamid;
-      $currentTeam = $player->getTeamID();
-      $newTeam = Team::getTeamByTeamID($teamid);
+      $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
+      $newTeam = $this->team->getTeamByTeamID($teamid);
       if($currentTeam){
         $player->leaveCurrentTeam();
         $player->joinTeam($teamid);
-        $data['message'] = "Successfully left " . $currentTeam;#->getData('name') . " and joined " . $newTeam->getData('name');
+        $data['message'] = "Successfully left " . $currentTeam->getData('name') . " and joined " . $newTeam->getData('name');
         
       }else{
         $data['message'] = "Successfully joined " . $newTeam->getData('name');

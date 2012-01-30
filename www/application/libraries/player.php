@@ -47,7 +47,7 @@ class Player{
           throw new UnexpectedValueException('userid and gameid cannot be null');
       }
       $instance = new self();
-      $playerid = $instance->Player_model->createPlayerInGame($userid, $gameid);
+      $playerid = $instance->ci->Player_model->createPlayerInGame($userid, $gameid);
       $instance->playerid = $playerid;
       foreach($params as $key => $value){
           $instance->saveData($key, $value);
@@ -133,6 +133,13 @@ class Player{
 
   public function joinTeam($teamid){
       if(!$teamid) throw new UnexpectedValueException("teamid cannot be null");
+      try{
+          $currentTeam = $this->getTeamID();
+          //still in a team
+          throw new PlayerMemberOfTeamException('Cannot join a team in this game while still a member of another team.');
+      } catch (PlayerNotMemberOfAnyTeamException $e){
+
+      }
       $this->ci->load->model('Player_team_model');
       $this->ci->Player_team_model->addPlayerToTeam($teamid, $this->playerid);
   }

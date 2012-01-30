@@ -133,7 +133,7 @@ class Profile extends CI_Controller {
 
       $get = $this->uri->uri_to_assoc(1);
       $teamid = $get['team'];
-      $team = Team::getTeamByTeamID($teamid);
+      $team = $this->team->getTeamByTeamID($teamid);
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
       $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $team->getDataArray(), true);

@@ -4,16 +4,14 @@ class Team{
   private $teamid = null;
   private $ci = null;
 
-  public function __construct($teamid = null)
+  public function __construct()
   {
-      //parent::__construct();
       $this->ci =& get_instance();
       $this->ci->load->model('Team_model', '', true);
       $this->ci->load->model('Player_team_model', '', true);
-
   }
 
-  public static function getTeamByTeamID($teamid){
+  public function getTeamByTeamID($teamid){
       if($teamid != null){
           $instance = new self();
           $instance->teamid = $teamid;
@@ -23,11 +21,11 @@ class Team{
       }
   }
 
-  public static function getNewTeam($name, $playerid){
-          $instance = new self();
-          $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
-          $instance->ci->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
-          return $instance;
+  public function getNewTeam($name, $playerid){
+    $instance = new self();
+    $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
+    $instance->ci->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
+    return $instance;
   }
 
   public function getDataArray(){

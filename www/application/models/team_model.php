@@ -80,9 +80,7 @@ class Team_model extends CI_Model{
         if(!array_key_exists($name,$this->teamFields)){
             throw new UnexpectedValueException($name.' is not a valid field');
         }
-        // if(!$this->teamData){
-            $this->populateTeamData($teamid);
-        // }
+        $this->populateTeamData($teamid);
         return $this->teamData[$name];
     }
 

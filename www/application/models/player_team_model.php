@@ -13,10 +13,10 @@ class Player_team_model extends CI_Model{
     }
 
     public function addPlayerToTeam($teamid, $playerid){
-        if($teamid == null || $teamid == ''){
+        if(!$teamid){
             throw new UnexpectedValueException('teamid name cannot be null or empty');
         }
-        if($playerid == null || $playerid == ''){
+        if(!$playerid){
             throw new UnexpectedValueException('playerid cannot be null or empty');
         }
 
@@ -54,7 +54,7 @@ class Player_team_model extends CI_Model{
 
         $this->db->where('playerid',$playerid);
         $this->db->where('teamid',$teamid);
-        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->where('dateremoved IS NULL');
         $this->db->update($this->table_name,$data);
     }
 
@@ -65,7 +65,7 @@ class Player_team_model extends CI_Model{
         $this->db->select('playerid');
         $this->db->from($this->table_name);
         $this->db->where('teamid',$teamid);
-        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->where('dateremoved IS NULL');
         $query = $this->db->get();
         $playeridArray = array();
         foreach($query->result() as $row){
@@ -80,7 +80,7 @@ class Player_team_model extends CI_Model{
         $this->db->select('teamid');
         $this->db->from($this->table_name);
         $this->db->where('playerid',$playerid);
-        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->where('dateremoved IS NULL');
         $this->db->order_by('datecreated','desc');
         $this->db->limit(1);
         $query = $this->db->get();
