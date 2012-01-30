@@ -75,6 +75,20 @@ class Player_team_model extends CI_Model{
         return $playeridArray;
     }
 
+    public function getCountOfPlayersByTeamID($teamid){
+        if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
+
+        $this->db->select('COUNT(playerid) as count');
+        $this->db->from($this->table_name);
+        $this->db->where('teamid',$teamid);
+        $this->db->where('dateremoved IS NULL');
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new DatastoreException('Unexpected number of rows for count of players on a team: '+$teamid);
+        }
+        return $query->row()->count;
+    }
+
     public function getTeamIDByPlayerID($playerid){
         if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
 

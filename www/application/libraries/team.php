@@ -55,14 +55,23 @@ class Team{
     return $link; 
   }
 
-  public function teamSize(){
-    return 10;
+  public function getTeamSize(){
+      return $this->ci->Player_team_model->getCountOfPlayersByTeamID($this->getTeamID());
+  }
+
+  public function getArrayOfPlayersOnTeam(){
+      $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->getTeamID());
+      $playerArray = array();
+      for($i = 0; $i<count($playeridarray); $i++){
+          $playerArray[] = $this->ci->player->getPlayerByPlayerID($playeridarray[$i]);
+      }
+
+      return $playerArray;
   }
 
    public function totalTeamKills(){
     return 10;
   }
-
 
   public function getTeamID(){
     return $this->teamid;

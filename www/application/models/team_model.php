@@ -62,8 +62,6 @@ class Team_model extends CI_Model{
         return $uuid;
     }
 
-
-
     private function populateTeamData($teamid){
         if(!$teamid){
             throw new UnexpectedValueException('teamid cannot be null');
