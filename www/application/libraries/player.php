@@ -124,11 +124,7 @@ class Player{
 
   public function getTeamID(){
     $this->ci->load->model('Player_team_model');
-    try{
-        return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
-    } catch (PlayerNotMemberOfAnyTeamException $e){
-        return null;
-    }
+    return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
   }
 
   public function joinTeam($teamid){

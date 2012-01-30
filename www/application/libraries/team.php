@@ -9,6 +9,7 @@ class Team{
       $this->ci =& get_instance();
       $this->ci->load->model('Team_model', '', true);
       $this->ci->load->model('Player_team_model', '', true);
+      $this->ci->load->library('Player',null);
   }
 
   public function getTeamByTeamID($teamid){
@@ -23,8 +24,16 @@ class Team{
 
   public function getNewTeam($name, $playerid){
     $instance = new self();
-    $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
-    $instance->ci->Player_team_model->addPlayerToTeam($instance->teamid, $playerid);
+    $instance->ci->db->trans_begin();
+    try{
+        $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
+        $player = $instance->ci->player->getPlayerByPlayerID($playerid);
+        $player->joinTeam($instance->teamid);
+        $instance->ci->db->trans_commit();
+    } catch (Exception $e){
+        $instance->ci->db->trans_rollback();
+        throw new DatastoreException('Could not create new team: '.$e->getMessage());
+    }
     return $instance;
   }
 

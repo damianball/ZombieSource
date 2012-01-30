@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE  IF NOT EXISTS `zsource_dev` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
 USE `zsource_dev`;
 -- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
 --
@@ -94,7 +94,7 @@ CREATE TABLE `users` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,11 +362,13 @@ DROP TABLE IF EXISTS `player_to_team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `player_to_team` (
+  `id` varchar(36) COLLATE utf8_bin NOT NULL,
   `playerid` varchar(36) COLLATE utf8_bin NOT NULL,
   `teamid` varchar(36) COLLATE utf8_bin NOT NULL,
   `datecreated` datetime NOT NULL,
   `dateremoved` datetime DEFAULT NULL,
-  PRIMARY KEY (`playerid`,`teamid`,`datecreated`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `player_team_created_unique` (`playerid`,`teamid`,`datecreated`),
   KEY `player_to_team_team` (`teamid`),
   KEY `player_to_team_player` (`playerid`),
   CONSTRAINT `player_to_team_player` FOREIGN KEY (`playerid`) REFERENCES `player` (`id`),
@@ -477,4 +479,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-29 17:14:46
+-- Dump completed on 2012-01-29 20:04:04

@@ -142,7 +142,7 @@ class game extends CI_Controller {
         $gravatar_email = $this->input->post('team_gravatar_email');
         $description = $this->input->post('description');
 
-        $team = $this->Team->getNewTeam($name, $player->getPlayerID());
+        $team = $this->team->getNewTeam($name, $player->getPlayerID());
         $team->setData('gravatar_email', $gravatar_email);
         $team->setData('description', $description);
 
