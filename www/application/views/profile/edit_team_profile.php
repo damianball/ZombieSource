@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="span10">
-      <h2> Edit Team </h2>
+      <h2> Edit Team '<?php echo $team_name ?>'</h2>
         <div class="span12">
               <?php 
               echo form_open($this->uri->uri_string());

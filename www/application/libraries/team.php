@@ -47,7 +47,12 @@ class Team{
 
       return $data;
   }
-
+  public function getLinkToTeam(){
+        $teamid = $this->getTeamID();
+        $teamName = $this->getData('name');
+        $link = "<a href = \"" . site_url("/team/$teamid") .  "\"> $teamName </a>";
+        return $link; 
+  }
   public function getLinkToProfile(){
     $name = $this->getData('name');
     $id = $this->getTeamID();

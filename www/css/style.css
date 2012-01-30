@@ -13,7 +13,7 @@
     padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
   }
   a{
-    color: #000;
+    color: #286F8D;
   }
   .container > footer p {
     text-align: center; /* center align it with the container */
@@ -144,6 +144,9 @@
 
   .infoitem{
     padding: 10px;
+  }
+  .infoitem a{
+    color: #000;
   }
 
   /* brains@zombiesource.com email address at the bottom of the main container */
@@ -298,8 +301,13 @@ background-image: linear-gradient(top, #333333, #222222);
   #
   #=================================================*/
 
-#sortable_tables{
+/*#sortable_tables{
   width: 50%;
+}*/
+
+#gravatar{
+  width: 300px;
+  margin: 0px;
 }
 
 #manage_teams{
@@ -344,6 +352,35 @@ background-image: linear-gradient(top, #333333, #222222);
 #textarea{
   float: right;
 }
+
+/*styles for list of team members */
+
+#teamlist{
+  width: 200px;
+  height: auto;
+  float: right;
+  margin-top: -200px;
+}
+
+.team_member{
+  float: left;
+}
+
+.team_member{
+  float: left;
+}
+
+.team_member_attribute{
+  float: left;
+}
+
+#team_member_name{
+  font-size: 30px;
+  margin: 10px;
+}
+
+
+
 
   /*================================================
   #
@@ -443,9 +480,14 @@ background-image: linear-gradient(top, #333333, #222222);
   }
 */
   .profile_button{
-    margin: 10px;
-    width: 100px;
-    height: 30px;
+    float: right;
+    position: relative;
+  }
+  .box{
+    margin: 4px;
+    width: auto;
+    height: auto;
+    float: right;
   }
 
     /*================================================

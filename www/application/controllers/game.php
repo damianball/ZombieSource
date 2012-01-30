@@ -54,8 +54,7 @@ class game extends CI_Controller {
         $this->table->set_heading(
             array('data' => 'Avatar'),
             array('data' => 'Squad', 'class' => 'sortable', 'class' => "medium_width_column"),
-            array('data' => 'Size', 'class' => 'sortable'),
-            array('data' => 'Team Kills', 'class' => 'sortable')
+            array('data' => 'Size', 'class' => 'sortable')
         );
 
         $teams = $this->Team_model->getAllTeams();
@@ -64,8 +63,7 @@ class game extends CI_Controller {
           $row = array(
                        $team->getGravatarHTML(50),
                        $team->getLinkToProfile(),
-                       $team->teamSize(),
-                       "N/A");#$team->totalTeamKills());
+                       $team->getTeamSize());
           $this->table->add_row($row);
         }
 
@@ -82,10 +80,27 @@ class game extends CI_Controller {
     }
 
     public function stats() {
+
+        //this should probably be done though the game library, whenever we write the game library. 
+        $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
+        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
+        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
+        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
+        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+
+        $data = array(
+                      'count'        => $num_players,
+                      'male'         => $num_males,
+                      'female'       => $num_females,
+                      'other'        => $num_other_gender,
+                      'noresponse'   => $num_no_gender_response
+        );
+
+
         $layout_data = array();
         $layout_data['active_sidebar'] = 'stats';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/game_stats','', true);
+        $layout_data['content_body'] = $this->load->view('game/game_stats',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/game_layout', $layout_data);
     }
@@ -164,15 +179,17 @@ class game extends CI_Controller {
       $teamid = $this->input->post('teamid');
       $data['teamid'] = $teamid;
       $newTeam = $this->team->getTeamByTeamID($teamid);
+      $newTeamLink = $newTeam->getLinkToTeam();
 
       if($player->isMemberOfATeam()){
         $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
         $player->leaveCurrentTeam();
         $player->joinTeam($teamid);
-        $data['message'] = "Successfully left " . $currentTeam->getData('name') . " and joined " . $newTeam->getData('name');
+        $currentTeamLink = $currentTeam->getLinkToTeam();
+        $data['message'] = "Successfully left " . $currentTeamLink . " and joined " . $newTeamLink;
         
       }else{
-        $data['message'] = "Successfully joined " . $newTeam->getData('name');
+        $data['message'] = "Successfully joined " . $newTeamLink;
         $player->joinTeam($teamid);
       }
 
@@ -192,14 +209,13 @@ class game extends CI_Controller {
       $userid = $this->tank_auth->get_user_id();
       $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
-
-      if($player->isMemberOfATeam()){
-        $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
-        $player->leaveCurrentTeam(); 
-        $data['message'] = "Successfully left " . $currentTeam->getData('name');
-       
+      $team = $this->team->getTeamByTeamID($teamid);
+      $teamLink = $team->getLinkToTeam();
+      if($player->isMemberOfTeam($team->getTeamID())){
+        $player->leaveTeam($teamid);
+        $data['message'] = "Successfully left " . $teamLink;
       }else{
-        $data['message'] = "Could not leave team because you were not on team.";
+        $data['message'] = "You are not a member of " . $teamLink;
       }
 
       $layout_data['active_sidebar'] = 'logkill';

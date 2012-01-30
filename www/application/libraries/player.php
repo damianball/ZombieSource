@@ -120,9 +120,8 @@ class Player{
   public function getLinkToTeam(){
     if($this->isMemberOfATeam()){
         $teamid = $this->getTeamID();
-        $teamName = $this->ci->team->getTeamByTeamID($teamid)->getData('name');
-        $link = "<a href = \"" . site_url("/team/$teamid") .  "\"> $teamName </a>";
-        return $link; 
+        $team = $this->ci->team->getTeamByTeamID($teamid);
+        return $team->getLinkToTeam();
     }else{
         return "none";
     }
@@ -176,9 +175,20 @@ class Player{
       $this->ci->load->model('Player_team_model');
       $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
   }
+  public function leaveTeam($teamid){
+      $this->ci->load->model('Player_team_model');
+      $this->ci->Player_team_model->removePlayerFromTeam($teamid, $this->playerid);
+  }
 
   public function canEditTeam($teamid){
-      return isMemberOfTeam($teamid);
+      /*TODO @Damian 1/30/11
+      This function should return true 
+      WHEN the player ($this->getPlayerID)
+      is the oldest player on a team
+      OR if they have been in the team for 12 hours
+
+      */
+      return $this->isMemberOfTeam($teamid);
   }
 
   public function humanCodeExists(){

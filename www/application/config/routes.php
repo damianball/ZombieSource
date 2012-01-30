@@ -39,8 +39,8 @@
 */
 
 $route['user/:num'] = "profile/public_profile";
+$route['team/edit/:any'] = "profile/edit_team_profile";
 $route['team/:any'] = "profile/team_public_profile";
-$route['edit_team/:any'] = "profile/edit_team_profile";
 
 $route['team/new'] = "game/register_new_team";
 
