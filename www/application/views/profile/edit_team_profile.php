@@ -1,20 +1,13 @@
 
 <div class="row">
     <div class="span10">
-      <h2> Register a New Team </h2>
+      <h2> Edit Team </h2>
         <div class="span12">
               <?php 
               echo form_open($this->uri->uri_string());
               ?>
             <fieldset>
-              <div class="clearfix">
-                  <label>Team Name</label>
-                  <div class="input">
-                      <?php echo form_error('team_name'); ?>
-                      <input type="text" name = "team_name" value="<?php echo $team_name; ?>"/>
-                  </div>
-              </div>
-
+  
               <div class="clearfix">
                   <label>Photo (Gravatar Email)</label>
                   <div class="input">

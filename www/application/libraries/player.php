@@ -10,6 +10,7 @@ class Player{
       $this->ci =& get_instance();
       $this->ci->load->model('Player_model','',TRUE);
       $this->ci->load->library('User');
+      $this->ci->load->library('Team');
   }
 
   public function getUser(){
@@ -65,6 +66,7 @@ class Player{
       $data['profile_pic_url'] = $this->getGravatarHTML();
       $data['gravatar_email'] = $this->getData('gravatar_email');
       $data['human_code'] = $this->getHumanCode();
+      $data['link_to_team'] = $this->getLinkToTeam();
       return $data;
   }
 
@@ -115,8 +117,31 @@ class Player{
     return $link; 
   }
 
+  public function getLinkToTeam(){
+    if($this->isMemberOfATeam()){
+        $teamid = $this->getTeamID();
+        $teamName = $this->ci->team->getTeamByTeamID($teamid)->getData('name');
+        $link = "<a href = \"" . site_url("/team/$teamid") .  "\"> $teamName </a>";
+        return $link; 
+    }else{
+        return "none";
+    }
+  }
+
+
   // @TODO: write this function
   public function getGameID(){}
+
+  public function isMemberOfATeam(){
+      $hasTeam = FALSE;
+      try{
+          $this->ci->team->getTeamByTeamID($this->getTeamID());
+          $hasTeam = TRUE;
+      }catch (PlayerNotMemberOfAnyTeamException $e) {
+        
+      }
+      return $hasTeam;
+  }
 
   public function isMemberOfTeam($teamid){
     if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
@@ -152,20 +177,21 @@ class Player{
       $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
   }
 
-  public function canEditTeam(){
-    return true;
+  public function canEditTeam($teamid){
+    return isMemberOfTeam($teamid);
   }
 
   public function getStatus(){
-    return "zombie"; 
+    return "human"; 
   }
 
   public function TimeSinceLastFeed(){
-    return "6";
+    return "N/A";
   }
 
   public function getKills(){
-    return "6";
+    return "N/A";
+    // . ' hours ago'
   }
 
   public function getGravatarHTML($size = 150){

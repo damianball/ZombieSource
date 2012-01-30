@@ -18,9 +18,7 @@
   <div class = "line"> 
     Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
   </div>
-  <div class = "line"> 
-    Team: <span class = "profile_data_item">  </span>
-  </div>
+  <div class = "line"> Team: <? echo $link_to_team; ?></div>
 
    </div>
    <div class="sidebar">

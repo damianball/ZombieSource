@@ -31,10 +31,10 @@ class game extends CI_Controller {
           $row = array(
                        $player->getGravatarHTML(50),
                        $player->getLinkToProfile(),
-                       "team",#$player->getTeam(),
-                       "Human", #$player->getStatus(),
-                       "N/A", #$player->getKills(),
-                       "N/A"); #$player->TimeSinceLastFeed() . ' hours ago');
+                       $player->getLinkToTeam(),
+                       $player->getStatus(),
+                       $player->getKills(),
+                       $player->TimeSinceLastFeed());
           $this->table->add_row($row);
         }
 
@@ -141,7 +141,7 @@ class game extends CI_Controller {
         $name = $this->input->post('team_name');
         $gravatar_email = $this->input->post('team_gravatar_email');
         $description = $this->input->post('description');
-        
+
         $team = $this->team->getNewTeam($name, $player->getPlayerID());      
         $team->setData('gravatar_email', $gravatar_email);
         $team->setData('description', $description);
@@ -163,9 +163,10 @@ class game extends CI_Controller {
       $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
       $data['teamid'] = $teamid;
-      $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
       $newTeam = $this->team->getTeamByTeamID($teamid);
-      if($currentTeam){
+
+      if($player->isMemberOfATeam()){
+        $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
         $player->leaveCurrentTeam();
         $player->joinTeam($teamid);
         $data['message'] = "Successfully left " . $currentTeam->getData('name') . " and joined " . $newTeam->getData('name');
@@ -191,18 +192,19 @@ class game extends CI_Controller {
       $userid = $this->tank_auth->get_user_id();
       $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
-      $currentTeam = $player->getTeamID();
-      if($currentTeam){
+
+      if($player->isMemberOfATeam()){
+        $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
         $player->leaveCurrentTeam(); 
         $data['message'] = "Successfully left " . $currentTeam->getData('name');
        
       }else{
-        $data['message'] = "could not leave team because you were not on team";
+        $data['message'] = "Could not leave team because you were not on team.";
       }
 
       $layout_data['active_sidebar'] = 'logkill';
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('helper/team_helper', $data, true);
+      $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data); 
 

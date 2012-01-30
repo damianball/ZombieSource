@@ -126,17 +126,26 @@ class Profile extends CI_Controller {
 
     public function team_public_profile()
   {
-      // how many members
-      // total kills
-      // description
-      // team gravatar
+      $userid = $this->tank_auth->get_user_id();
+      try{
+        $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
+      } catch (UnexpectedValueException $e){
+        redirect("home");
+      }
 
       $get = $this->uri->uri_to_assoc(1);
       $teamid = $get['team'];
       $team = $this->team->getTeamByTeamID($teamid);
+      $data = $team->getDataArray();
+
+      if($player->isMemberOfTeam($team->getTeamID())){
+        $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
+      }else{
+        $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);
+      }
 
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $team->getDataArray(), true);
+      $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
       $this->load->view('layouts/main', $layout_data);
   }
@@ -155,9 +164,8 @@ class Profile extends CI_Controller {
       $get = $this->uri->uri_to_assoc(1);
       $teamid = $get['edit_team'];
       if($player->canEditTeam($teamid)){
-        $team = $this->Team->getNewTeam($name, $player->getPlayerID());
-    
-        $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
+
+        $team = $this->team->getTeamByTeamID($teamid);
         $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
         $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 
@@ -166,10 +174,6 @@ class Profile extends CI_Controller {
           $name = $this->input->post('team_name');
           $gravatar_email = $this->input->post('team_gravatar_email');
           $description = $this->input->post('description');
-
-          if($team->getData('name') != $name){
-            $team->setData('name',$this->input->post('name'));
-          }
           if($team->getData('gravatar_email') != $gravatar_email){
             $team->setData('gravatar_email',$this->input->post('gravatar_email'));
           }
@@ -181,7 +185,7 @@ class Profile extends CI_Controller {
         }
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/edit_team_profile', $team->getDataArray(), true);
+        $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', $team->getDataArray(), true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
       }
@@ -189,7 +193,7 @@ class Profile extends CI_Controller {
 
         $data['message'] = "Insufficient privileges to edit this team";
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('helpers/cannot_edit_team', $data, true);
+        $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
       }

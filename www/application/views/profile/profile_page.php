@@ -22,6 +22,7 @@
   <div class = "line"> 
     Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
   </div>
+  <div class = "line"> Team: <? echo $link_to_team; ?> </div>
 
   <div id ="human_code"> 
     <div id = "code_text"> Human Code! <a href = #> Print </a> </div>

@@ -378,6 +378,10 @@ background-image: linear-gradient(top, #333333, #222222);
   line-height: 36px;
   font-size: 24px;
   }
+  .line a:link{
+    color: #286F8D;
+  }
+
   .profile_data_item{
   font-weight: normal;
   line-height: 36px;
@@ -400,6 +404,8 @@ background-image: linear-gradient(top, #333333, #222222);
   #human_code a:link{
     color: #286F8D;
   }
+
+
   #code_text{
     margin-right: auto;
     margin-left: auto;
