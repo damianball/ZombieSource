@@ -141,8 +141,12 @@ class game extends CI_Controller {
         $name = $this->input->post('team_name');
         $gravatar_email = $this->input->post('team_gravatar_email');
         $description = $this->input->post('description');
+        
 
-        $team = $this->Team->getNewTeam($name, $player->getPlayerID());
+
+        $team = $this->Team->getTeamByTeamID($teamid);
+
+
         $team->setData('gravatar_email', $gravatar_email);
         $team->setData('description', $description);
 
@@ -177,7 +181,7 @@ class game extends CI_Controller {
 
       $layout_data['active_sidebar'] = 'logkill';
       $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('helpers/team_helper', $data, true);
+      $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data); 
 
@@ -207,7 +211,6 @@ class game extends CI_Controller {
       $this->load->view('layouts/main', $layout_data); 
 
     }
-
 
     public function validate_human_code() {
         $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');

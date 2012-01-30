@@ -149,6 +149,10 @@ class Player{
       $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
   }
 
+  public function canEditTeam(){
+    return true;
+  }
+
   public function getStatus(){
     return "zombie"; 
   }
