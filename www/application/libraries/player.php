@@ -17,9 +17,9 @@ class Player{
           if($this->playerid == null){
               throw new UnexpectedValueException('userid and playerid cannot be null');
           }
-          return $this->user->getUserByPlayerID($this->playerid);
+          return $this->ci->user->getUserByPlayerID($this->playerid);
       }
-      return $this->user->getUserByUserID($this->userid);
+      return $this->ci->user->getUserByUserID($this->userid);
   }
 
   public function getPlayerByPlayerID($playerid){
