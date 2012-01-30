@@ -22,7 +22,7 @@
                   <label>Description</label>
                   <div class="input">
                       <?php echo form_error('description'); ?>
-                      <textarea name="description" cols="40" rows="5" value="<?php echo $description; ?>"></textarea></br>
+                      <textarea name="description" cols="40" rows="5" ><?php echo $description; ?></textarea></br>
                   </div>
               </div>    
             </fieldset>
