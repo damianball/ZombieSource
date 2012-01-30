@@ -69,10 +69,10 @@ class Player{
   }
 
   public function getHumanCode(){
-    // if(!$this->getData("human_code") || $this->getData("human_code") == ''){
+    if(!$this->humanCodeExists()){
       $human_code = $this->newHumanCode();
-      // $this->saveData('human_code', $human_code);
-    // }
+      $this->saveData('human_code', $human_code);
+    }
     return $this->getData("human_code");
   }
 
@@ -150,6 +150,15 @@ class Player{
   public function leaveCurrentTeam(){
       $this->ci->load->model('Player_team_model');
       $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
+  }
+
+  public function humanCodeExists(){
+      $isCode = FALSE;
+      if($this->getData("human_code")){
+          $isCode = TRUE;
+      }
+
+      return $isCode;
   }
 
   public function getStatus(){
