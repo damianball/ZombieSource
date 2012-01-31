@@ -29,6 +29,7 @@ class Tank_auth
 		$this->ci->load->library('session');
 		$this->ci->load->database();
 		$this->ci->load->model('tank_auth/users');
+        $this->ci->load->library('Logger');
 
 		// Try to autologin
 		$this->autologin();
@@ -88,6 +89,17 @@ class Tank_auth
 									$user->id,
 									$this->ci->config->item('login_record_ip', 'tank_auth'),
 									$this->ci->config->item('login_record_time', 'tank_auth'));
+
+                            // event logging
+                            $data = array(
+                                'logger_json_version' => '1',
+                                'action' => 'login',
+                                'value' => 'success',
+                                'payload' => array(
+                                    'userid' => $user->id
+                                )
+                            );
+                            Logger::log(json_encode($data));
 							return TRUE;
 						}
 					}
@@ -100,6 +112,16 @@ class Tank_auth
 				$this->error = array('login' => 'auth_incorrect_login');
 			}
 		}
+        // event logging
+        $data = array(
+            'logger_json_version' => '1',
+            'action' => 'login',
+            'value' => 'failed',
+            'payload' => array(
+                'userid' => $user->id
+            )
+        );
+        Logger::log(json_encode($data));
 		return FALSE;
 	}
 
