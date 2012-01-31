@@ -53,7 +53,7 @@ class game extends CI_Controller {
     public function teams(){
         $this->table->set_heading(
             array('data' => 'Avatar'),
-            array('data' => 'Squad', 'class' => 'sortable', 'class' => "medium_width_column"),
+            array('data' => 'Team', 'class' => 'sortable', 'class' => "medium_width_column"),
             array('data' => 'Size', 'class' => 'sortable')
         );
 

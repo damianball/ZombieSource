@@ -1,20 +1,20 @@
 <?php 
 
 class DatastoreException extends Exception{
-    public function __construct($message, $code=null, $previous=null) {
-        parent::__construct($message, $code, $previous);
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
     }
 }
 
 class PlayerNotMemberOfAnyTeamException extends Exception{
-    public function __construct($message, $code=null, $previous=null) {
-        parent::__construct($message, $code, $previous);
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
     }
 }
 
 class PlayerMemberOfTeamException extends Exception{
-    public function __construct($message, $code=null, $previous=null) {
-        parent::__construct($message, $code, $previous);
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
     }
 }
 ?>

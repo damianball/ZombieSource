@@ -356,18 +356,14 @@ background-image: linear-gradient(top, #333333, #222222);
 /*styles for list of team members */
 
 #teamlist{
-  width: auto;
+  width: 300px;
   height: auto;
   float: right;
   margin-top: -200px;
 }
 
 .team_member{
-  float: left;
-}
-
-.team_member{
-  float: left;
+  clear: left;
 }
 
 .team_member_attribute{
@@ -375,7 +371,7 @@ background-image: linear-gradient(top, #333333, #222222);
 }
 
 #team_member_name{
-  font-size: 30px;
+  font-size: 20px;
   margin: 10px;
 }
 
