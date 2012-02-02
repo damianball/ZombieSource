@@ -14,10 +14,10 @@
   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
  </head>
   <body>
-    <div class="topbar"> <?= $top_bar; ?></div>
+    <div class="topbar"> <?php echo $top_bar; ?></div>
     <div class="container">
-      <div class="content"> <?= $content_body; ?> </div>
+      <div class="content"> <?php echo $content_body; ?> </div>
     <div>
-    <?= $footer; ?>
+    <?php echo $footer; ?>
   </body>
 </html>
