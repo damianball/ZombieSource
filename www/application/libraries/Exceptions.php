@@ -17,4 +17,23 @@ class PlayerMemberOfTeamException extends Exception{
         parent::__construct($message, $code);
     }
 }
+
+class PlayerDoesNotExistException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class IllegalFunctionResultException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class ClassCreationException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 ?>

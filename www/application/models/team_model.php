@@ -24,10 +24,16 @@ class Team_model extends CI_Model{
     }
 
     //hack from chandler, @damian will want to rewrite
-    public function getAllTeams(){
-        $query = $this->db->query('SELECT id FROM team');
-        $result = $query->result_array();
-        return $result;
+    public function getAllTeamIDsByGameID($gameid){
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('gameid',$gameid);
+        $query = $this->db->get();
+        $teamidArray = array();
+        foreach($query->result() as $row){
+            $teamidArray[] = $row->id;
+        }
+        return $teamidArray;
     }
 
     public function createTeam($name, $gameid){
