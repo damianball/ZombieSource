@@ -14,29 +14,36 @@
               <input type="text" name="human_code" value="<?php echo set_value('human_code'); ?>"/>
             </div>
         </div> 
-      
-        <div id = "feed_friends"> Feed friends (optional)  </div>
-         <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend1'); ?>
-              <input type="text" name="friend1" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-        </div> 
-         <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend2'); ?>
-              <input type="text" name="friend2" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-         </div>         
           <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend3'); ?>
-              <input type="text" name="friend3" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-         </div>  
+            <label>How many hours ago did this tag take place? (optional) </label>
+            <div class="input" >
+               <?php echo form_error('offset_claim'); ?>
+                <select name = "offset_claim">
+                    <option></option>
+                    <option value = "1800" > 0.5</option>
+                    <option value = "3600" >1.0</option>
+                    <option value = "5400" >1.5</option>
+                    <option value = "7200" >2.0</option>
+                    <option value = "9000" >2.5</option>
+                    <option value = "10800" >3.0</option>
+                    <option value = "12600" >3.5</option>
+                    <option value = "14400" >4.0</option>
+                </select>
+          </div>
+        </div>
+        <div id = "feed_friends"> Feed friends (optional)  </div>
+        <?php
+            for($i = 1; $i <= $max_feeds; $i++){
+                echo '<div class="clearfix">';
+                echo '<label>Zombie Friend '.$i.'</label>';
+                echo '<div class="input">';
+                echo form_error('zombie_friend_'.$i);
+                echo '<input type="text" name="zombie_friend_'.$i.'" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" value="'.set_value('zombie_friend_'.$i).'" data-source='.$zombie_list.'>';
+                echo '</div>';
+                echo '</div>';
+            }
+
+        ?>
         <div class="actions">
           <input type="submit" value = "Submit kill" class = "btn success"/></form> 
         </div>

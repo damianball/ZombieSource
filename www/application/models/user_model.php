@@ -31,4 +31,19 @@ class User_model extends CI_Model{
             throw new UnexpectedValueException('userid cannot be null');
         }
     }
+
+    public function getUserIDByUsername($username){
+        if($username != null){
+            $this->db->select('id');
+            $this->db->like('username', $username);
+            $query = $this->db->get($this->table_name);
+            if ($query->num_rows() == 1){
+                return $query->row()->id;
+            } else {
+                return NULL;
+            }
+        } else {
+            throw new UnexpectedValueException('username cannot be null');
+        }
+    }
 }

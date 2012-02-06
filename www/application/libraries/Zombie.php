@@ -23,7 +23,31 @@ class Zombie extends Player implements IPlayer{
 
     // MOVE TO ZOMBIE
     public function secondsSinceLastFeed(){
-      return 12000;
+        //check model
+        $this->ci->load->model('Feed_model');
+        $utcTime = null;
+        try{
+            $feedid = $this->ci->Feed_model->getMostRecentFeedIDByPlayerID($this->getPlayerID());
+            $this->ci->load->library('FeedCreator');
+            $feed = $this->ci->feedcreator->getFeedByFeedID($feedid);
+            $utcTime = $feed->getFeedUTCDateTime();
+        } catch (PlayerDoesNotHaveAnyValidFeedsException $e){
+            //if none, check for tag
+            $this->ci->load->helper('tag_helper');
+            $tagid = getInitialTagIDByPlayer($this);
+            if($tagid){
+                $this->ci->load->library('TagCreator');
+                $tag = $this->ci->tagcreator->getTagByTagID($tagid);
+                $utcTime = $tag->getTagDateTimeClaimed();
+            }
+        }
+        
+        if($utcTime){
+            $this->ci->load->helper('date_helper');
+            $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
+            
+            return getTimeStringFromSeconds($seconds);
+        }
     }
     // MOVE TO ZOMBIE
     public function getKills(){
@@ -44,6 +68,13 @@ class Zombie extends Player implements IPlayer{
             return true;
         }
         return false;
+    }
+
+    public function registerTag($humanCode, $claimed_tag_time_offset = null, $long = null, $lat = null){
+        $this->ci->load->model('Tag_model','',true);
+        
+        $tagid = $this->ci->Tag_model->storeNewTag($taggeeid, $this->getPlayerID(), $claimed_tag_time_offset, $long, $lat);
+        return $tagid;
     }
 
 }

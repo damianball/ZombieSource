@@ -22,6 +22,23 @@ function playerExistsByPlayerID($playerid){
     return TRUE;
 }
 
+function playerExistsWithHumanCodeByGameID($human_code, $gameid){
+    $CI =& get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    try{
+        $CI->Player_model->getPlayerIDByHumanCodeGameID($human_code,$gameid);
+        return true;
+    } catch (InvalidHumanCodeException $e){
+        return false;
+    }
+}
+
+function getPlayerIDByHumanCodeGameID($human_code, $gameid){
+    $CI =& get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    return $CI->Player_model->getPlayerIDByHumanCodeGameID($human_code,$gameid);
+}
+
 // @TODO: Decide how to handle PlayerDoesNotExist...
 function getPlayerIDByUserIDGameID($userid, $gameid){
     $CI = & get_instance();
@@ -74,6 +91,7 @@ function getPrivatePlayerProfileDataArray($player){
     $data['gravatar_email'] = $player->getData('gravatar_email');
     $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
+    $data['status'] = $player->getStatus();
     return $data;
 }
 
@@ -84,14 +102,13 @@ function getPublicPlayerProfileDataArray($player){
 
     $data = array();
     $data['username'] = $player->getUser()->getUsername();
-    $data['email'] = $player->getUser()->getEmail();
     $data['age'] = $player->getData("age");
     $data['gender'] = $player->getData("gender");
     $data['major'] = $player->getData("major");
     $data['profile_pic_url'] = getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
     $data['gravatar_email'] = $player->getData('gravatar_email');
-    $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
+    $data['status'] = $player->getPublicStatus();
     return $data;
 }
 

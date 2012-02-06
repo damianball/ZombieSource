@@ -15,6 +15,22 @@ class Player_model extends CI_Model{
     function __construct(){
         parent::__construct();
     }
+
+    public function getPlayerIDByHumanCodeGameID($human_code, $gameid){
+        $this->db->select('playerid');
+        $this->db->from('player_data');
+        $this->db->join('player', 'player_data.playerid = player.id');
+        $this->db->join('game', 'player.gameid = game.id');
+        $this->db->where('game.id',$gameid);
+        $this->db->where('player_data.name','human_code');
+        $this->db->where('player_data.value',$human_code);
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new InvalidHumanCodeException('Did not find a playerid for human_code '.$human_code.' and gameid'.$gameid);
+        }
+        
+        return $query->row()->playerid;
+    }
     
     public function playerExistsByPlayerID($playerid){
         $this->db->select('id');

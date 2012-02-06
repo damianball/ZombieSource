@@ -453,12 +453,10 @@ background-image: linear-gradient(top, #333333, #222222);
   line-height: 36px;
   font-size: 22px;
   }
-  #gravatar a:link{
-    color: #286F8D;
-  }
 
   #edit_profile{
-    float: right;
+    clear: both;
+    margin: 5px;
   }
 
   #human_code{
