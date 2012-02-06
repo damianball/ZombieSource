@@ -16,27 +16,18 @@
         </div> 
       
         <div id = "feed_friends"> Feed friends (optional)  </div>
-         <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend1'); ?>
-              <input type="text" name="friend1" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-        </div> 
-         <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend2'); ?>
-              <input type="text" name="friend2" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-         </div>         
-          <div class="clearfix">
-            <label>Username</label>
-            <div class="input">
-              <?php echo form_error('friend3'); ?>
-              <input type="text" name="friend3" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
-            </div>
-         </div>  
+        <?php
+            for($i = 1; $i <= $max_feeds; $i++){
+                echo '<div class="clearfix">';
+                echo '<label>Zombie Friend '.$i.'</label>';
+                echo '<div class="input">';
+                echo form_error('zombie_friend_'.$i);
+                echo '<input type="text" name="zombie_friend_'.$i.'" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" value="'.set_value('zombie_friend_'.$i).'" data-source='.$zombie_list.'>';
+                echo '</div>';
+                echo '</div>';
+            }
+
+        ?>
         <div class="actions">
           <input type="submit" value = "Submit kill" class = "btn success"/></form> 
         </div>

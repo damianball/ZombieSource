@@ -1,7 +1,7 @@
 <div class = "row" >
    <div class="main">
   <div id = "player_status" class = "alert-message warning"> 
-    HUMAN 
+    <?php echo $status; ?> 
   </div>
 
   <div id = "gravatar"> 

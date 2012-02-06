@@ -6,7 +6,7 @@ function getGravatarHTML($email, $default, $size){
         return build_gravatar($email, $size, 'identicon', 'x', true);
     }
     else{
-        return build_gravatar(md5($default), $size, 'identicon', 'x', true);
+        return build_gravatar($default, $size, 'identicon', 'x', true);
     }
 }
 

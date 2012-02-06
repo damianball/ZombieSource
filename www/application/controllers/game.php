@@ -119,6 +119,11 @@ class game extends CI_Controller {
             $this->load->view('layouts/game_layout', $layout_data); 
         } else {
             $zombie = $player;
+
+            $max_feeds = 3; // @TODO: hard coded for now
+            for($i = 1; $i <= $max_feeds; $i++){
+                $this->form_validation->set_rules('zombie_friend_'.$i, 'Zombie Friend '.$i, 'trim|xss_clean|min_length[4]|callback_validate_username');
+            }
             $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[5]|max_length[5]|callback_validate_human_code');
             $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
             // on success, try to log the tag
@@ -134,33 +139,89 @@ class game extends CI_Controller {
                     if(is_a($player, 'Human') && $player->isActive()){
                         $human = $player;
                         try{
-                            $this->load->model('Tag_model');
-                            $tagid = $this->Tag_model->storeNewTag($human->getPlayerID(), $zombie->getPlayerID(), $claimed_tag_time_offset, null, null);
-                            if($tagid){
+                            $this->load->library('TagCreator');
+                            $tag = $this->tagcreator->getNewTag($human, $zombie, $claimed_tag_time_offset, $long = null, $lat = null);
+                            if($tag){
                                 // remove human from any teams
-                                $human->leaveCurrentTeam();
+                                // was human on team?
+                                if($human->isMemberOfATeam()){
+                                    $human->leaveCurrentTeam();
+                                }
+                                
+                                // feed the tagger
+                                $this->load->library('FeedCreator');
+                                $feed = $this->feedcreator->getNewFeed($zombie, $tag, null);
+
+                                // feed friends
+                                $this->load->helper('user_helper');
+                                for($i = 1; $i <= $max_feeds; $i++){
+                                    if(!$this->input->post('zombie_friend_'.$i) == ''){
+                                        $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
+                                        if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
+                                            $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, GAME_KEY);
+                                            if(is_a($friend, 'Zombie') && $friend->isActive()){
+                                                $feed = $this->feedcreator->getNewFeed($friend, $tag, null);
+                                            }
+                                        }
+                                    }
+                                }
                             }
+                            // @TODO: a message would probably be nice :-)
                             redirect('game');
                         } catch (DatastoreException $e){
                             $form_error = $e->getMessage();
                         }
                     } else {
                         // PLAYER IS NOT A HUMAN OR ACTIVE
+                        $this->loadGenericMessage('Cannot tag player with human code: '.$human_code);
                     }
                 } else {
                     // HUMAN CODE DOES NOT EXIST ... NOW WHAT?
+                    $this->loadGenericMessage('Human code does not exist: '.$human_code);
                 }
+            } else {
+                $data['form_error'] = $form_error;
+                $data['zombie_list'] = getActiveZombiesString();
+                $data['max_feeds'] = $max_feeds;
+    
+                //display the regular page, with errors
+                $layout_data['active_sidebar'] = 'logkill';
+                $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+                $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
+                $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+                $this->load->view('layouts/game_layout', $layout_data);
             }
-            $data['form_error'] = $form_error;
-            $data['zombie_list'] = getActiveZombiesString();
-
-            //display the regular page, with errors
-            $layout_data['active_sidebar'] = 'logkill';
-            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
-            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-            $this->load->view('layouts/game_layout', $layout_data);
         }
+    }
+
+    private function loadGenericMessage($message){
+        $data = array("message" => $message);
+        $layout_data['active_sidebar'] = 'logkill';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',$data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/game_layout', $layout_data);
+    }
+
+    public function validate_human_code() {
+        $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');
+        return true;
+    }
+
+    public function validate_username($string){
+        $this->form_validation->set_message('validate_username', '%s not a valid zombie. :-(');
+        if($string == ''){
+            return true;
+        }
+        $this->load->helper('user_helper');
+        $userid = getUserIDByUsername($string);
+        if($userid){
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            if(is_a($player, 'Zombie') && $player->isActive()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function register_new_team(){
@@ -264,10 +325,5 @@ class game extends CI_Controller {
       $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
       $this->load->view('layouts/main', $layout_data); 
 
-    }
-
-    public function validate_human_code() {
-        $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');
-        return true;
     }
 }

@@ -91,6 +91,7 @@ function getPrivatePlayerProfileDataArray($player){
     $data['gravatar_email'] = $player->getData('gravatar_email');
     $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
+    $data['status'] = $player->getStatus();
     return $data;
 }
 
@@ -101,14 +102,13 @@ function getPublicPlayerProfileDataArray($player){
 
     $data = array();
     $data['username'] = $player->getUser()->getUsername();
-    $data['email'] = $player->getUser()->getEmail();
     $data['age'] = $player->getData("age");
     $data['gender'] = $player->getData("gender");
     $data['major'] = $player->getData("major");
     $data['profile_pic_url'] = getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
     $data['gravatar_email'] = $player->getData('gravatar_email');
-    $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
+    $data['status'] = $player->getPublicStatus();
     return $data;
 }
 
