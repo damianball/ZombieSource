@@ -10,6 +10,8 @@
   ?>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src= <?php echo base_url("js/highcharts/highcharts.js") ?> ></script>
+  <script type="text/javascript" src="../js/bootstrap.js"></script>
+
  </head>
   <body>
     <div class="topbar"> <?php echo $top_bar; ?></div>

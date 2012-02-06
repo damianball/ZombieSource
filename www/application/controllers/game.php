@@ -134,12 +134,13 @@ class game extends CI_Controller {
                 $form_error = $e->getMessage();
             }
         }
-        $error_data['form_error'] = $form_error;
-        
+        $data['form_error'] = $form_error;
+        $data['zombie_list'] = $this->player->getActivePlayersString();
+
         //display the regular page, with errors
         $layout_data['active_sidebar'] = 'logkill';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/register_kill',$error_data, true);
+        $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/game_layout', $layout_data);     
     }

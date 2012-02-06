@@ -56,6 +56,34 @@ class Player{
       return $instance;
   }
 
+
+    public function getActivePlayersString(){
+        //this exposes human codes, only use in admin panel!!
+        $players = $this->ci->Player_model->getActivePlayers();
+        $my_string = "[";
+        foreach($players as $i){
+            $player = $this->getPlayerByPlayerID($i['id']);
+            $username = $player->getUser()->getUsername();
+            $humancode = $player->getHumanCode();
+            $my_string .= "\"$username -- $humancode\",";
+        }
+        $my_string .= "\"\"]";
+        return $my_string;
+    }
+
+    public function getActiveZombiesString(){
+        $players = $this->ci->Player_model->getActivePlayers();
+        $my_string = "[";
+        foreach($players as $i){
+            $player = $this->getPlayerByPlayerID($i['id']);
+            $username = $player->getUser()->getUsername();
+            $my_string .= "\"$username\",";
+        }
+        $my_string .= "\"\"]";
+        return $my_string;
+    }
+
+
   public function getDataArray(){
       $data = array();
       $data['username'] = $this->getUser()->getUsername();
@@ -235,4 +263,17 @@ class Player{
       }
       return $url;
   }
+
+  public function array_to_string($array){
+    $my_string = "[";
+    foreach($array as $i){
+        $player = $this->player->getPlayerByPlayerID($i['id']);
+        $username = $player->getUser()->getUsername();
+        $humancode = $player->$this->getHumanCode();
+        $my_string .= "\"$username -- $humancode\",";
+    }
+    $my_string .= "\"\"]";
+    return $my_string;
+  }
+
 }
