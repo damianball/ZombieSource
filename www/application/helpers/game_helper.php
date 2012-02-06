@@ -17,4 +17,30 @@ function getActivePlayers($gameid){
     return $playerArray;
 }
 
+function getPublicActiveZombies(){
+    $players = getActivePlayers(GAME_KEY);
+    $active_zombies =  Array();
+    foreach($players as $player){
+        if(is_a($player, 'Zombie') && $player->isActive()){
+            if(is_a($player, 'OriginalZombie') && !$player->isPublicActive()){
+                continue;
+            }
+            $active_zombies[] = $player;
+        }
+    }
+    return $active_zombies;
+}
+
+
+function getActiveZombiesString(){
+    $zombies = getPublicActiveZombies();
+    $my_string = "[";
+    foreach($zombies as $zombie){
+        $username = $zombie->getUser()->getUsername();
+        $my_string .= "\"$username\",";
+    }
+    $my_string .= "\"\"]";
+    return $my_string;
+}
+
 ?>

@@ -32,7 +32,7 @@ class Zombie extends Player implements IPlayer{
     }
 
     public function isActive(){
-        if(!isStarved() && parent::isActive()){
+        if(!$this->isStarved() && parent::isActive()){
             return true;
         }
         return false;
