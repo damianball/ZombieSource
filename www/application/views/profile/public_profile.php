@@ -1,6 +1,14 @@
 <div class = "row" >
    <div class="main">
-  <div id = "player_status" class = "alert-message warning"> 
+  <div id = "player_status" class = "alert-message
+   <?php 
+    if($status == 'zombie'){
+      echo "danger";
+    }else{
+      echo "warning";
+    }
+    ?>
+    "> 
     <?php echo $status; ?> 
   </div>
 

@@ -1,6 +1,7 @@
 
   <div id = "game_panel">
-  asdfasd
+  Moderators, this section is currently not finished : / The only thing you can do is search for a player and revert a tag. Which was what we decided 
+  was the most important setting to get pushed sunday night.
   </div>
   <div class = "tinyline"></div>
   <div id = "player_panel">
