@@ -12,7 +12,7 @@
             </div>
             <div id = "homepage_data">
                <div id = "graph2" class = "homepage_graph">
-                  <span style = "font-size: 50px;"><? echo $count; ?> </span>
+                  <span style = "font-size: 50px;"><?php echo $count; ?> </span>
                </div>
                <div id = "graph1" class = "homepage_graph"></div>
             </div>
@@ -83,24 +83,24 @@
             data: [
                 {
                   name: 'Male',    
-                  y: <? echo $male; ?>,
+                  y: <?php echo $male; ?>,
                   color: "#39869B"
 
                 },
                {
                   name: 'Female',    
-                  y: <? echo $female; ?>,
+                  y: <?php echo $female; ?>,
                   color: "#46A1B9"
 
                },
                {
                   name: 'Other',    
-                  y: <? echo $other; ?>,
+                  y: <?php echo $other; ?>,
                   color: "#7CBBCF"
                },
                {
                   name: 'No Response',    
-                  y: <? echo $noresponse; ?>,
+                  y: <?php echo $noresponse; ?>,
                   color: "#B5D4E0"
 
                }

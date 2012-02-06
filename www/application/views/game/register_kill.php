@@ -1,8 +1,7 @@
-      <h2> Coming Soon</h2>
 
 
       <h2> Register a Kill </h2>
-<!--         <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
+         <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
              echo form_open($this->uri->uri_string());
          ?>
 
@@ -21,23 +20,29 @@
             <label>Username</label>
             <div class="input">
               <?php echo form_error('friend1'); ?>
-              <input type="text" name="friend1" value="<?php echo set_value('friend1'); ?>"/>
+              <input type="text" name="friend1" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
             </div>
         </div> 
          <div class="clearfix">
             <label>Username</label>
             <div class="input">
               <?php echo form_error('friend2'); ?>
-              <input type="text" name="friend2" value="<?php echo set_value('friend2'); ?>"/>
+              <input type="text" name="friend2" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
             </div>
          </div>         
           <div class="clearfix">
             <label>Username</label>
             <div class="input">
               <?php echo form_error('friend3'); ?>
-              <input type="text" name="friend3" value="<?php echo set_value('friend3'); ?>"/>
+              <input type="text" name="friend3" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $zombie_list?>'>
             </div>
-         </div>   -->  
-<!--         <div class="actions">
+         </div>  
+        <div class="actions">
           <input type="submit" value = "Submit kill" class = "btn success"/></form> 
-      </div>    -->
+        </div>
+
+
+ <script type="text/javascript">
+  $('.typeahead').typeahead()
+  </script>
+

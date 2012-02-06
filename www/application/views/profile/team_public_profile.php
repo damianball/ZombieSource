@@ -4,13 +4,13 @@
         echo $team_profile_buttons;
         echo $team_edit_button;
       ?>
-      <? echo $profile_pic_url ?> 
+      <?php echo $profile_pic_url ?> 
 
        <div id = "teamlist">
       <?php
       foreach($members_list as $member){          
-        $team_member_photo = $member->getGravatarHTML(50);      
-        $team_member_name = $member->getLinkToProfile();
+        $team_member_photo = getGravatarHTML($member->getData('gravatar_email'), $member->getUser()->getEmail(), 50);      
+        $team_member_name = getHTMLLinkToProfile($member);
         echo "<div class = \"team_member\">
                   <div id = \"team_member_photo\" class = \"team_member_attribute\">
                       $team_member_photo          
@@ -24,10 +24,10 @@
       ?>
    </div>
     <div class = "line"> 
-      Name: <span class = "profile_data_item"> <? echo $team_name; ?> </span>
+      Name: <span class = "profile_data_item"> <?php echo $team_name; ?> </span>
     </div>
     <div class = "line"> 
-      description: <span class = "profile_data_item"> <? echo $description; ?> </span>
+      description: <span class = "profile_data_item"> <?php echo $description; ?> </span>
     </div>    
    </div>
 

@@ -10,20 +10,22 @@
   ?>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src= <?php echo base_url("js/highcharts/highcharts.js") ?> ></script>
+  <script type="text/javascript" src="../js/bootstrap.js"></script>
+
  </head>
   <body>
-    <div class="topbar"> <?= $top_bar; ?></div>
+    <div class="topbar"> <?php echo $top_bar; ?></div>
     <div class="container">
       <div class = "leftnav"> 
        <div class="game_nav_options"> 
-           <div class = "navitem" <?= ($active_sidebar == 'playerlist' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game"); ?> ">Players</a> </div>
-           <div class = "navitem" <?= ($active_sidebar == 'teamlist' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/teams"); ?> ">Teams</a> </div>
-           <div class = "navitem" <?= ($active_sidebar == 'logkill' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
-           <div class = "navitem" <?= ($active_sidebar == 'stats' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game/stats"); ?> ">Game stats</a> </div>
+           <div class = "navitem" <?php echo ($active_sidebar == 'playerlist' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game"); ?> ">Players</a> </div>
+           <div class = "navitem" <?php echo ($active_sidebar == 'teamlist' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/teams"); ?> ">Teams</a> </div>
+           <div class = "navitem" <?php echo ($active_sidebar == 'logkill' ? 'id="selected"' : '') ?>><a href = "<?php echo site_url("game/register_kill"); ?> ">Register Kill</a> </div>
+           <div class = "navitem" <?php echo ($active_sidebar == 'stats' ? 'id="selected"' : '') ?>> <a href = "<?php echo site_url("game/stats"); ?> ">Game stats</a> </div>
        </div>
       </div>
-      <div class="content"> <?= $content_body; ?> </div>
+      <div class="content"> <?php echo $content_body; ?> </div>
     <div>
-    <?= $footer; ?>
+    <?php echo $footer; ?>
   </body>
     </html>

@@ -63,6 +63,39 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8000', endColorstr='#FF4500', GradientType=0);
   }
 
+
+  .btn.darkgreen {
+  background-color: hsl(215, 38%, 30%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="hsl(215, 38%, 50%)", endColorstr="hsl(215, 38%, 30%)");
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(hsl(215, 38%, 50%)), to(hsl(215, 38%, 30%)));
+  background-image: -moz-linear-gradient(top, hsl(215, 38%, 50%), hsl(215, 38%, 30%));
+  background-image: -ms-linear-gradient(top, hsl(215, 38%, 50%), hsl(215, 38%, 30%));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, hsl(215, 38%, 50%)), color-stop(100%, hsl(215, 38%, 30%)));
+  background-image: -webkit-linear-gradient(top, hsl(215, 38%, 50%), hsl(215, 38%, 30%));
+  background-image: -o-linear-gradient(top, hsl(215, 38%, 50%), hsl(215, 38%, 30%));
+  background-image: linear-gradient(hsl(215, 38%, 50%), hsl(215, 38%, 30%));
+  border-color: hsl(215, 38%, 30%) hsl(215, 38%, 30%) hsl(215, 38%, 25%);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/*  TODO
+  .btn.anothercolor {
+  background-color: #FF4500;
+  background-image: -webkit-linear-gradient(top, #FF8000, #FF4500);
+
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#FF4500));
+  background-image: -moz-linear-gradient(top, #FF8000, #FF4500);
+  background-image: -ms-linear-gradient(top, #FF8000, #FF4500);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FF8000), color-stop(100%, #FF4500));
+  background-image: -o-linear-gradient(top, #FF8000, #FF4500);
+  background-image: linear-gradient(top, #FF8000, #FF4500);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8000', endColorstr='#FF4500', GradientType=0);
+  }*/
+
   /* red waiver reminder banner */
   .alert-message.info{
   background-color: #0064CD;
@@ -497,6 +530,33 @@ background-image: linear-gradient(top, #333333, #222222);
   font-size: 30px;
 }
 
+  /*================================================
+  #
+  #    admin
+  #
+  #=================================================*/
+
+  .control_item{
+    margin: 15px;
+  }
+ #left_control_items{
+    float: left;
+    margin-right: 100px;
+  }
+
+  #right_control_items{
+/*    float: left;
+*/  }
+
+  #left_manage{
+    width: 110px;
+    font-size: 10px;
+
+  }
+  #right_manage{
+    width: 150px;
+    font-size: 10px;
+  }
 
   /*================================================
   #

@@ -8,10 +8,12 @@ class game extends CI_Controller {
             redirect('/auth/login');
         }
         $this->load->model('Player_model','',TRUE);
-        $this->load->model('Team_model','',TRUE);
-        $this->load->library('player', null);
-        $this->load->library('team', null);
-
+        $this->load->library('PlayerCreator', null);
+        $this->load->library('TeamCreator', null);
+        $this->load->helper('game_helper');
+        $this->load->helper('player_helper');
+        $this->load->helper('team_helper');
+        $this->load->helper('gravatar_helper');
     }
 
     public function index()
@@ -25,16 +27,16 @@ class game extends CI_Controller {
         array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
-        $players = $this->Player_model->getActivePlayers();
-        foreach($players as $i){
-          $player = $this->player->getPlayerByPlayerID($i['id']);
-          $row = array(
-                       $player->getGravatarHTML(50),
-                       $player->getLinkToProfile(),
-                       $player->getLinkToTeam(),
-                       $player->getStatus(),
-                       $player->getKills(),
-                       $player->TimeSinceLastFeed());
+        $players = getActivePlayers(GAME_KEY);
+        foreach($players as $player){
+            $row = array(
+                getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 50),
+                getHTMLLinkToProfile($player),
+                getHTMLLinkToPlayerTeam($player),
+                $player->getStatus(),
+                (is_a($player, 'Zombie') ? $player->getKills() : null),
+                (is_a($player, 'Zombie') ? $player->TimeSinceLastFeed() : null)
+            );
           $this->table->add_row($row);
         }
 
@@ -57,14 +59,14 @@ class game extends CI_Controller {
             array('data' => 'Size', 'class' => 'sortable')
         );
 
-        $teams = $this->Team_model->getAllTeams();
-        foreach($teams as $i){
-          $team = $this->team->getTeamByTeamID($i['id']);
-          $row = array(
-                       $team->getGravatarHTML(50),
-                       $team->getLinkToProfile(),
-                       $team->getTeamSize());
-          $this->table->add_row($row);
+        $teams = getAllTeamsByGameID(GAME_KEY);
+        foreach($teams as $team){
+            $row = array(
+                getGravatarHTML($team->getData('gravatar_email'), $team->getData('name'), 50),
+                getHTMLLinkToTeamProfile($team),
+                $team->getTeamSize()
+            );
+            $this->table->add_row($row);
         }
 
         //-- Display Table
@@ -107,46 +109,48 @@ class game extends CI_Controller {
 
     public function register_kill() {
         $zombie_id = $this->tank_auth->get_user_id();
-        $this->load->model('Player_model','',TRUE);
-        if(!$this->Player_model->isActiveZombie($zombie_id)) {
-            $layout_data = array();
+        $player = $this->playercreator->getPlayerByUserIDGameID($zombie_id, GAME_KEY);
+        // if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
+        if(false){
+            $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('game/invalid_zombie','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
+                                                            array("message"=>"Not eligible to tag a kill"), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/game_layout', $layout_data); 
+        } else {
+
+            $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
+            $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+            // on success, try to log the tag
+            $form_error = '';
+            if ($this->form_validation->run()) {
+                //$this->load->library('Exceptions');
+                $human_code = $this->input->post('human_code');
+                $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
+                try{
+                    $this->load->model('Tag_model');
+                    $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
+                    redirect('game');
+                } catch (DatastoreException $e){
+                    $form_error = $e->getMessage();
+                }
+            }
+            $data['form_error'] = $form_error;
+            $data['zombie_list'] = getActiveZombiesString();
+
+            //display the regular page, with errors
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/game_layout', $layout_data);
-            // load view you aren't a zombie
-            exit();
         }
-
-        $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-        // on success, try to log the tag
-        $form_error = '';
-        if ($this->form_validation->run()) {
-            //$this->load->library('Exceptions');
-            $human_code = $this->input->post('human_code');
-            $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-            try{
-                $this->load->model('Tag_model');
-                $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
-                redirect('game');
-            } catch (DatastoreException $e){
-                $form_error = $e->getMessage();
-            }
-        }
-        $error_data['form_error'] = $form_error;
-        
-        //display the regular page, with errors
-        $layout_data['active_sidebar'] = 'logkill';
-        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/register_kill',$error_data, true);
-        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);     
     }
 
     public function register_new_team(){
       $userid = $this->tank_auth->get_user_id();
-      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
       $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
       $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
       $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
@@ -157,7 +161,7 @@ class game extends CI_Controller {
         $gravatar_email = $this->input->post('team_gravatar_email');
         $description = $this->input->post('description');
 
-        $team = $this->team->getNewTeam($name, $player->getPlayerID());      
+        $team = $this->teamcreator->createNewTeamWithPlayer($name, $player->getPlayerID());   
         $team->setData('gravatar_email', $gravatar_email);
         $team->setData('description', $description);
 
@@ -175,22 +179,22 @@ class game extends CI_Controller {
     public function join_team(){
       $data = array();
       $userid = $this->tank_auth->get_user_id();
-      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
       $data['teamid'] = $teamid;
-      $newTeam = $this->team->getTeamByTeamID($teamid);
-      $newTeamLink = $newTeam->getLinkToTeam();
+      $newTeam = $this->teamcreator->getTeamByTeamID($teamid);
+      $newTeamLink = getHTMLLinkToTeam($newTeam);
 
       if($player->isMemberOfATeam()){
-        $currentTeam = $this->team->getTeamByTeamID($player->getTeamID());
+        $currentTeam = $this->teamcreator->getTeamByTeamID($player->getTeamID());
         $player->leaveCurrentTeam();
-        $player->joinTeam($teamid);
-        $currentTeamLink = $currentTeam->getLinkToTeam();
+        $newTeam->addPlayer($player);
+        $currentTeamLink = getHTMLLinkToTeam($currentTeam);
         $data['message'] = "Successfully left " . $currentTeamLink . " and joined " . $newTeamLink;
         
       }else{
+        $newTeam->addPlayer($player);
         $data['message'] = "Successfully joined " . $newTeamLink;
-        $player->joinTeam($teamid);
       }
 
       $layout_data['active_sidebar'] = 'logkill';
@@ -207,12 +211,12 @@ class game extends CI_Controller {
 
     public function leave_team(){
       $userid = $this->tank_auth->get_user_id();
-      $player = $this->player->getPlayerByUserIDGameID($userid, GAME_KEY);
+      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
       $teamid = $this->input->post('teamid');
-      $team = $this->team->getTeamByTeamID($teamid);
-      $teamLink = $team->getLinkToTeam();
+      $team = $this->teamcreator->getTeamByTeamID($teamid);
+      $teamLink = getHTMLLinkToTeam($team);
       if($player->isMemberOfTeam($team->getTeamID())){
-        $player->leaveTeam($teamid);
+        $player->leaveCurrentTeam();
         $data['message'] = "Successfully left " . $teamLink;
       }else{
         $data['message'] = "You are not a member of " . $teamLink;
@@ -229,18 +233,5 @@ class game extends CI_Controller {
     public function validate_human_code() {
         $this->form_validation->set_message('validate_human_code', 'The %s field did not validate.');
         return true;
-    }
-
-    public function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-        $url = 'http://www.gravatar.com/avatar/';
-        $url .= md5( strtolower( trim( $email ) ) );
-        $url .= "?s=$s&d=$d&r=$r";
-        if ( $img ) {
-            $url = '<img src="' . $url . '"';
-            foreach ( $atts as $key => $val )
-                $url .= ' ' . $key . '="' . $val . '"';
-            $url .= ' />';
-        }
-        return $url;
     }
 }

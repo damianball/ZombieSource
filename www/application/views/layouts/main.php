@@ -12,12 +12,14 @@
   ?>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+
  </head>
   <body>
-    <div class="topbar"> <?= $top_bar; ?></div>
+    <div class="topbar"> <?php echo $top_bar; ?></div>
     <div class="container">
-      <div class="content"> <?= $content_body; ?> </div>
+      <div class="content"> <?php echo $content_body; ?> </div>
     <div>
-    <?= $footer; ?>
+    <?php echo $footer; ?>
   </body>
 </html>
