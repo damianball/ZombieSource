@@ -11,6 +11,13 @@ class Human extends Player implements IPlayer{
         $this->ci =& get_instance();
     }
 
+    public function isActive(){
+        if(parent::isActive()){
+            return true;
+        }
+        return false;
+    }
+
     // @Implements getStatus()
     public function getStatus(){
         return "human"; 

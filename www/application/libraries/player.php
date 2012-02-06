@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Player{
+
     private $playerid = null;
     private $ci = null;
     private $data = array();
@@ -15,6 +16,21 @@ class Player{
         } else {
             throw new ClassCreationException('cannot create new player with supplied arguments');
         }
+    }
+
+    public function isActive(){
+        //also should check if isInGame(GAME_KEY)
+        // dateremoved in the database
+
+        if(!$this->isBanned()){
+            return true;
+        }
+        return false;
+    }
+
+    // @TODO actually implement
+    public function isBanned(){
+        return false;
     }
 
     public function getUser(){

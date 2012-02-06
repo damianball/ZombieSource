@@ -21,4 +21,8 @@ class OriginalZombie extends Zombie implements IPlayer{
     public function getPublicStatus(){
         return "human"; 
     }
+
+    public function isPublicActive(){
+        return false;
+    }
 }

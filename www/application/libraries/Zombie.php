@@ -22,12 +22,28 @@ class Zombie extends Player implements IPlayer{
     }
 
     // MOVE TO ZOMBIE
-    public function TimeSinceLastFeed(){
-      return "N/A";
+    public function secondsSinceLastFeed(){
+      return 12000;
     }
     // MOVE TO ZOMBIE
     public function getKills(){
       return "N/A";
       // . ' hours ago'
     }
+
+    public function isActive(){
+        if(!isStarved() && parent::isActive()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isStarved(){
+        $secondsSinceFeed = $this->secondsSinceLastFeed();
+        if($secondsSinceFeed > 60*60*48 ){
+            return true;
+        }
+        return false;
+    }
+
 }

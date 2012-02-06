@@ -109,42 +109,43 @@ class game extends CI_Controller {
 
     public function register_kill() {
         $zombie_id = $this->tank_auth->get_user_id();
-        $this->load->model('Player_model','',TRUE);
-        if(!$this->Player_model->isActiveZombie($zombie_id)) {
-            $layout_data = array();
+        $player = $this->playercreator->getPlayerByUserIDGameID($zombie_id, GAME_KEY);
+        // if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
+        if(false){
+            $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('game/invalid_zombie','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
+                                                            array("message"=>"Not eligible to tag a kill"), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/game_layout', $layout_data); 
+        } else {
+
+            $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
+            $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+            // on success, try to log the tag
+            $form_error = '';
+            if ($this->form_validation->run()) {
+                //$this->load->library('Exceptions');
+                $human_code = $this->input->post('human_code');
+                $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
+                try{
+                    $this->load->model('Tag_model');
+                    $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
+                    redirect('game');
+                } catch (DatastoreException $e){
+                    $form_error = $e->getMessage();
+                }
+            }
+            $data['form_error'] = $form_error;
+            $data['zombie_list'] = getActiveZombiesString();
+
+            //display the regular page, with errors
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/game_layout', $layout_data);
-            // load view you aren't a zombie
-            exit();
         }
-
-        $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-        // on success, try to log the tag
-        $form_error = '';
-        if ($this->form_validation->run()) {
-            //$this->load->library('Exceptions');
-            $human_code = $this->input->post('human_code');
-            $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-            try{
-                $this->load->model('Tag_model');
-                $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
-                redirect('game');
-            } catch (DatastoreException $e){
-                $form_error = $e->getMessage();
-            }
-        }
-        $data['form_error'] = $form_error;
-        $data['zombie_list'] = $this->player->getActivePlayersString();
-
-        //display the regular page, with errors
-        $layout_data['active_sidebar'] = 'logkill';
-        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
-        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);     
     }
 
     public function register_new_team(){
