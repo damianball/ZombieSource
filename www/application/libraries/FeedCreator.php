@@ -15,13 +15,13 @@ class FeedCreator{
         return new Feed($feedid);
     }
 
-    public function getNewFeed($zombie, $tag, $isAdmin){
+    public function getNewFeed($zombie, $tag, $datecreated, $isAdmin){
         $this->ci->load->model('Feed_model');
         $tagid = null;
         if(is_a($tag,'Tag')){
             $tagid = $tag->getTagID();
         }
-        $feedid = $this->ci->Feed_model->storeNewFeed($zombie->getPlayerID(), $tagid, $adminAdded = null);
+        $feedid = $this->ci->Feed_model->storeNewFeed($zombie->getPlayerID(), $tagid, $datecreated, $adminAdded = null);
         return $this->getFeedByFeedID($feedid);
     }
 }

@@ -15,9 +15,9 @@ class TagCreator{
         return new Tag($tagid);
     }
 
-    public function getNewTag($human, $zombie, $claimedTimeOffset, $long = null, $lat = null){
+    public function getNewTag($human, $zombie, $dateclaimed, $long = null, $lat = null){
         $this->ci->load->model('Tag_model');
-        $tagid = $this->ci->Tag_model->storeNewTag($human->getPlayerID(), $zombie->getPlayerID(), $claimedTimeOffset, $long, $lat);
+        $tagid = $this->ci->Tag_model->storeNewTag($human->getPlayerID(), $zombie->getPlayerID(), $dateclaimed, $long, $lat);
         return $this->getTagByTagID($tagid);
     }
 }

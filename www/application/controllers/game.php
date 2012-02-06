@@ -24,7 +24,7 @@ class game extends CI_Controller {
         array('data' => 'Player', 'class' => 'sortable'),
         array('data' => 'Team', 'class' => 'sortable'),
         array('data' => 'Status', 'class' => 'sortable'),
-        array('data' => 'Kills', 'class' => 'sortable'),
+        //array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
         $players = getActivePlayers(GAME_KEY);
@@ -33,8 +33,8 @@ class game extends CI_Controller {
                 getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 50),
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
-                $player->getStatus(),
-                (is_a($player, 'Zombie') ? $player->getKills() : null),
+                $player->getPublicStatus(),
+                //(is_a($player, 'Zombie') ? $player->getKills() : null),
                 (is_a($player, 'Zombie') ? $player->secondsSinceLastFeed() : null)
             );
           $this->table->add_row($row);
@@ -140,17 +140,26 @@ class game extends CI_Controller {
                         $human = $player;
                         try{
                             $this->load->library('TagCreator');
-                            $tag = $this->tagcreator->getNewTag($human, $zombie, $claimed_tag_time_offset, $long = null, $lat = null);
+
+                            $dateclaimed = null;
+                            // generate time claimed offset
+                            $maxseconds = 14400;
+                            $minseconds = 0;
+                            if($claimed_tag_time_offset && $claimed_tag_time_offset != '' && $claimed_tag_time_offset >= $minseconds && $claimed_tag_time_offset <= $maxseconds){
+                                $dateclaimed = gmdate("Y-m-d H:i:s", time() - ($claimed_tag_time_offset));
+                            }
+
+                            $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
                             if($tag){
                                 // remove human from any teams
                                 // was human on team?
                                 if($human->isMemberOfATeam()){
                                     $human->leaveCurrentTeam();
                                 }
-                                
+
                                 // feed the tagger
                                 $this->load->library('FeedCreator');
-                                $feed = $this->feedcreator->getNewFeed($zombie, $tag, null);
+                                $feed = $this->feedcreator->getNewFeed($zombie, $tag, $dateclaimed, null);
 
                                 // feed friends
                                 $this->load->helper('user_helper');
@@ -160,7 +169,7 @@ class game extends CI_Controller {
                                         if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
                                             $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, GAME_KEY);
                                             if(is_a($friend, 'Zombie') && $friend->isActive()){
-                                                $feed = $this->feedcreator->getNewFeed($friend, $tag, null);
+                                                $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
                                             }
                                         }
                                     }

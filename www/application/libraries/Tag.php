@@ -20,4 +20,8 @@ class Tag{
     public function getTagID(){
         return $this->tagid;
     }
+
+    public function getTagDateTimeClaimed(){
+        return $this->ci->Tag_model->getData($this->tagid, 'datetimeclaimed');
+    }
 }

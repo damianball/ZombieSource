@@ -20,4 +20,8 @@ class Feed{
     public function getFeedID(){
         return $this->feedid;
     }
+
+    public function getFeedUTCDateTime(){
+        return $this->ci->Feed_model->getData($this->feedid, 'datecreated');
+    }
 }

@@ -22,7 +22,7 @@ function getPublicActiveZombies(){
     $active_zombies =  Array();
     foreach($players as $player){
         if(is_a($player, 'Zombie') && $player->isActive()){
-            if(is_a($player, 'OriginalZombie') && !$player->isPublicActive()){
+            if(is_a($player, 'OriginalZombie') && !$player->isExposed()){
                 continue;
             }
             $active_zombies[] = $player;
