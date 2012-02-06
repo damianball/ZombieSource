@@ -251,14 +251,25 @@ class game extends CI_Controller {
             $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
         
             if ($this->form_validation->run()) {
+				if($player->isMemberOfATeam()){
+					$currentTeam = $this->teamcreator->getTeamByTeamID($player->getTeamID());
+					$player->leaveCurrentTeam();
+					$currentTeamLink = getHTMLLinkToTeam($currentTeam);
+					$data['message'] = "Successfully left " . $currentTeamLink;
+				}
+			
                 // save the data
                 $name = $this->input->post('team_name');
                 $gravatar_email = $this->input->post('team_gravatar_email');
                 $description = $this->input->post('description');
             
-                $team = $this->teamcreator->createNewTeamWithPlayer($name, $player->getPlayerID());   
+                $team = $this->teamcreator->createNewTeamWithPlayer($name, $player);
+				$newTeamLink = getHTMLLinkToTeam($team);
                 $team->setData('gravatar_email', $gravatar_email);
                 $team->setData('description', $description);
+				
+				// @TODO: We should use these messages!
+				$data['message'] .= " and joined " . $newTeamLink;
             
                 redirect("team/".$team->getTeamID());
             }

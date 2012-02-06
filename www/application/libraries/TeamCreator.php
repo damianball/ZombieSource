@@ -18,6 +18,7 @@ class TeamCreator{
     // Change to createNewTeam
     // was getNewTeam
     public function createNewTeamWithPlayer($name, $player){
+		$this->ci->load->model('Team_model');
         $newTeam = null;
         $this->ci->db->trans_begin();
         try{
