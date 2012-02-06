@@ -110,6 +110,5 @@
       });
    });
   </script>
-  <script type="text/javascript" src="js/CountDown.js"></script>
 
 

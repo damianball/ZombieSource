@@ -14,7 +14,23 @@
               <input type="text" name="human_code" value="<?php echo set_value('human_code'); ?>"/>
             </div>
         </div> 
-      
+          <div class="clearfix">
+            <label>How many hours ago did this tag take place? (optional) </label>
+            <div class="input" >
+               <?php echo form_error('offset_claim'); ?>
+                <select name = "offset_claim">
+                    <option></option>
+                    <option value = "1800" > 0.5</option>
+                    <option value = "3600" >1.0</option>
+                    <option value = "5400" >1.5</option>
+                    <option value = "7200" >2.0</option>
+                    <option value = "9000" >2.5</option>
+                    <option value = "10800" >3.0</option>
+                    <option value = "12600" >3.5</option>
+                    <option value = "14400" >4.0</option>
+                </select>
+          </div>
+        </div>
         <div id = "feed_friends"> Feed friends (optional)  </div>
         <?php
             for($i = 1; $i <= $max_feeds; $i++){

@@ -1,12 +1,20 @@
 <div class = "row" >
    <div class="main">
-  <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn success"> 
-    Edit Profile
-  </a>
+     <div id = "player_status" class = "alert-message
+       <?php 
+        if($status == 'zombie'){
+          echo "danger";
+        }else{
+          echo "warning";
+        }
+        ?>
+    "> 
+    <?php echo $status; ?> 
+  </div>
+
   <div id = "gravatar"> 
     <?php echo $profile_pic_url ?></br>
-
-      Edit your profile to set your Gravatar
+   <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn success"> Edit Profile</a>  
   </div>
   <div class = "line"> 
     Username: <span class = "profile_data_item"> <?php echo $username; ?> </span>
