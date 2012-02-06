@@ -1,117 +1,75 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Team{
-  private $teamid = null;
-  private $ci = null;
+    private $teamid = null;
+    private $ci = null;
 
-  public function __construct()
-  {
-      $this->ci =& get_instance();
-      $this->ci->load->model('Team_model', '', true);
-      $this->ci->load->model('Player_team_model', '', true);
-      $this->ci->load->library('Player',null);
-  }
+    public function __construct($teamid)
+    {
+        $this->ci =& get_instance();
+        $this->ci->load->model('Team_model', '', true);
+        $this->ci->load->model('Player_team_model', '', true);
 
-  public function getTeamByTeamID($teamid){
-      if($teamid != null){
-          $instance = new self();
-          $instance->teamid = $teamid;
-          return $instance;
-      } else {
-          throw new Exception("Teamid cannot be null.");
-      }
-  }
-
-  public function getNewTeam($name, $playerid){
-    $instance = new self();
-    $instance->ci->db->trans_begin();
-    try{
-        $instance->teamid = $instance->ci->Team_model->createTeam($name, GAME_KEY);
-        $player = $instance->ci->player->getPlayerByPlayerID($playerid);
-        $player->joinTeam($instance->teamid);
-        $instance->ci->db->trans_commit();
-    } catch (Exception $e){
-        $instance->ci->db->trans_rollback();
-        throw new DatastoreException('Could not create new team: '.$e->getMessage());
+        // @TODO: Verify that the team exists before allowing construction to finish
+        if($teamid){
+            $this->teamid = $teamid;
+        } else {
+            throw new ClassCreationException("Teamid cannot be null.");
+        }
     }
-    return $instance;
-  }
 
-  public function getDataArray(){
-      $data = array();
-      $data['team_name'] = $this->getData('name');
-      $data['description'] = $this->getData('description');
-      $data['profile_pic_url'] = $this->getGravatarHTML();
-      $data['team_gravatar_email'] = $this->getData('gravatar_email');
-      $data['teamid'] = $this->getTeamID();
-
-      return $data;
-  }
-  public function getLinkToTeam(){
-        $teamid = $this->getTeamID();
-        $teamName = $this->getData('name');
-        $link = "<a href = \"" . site_url("/team/$teamid") .  "\"> $teamName </a>";
-        return $link; 
-  }
-  public function getLinkToProfile(){
-    $name = $this->getData('name');
-    $id = $this->getTeamID();
-    $link = "<a href = \"" . site_url("/team/$id") .  "\"> $name </a>";
-    return $link; 
-  }
-
-  public function getTeamSize(){
-      return $this->ci->Player_team_model->getCountOfPlayersByTeamID($this->getTeamID());
-  }
-
-  public function getArrayOfPlayersOnTeam(){
-      $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->getTeamID());
-      $playerArray = array();
-      for($i = 0; $i<count($playeridarray); $i++){
-          $playerArray[] = $this->ci->player->getPlayerByPlayerID($playeridarray[$i]);
-      }
-
-      return $playerArray;
-  }
-
-   public function totalTeamKills(){
-    return 10;
-  }
-
-  public function getTeamID(){
-    return $this->teamid;
-  }
-
-  public function getData($key){
-    return $this->ci->Team_model->getTeamData($this->getTeamID(), $key);
-  }
-
-  public function setData($key, $value){
-    $this->ci->Team_model->setTeamData($this->getTeamID(), $key, $value);
-  }
-
-  public function getGravatarHTML($size = 250){
-    $gravatar_email = $this->getData('gravatar_email');
-    $team_name = $this->getData('name');
-    if($gravatar_email && $gravatar_email != ''){
-      return $this->build_gravatar($gravatar_email, $size, 'identicon', 'x', true);
+    // MOVE THIS TO TEAM
+    // Needs to take a playerid
+    // Do proper game settings checks on size and such in this function
+    // was joinTeam
+    public function addPlayer($player){
+        if(!is_a($player,'Player')) throw new UnexpectedValueException("object is not a player");
+        try{
+            $currentTeam = $player->getTeamID();
+            //still in a team
+            throw new PlayerMemberOfTeamException('Cannot join a team in this game while still a member of another team.');
+        } catch (PlayerNotMemberOfAnyTeamException $e){
+    
+        }
+        $this->ci->load->model('Player_team_model');
+        $this->ci->Player_team_model->addPlayerToTeam($this->teamid, $player->getPlayerID());
     }
-    else{
-      return $this->build_gravatar(md5($team_name), $size, 'identicon', 'x', true);
+
+
+    public function getTeamSize(){
+        return $this->ci->Player_team_model->getCountOfPlayersByTeamID($this->teamid);
     }
-  }
 
-   public function build_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-      $url = 'http://www.gravatar.com/avatar/';
-      $url .= md5( strtolower( trim( $email ) ) );
-      $url .= "?s=$s&d=$d&r=$r";
-      if ( $img ) {
-          $url = '<img src="' . $url . '"';
-          foreach ( $atts as $key => $val )
-              $url .= ' ' . $key . '="' . $val . '"';
-          $url .= ' />';
-      }
-      return $url;
-  }
+    public function getArrayOfPlayersOnTeam(){
+        $this->ci->load->library('PlayerCreator');
+        $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->teamid);
+        $playerArray = array();
+        for($i = 0; $i<count($playeridarray); $i++){
+            $playerArray[] = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+        }
 
+        return $playerArray;
+    }
+
+    public function getTeamID(){
+        return $this->teamid;
+    }
+
+    public function getData($key){
+        return $this->ci->Team_model->getTeamData($this->teamid, $key);
+    }
+
+    public function setData($key, $value){
+        $this->ci->Team_model->setTeamData($this->teamid, $key, $value);
+    }
+
+    // Change to canPlayerEditTeam
+    // hand player object or id... not sure
+    public function canEditTeam($player){
+        /* @TODO Damian 1/30/11
+        This function should return true WHEN the player ($this->getPlayerID)
+        is the oldest player on a team OR if they have been in the team for 12 hours
+        */
+        return $player->isMemberOfTeam($this->teamid);
+    }
 }

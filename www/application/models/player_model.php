@@ -13,16 +13,24 @@ class Player_model extends CI_Model{
         $this->db->where('gameid',$gameid);
         $query = $this->db->get();
         if($query->num_rows() != 1){
-            throw new UnexpectedValueException('Did not find a playerid for userid '.$userid.' and gameid'.$gameid);
+            throw new PlayerDoesNotExistException('Did not find a playerid for userid '.$userid.' and gameid'.$gameid);
         }
         
         return $query->row()->id;
     }
 
-    public function getActivePlayers(){
-        $query = $this->db->query('SELECT id FROM player');
-        $result = $query->result_array();
-        return $result;
+    // @TODO: restrict active to not banned... probably need a column in the db for that
+    public function getActivePlayerIDsByGameID($gameid){
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('gameid',$gameid);
+        $query = $this->db->get();
+        
+        $playeridArray = array();
+        foreach($query->result() as $row){
+            $playeridArray[] = $row->id;
+        }
+        return $playeridArray;
     }
 
     public function getPlayerData($playerid, $name){
@@ -101,14 +109,14 @@ class Player_model extends CI_Model{
         return $count;
     }
         
-        // @TODO: write isActiveHuman
-        public function isActiveHuman($playerid){
-            
-        }
+    // @TODO: write isActiveHuman
+    public function isActiveHuman($playerid){
         
-        // @TODO: write isActiveZombie
-        public function isActiveZombie($playerid){
-            return true;
-        }
+    }
+    
+    // @TODO: write isActiveZombie
+    public function isActiveZombie($playerid){
+        return true;
+    }
 }
 ?>

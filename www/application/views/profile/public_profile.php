@@ -5,20 +5,20 @@
   </div>
 
   <div id = "gravatar"> 
-    <? echo $profile_pic_url ?> </br>
+    <?php echo $profile_pic_url ?> </br>
   </div>
   <div class = "line"> 
-    Username: <span class = "profile_data_item"> <? echo $username; ?> </span>
+    Username: <span class = "profile_data_item"> <?php echo $username; ?> </span>
   </div>
   <div class = "line"> 
-    Age: <span class = "profile_data_item"> <? echo $age; ?> </span>
+    Age: <span class = "profile_data_item"> <?php echo $age; ?> </span>
   </div>   <div class = "line"> 
-    Gender: <span class = "profile_data_item"> <? echo $gender; ?> </span>
+    Gender: <span class = "profile_data_item"> <?php echo $gender; ?> </span>
   </div>
   <div class = "line"> 
-    Major: <span class = "profile_data_item"> <? echo $major; ?> </span>
+    Major: <span class = "profile_data_item"> <?php echo $major; ?> </span>
   </div>
-  <div class = "line"> Team: <? echo $link_to_team; ?></div>
+  <div class = "line"> Team: <?php echo $link_to_team; ?></div>
 
    </div>
    <div class="sidebar">
