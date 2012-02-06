@@ -251,6 +251,7 @@ class game extends CI_Controller {
             $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
         
             if ($this->form_validation->run()) {
+				$data['message'] = '';
 				if($player->isMemberOfATeam()){
 					$currentTeam = $this->teamcreator->getTeamByTeamID($player->getTeamID());
 					$player->leaveCurrentTeam();
