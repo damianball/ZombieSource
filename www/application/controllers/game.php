@@ -35,7 +35,7 @@ class game extends CI_Controller {
                 getHTMLLinkToPlayerTeam($player),
                 $player->getStatus(),
                 (is_a($player, 'Zombie') ? $player->getKills() : null),
-                (is_a($player, 'Zombie') ? $player->TimeSinceLastFeed() : null)
+                (is_a($player, 'Zombie') ? $player->secondsSinceLastFeed() : null)
             );
           $this->table->add_row($row);
         }
@@ -108,10 +108,9 @@ class game extends CI_Controller {
     }
 
     public function register_kill() {
-        $zombie_id = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($zombie_id, GAME_KEY);
-        // if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
-        if(false){
+        $userid = $this->tank_auth->get_user_id();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
@@ -119,21 +118,37 @@ class game extends CI_Controller {
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/game_layout', $layout_data); 
         } else {
-
-            $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[9]|max_length[12]|callback_validate_human_code');
+            $zombie = $player;
+            $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[5]|max_length[5]|callback_validate_human_code');
             $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
             // on success, try to log the tag
             $form_error = '';
             if ($this->form_validation->run()) {
-                //$this->load->library('Exceptions');
                 $human_code = $this->input->post('human_code');
                 $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-                try{
-                    $this->load->model('Tag_model');
-                    $this->Tag_model->storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, null, null);
-                    redirect('game');
-                } catch (DatastoreException $e){
-                    $form_error = $e->getMessage();
+                if(playerExistsWithHumanCodeByGameID($human_code, GAME_KEY)){
+                    $playerid = getPlayerIDByHumanCodeGameID($human_code, GAME_KEY);
+
+                    // is the player an active human?
+                    $player = $this->playercreator->getPlayerByPlayerID($playerid);
+                    if(is_a($player, 'Human') && $player->isActive()){
+                        $human = $player;
+                        try{
+                            $this->load->model('Tag_model');
+                            $tagid = $this->Tag_model->storeNewTag($human->getPlayerID(), $zombie->getPlayerID(), $claimed_tag_time_offset, null, null);
+                            if($tagid){
+                                // remove human from any teams
+                                $human->leaveCurrentTeam();
+                            }
+                            redirect('game');
+                        } catch (DatastoreException $e){
+                            $form_error = $e->getMessage();
+                        }
+                    } else {
+                        // PLAYER IS NOT A HUMAN OR ACTIVE
+                    }
+                } else {
+                    // HUMAN CODE DOES NOT EXIST ... NOW WHAT?
                 }
             }
             $data['form_error'] = $form_error;
@@ -149,63 +164,84 @@ class game extends CI_Controller {
     }
 
     public function register_new_team(){
-      $userid = $this->tank_auth->get_user_id();
-      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-      $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
-      $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
-      $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
+        $userid = $this->tank_auth->get_user_id();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
 
-      if ($this->form_validation->run()) {
-        // save the data
-        $name = $this->input->post('team_name');
-        $gravatar_email = $this->input->post('team_gravatar_email');
-        $description = $this->input->post('description');
-
-        $team = $this->teamcreator->createNewTeamWithPlayer($name, $player->getPlayerID());   
-        $team->setData('gravatar_email', $gravatar_email);
-        $team->setData('description', $description);
-
-        redirect("team/".$team->getTeamID());
-      }
-
-      //display the regular page, with errors
-      $layout_data['active_sidebar'] = 'logkill';
-      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
-      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-      $this->load->view('layouts/main', $layout_data); 
+        if(!is_a($player,'Human')){
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
+                                            array("message" => "Sorry, zombies cannot do that"), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data); 
+        } else {
+        
+            $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
+            $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
+        
+            if ($this->form_validation->run()) {
+                // save the data
+                $name = $this->input->post('team_name');
+                $gravatar_email = $this->input->post('team_gravatar_email');
+                $description = $this->input->post('description');
+            
+                $team = $this->teamcreator->createNewTeamWithPlayer($name, $player->getPlayerID());   
+                $team->setData('gravatar_email', $gravatar_email);
+                $team->setData('description', $description);
+            
+                redirect("team/".$team->getTeamID());
+            }
+        
+            //display the regular page, with errors
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data);
+        } 
     }
 
     public function join_team(){
-      $data = array();
-      $userid = $this->tank_auth->get_user_id();
-      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-      $teamid = $this->input->post('teamid');
-      $data['teamid'] = $teamid;
-      $newTeam = $this->teamcreator->getTeamByTeamID($teamid);
-      $newTeamLink = getHTMLLinkToTeam($newTeam);
+        $data = array();
+        $userid = $this->tank_auth->get_user_id();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
 
-      if($player->isMemberOfATeam()){
-        $currentTeam = $this->teamcreator->getTeamByTeamID($player->getTeamID());
-        $player->leaveCurrentTeam();
-        $newTeam->addPlayer($player);
-        $currentTeamLink = getHTMLLinkToTeam($currentTeam);
-        $data['message'] = "Successfully left " . $currentTeamLink . " and joined " . $newTeamLink;
+        if(!is_a($player,'Human')){
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
+                                            array("message" => "Sorry, zombies cannot do that"), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data); 
+        } else {
+            $teamid = $this->input->post('teamid');
+            $data['teamid'] = $teamid;
+            $newTeam = $this->teamcreator->getTeamByTeamID($teamid);
+            $newTeamLink = getHTMLLinkToTeam($newTeam);
         
-      }else{
-        $newTeam->addPlayer($player);
-        $data['message'] = "Successfully joined " . $newTeamLink;
-      }
-
-      $layout_data['active_sidebar'] = 'logkill';
-      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
-      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-      $this->load->view('layouts/main', $layout_data); 
-
-      // @TODO: get old team
-
-      // @TODO: check for size limit on incoming team (game_setting)
+            if($player->isMemberOfATeam()){
+                $currentTeam = $this->teamcreator->getTeamByTeamID($player->getTeamID());
+                $player->leaveCurrentTeam();
+                $newTeam->addPlayer($player);
+                $currentTeamLink = getHTMLLinkToTeam($currentTeam);
+                $data['message'] = "Successfully left " . $currentTeamLink . " and joined " . $newTeamLink;
+              
+            }else{
+                $newTeam->addPlayer($player);
+                $data['message'] = "Successfully joined " . $newTeamLink;
+            }
+        
+            $layout_data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data); 
+        
+            // @TODO: get old team
+        
+            // @TODO: check for size limit on incoming team (game_setting)
+        }
 
     }
 

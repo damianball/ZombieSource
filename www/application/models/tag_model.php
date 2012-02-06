@@ -6,10 +6,44 @@ class Tag_model extends CI_Model{
         parent::__construct();
     }
 
-    public function storeNewTag($human_code, $zombie_id, $claimed_tag_time_offset, $long=null, $lat=null){
-        //$this->load->library('Exceptions');
-        //throw new Exception('Could not store tag.');
-        throw new DatastoreException('Could not store tag.');
+    public function storeNewTag($humanPlayerID, $zombiePlayerID, $claimed_tag_time_offset = null, $long = null, $lat = null){
+        if(!$humanPlayerID){
+            throw new UnexpectedValueException('human player id required');
+        }
+        if(!$zombiePlayerID){
+            throw new UnexpectedValueException('zombie player id required');
+        }
+
+        //date created
+        $datecreated = gmdate("Y-m-d H:i:s", time());
+
+        //date claimed
+        if($claimed_tag_time_offset) {
+            $dateclaimed = gmdate("Y-m-d H:i:s", time() - $claimed_tag_time_offset);
+        } else {
+            $dateclaimed = $datecreated;
+        }
+
+        //get new UUID
+        $query = $this->db->query('SELECT UUID() as "uuid"');
+        $uuid = $query->row()->{'uuid'};
+        $data = array(
+            'id' => $uuid,
+            'taggerid' => $zombiePlayerID,
+            'taggeeid' => $humanPlayerID,
+            'datetimecreated' => $datecreated,
+            'datetimeclaimed' => $dateclaimed,
+            'longitude' => $long,
+            'latitude' => $lat
+        );
+
+        // @TODO: check that game/name pair is unique
+        // @TODO: how do we know the query succeeded?
+        $this->db->insert($this->table_name,$data);
+
+        return $uuid;
+
+        //throw new DatastoreException('Could not store tag.');
     }
 
     // return true if the player has been tagged

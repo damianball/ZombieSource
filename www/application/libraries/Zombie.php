@@ -46,4 +46,11 @@ class Zombie extends Player implements IPlayer{
         return false;
     }
 
+    public function registerTag($humanCode, $claimed_tag_time_offset = null, $long = null, $lat = null){
+        $this->ci->load->model('Tag_model','',true);
+        
+        $tagid = $this->ci->Tag_model->storeNewTag($taggeeid, $this->getPlayerID(), $claimed_tag_time_offset, $long, $lat);
+        return $tagid;
+    }
+
 }
