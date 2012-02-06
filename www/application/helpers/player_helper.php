@@ -11,6 +11,17 @@ function userExistsInGame($userid, $gameid){
     return TRUE;
 }
 
+function playerExistsByPlayerID($playerid){
+    $CI = & get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    try{
+        $CI->Player_model->playerExistsByPlayerID($playerid);
+    } catch (PlayerDoesNotExistException $e) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 // @TODO: Decide how to handle PlayerDoesNotExist...
 function getPlayerIDByUserIDGameID($userid, $gameid){
     $CI = & get_instance();

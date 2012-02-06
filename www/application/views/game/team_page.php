@@ -14,7 +14,7 @@
     <div class = "team_box">
       Think you can do Better? </br>
     </div>
-      <a href = " <? echo site_url("team/new"); ?> " id = "create_new_team" class = "alert-message success"> Create New Team </a>
+      <a href = " <?php echo site_url("team/new"); ?> " id = "create_new_team" class = "alert-message success"> Create New Team </a>
 
   </div>
 

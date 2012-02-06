@@ -3,6 +3,7 @@
 class Player{
     private $playerid = null;
     private $ci = null;
+    private $data = array();
 
     public function __construct($playerid){
         $this->ci =& get_instance();
@@ -26,11 +27,15 @@ class Player{
     }
 
     public function getData($key){
-        return $this->ci->Player_model->getPlayerData($this->playerid, $key);
+        if(!array_key_exists($key,$this->data)){
+            $this->data[$key] = $this->ci->Player_model->getPlayerData($this->playerid, $key);
+        } 
+        return $this->data[$key];
     }
 
     public function saveData($key, $value){
         $this->ci->Player_model->setPlayerData($this->playerid, $key, $value);
+        $this->data[$key] = $value;
     }
     
     public function getPlayerID(){

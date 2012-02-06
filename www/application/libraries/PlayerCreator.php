@@ -12,15 +12,36 @@ class PlayerCreator{
 
     public function __construct(){
         $this->ci =& get_instance();
+        $this->ci->load->model('Player_model','',true);
+        $this->ci->load->helper('player_helper');
+        $this->ci->load->model('Tag_model','',true);
     }
 
     // MOVE TO PLAYER CREATOR
+    // was getNewPlayerByJoiningGame
+    public  function createPlayerByJoiningGame($userid, $gameid, $params){
+        if(!$userid || !$gameid){
+            throw new UnexpectedValueException('userid and gameid cannot be null');
+        }
+        $this->ci->load->model('Player_model','',TRUE);
+        $playerid = $this->ci->Player_model->createPlayerInGame($userid, $gameid);
+        $newPlayer = $this->getPlayerByPlayerID($playerid);
+        foreach($params as $key => $value){
+            $newPlayer->saveData($key, $value);
+        }
+        return $newPlayer;
+    }
+
+    // MOVE TO PLAYER CREATOR
+    // NEED TO CHECK IF THAT PLAYER EXISTS
     public function getPlayerByPlayerID($playerid){
-        if($playerid != null){
-            return new Human($playerid);
-        } else {
+        if(!$playerid){
             throw new Exception("Playerid cannot be null.");
         }
+        if(!playerExistsByPlayerID($playerid)){
+            throw new PlayerDoesNotExistException('Cannot create a player object for a player that does not exist. playerid: '.$playerid);
+        }
+        return $this->buildPlayerByStatusInGame($playerid);
     }
 
     // MOVE TO PLAYER CREATOR
@@ -37,21 +58,19 @@ class PlayerCreator{
             throw new PlayerDoesNotExistException('user does not exist in game');
         }
 
-        return new Human($playerid);
+        return $this->buildPlayerByStatusInGame($playerid);
     }
 
-    // MOVE TO PLAYER CREATOR
-    // was getNewPlayerByJoiningGame
-    public  function createPlayerByJoiningGame($userid, $gameid, $params){
-        if(!$userid || !$gameid){
-            throw new UnexpectedValueException('userid and gameid cannot be null');
+    private function buildPlayerByStatusInGame($playerid){
+        $player = null;
+        if($this->ci->Player_model->getPlayerData($playerid, 'original_zombie')){
+            $player = new OriginalZombie($playerid);
+        } else if ($this->ci->Tag_model->validTagExistsForPlayer($playerid)){
+            $player = new Zombie($playerid);
+        } else {
+            $player = new Human($playerid);
         }
-        $this->ci->load->model('Player_model','',TRUE);
-        $playerid = $this->ci->Player_model->createPlayerInGame($userid, $gameid);
-        $newPlayer = new Human($playerid);
-        foreach($params as $key => $value){
-            $newPlayer->saveData($key, $value);
-        }
-        return $newPlayer;
+
+        return $player;
     }
 }
