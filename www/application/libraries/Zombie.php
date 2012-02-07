@@ -51,8 +51,8 @@ class Zombie extends Player implements IPlayer{
     }
     // MOVE TO ZOMBIE
     public function getKills(){
-      return "N/A";
-      // . ' hours ago'
+        $this->ci->load->helper('tag_helper');
+        return getTagCountByPlayerID($this->getPlayerID());
     }
 
     public function isActive(){
