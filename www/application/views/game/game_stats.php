@@ -1,7 +1,6 @@
-<h2> Much more to come! </h2>
 
+<h2> Humans: <?php echo $human_count; ?> Zombies: <?php echo $zombie_count; ?> </h2>
 <div id = "chart1"></div>
-
 
 </div>
   <script type="text/javascript">
@@ -35,26 +34,15 @@
             name: 'Browser share',
             data: [
                 {
-                  name: 'Male',    
-                  y: <?php echo $male; ?>,
-                  color: "#39869B"
+                  name: 'Human',    
+                  y: <?php echo $human_count; ?>,
+                  color: "#04819e"
 
                 },
                {
-                  name: 'Female',    
-                  y: <?php echo $female; ?>,
-                  color: "#46A1B9"
-
-               },
-               {
-                  name: 'Other',    
-                  y: <?php echo $other; ?>,
-                  color: "#7CBBCF"
-               },
-               {
-                  name: 'No Response',    
-                  y: <?php echo $noresponse; ?>,
-                  color: "#B5D4E0"
+                  name: 'Zombie',    
+                  y: <?php echo $zombie_count; ?>,
+                  color: "#FF4500"
 
                }
 

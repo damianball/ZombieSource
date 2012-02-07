@@ -84,18 +84,29 @@ class game extends CI_Controller {
     public function stats() {
 
         //this should probably be done though the game library, whenever we write the game library. 
-        $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
-        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
-        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
-        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
-        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+        // $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
+        // $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
+        // $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
+        // $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
+        // $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+
+        $zombie_count = 0;
+        $human_count = 0;
+
+        $players = getActivePlayers(GAME_KEY);
+        foreach($players as $player){
+                if($player->getPublicStatus() == 'zombie'){
+                    $zombie_count += 1;
+                }else {
+                    $human_count += 1;
+                }
+
+        }
 
         $data = array(
-                      'count'        => $num_players,
-                      'male'         => $num_males,
-                      'female'       => $num_females,
-                      'other'        => $num_other_gender,
-                      'noresponse'   => $num_no_gender_response
+                      'count'        => $zombie_count + $human_count,
+                      'human_count'         => $human_count,
+                      'zombie_count'       => $zombie_count
         );
 
 
