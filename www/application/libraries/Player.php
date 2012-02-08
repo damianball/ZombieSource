@@ -33,6 +33,15 @@ class Player{
         return false;
     }
 
+    public function isModerator(){
+        if($this->getData('moderator') == "1"){
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+
     public function getUser(){
         $this->ci->load->library('UserCreator');
         return $this->ci->usercreator->getUserByPlayerID($this->playerid);
@@ -92,5 +101,9 @@ class Player{
     public function leaveCurrentTeam(){
         $this->ci->load->model('Player_team_model');
         $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
+    }
+
+    public function isElligibleForTagUndo(){
+        return false;
     }
 }

@@ -58,7 +58,7 @@ class Zombie extends Player implements IPlayer{
     public function isActive(){
         if(!$this->isStarved() && parent::isActive()){
             return true;
-        }
+        } 
         return false;
     }
 
@@ -77,4 +77,17 @@ class Zombie extends Player implements IPlayer{
         return $tagid;
     }
 
+    public function isElligibleForTagUndo(){
+        //can't undo tag if you're starved or if you already tagged someone else
+        if(!$this->isStarved() && !$this->hasTaggedSomeone()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function hasTaggedSomeone(){
+        return $this->ci->Tag_model->checkForTagByPlayerID($this->getPlayerID());
+    }
 }
