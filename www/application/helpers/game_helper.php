@@ -43,4 +43,15 @@ function getActiveZombiesString(){
     return $my_string;
 }
 
+function getPlayerString(){
+    $players = getActivePlayers(GAME_KEY);
+    $my_string = "[";
+    foreach($players as $player){
+        $username = $player->getUser()->getUsername();
+        $my_string .= "\"$username\",";
+    }
+    $my_string .= "\"\"]";
+    return $my_string;
+}
+
 ?>

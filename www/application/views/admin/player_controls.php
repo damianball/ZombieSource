@@ -1,6 +1,6 @@
 
-<h2> Player: chandler </h2>
-<div id = "left_control_items">
+<h2> Player: <?php echo $username; ?> </h2>
+<!-- <div id = "left_control_items">
     <div class = "control_item">
         <button id = "left_manage" class = "btn danger">Ban Hammer</button>
         <button id = "left_manage" class = "disabled btn danger">Lift Ban Hammer</button> 
@@ -18,18 +18,29 @@
         <button id = "left_manage" class = "disabled btn info"> Revoke OZ status</button> 
 
     </div>
-</div>
+</div> -->
+
 <div id = "right_control_items">
-    <div class = "control_item">
-        <button id = "right_manage" class = "disabled btn darkgreen">Grant Free Zombie Feed</button> Not a zombie
+    <div id = "free_feed_div" class = "control_item">
+        <button id = "free_feed" value = <? echo $playerid; ?> class = "right_manage <? echo $feed_disabled; ?> btn darkgreen" <? echo $feed_disabled; ?>>Grant Free Zombie Feed</button><? echo $feed_message; ?>
     </div>
 
-    <div class = "control_item">
-        <button id = "right_manage" class = "btn darkgreen"> Remove From Team: x</button> On Team Umbrella Corp
-    </div>
-
-
-    <div class = "control_item">
-        <button id = "right_manage" class = "disabled btn darkgreen"> Undo Tag on Player</button> Hasn't been tagged
+    <div id = "undo_tag_div" class = "control_item">
+        <button id = "undo_tag" value = <? echo $playerid; ?> class = "right_manage <? echo $undo_tag_disabled; ?> btn darkgreen" <? echo $undo_tag_disabled; ?>> Undo Tag </button> <? echo $undo_tag_message; ?>
     </div>
 </div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#free_feed").click(function(){
+    $("#free_feed_div").load('admin/free_feed',{player:$('#free_feed').val()});
+  });
+});
+
+$(document).ready(function(){
+  $("#undo_tag").click(function(){
+    $("#right_control_items").load('admin/undo_tag',{player:$('#undo_tag').val()});
+  });
+});
+

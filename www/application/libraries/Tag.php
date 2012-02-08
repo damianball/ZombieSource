@@ -8,6 +8,8 @@ class Tag{
     {
         $this->ci =& get_instance();
         $this->ci->load->model('Tag_model', '', true);
+        $this->ci->load->library('PlayerCreator', null);
+
 
         // @TODO: Verify that the tag exists before allowing construction to finish
         if($tagid){
@@ -23,5 +25,22 @@ class Tag{
 
     public function getTagDateTimeClaimed(){
         return $this->ci->Tag_model->getData($this->tagid, 'datetimeclaimed');
+    }
+
+    public function getTagger(){
+        $taggerid = $this->ci->Tag_model->getData($this->tagid, 'taggerid');
+        return $this->ci->playercreator->getPlayerByPlayerID($taggerid);
+    }
+
+    public function invalidate(){
+        $this->ci->Tag_model->invalidateTag($this->tagid, 'taggerid');
+    }
+
+    public function isInvalid(){
+        if( $this->ci->Tag_model->getData($this->tagid, 'invalid') == 1){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
