@@ -15,6 +15,11 @@ class admin extends CI_Controller {
         $this->load->library('TeamCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
+        $userid = $this->tank_auth->get_user_id();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        if(!$player->isModerator()){
+            redirect('/game');
+        }
     }
 
 	public function index(){
@@ -74,7 +79,6 @@ class admin extends CI_Controller {
 
     public function undo_tag(){
         $this->load->library('TagCreator');
-
         //is mod check
         $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
         $username = $player->getUser()->getUsername();
@@ -85,7 +89,6 @@ class admin extends CI_Controller {
 
             //the important part of this method.
             $tag->invalidate();
-
             if($tag->isInvalid()){
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
             }else{
@@ -94,8 +97,8 @@ class admin extends CI_Controller {
         }
     }
 
-
     public function free_feed(){
+        //mod 
         $this->load->library('FeedCreator');
         $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
         $username = $player->getUser()->getUsername(); 

@@ -1,7 +1,10 @@
 
   <div id = "game_panel">
-  Moderators, this section is currently not finished : / The only thing you can do is search for a player and revert a tag. Which was what we decided 
-  was the most important setting to get pushed sunday night.
+  You wanted powers, now you've got them! (well some). Tread carefully here, if you undo a zombie tag on accident it's not exactly trival to reset it.
+  Good luck and godspeed - Chandler
+
+  </br>
+  </br>
   </div>
   <div class = "tinyline"></div>
   <div id = "player_panel">

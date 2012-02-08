@@ -31,6 +31,17 @@ function getPublicActiveZombies(){
     return $active_zombies;
 }
 
+function getActiveHumans(){
+    $humans = getActivePlayers(GAME_KEY);
+    $active_humans =  Array();
+    foreach($humans as $human){
+        if(is_a($human, 'Human') && $human->isActive()){
+            $active_humans[] = $human;
+        }
+    }
+    return $active_humans;
+}
+
 
 function getActiveZombiesString(){
     $zombies = getPublicActiveZombies();
