@@ -94,6 +94,19 @@ class Tag_model extends CI_Model{
         return false;
     }
 
+    public function getNumberOfTagsMadeByPlayerID($playerid){
+        $this->db->select('COUNT(*) as count');
+        $this->db->from($this->table_name);
+        $this->db->where('taggerid',$playerid);
+        $this->db->where('invalid',0);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1){
+            return $query->row()->count;
+        }
+        return false;
+    }
+
     public function getData($tagid, $name){
         if(array_key_exists($name, $this->tagFields)){
             $this->db->select($name);

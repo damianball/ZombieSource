@@ -24,7 +24,7 @@ class game extends CI_Controller {
         array('data' => 'Player', 'class' => 'sortable'),
         array('data' => 'Team', 'class' => 'sortable'),
         array('data' => 'Status', 'class' => 'sortable'),
-        //array('data' => 'Kills', 'class' => 'sortable'),
+        array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
         $players = getActivePlayers(GAME_KEY);
@@ -34,7 +34,7 @@ class game extends CI_Controller {
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
-                //(is_a($player, 'Zombie') ? $player->getKills() : null),
+                (is_a($player, 'Zombie') ? $player->getKills() : null),
                 (is_a($player, 'Zombie') ? $player->secondsSinceLastFeed() : null)
             );
           $this->table->add_row($row);
@@ -136,6 +136,7 @@ class game extends CI_Controller {
                 $this->form_validation->set_rules('zombie_friend_'.$i, 'Zombie Friend '.$i, 'trim|xss_clean|min_length[4]|callback_validate_username');
             }
             $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[5]|max_length[5]|callback_validate_human_code');
+            $this->form_validation->set_rules('claimed_tag_time_offset', 'Tag Time Offset', 'trim|xss_clean');
             $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
             // on success, try to log the tag
             $form_error = '';

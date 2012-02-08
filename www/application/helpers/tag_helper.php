@@ -9,4 +9,9 @@ function getInitialTagIDByPlayer($player){
     }
 }
 
+function getTagCountByPlayerID($playerid){
+    $CI =& get_instance();
+    $CI->load->model('Tag_model','',TRUE);
+    return $CI->Tag_model->getNumberOfTagsMadeByPlayerID($playerid);
+}
 ?>
