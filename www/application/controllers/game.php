@@ -359,4 +359,15 @@ class game extends CI_Controller {
       $this->load->view('layouts/main', $layout_data); 
 
     }
+
+    public function human_list(){
+        $players = getActiveHumans(GAME_KEY);
+        foreach($players as $player){
+            $human_names[] = $player->getUser()->getUsername();
+        }
+
+        $data['human_names'] = $human_names;
+        $this->load->view('helpers/human_list', $data); 
+    }
+
 }
