@@ -18,7 +18,13 @@ class Zombie extends Player implements IPlayer{
 
     // @Implements getPublicStatus()
     public function getPublicStatus(){
-        return "zombie"; 
+        if($this->isActive()) {
+            return "zombie";
+        } else if ($this->isStarved() && parent::isActive()){
+            return "starved zombie";
+        } else {
+            return "banned";
+        }
     }
 
     // MOVE TO ZOMBIE
@@ -46,9 +52,10 @@ class Zombie extends Player implements IPlayer{
             $this->ci->load->helper('date_helper');
             $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
             
-            return getTimeStringFromSeconds($seconds);
+            return $seconds;
         }
     }
+
     // MOVE TO ZOMBIE
     public function getKills(){
         $this->ci->load->helper('tag_helper');

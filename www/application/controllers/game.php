@@ -28,6 +28,7 @@ class game extends CI_Controller {
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
         $players = getActivePlayers(GAME_KEY);
+        $this->load->helper('date_helper');
         foreach($players as $player){
             $row = array(
                 getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 50),
@@ -35,7 +36,7 @@ class game extends CI_Controller {
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
                 (is_a($player, 'Zombie') ? $player->getKills() : null),
-                (is_a($player, 'Zombie') ? $player->secondsSinceLastFeed() : null)
+                (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeed()) : null)
             );
           $this->table->add_row($row);
         }
