@@ -128,7 +128,6 @@ class game extends CI_Controller {
     public function register_kill() {
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        $player->saveData('moderator', "1");
         if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
