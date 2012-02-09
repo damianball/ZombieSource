@@ -52,11 +52,9 @@ class OriginalZombie extends Zombie implements IPlayer{
 
     public function isActive(){
         // @TODO: MUST FIX!!!
-        return true;
-        // @TODO
-        //if(parent::isActive()){
-        //    return true;
-        //}
-        //return false;
+        if(parent::isActive()){
+            return true;
+        }
+        return false;
     }
 }

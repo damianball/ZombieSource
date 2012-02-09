@@ -210,7 +210,7 @@ class game extends CI_Controller {
                 }
             } else {
                 $data['form_error'] = $form_error;
-                $data['zombie_list'] = getActiveZombiesString();
+                $data['zombie_list'] = getActiveZombiesString(GAME_KEY);
                 $data['max_feeds'] = $max_feeds;
     
                 //display the regular page, with errors
@@ -367,15 +367,4 @@ class game extends CI_Controller {
       $this->load->view('layouts/main', $layout_data); 
 
     }
-
-    public function human_list(){
-        $players = getActiveHumans(GAME_KEY);
-        foreach($players as $player){
-            $human_names[] = $player->getUser()->getUsername();
-        }
-
-        $data['human_names'] = $human_names;
-        $this->load->view('helpers/human_list', $data); 
-    }
-
 }

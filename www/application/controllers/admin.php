@@ -17,6 +17,7 @@ class admin extends CI_Controller {
         $this->load->helper('tag_helper');
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+
         if(!$player->isModerator()){
             redirect('/game');
         }
@@ -113,8 +114,42 @@ class admin extends CI_Controller {
         }
     }
 
+    public function email_list(){
+        $get = $this->uri->uri_to_assoc(2);
+        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        $type = $get['email_list'];
+        $type = $this->security->xss_clean($type);
+
+        if ($type == 'all') {
+            $players = getActivePlayers(GAME_KEY);
+        } else if ($type == 'human') {
+            $players = getActiveHumans(GAME_KEY);
+        } else if ($type == 'zombie') {
+            $players = getActiveZombies(GAME_KEY);
+        } else {
+            // @TODO: Should be an error
+            return null;
+        }
+
+        $output = '';
+        foreach($players as $player){
+            $output .= $player->getUser()->getEmail() . ", ";
+        }
+        $this->output->set_content_type('application/json')->set_output($output);
+    }
+
+    public function human_list(){
+        $players = getActiveHumans(GAME_KEY);
+        foreach($players as $player){
+            $human_names[] = $player->getUser()->getUsername();
+        }
+
+        $data['human_names'] = $human_names;
+        $this->load->view('helpers/human_list', $data); 
+    }
+
     //Duplicated and modified from Game.php because I'm not sure how to load views from a helper
-    function loadGenericMessageWithoutLayout($message){
+    private function loadGenericMessageWithoutLayout($message){
         $data = array("message" => $message);
         $this->load->view('helpers/display_generic_message',$data);
     }

@@ -17,9 +17,9 @@ function getActivePlayers($gameid){
     return $playerArray;
 }
 
-function getPublicActiveZombies(){
-    $players = getActivePlayers(GAME_KEY);
-    $active_zombies =  Array();
+function getPublicActiveZombies($gameid){
+    $players = getActivePlayers($gameid);
+    $active_zombies =  array();
     foreach($players as $player){
         if(is_a($player, 'Zombie') && $player->isActive()){
             if(is_a($player, 'OriginalZombie') && !$player->isExposed()){
@@ -31,8 +31,19 @@ function getPublicActiveZombies(){
     return $active_zombies;
 }
 
-function getActiveHumans(){
-    $humans = getActivePlayers(GAME_KEY);
+function getActiveZombies($gameid){
+    $players = getActivePlayers($gameid);
+    $active_zombies = array();
+    foreach($players as $player){
+        if(is_a($player, 'Zombie') && $player->isActive()){
+            $active_zombies[] = $player;
+        }
+    }
+    return $active_zombies;
+}
+
+function getActiveHumans($gameid){
+    $humans = getActivePlayers($gameid);
     $active_humans =  Array();
     foreach($humans as $human){
         if(is_a($human, 'Human') && $human->isActive()){
@@ -43,8 +54,8 @@ function getActiveHumans(){
 }
 
 
-function getActiveZombiesString(){
-    $zombies = getPublicActiveZombies();
+function getActiveZombiesString($gameid){
+    $zombies = getPublicActiveZombies($gameid);
     $my_string = "[";
     foreach($zombies as $zombie){
         $username = $zombie->getUser()->getUsername();
@@ -54,8 +65,8 @@ function getActiveZombiesString(){
     return $my_string;
 }
 
-function getPlayerString(){
-    $players = getActivePlayers(GAME_KEY);
+function getPlayerString($gameid){
+    $players = getActivePlayers($gameid);
     $my_string = "[";
     foreach($players as $player){
         $username = $player->getUser()->getUsername();
