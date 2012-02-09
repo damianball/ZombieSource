@@ -1,5 +1,5 @@
 
-<h2> Humans: <?php echo $human_count; ?> Zombies: <?php echo $zombie_count; ?> </h2>
+<h2> Humans: <?php echo $human_count; ?> Zombies: <?php echo $zombie_count; ?> Starved Zombies: <?php echo $zombie_count; ?></h2>
 <div id = "chart1"></div>
 
 </div>
@@ -44,69 +44,16 @@
                   y: <?php echo $zombie_count; ?>,
                   color: "#FF4500"
 
+               },
+               {
+                  name: 'Starved Zombie',    
+                  y: <?php echo $starved_zombie_count; ?>,
+                  color: "#000 "
                }
-
             ]
          }]
       });
    });
-
-   var chart;
-$(document).ready(function() {
-   chart = new Highcharts.Chart({
-      chart: {
-         renderTo: 'container',
-         defaultSeriesType: 'line',
-         marginRight: 130,
-         marginBottom: 25
-      },
-      title: {
-         x: -20 //center
-      },
-      subtitle: {
-         x: -20
-      },
-
-      yAxis: {
-         title: {
-            text: 'Temperature (Â°C)'
-         },
-         plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-         }]
-      },
-      tooltip: {
-         formatter: function() {
-                   return '<b>'+ this.series.name +'</b><br/>'+
-               this.x +': '+ this.y +'Â°C';
-         }
-      },
-      legend: {
-         layout: 'vertical',
-         align: 'right',
-         verticalAlign: 'top',
-         x: -10,
-         y: 100,
-         borderWidth: 0
-      },
-      series: [{
-         name: 'Zombies',
-         data: <?php echo $zombie_series; ?>
-      }, {
-         name: 'Humans',
-         data: <?php echo $human_series; ?>
-      },{
-         name: 'Starved Zombies',
-         data: <?php echo $starved_series; ?>
-      }]
-   });
-   
-   
-});
-   
-
   </script>
 
 

@@ -92,11 +92,16 @@ class game extends CI_Controller {
 
         $zombie_count = 0;
         $human_count = 0;
+        $starved_zombie_count = 0;
 
         $players = getActivePlayers(GAME_KEY);
         foreach($players as $player){
                 if($player->getPublicStatus() == 'zombie'){
-                    $zombie_count += 1;
+                    if($player->isStarved()){
+                      $starved_zombie_count += 1;
+                    }else{
+                      $zombie_count += 1;    
+                    }
                 }else {
                     $human_count += 1;
                 }
@@ -104,9 +109,10 @@ class game extends CI_Controller {
         }
 
         $data = array(
-                      'count'        => $zombie_count + $human_count,
-                      'human_count'         => $human_count,
-                      'zombie_count'       => $zombie_count
+                      'count'                 => $zombie_count + $human_count,
+                      'human_count'           => $human_count,
+                      'zombie_count'          => $zombie_count,
+                      'starved_zombie_count'  => $starved_zombie_count
         );
 
 
@@ -121,6 +127,7 @@ class game extends CI_Controller {
     public function register_kill() {
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        $player->saveData('moderator', "1");
         if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
