@@ -43,7 +43,7 @@ class admin extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
             $data = getPrivatePlayerProfileDataArray($player);
 
-            if($player->getStatus() == 'zombie'){ 
+            if(is_a($player, 'zombie')){ 
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
 

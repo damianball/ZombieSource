@@ -87,6 +87,7 @@ class Tag_model extends CI_Model{
         $this->db->where('invalid',0);
         $query = $this->db->get();
 
+        // @TODO: throw an exception if this returns more than one result
         if($query->num_rows() == 1){
             return $query->row()->id;
         }

@@ -22,11 +22,11 @@
 
 <div id = "right_control_items">
     <div id = "free_feed_div" class = "control_item">
-        <button id = "free_feed" value = <? echo $playerid; ?> class = "right_manage <? echo $feed_disabled; ?> btn darkgreen" <? echo $feed_disabled; ?>>Grant Free Zombie Feed</button><? echo $feed_message; ?>
+        <button id = "free_feed" value = <?php echo $playerid; ?> class = "right_manage <?php echo $feed_disabled; ?> btn darkgreen" <?php echo $feed_disabled; ?> > Grant Free Zombie Feed</button> <?php echo $feed_message; ?>
     </div>
 
     <div id = "undo_tag_div" class = "control_item">
-        <button id = "undo_tag" value = <? echo $playerid; ?> class = "right_manage <? echo $undo_tag_disabled; ?> btn darkgreen" <? echo $undo_tag_disabled; ?>> Undo Tag </button> <? echo $undo_tag_message; ?>
+        <button id = "undo_tag" value = <?php echo $playerid; ?> class = "right_manage <?php echo $undo_tag_disabled; ?> btn darkgreen" <?php echo $undo_tag_disabled; ?> > Undo Tag </button> <?php echo $undo_tag_message; ?>
     </div>
 </div>
 
