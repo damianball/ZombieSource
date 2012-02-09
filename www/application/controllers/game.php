@@ -97,7 +97,7 @@ class game extends CI_Controller {
 
         $players = getActivePlayers(GAME_KEY);
         foreach($players as $player){
-                if($player->getPublicStatus() == 'zombie'){
+                if(is_a($player, 'Zombie')){
                     if($player->isStarved()){
                       $starved_zombie_count += 1;
                     }else{
