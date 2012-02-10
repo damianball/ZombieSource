@@ -40,8 +40,8 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 define('GAME_KEY', '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 
 // Analytics settings
-define('LOGFILE_DIR',"/home/zsource/log/");
-define('LOGFILE_NAME', 'zombiesource.log');
+// define('LOGFILE_DIR',"/home/zsource/log/");
+// define('LOGFILE_NAME', 'zombiesource.log');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

@@ -200,7 +200,21 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
+require_once (APPPATH . 'libraries/logging/LogManager.php');
+
+LogManager::startLogging();
+
+$timelogger = TimeLogger::getNewTimer('codeigniter_total_execution');
+$timelogger->startTimer();
+
 require_once BASEPATH.'core/CodeIgniter.php';
+
+$timelogger->stopTimer();
+
+// log total execution time
+LogManager::storeLog($timelogger);
+
+LogManager::stopLogging();
 
 /* End of file index.php */
 /* Location: ./index.php */

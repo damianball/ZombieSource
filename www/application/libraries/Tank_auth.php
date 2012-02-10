@@ -29,7 +29,6 @@ class Tank_auth
 		$this->ci->load->library('session');
 		$this->ci->load->database();
 		$this->ci->load->model('tank_auth/users');
-        $this->ci->load->library('Logger');
 
 		// Try to autologin
 		$this->autologin();
@@ -91,15 +90,9 @@ class Tank_auth
 									$this->ci->config->item('login_record_time', 'tank_auth'));
 
                             // event logging
-                            $data = array(
-                                'logger_json_version' => '1',
-                                'action' => 'login',
-                                'value' => 'success',
-                                'payload' => array(
-                                    'userid' => $user->id
-                                )
-                            );
-                            Logger::log(json_encode($data));
+                            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','succeeded');
+                            $analyticslogger->addToPayload('userid',$user->id);
+                            LogManager::storeLog($analyticslogger);
 							return TRUE;
 						}
 					}
@@ -113,15 +106,9 @@ class Tank_auth
 			}
 		}
         // event logging
-        $data = array(
-            'logger_json_version' => '1',
-            'action' => 'login',
-            'value' => 'failed',
-            'payload' => array(
-                'userid' => $user->id
-            )
-        );
-        Logger::log(json_encode($data));
+        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','failed');
+        $analyticslogger->addToPayload('userid',$user->id);
+        LogManager::storeLog($analyticslogger);
 		return FALSE;
 	}
 
