@@ -11,7 +11,10 @@ function getActivePlayers($gameid){
     $CI->load->library('PlayerCreator');
     $playerArray = array();
     foreach($playerids as $i){
-        $playerArray[] = $CI->playercreator->getPlayerByPlayerID($i);
+        $player = $CI->playercreator->getPlayerByPlayerID($i);
+        if($player->isActive()){
+            $playerArray[] = $player;
+        }
     }
 
     return $playerArray;

@@ -3,6 +3,7 @@
 class Profile extends CI_Controller {
   // var $logged_in_player;
   // var $logged_in_players_team;
+    private $logged_in_player = null;
 
     public function __construct()
     {
@@ -17,6 +18,15 @@ class Profile extends CI_Controller {
         $this->load->library('TeamCreator');
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
+
+        // load the logged in player (if one exists) into the controller
+        $userid = $this->tank_auth->get_user_id();
+        if(userExistsInGame($userid, GAME_KEY)){
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            if($player->isActive()){
+                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            }   
+        }
     
         // @TODO: what if team is null?
         // $teamid = $this->logged_in_player->current_team();      
@@ -25,20 +35,8 @@ class Profile extends CI_Controller {
 
     public function index()
     {
-      //this needs to be run for everyone on the site
-      // $player->save("username",$this->tank_auth->get_username());
-      // $player->save("email",$this->tank_auth->get_email());
-    
-     // $player = $this->logged_in_player;
-     // $userid = $this->tank_auth->get_user_id();
-     // $this->Player_model->getPlayerID();
-    
-        $userid = $this->tank_auth->get_user_id();
-        $player = null;
-        if(userExistsInGame($userid, GAME_KEY)){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        }
-        if($player){
+        if($this->logged_in_player){
+            $player = $this->logged_in_player;
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('profile/profile_page', getPrivatePlayerProfileDataArray($player), true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);          
@@ -74,12 +72,10 @@ class Profile extends CI_Controller {
 
     public function edit_profile()
     {
-        $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-          $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        } else {
-          redirect("home");
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
         }
+        $player = $this->logged_in_player;
     
         $this->form_validation->set_rules('age', 'Age', 'integer|trim|xss_clean');
         $this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean');
@@ -87,20 +83,20 @@ class Profile extends CI_Controller {
         $this->form_validation->set_rules('gravatar_email', 'Gravatar Email', 'trim|xss_clean|valid_email');
     
         if ($this->form_validation->run()) {
-          //save the data
-          if($player->getData('age') != $this->input->post('age')){
-            $player->saveData('age',$this->input->post('age'));
-          }
-          if($player->getData('gender') != $this->input->post('gender')){
-            $player->saveData('gender',$this->input->post('gender'));
-          }
-          if($player->getData('major') != $this->input->post('major')){
-            $player->saveData('major',$this->input->post('major'));
-          }
-          if($player->getData('gravatar_email') != $this->input->post('gravatar_email')){
-            $player->saveData('gravatar_email',$this->input->post('gravatar_email'));
-          }
-          redirect("profile");
+            //save the data
+            if ($player->getData('age') != $this->input->post('age')) {
+              $player->saveData('age',$this->input->post('age'));
+            }
+            if ($player->getData('gender') != $this->input->post('gender')) {
+              $player->saveData('gender',$this->input->post('gender'));
+            }
+            if ($player->getData('major') != $this->input->post('major')) {
+              $player->saveData('major',$this->input->post('major'));
+            }
+            if ($player->getData('gravatar_email') != $this->input->post('gravatar_email')) {
+              $player->saveData('gravatar_email',$this->input->post('gravatar_email'));
+            }
+            redirect("profile");
         }
     
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
@@ -112,13 +108,21 @@ class Profile extends CI_Controller {
 
     public function public_profile()
     {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+        $player = $this->logged_in_player;
+
           // @TODO: Are we checking input?
         $get = $this->uri->uri_to_assoc(1);
         $userid = $get['user'];
-        if(userExistsInGame($userid, GAME_KEY)){
-          $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        if (userExistsInGame($userid, GAME_KEY)) {
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            if (!$player->isActive()) {
+                redirect("home");
+            }
         } else {
-          redirect("home");
+            redirect("home");
         }
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/public_profile', getPublicPlayerProfileDataArray($player), true);
@@ -128,12 +132,10 @@ class Profile extends CI_Controller {
 
     public function team_public_profile()
     {
-        $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-          $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        } else {
-          redirect("home");
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
         }
+        $player = $this->logged_in_player;
     
         $get = $this->uri->uri_to_assoc(1);
         // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
@@ -142,17 +144,17 @@ class Profile extends CI_Controller {
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $data = getTeamProfileDataArray($team);
     
-        if($player->isMemberOfTeam($team->getTeamID())){
-          $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
-        }else{
-          $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);
+        if ($this->logged_in_player->isMemberOfTeam($team->getTeamID())) {
+            $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
+        } else {
+            $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);
         }
     
         //this is also checked in the profile/team_edit_profile method
-        if($team->canEditTeam($player)){
-          $data['team_edit_button'] = $this->load->view('profile/edit_team_buttons.php', $data, true);
-        }else{
-          $data['team_edit_button'] = '';
+        if ($team->canEditTeam($this->logged_in_player)) {
+            $data['team_edit_button'] = $this->load->view('profile/edit_team_buttons.php', $data, true);
+        } else {
+            $data['team_edit_button'] = '';
         }
     
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
@@ -166,50 +168,46 @@ class Profile extends CI_Controller {
 
     public function edit_team_profile()
     {
-    
-        $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-          $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        } else {
-          redirect("home");
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
         }
+        $player = $this->logged_in_player;
     
         $default = array('edit');
         $get = $this->uri->uri_to_assoc(2, $default);
         $teamid = $get['edit'];
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         if($team->canEditTeam($player)){
-          $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
-          $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
+            $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
+            $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
     
-          if ($this->form_validation->run()) {
+            if ($this->form_validation->run()) {
             //save the data
-            $name = $this->input->post('team_name');
-            $gravatar_email = $this->input->post('team_gravatar_email');
+                $name = $this->input->post('team_name');
+                $gravatar_email = $this->input->post('team_gravatar_email');
+        
+                $description = $this->input->post('description');
+                if($team->getData('gravatar_email') != $gravatar_email){
+                  $team->setData('gravatar_email',$gravatar_email);
+                }
+                if($team->getData('description') != $description){
+                  $team->setData('description', $description);
+                }
     
-            $description = $this->input->post('description');
-            if($team->getData('gravatar_email') != $gravatar_email){
-              $team->setData('gravatar_email',$gravatar_email);
+                redirect("team/".$team->getTeamID());
             }
-            if($team->getData('description') != $description){
-              $team->setData('description',$description);
-            }
     
-            redirect("team/".$team->getTeamID());
-          }
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', getTeamProfileDataArray($team), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data);
+        } else {
     
-          $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-          $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', getTeamProfileDataArray($team), true);
-          $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-          $this->load->view('layouts/main', $layout_data);
-        }
-        else{
-    
-          $data['message'] = "Insufficient privileges to edit this team";
-          $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-          $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
-          $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-          $this->load->view('layouts/main', $layout_data);
+            $data['message'] = "Insufficient privileges to edit this team";
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data);
         }
     }
 }

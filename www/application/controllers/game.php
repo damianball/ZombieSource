@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class game extends CI_Controller {
+    private $logged_in_player = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -14,10 +16,23 @@ class game extends CI_Controller {
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
         $this->load->helper('gravatar_helper');
+
+        // load the logged in player (if one exists) into the controller
+        $userid = $this->tank_auth->get_user_id();
+        if(userExistsInGame($userid, GAME_KEY)){
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            if($player->isActive()){
+                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            }   
+        }
     }
 
     public function index()
     {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+
         //load the content variables
         $this->table->set_heading(
         array('data' => 'Avatar'),
@@ -54,6 +69,10 @@ class game extends CI_Controller {
     }
 
     public function teams(){
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+
         $this->table->set_heading(
             array('data' => 'Avatar'),
             array('data' => 'Team', 'class' => 'sortable', 'class' => "medium_width_column"),
@@ -83,6 +102,9 @@ class game extends CI_Controller {
     }
 
     public function stats() {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
 
         //this should probably be done though the game library, whenever we write the game library. 
         // $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
@@ -126,6 +148,10 @@ class game extends CI_Controller {
     }
 
     public function register_kill() {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
         if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
@@ -253,6 +279,10 @@ class game extends CI_Controller {
     }
 
     public function register_new_team(){
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
 
@@ -304,6 +334,10 @@ class game extends CI_Controller {
     }
 
     public function join_team(){
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+
         $data = array();
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
@@ -347,23 +381,27 @@ class game extends CI_Controller {
     }
 
     public function leave_team(){
-      $userid = $this->tank_auth->get_user_id();
-      $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-      $teamid = $this->input->post('teamid');
-      $team = $this->teamcreator->getTeamByTeamID($teamid);
-      $teamLink = getHTMLLinkToTeam($team);
-      if($player->isMemberOfTeam($team->getTeamID())){
-        $player->leaveCurrentTeam();
-        $data['message'] = "Successfully left " . $teamLink;
-      }else{
-        $data['message'] = "You are not a member of " . $teamLink;
-      }
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
 
-      $layout_data['active_sidebar'] = 'logkill';
-      $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-      $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
-      $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-      $this->load->view('layouts/main', $layout_data); 
+        $userid = $this->tank_auth->get_user_id();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        $teamid = $this->input->post('teamid');
+        $team = $this->teamcreator->getTeamByTeamID($teamid);
+        $teamLink = getHTMLLinkToTeam($team);
+        if($player->isMemberOfTeam($team->getTeamID())){
+            $player->leaveCurrentTeam();
+            $data['message'] = "Successfully left " . $teamLink;
+        }else{
+            $data['message'] = "You are not a member of " . $teamLink;
+        }
+    
+        $layout_data['active_sidebar'] = 'logkill';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data); 
 
     }
 }
