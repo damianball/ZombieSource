@@ -22,10 +22,18 @@ class Player{
         //also should check if isInGame(GAME_KEY)
         // dateremoved in the database
 
-        if(!$this->isBanned()){
+        if(!$this->isBanned() && !$this->hasLeftGame()){
             return true;
         }
         return false;
+    }
+
+    public function hasLeftGame(){
+        if($this->getData('dateremoved') > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // @TODO actually implement
