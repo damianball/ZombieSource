@@ -5,7 +5,9 @@
   #         BOOTSTRAP defaults
   #
   #=================================================*/
-
+  h3 {
+    display:inline;
+  }
   html, body {
     background-color: #eee ;
   }
@@ -551,7 +553,7 @@ background-image: linear-gradient(top, #333333, #222222);
     font-size: 10px;
 
   }
-  #right_manage{
+  .right_manage{
     width: 150px;
     font-size: 10px;
   }

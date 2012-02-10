@@ -136,7 +136,9 @@ class Profile extends CI_Controller {
         }
     
         $get = $this->uri->uri_to_assoc(1);
+        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
         $teamid = $get['team'];
+        $teamid = $this->security->xss_clean($teamid);
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $data = getTeamProfileDataArray($team);
     
@@ -210,9 +212,4 @@ class Profile extends CI_Controller {
           $this->load->view('layouts/main', $layout_data);
         }
     }
-
-
-
-
-
 }

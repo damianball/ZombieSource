@@ -24,18 +24,19 @@ class game extends CI_Controller {
         array('data' => 'Player', 'class' => 'sortable'),
         array('data' => 'Team', 'class' => 'sortable'),
         array('data' => 'Status', 'class' => 'sortable'),
-        //array('data' => 'Kills', 'class' => 'sortable'),
+        array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
         $players = getActivePlayers(GAME_KEY);
+        $this->load->helper('date_helper');
         foreach($players as $player){
             $row = array(
                 getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 50),
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
-                //(is_a($player, 'Zombie') ? $player->getKills() : null),
-                (is_a($player, 'Zombie') ? $player->secondsSinceLastFeed() : null)
+                (is_a($player, 'Zombie') ? $player->getKills() : null),
+                (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeed()) : null)
             );
           $this->table->add_row($row);
         }
@@ -84,18 +85,35 @@ class game extends CI_Controller {
     public function stats() {
 
         //this should probably be done though the game library, whenever we write the game library. 
-        $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
-        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
-        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
-        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
-        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+        // $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
+        // $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
+        // $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
+        // $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
+        // $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+
+        $zombie_count = 0;
+        $human_count = 0;
+        $starved_zombie_count = 0;
+
+        $players = getActivePlayers(GAME_KEY);
+        foreach($players as $player){
+                if(is_a($player, 'Zombie')){
+                    if($player->isStarved()){
+                      $starved_zombie_count += 1;
+                    }else{
+                      $zombie_count += 1;    
+                    }
+                }else {
+                    $human_count += 1;
+                }
+
+        }
 
         $data = array(
-                      'count'        => $num_players,
-                      'male'         => $num_males,
-                      'female'       => $num_females,
-                      'other'        => $num_other_gender,
-                      'noresponse'   => $num_no_gender_response
+                      'count'                 => $zombie_count + $human_count,
+                      'human_count'           => $human_count,
+                      'zombie_count'          => $zombie_count,
+                      'starved_zombie_count'  => $starved_zombie_count
         );
 
 
@@ -125,6 +143,7 @@ class game extends CI_Controller {
                 $this->form_validation->set_rules('zombie_friend_'.$i, 'Zombie Friend '.$i, 'trim|xss_clean|min_length[4]|callback_validate_username');
             }
             $this->form_validation->set_rules('human_code', 'Human Code', 'trim|required|xss_clean|min_length[5]|max_length[5]|callback_validate_human_code');
+            $this->form_validation->set_rules('claimed_tag_time_offset', 'Tag Time Offset', 'trim|xss_clean');
             $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
             // on success, try to log the tag
             $form_error = '';
@@ -190,7 +209,7 @@ class game extends CI_Controller {
                 }
             } else {
                 $data['form_error'] = $form_error;
-                $data['zombie_list'] = getActiveZombiesString();
+                $data['zombie_list'] = getActiveZombiesString(GAME_KEY);
                 $data['max_feeds'] = $max_feeds;
     
                 //display the regular page, with errors

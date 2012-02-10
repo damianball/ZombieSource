@@ -17,8 +17,8 @@
           <div class="clearfix">
             <label>How many hours ago did this tag take place? (optional) </label>
             <div class="input" >
-               <?php echo form_error('offset_claim'); ?>
-                <select name = "offset_claim">
+               <?php echo form_error('claimed_tag_time_offset'); ?>
+                <select name = "claimed_tag_time_offset">
                     <option></option>
                     <option value = "1800" > 0.5</option>
                     <option value = "3600" >1.0</option>

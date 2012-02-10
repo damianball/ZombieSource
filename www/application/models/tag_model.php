@@ -66,6 +66,19 @@ class Tag_model extends CI_Model{
         return false;
     }
 
+    //returns true if player has tagged anyone
+    public function checkForTagByPlayerID($playerid){
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('taggerid',$playerid);
+        $this->db->where('invalid',0);
+        $query = $this->db->get();
+        if($query->num_rows() >= 1){
+            return true;
+        }
+        return false;
+    }
+
     // return the tagid if the player has been tagged
     public function getTagIDForPlayer($playerid){
         $this->db->select('id');
@@ -74,8 +87,22 @@ class Tag_model extends CI_Model{
         $this->db->where('invalid',0);
         $query = $this->db->get();
 
+        // @TODO: throw an exception if this returns more than one result
         if($query->num_rows() == 1){
             return $query->row()->id;
+        }
+        return false;
+    }
+
+    public function getNumberOfTagsMadeByPlayerID($playerid){
+        $this->db->select('COUNT(*) as count');
+        $this->db->from($this->table_name);
+        $this->db->where('taggerid',$playerid);
+        $this->db->where('invalid',0);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1){
+            return $query->row()->count;
         }
         return false;
     }
@@ -94,5 +121,17 @@ class Tag_model extends CI_Model{
             throw new UnexpectedValueException($name.' is not a valid field for feed');
         }
     }
+
+    public function invalidateTag($tagid){
+        if(!$tagid){
+            throw new UnexpectedValueException('tagid cannot be null');
+        }
+        $data = array(
+            "invalid" => 1
+        );
+        $this->db->where('id',$tagid);
+        $this->db->update($this->table_name,$data);
+    }
+
 }
 ?>

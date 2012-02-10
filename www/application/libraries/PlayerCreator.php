@@ -14,6 +14,7 @@ class PlayerCreator{
         $this->ci =& get_instance();
         $this->ci->load->model('Player_model','',true);
         $this->ci->load->helper('player_helper');
+        $this->ci->load->helper('user_helper');
         $this->ci->load->model('Tag_model','',true);
     }
 

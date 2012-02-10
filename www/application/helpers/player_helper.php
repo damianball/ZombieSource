@@ -92,6 +92,7 @@ function getPrivatePlayerProfileDataArray($player){
     $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     $data['status'] = $player->getStatus();
+    $data['playerid'] = $player->getPlayerID();
     return $data;
 }
 
