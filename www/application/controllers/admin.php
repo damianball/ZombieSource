@@ -2,6 +2,7 @@
 
 class admin extends CI_Controller {
 
+    private $logged_in_user;
 
     public function __construct()
     {
@@ -15,12 +16,14 @@ class admin extends CI_Controller {
         $this->load->library('TeamCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
+
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
 
         if(!$player->isModerator()){
             redirect('/game');
         }
+        $this->logged_in_user = $player;
     }
 
 	public function index(){
@@ -92,8 +95,18 @@ class admin extends CI_Controller {
             $tag->invalidate();
             if($tag->isInvalid()){
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
+                // event logging
+                $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','succeeded');
+                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
+                LogManager::storeLog($analyticslogger);
             }else{
                 $this->loadGenericMessageWithoutLayout("$username is a Zombie still, something went wrong : /");
+                // event logging
+                $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','failed');
+                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
+                LogManager::storeLog($analyticslogger);
             }
         }
     }
@@ -106,12 +119,29 @@ class admin extends CI_Controller {
         if($player->getStatus() == 'zombie'){ //is_a Zombie scares me, I don't know how it works. So I check the status. 
             //the important part of this method.
             $feed = $this->feedcreator->getNewFeed($player, null, gmdate("Y-m-d H:i:s", time()), true);
-            if($feed ){
+            if ($feed) {
                 $this->loadGenericMessageWithoutLayout("Success! $username has been fed");
-            }else{
+                // event logging
+                $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','succeeded');
+                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
+                LogManager::storeLog($analyticslogger);
+            } else {
                 $this->loadGenericMessageWithoutLayout("Something went wrong, $username may not have been fed");
+                //event logging
+                $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
+                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
+                $analyticslogger->addToPayload('message', 'feed not generated');
+                LogManager::storeLog($analyticslogger);
             }
         }
+        // event logging
+        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
+        $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+        $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
+        $analyticslogger->addToPayload('message', 'not a zombie');
+        LogManager::storeLog($analyticslogger);
     }
 
     public function email_list(){
@@ -136,6 +166,11 @@ class admin extends CI_Controller {
             $output .= $player->getUser()->getEmail() . ", ";
         }
         $this->output->set_content_type('application/json')->set_output($output);
+
+        // event logging
+        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_email_list','displayed');
+        $analyticslogger->addToPayload('playerid',$this->logged_in_user->getPlayerID());
+        LogManager::storeLog($analyticslogger);
     }
 
     public function human_list(){
