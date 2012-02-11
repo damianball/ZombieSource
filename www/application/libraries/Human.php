@@ -11,13 +11,6 @@ class Human extends Player implements IPlayer{
         $this->ci =& get_instance();
     }
 
-    public function isActive(){
-        if(parent::isActive()){
-            return true;
-        }
-        return false;
-    }
-
     // @Implements getStatus()
     public function getStatus(){
         return "human"; 
@@ -26,6 +19,22 @@ class Human extends Player implements IPlayer{
     // @Implements getPublicStatus()
     public function getPublicStatus(){
         return "human"; 
+    }
+
+    public function isViewable(){
+        if(parent::isActive()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function canParticipate(){
+        if(parent::isActive()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // MOVE TO HUMAN

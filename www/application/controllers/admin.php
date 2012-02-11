@@ -151,11 +151,11 @@ class admin extends CI_Controller {
         $type = $this->security->xss_clean($type);
 
         if ($type == 'all') {
-            $players = getActivePlayers(GAME_KEY);
+            $players = getViewablePlayers(GAME_KEY);
         } else if ($type == 'human') {
-            $players = getActiveHumans(GAME_KEY);
+            $players = getCanParticipateHumans(GAME_KEY);
         } else if ($type == 'zombie') {
-            $players = getActiveZombies(GAME_KEY);
+            $players = getCanParticipateZombies(GAME_KEY);
         } else {
             // @TODO: Should be an error
             return null;
@@ -174,7 +174,7 @@ class admin extends CI_Controller {
     }
 
     public function human_list(){
-        $players = getActiveHumans(GAME_KEY);
+        $players = getCanParticipateHumans(GAME_KEY);
         foreach($players as $player){
             $human_names[] = $player->getUser()->getUsername();
         }

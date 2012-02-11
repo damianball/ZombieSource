@@ -62,11 +62,20 @@ class Zombie extends Player implements IPlayer{
         return getTagCountByPlayerID($this->getPlayerID());
     }
 
-    public function isActive(){
-        if(!$this->isStarved() && parent::isActive()){
+    public function isViewable(){
+        if(parent::isActive()) {
             return true;
-        } 
-        return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function canParticipate(){
+        if(parent::isActive() && !$this->isStarved()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function isStarved(){

@@ -55,7 +55,8 @@ class LogManager{
         $data = array(
                 'id' => uniqid().'-'.self::getNewID(),
                 'timestamp' => gmdate("Y-m-d H:i:s"),
-                'version' => 1,
+                'version' => 2,
+                'remote_address' => $_SERVER['REMOTE_ADDR'],
                 'server' => $_SERVER['HTTP_HOST'],
                 'uri' => $_SERVER['REQUEST_URI'],
                 'logger' => $ilogger->getLoggerName(),

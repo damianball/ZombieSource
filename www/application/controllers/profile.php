@@ -168,7 +168,7 @@ class Profile extends CI_Controller {
 
     public function edit_team_profile()
     {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(!$this->logged_in_player || !$this->logged_in_player->canParticipate()) {
             redirect("home");
         }
         $player = $this->logged_in_player;

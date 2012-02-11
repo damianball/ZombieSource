@@ -22,6 +22,24 @@ class FeedCreator{
             $tagid = $tag->getTagID();
         }
         $feedid = $this->ci->Feed_model->storeNewFeed($zombie->getPlayerID(), $tagid, $datecreated, $isAdmin);
+
+        if($feedid){
+            // event logging
+            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('create_new_feed','succeeded');
+            $analyticslogger->addToPayload('fed_zombie_playerid',$zombie->getPlayerID());
+            $analyticslogger->addToPayload('tagid', $tag->getTagID());
+            $analyticslogger->addToPayload('is_admin', $isAdmin);
+            $analyticslogger->addToPayload('feedid', $feedid);
+            LogManager::storeLog($analyticslogger);
+        } else {
+            // event logging
+            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('create_new_feed','failed');
+            $analyticslogger->addToPayload('fed_zombie_playerid',$zombie->getPlayerID());
+            $analyticslogger->addToPayload('tagid', $tag->getTagID());
+            $analyticslogger->addToPayload('is_admin', $isAdmin);
+            LogManager::storeLog($analyticslogger);
+        }
+
         return $this->getFeedByFeedID($feedid);
     }
 }

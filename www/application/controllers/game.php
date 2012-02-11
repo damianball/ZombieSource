@@ -42,7 +42,7 @@ class game extends CI_Controller {
         array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
-        $players = getActivePlayers(GAME_KEY);
+        $players = getViewablePlayers(GAME_KEY);
         $this->load->helper('date_helper');
         foreach($players as $player){
             $row = array(
@@ -117,7 +117,7 @@ class game extends CI_Controller {
         $human_count = 0;
         $starved_zombie_count = 0;
 
-        $players = getActivePlayers(GAME_KEY);
+        $players = getViewablePlayers(GAME_KEY);
         foreach($players as $player){
                 if(is_a($player, 'Zombie')){
                     if($player->isStarved()){
@@ -148,13 +148,13 @@ class game extends CI_Controller {
     }
 
     public function register_kill() {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(!$this->logged_in_player || !$this->logged_in_player->canParticipate()) {
             redirect("home");
         }
 
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        if((is_a($player, 'Zombie') && !$player->isActive()) || !is_a($player, 'Zombie')) {
+        if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
@@ -181,7 +181,7 @@ class game extends CI_Controller {
 
                     // is the player an active human?
                     $player = $this->playercreator->getPlayerByPlayerID($playerid);
-                    if(is_a($player, 'Human') && $player->isActive()){
+                    if(is_a($player, 'Human') && $player->canParticipate()){
                         $human = $player;
                         try{
                             $this->load->library('TagCreator');
@@ -213,7 +213,7 @@ class game extends CI_Controller {
                                         $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
                                         if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
                                             $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, GAME_KEY);
-                                            if(is_a($friend, 'Zombie') && $friend->isActive()){
+                                            if(is_a($friend, 'Zombie') && $friend->canParticipate()){
                                                 $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
                                             }
                                         }
@@ -271,7 +271,7 @@ class game extends CI_Controller {
         $userid = getUserIDByUsername($string);
         if($userid){
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            if(is_a($player, 'Zombie') && $player->isActive()){
+            if(is_a($player, 'Zombie') && $player->canParticipate()){
                 return true;
             }
         }
@@ -279,7 +279,7 @@ class game extends CI_Controller {
     }
 
     public function register_new_team(){
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(!$this->logged_in_player || !$this->logged_in_player->canParticipate()) {
             redirect("home");
         }
 
@@ -334,7 +334,7 @@ class game extends CI_Controller {
     }
 
     public function join_team(){
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(!$this->logged_in_player || !$this->logged_in_player->canParticipate()) {
             redirect("home");
         }
 
@@ -381,7 +381,7 @@ class game extends CI_Controller {
     }
 
     public function leave_team(){
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(!$this->logged_in_player || !$this->logged_in_player->canParticipate()) {
             redirect("home");
         }
 

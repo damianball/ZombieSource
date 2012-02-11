@@ -50,6 +50,22 @@ class Player{
         }
     }
 
+    public function isViewable(){
+        if($this->isActive()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function canParticipate(){
+        if($this->isActive()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function getUser(){
         $this->ci->load->library('UserCreator');
         return $this->ci->usercreator->getUserByPlayerID($this->playerid);
