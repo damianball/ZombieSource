@@ -18,7 +18,11 @@ class Human extends Player implements IPlayer{
 
     // @Implements getPublicStatus()
     public function getPublicStatus(){
-        return "human"; 
+        if($this->canParticipate()){
+            return "human";
+        } else {
+            return "inactive";
+        } 
     }
 
     public function isViewable(){

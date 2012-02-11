@@ -19,11 +19,19 @@ class OriginalZombie extends Zombie implements IPlayer{
     // @Implements getPublicStatus()
     // this depends on what they are!!! :-)
     public function getPublicStatus(){
-        if($this->isExposed()){
-            return "original zombie";
+        if($this->canParticipate()){
+            if($this->isExposed()){
+                return "original zombie";
+            } else {
+                return "human";
+            }
         } else {
-            return "human";
-        } 
+            if(parent::isActive()){
+                return "starved zombie";
+            } else {
+                return "inactive";
+            }
+        }
     }
 
     public function getKills(){

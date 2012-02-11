@@ -18,7 +18,7 @@ class Zombie extends Player implements IPlayer{
 
     // @Implements getPublicStatus()
     public function getPublicStatus(){
-        if($this->isActive()) {
+        if($this->canParticipate()) {
             return "zombie";
         } else if ($this->isStarved() && parent::isActive()){
             return "starved zombie";

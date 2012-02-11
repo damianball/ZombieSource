@@ -10,6 +10,10 @@ function getUTCTimeDifferenceInSeconds($new, $old){
 }
 
 function getTimeStringFromSeconds($seconds){
+    if (!$seconds) {
+        return null;
+    }
+
     $days = floor($seconds / 86400);
     $hours = floor(($seconds - ($days * 86400)) / 3600);
     $mins = floor(($seconds - ($hours*3600 + $days*86400)) / 60);
