@@ -116,6 +116,7 @@ class Auth extends CI_Controller
     $this->_show_message($this->lang->line('auth_message_logged_out'));
   }
 
+
   /**
    * Register user on the site
    *
