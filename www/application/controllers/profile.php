@@ -58,7 +58,7 @@ class Profile extends CI_Controller {
                                 'major' => $this->input->post('major'),
                                 'OriginalZombiePool' => $this->input->post('originalzombiepool')
                             );
-            
+                $userid = $this->tank_auth->get_user_id();
                 $player = $this->playercreator->createPlayerByJoiningGame($userid, GAME_KEY, $params);
                 redirect('profile');
             } else {
