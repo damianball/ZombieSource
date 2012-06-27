@@ -3,7 +3,7 @@ Code for zombie game.
 Installation instructions (work in progress)
 //obvious
 Install mysql
-Install a web server (Damian and I use MAMP for mac)
+Install a web server (I use MAMP for mac)
 Clone ZombieSource repo to the root of your webserver
 
 //not so obvious
