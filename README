@@ -9,7 +9,7 @@ Clone ZombieSource repo to the root of your webserver
 //not so obvious
 run ddl.sql on mysql, this will create an empty database zsource_dev
 edit /www/application/config.php so that $config['base_url'] is set to the path to your zombie installation
-  e.g. the default for is $config['base_url']  = 'http://localhost:8888/ZombieSource/www/';
+  e.g. the default on master is $config['base_url']  = 'http://localhost:8888/ZombieSource/www/';
   but I change mine to $config['base_url']  = 'http://localhost:8888/www/';
 
 ddls with actual user data for testing can be obtained on request if we like you.
