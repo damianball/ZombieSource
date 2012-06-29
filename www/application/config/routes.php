@@ -46,7 +46,7 @@ $route['game/teams'] = "Game_controller/teams";
 $route['game'] = "Game_controller";
 $route['auth'] = "Auth_controller";
 $route['home'] = "Home_controller";
-$route['profile'] = "Profile_controller_controller";
+$route['profile'] = "Profile_controller";
 $route['admin'] = "Admin_controller";
 
 

@@ -27,4 +27,19 @@ class User{
     public function getUsername(){
         return $this->ci->User_model->getUsernameByUserID($this->userid);
     }
+
+    //====== Data methods to migrate from player model
+
+    // public function getData($key){
+    //     if(!array_key_exists($key,$this->data)){
+    //         $this->data[$key] = $this->ci->User_model->getUserData($this->userid, $key);
+    //     } 
+    //     return $this->data[$key];
+    // }
+
+    // public function saveData($key, $value){
+    //     $this->ci->User_model->setUserData($this->userid, $key, $value);
+    //     $this->data[$key] = $value;
+    // }
+
 }
