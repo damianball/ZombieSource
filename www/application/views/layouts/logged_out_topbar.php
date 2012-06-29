@@ -1,7 +1,7 @@
-
-    <div class="fill">
+    <div class="navbar-inner">
       <div class="container">
-        <a class="brand">ZombieSource</a>
+        <a class="brand" href="<?php echo site_url("home"); ?> ">ZombieSource</a>
+        <div class="nav-collapse">
           <ul class="nav">
             <li><a href = "<?php echo site_url("home"); ?> ">Home</a></li>
           </ul>
