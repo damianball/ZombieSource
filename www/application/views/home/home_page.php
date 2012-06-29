@@ -20,6 +20,9 @@
          <div class="info_box">
          <?php echo $home_content ?>
          </div>
+        <div class="well">
+            <script type="text/javascript" src="<?php echo $tumblr_url ?>"></script>
+        </div>
       </div>
    </div>
    <div class="sidebar">
@@ -82,24 +85,24 @@
             name: 'Browser share',
             data: [
                 {
-                  name: 'Male',    
+                  name: 'Male',
                   y: <?php echo $male; ?>,
                   color: "#39869B"
 
                 },
                {
-                  name: 'Female',    
+                  name: 'Female',
                   y: <?php echo $female; ?>,
                   color: "#46A1B9"
 
                },
                {
-                  name: 'Other',    
+                  name: 'Other',
                   y: <?php echo $other; ?>,
                   color: "#7CBBCF"
                },
                {
-                  name: 'No Response',    
+                  name: 'No Response',
                   y: <?php echo $noresponse; ?>,
                   color: "#B5D4E0"
 
