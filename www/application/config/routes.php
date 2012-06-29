@@ -38,9 +38,17 @@
 |
 */
 
-$route['user/:num'] = "profile/public_profile";
-$route['team/edit/:any'] = "profile/edit_team_profile";
-$route['team/:any'] = "profile/team_public_profile";
+$route['user/:num'] = "Profile_controller/public_profile";
+$route['team/edit/:any'] = "Profile_controller/edit_team_profile";
+$route['team/:any'] = "Profile_controller/team_public_profile";
+$route['game/teams'] = "Game_controller/teams";
+
+$route['game'] = "Game_controller";
+$route['auth'] = "Auth_controller";
+$route['home'] = "Home_controller";
+$route['profile'] = "Profile_controller_controller";
+$route['admin'] = "Admin_controller";
+
 
 $route['team/new'] = "game/register_new_team";
 
