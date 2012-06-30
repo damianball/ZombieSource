@@ -70,7 +70,8 @@ class Game_controller extends CI_Controller {
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
     }
 
     public function teams(){
@@ -419,18 +420,5 @@ class Game_controller extends CI_Controller {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

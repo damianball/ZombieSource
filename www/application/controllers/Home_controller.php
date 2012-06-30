@@ -13,6 +13,9 @@ class Home_controller extends CI_Controller {
         // $is_logged_in = false;
         $is_logged_in = $this->tank_auth->is_logged_in();
 
+        $tumblr_num_posts = $this->config->item('tumblr_num_posts');
+        $tumblr_username = $this->config->item('tumblr_username');
+
         $userid = $this->tank_auth->get_user_id();
 
         $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
@@ -31,8 +34,8 @@ class Home_controller extends CI_Controller {
               $home_banner = $this->load->view('home/beta_banner','', true);
             }
         }
-        else{ 
-            $home_content = $this->load->view('home/logged_out_home','', true); 
+        else{
+            $home_content = $this->load->view('home/logged_out_home','', true);
             $top_bar = $this->load->view('layouts/logged_out_topbar','', true);
             $home_banner = $this->load->view('home/beta_banner','', true);
         }
@@ -44,8 +47,11 @@ class Home_controller extends CI_Controller {
             'other'        => $num_other_gender,
             'noresponse'   => $num_no_gender_response,
             'home_banner'  => $home_banner,
-            'home_content' => $home_content
+            'home_content' => $home_content,
+            'tumblr_username'  =>  $tumblr_username,
+            'tumblr_num_posts' =>  $tumblr_num_posts
         );
+
 
         //load the content variables
         $layout_data['top_bar'] = $top_bar;
