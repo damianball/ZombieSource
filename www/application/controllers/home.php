@@ -12,8 +12,9 @@ class Home extends CI_Controller {
     {
         // $is_logged_in = false;
         $is_logged_in = $this->tank_auth->is_logged_in();
-        // The Tumblr url for javascript loading
-        $tumblr_url = 'http://' . $this->config->item('tumblr_username') . '.tumblr.com/js';
+
+        $tumblr_num_posts = $this->config->item('tumblr_num_posts');
+        $tumblr_username = $this->config->item('tumblr_username');
 
         $userid = $this->tank_auth->get_user_id();
 
@@ -47,7 +48,8 @@ class Home extends CI_Controller {
             'noresponse'   => $num_no_gender_response,
             'home_banner'  => $home_banner,
             'home_content' => $home_content,
-            'tumblr_url'  =>  $tumblr_url
+            'tumblr_username'  =>  $tumblr_username,
+            'tumblr_num_posts' =>  $tumblr_num_posts
         );
 
 
