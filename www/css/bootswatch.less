@@ -25,6 +25,19 @@ body {
 			background-color: @linkColorHover;
 		}
 	}
+	
+
+	    
+	.basic_link > a{
+        margin-top: 10px;
+        margin-left: 5px;
+        float: right;
+        height: 10px;
+        color: @white;
+        &:hover {
+            color: @linkColorHover;
+		}
+    }
 
 	.nav .active > a,
 	.nav .active > a:hover {
@@ -73,7 +86,7 @@ body {
 }
 
 .btn-warning {
-  .buttonBackground(lighten(@yellow, 15%), @yellow);
+  .buttonBackground(lighten(@orange, 15%), @orange);
 }
 
 // FORMS

@@ -42,10 +42,9 @@
           <?php echo $content_body; ?>        
         </div>
 <hr>
-<div class="container">
-
+<center>
     <?php echo $footer; ?>
-</div>
+</center>
 
   </body>
     </html>
