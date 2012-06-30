@@ -35,11 +35,6 @@ class Profile_controller extends CI_Controller {
 
     public function index()
     {
-
-        if($this->player)
-
-
-
         if($this->logged_in_player){
             $player = $this->logged_in_player;
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
