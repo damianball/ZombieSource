@@ -135,5 +135,5 @@
 		timeToWait : 2000 // Milliseconds, 1000 = 1 second
 	};
 </script>
-  <script type="text/javascript" src="<?php echo base_url();?>js/tumblrBadge-1.1.js"/>
+  <script type="text/javascript" defer="defer" src="<?php echo base_url();?>js/tumblrBadge-1.1.js"/>
 
