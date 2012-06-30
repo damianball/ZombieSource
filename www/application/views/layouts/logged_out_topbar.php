@@ -19,13 +19,13 @@
               <form action = "<?php echo site_url("auth/login"); ?>" method="post" accept-charset="utf-8" class="navbar-form pull-right" >
                 
                   
-                  <input <input placeholder="Username" class="input-small" type="text" name="login" value="" id="login" maxlength="80" size="30" class="span1" />
+                  <input placeholder="Username" class="input-small" type="text" name="login" value="" id="login" maxlength="80" size="30" class="span1" />
                
                 
-                  <input <input placeholder="Password" class="input-small" type="password" name="password" value="" id="password" size="30"  class="span1"/>
+                  <input placeholder="Password" class="input-small" type="password" name="password" value="" id="password" size="30"  class="span1"/>
                 
 
-                <button class="btn btn-success pull-right" type="submit">Sign in</button>
+                <button class="btn btn-success" type="submit">Sign in</button>
                   
                 
               </form>

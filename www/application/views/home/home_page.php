@@ -5,20 +5,22 @@
             <div class="main">
                <div id = "title">
                <?php echo $home_banner ?></div>
-               <div id = "graphbox">
-                  <div class="info_box">
-                     <div id = "label">
-                     <h2> Player Count: </h2>
-                     </div>
-                     <div id = "homepage_data">
-                        <div id = "graph2" class = "homepage_graph">
-                           <span style = "font-size: 30px;"><?php echo $count; ?> </span>
+                  <div class="row-fluid">
+                  <div id = "graphbox">
+                     <div class="info_box">
+                        <div id = "label">
+                        <h2> Player Count: </h2>
                         </div>
-                        <div id = "graph1" class = "homepage_graph"></div>
+                        <div id = "homepage_data">
+                           <div id = "graph2" class = "homepage_graph">
+                              <span style = "font-size: 50px;"><?php echo $count; ?> </span>
+                           </div>
+                           <div id = "graph1" class = "homepage_graph"></div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="info_box">
-                  <?php echo $home_content ?>
+                     <div class="info_box">
+                     <?php echo $home_content ?>
+                     </div>
                   </div>
                </div>
             </div>

@@ -1,5 +1,4 @@
 <div class="row-fluid">
-
   <div class="span8">
     <div class = "line"> 
       <span class = "profile_data_item"> <h3><?php echo $username; ?></h3></span>
@@ -18,8 +17,6 @@
 
           </div>
         </div>
-
-
 
       </div>
       <div class="span4">
@@ -57,10 +54,7 @@
                         echo $status;
                       echo "</button>";
                     }
-                    ?>
-                
-
-                
+                    ?>      
         </div>
       </div>
     </div>
