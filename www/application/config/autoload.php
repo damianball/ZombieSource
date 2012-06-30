@@ -79,7 +79,7 @@ $autoload['helper'] = array('html', 'url', 'form');
 |
 */
 
-$autoload['config'] = array('');
+$autoload['config'] = array('organization');
 
 
 /*
