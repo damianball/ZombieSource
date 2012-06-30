@@ -22,10 +22,13 @@
                      <?php echo $home_content ?>
                      </div>
                   </div>
+            <div class="well">
+                <h2>Announcements</h2>
+                <div id="tumblr-badge"></div>
+            </div>
                </div>
             </div>
          </div>
-
       </div>
     <div class="span4">
         <div class="well sidebar-nav">
@@ -96,24 +99,24 @@
             name: 'Browser share',
             data: [
                 {
-                  name: 'Male',    
+                  name: 'Male',
                   y: <?php echo $male; ?>,
                   color: "#39869B"
 
                 },
                {
-                  name: 'Female',    
+                  name: 'Female',
                   y: <?php echo $female; ?>,
                   color: "#46A1B9"
 
                },
                {
-                  name: 'Other',    
+                  name: 'Other',
                   y: <?php echo $other; ?>,
                   color: "#7CBBCF"
                },
                {
-                  name: 'No Response',    
+                  name: 'No Response',
                   y: <?php echo $noresponse; ?>,
                   color: "#B5D4E0"
 
@@ -124,5 +127,15 @@
       });
    });
   </script>
-
+<script type="text/javascript">
+	var tumblrSettings = {
+        userName : "<?php echo $tumblr_username; ?>", // Your Tumblr user name
+        itemsToShow : <?php echo $tumblr_num_posts; ?>, // Number of Tumblr posts to retrieve
+		itemToAddBadgeTo : "tumblr-badge", // Id of HTML element to put badge code into
+		imageSize : 100, // Values can be 75, 100, 250, 400 or 500
+		shortPublishDate : true, // Whether the publishing date should be cut shorter
+		timeToWait : 2000 // Milliseconds, 1000 = 1 second
+	};
+</script>
+  <script type="text/javascript" defer="defer" src="<?php echo base_url();?>js/tumblrBadge-1.1.js"/>
 
