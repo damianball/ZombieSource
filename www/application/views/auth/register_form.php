@@ -48,6 +48,9 @@ $captcha = array(
       <div id = "title">
       <h2>New User Registration </h2>
       </div>
+      <div class="row">
+      <div class="span12">
+      <div class="span7">
       <div id = "fields">
           <fieldset>
 
@@ -113,38 +116,18 @@ $captcha = array(
                 } ?>
             </table>
               <div id = "register_button">
-                    <input type="submit" value = "Register" class = "btn success"/>  </form> 
-                    <?php echo form_close(); ?> 
+                    <input type="submit" value = "Register" class = "btn success"/>  </form>
+                    <?php echo form_close(); ?>
               </div>
             </fieldset>
       </div>
    </div>
-   <div class="sidebar">
-      <h3>Info</h3>
-      <div class = "infoitem">
-         <b> Game Play:</b> <br>
-         Feb 6th - Feb 12th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Registration Deadline:</b><br>
-         Jan 27th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Contact:</b><br>
-         <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
-      </div>
+   <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
+        </div>
+   </div>
+   </div>
    </div>
 </div>
 

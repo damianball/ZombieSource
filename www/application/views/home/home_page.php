@@ -31,39 +31,10 @@
          </div>
       </div>
     <div class="span4">
-        <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-
+        <div class="well">
             <div class="sidebar">
-               <h3>Info</h3>
-                <div id="gameInfo"></div>
-               <div class = "infoitem">
-                  <b> Game Play:</b> <br>
-                  Feb 6th - Feb 12th
-               </div>
-               <div class = "tinyline"></div>
-               <div class = "infoitem">
-                  <b> Registration Deadline:</b><br>
-                  Jan 27th
-               </div>
-               <div class = "tinyline"></div>
-               <div class = "infoitem">
-                  <b> Orientation Dates:</b><br>
-                  Jan 30th  and Feb 3rd<br>
-                  Ag Sci 106, 6:00 pm
-               </div>
-               <div class = "tinyline"></div>
-               <div class = "infoitem">
-                  <b> Contact:</b><br>
-                  <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-                  <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-               </div>
-               <div class = "tinyline"></div>
-               <div class = "infoitem">
-                  <a href = "https://docs.google.com/open?id=1vYy1nVvFoE3HOjKs7olWDFl-rgW2eXIfp4Ms7_nyVqetArbXm6x8OD5MQh2l"> Rules </a>
-               </div>
+                <?php $this->load->view("layouts/gameinfo"); ?>
             </div>
-         </ul>
       </div>
    </div>
 </div>
@@ -128,17 +99,6 @@
       });
    });
   </script>
-<script type="text/javascript">
-// Dump the most recent tumblr post tagged "info" into the sidebar
-$.ajax({url: "http://api.tumblr.com/v2/blog/<?php echo $tumblr_username?>.tumblr.com/posts?api_key=<?php echo $tumblr_api_key?>&tag=<?php echo $tumblr_info_tag?>",
-        dataType: "jsonp",
-        jsonp: 'jsonp',
-        success: function(data){
-            $("#gameInfo").html(data.response.posts[0].body);
-    }});
-
-
-</script>
 <script type="text/javascript">
 	var tumblrSettings = {
         userName : "<?php echo $tumblr_username; ?>", // Your Tumblr user name
