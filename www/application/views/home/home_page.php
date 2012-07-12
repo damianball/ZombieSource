@@ -36,6 +36,7 @@
 
             <div class="sidebar">
                <h3>Info</h3>
+                <div id="gameInfo"></div>
                <div class = "infoitem">
                   <b> Game Play:</b> <br>
                   Feb 6th - Feb 12th
@@ -127,6 +128,17 @@
       });
    });
   </script>
+<script type="text/javascript">
+// Dump the most recent tumblr post tagged "info" into the sidebar
+$.ajax({url: "http://api.tumblr.com/v2/blog/<?php echo $tumblr_username?>.tumblr.com/posts?api_key=<?php echo $tumblr_api_key?>&tag=<?php echo $tumblr_info_tag?>",
+        dataType: "jsonp",
+        jsonp: 'jsonp',
+        success: function(data){
+            $("#gameInfo").html(data.response.posts[0].body);
+    }});
+
+
+</script>
 <script type="text/javascript">
 	var tumblrSettings = {
         userName : "<?php echo $tumblr_username; ?>", // Your Tumblr user name
