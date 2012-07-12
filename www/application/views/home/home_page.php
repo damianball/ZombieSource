@@ -1,10 +1,28 @@
+<div class="well">
+   <div class="row">
+      <div class="span">
+         <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+
+         <div id = "title">
+            <?php echo $home_banner ?>
+         </div>
+      </div>
+   
+      <div class="span2 offset4">
+        <h2> New here? </h2>
+                     <?php echo $home_content ?>
+         
+      </div>
+   </div>
+   
+
+</div>
 <div class="row-fluid">
     <div class="span8">
         <div class="well">
-            <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+            
             <div class="main">
-               <div id = "title">
-               <?php echo $home_banner ?></div>
+               
                   <div class="row-fluid">
                   <div id = "graphbox">
                      <div class="info_box">
@@ -18,9 +36,7 @@
                            <div id = "graph1" class = "homepage_graph"></div>
                         </div>
                      </div>
-                     <div class="info_box">
-                     <?php echo $home_content ?>
-                     </div>
+                     
                   </div>
             <div class="well">
                 <h2>Announcements</h2>
