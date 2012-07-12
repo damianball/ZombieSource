@@ -8,7 +8,8 @@
   </div>
   <div id = "manage_teams">
     <div class = "team_box">
-      To join a team click their name to visit their profile</br></br>
+      Teams are groups of people banding together for fun and mutual benefit.<br>
+      To join a team, click their name to visit their profile.</br></br>
       Please make sure you are welcome on a team before you join.</br>
     </div>
     <div class = "team_box">

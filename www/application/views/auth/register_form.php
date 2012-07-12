@@ -45,6 +45,10 @@ $captcha = array(
 </div>
 <div class = "row" >
    <div class="main">
+
+      <div class="row">
+      <div class="span12">
+      <div class="span7">
       <div id = "fields">
           <fieldset>
 
@@ -117,12 +121,20 @@ $captcha = array(
                 } ?>
             </table>
               <div id = "register_button">
-                    <input type="submit" value = "Register" class = "btn success"/>  </form> 
-                    <?php echo form_close(); ?> 
+                    <input type="submit" value = "Register" class = "btn success"/>  </form>
+                    <?php echo form_close(); ?>
               </div>
             </form>
             </fieldset>
       </div>
    </div>
+   <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
+        </div>
+   </div>
+   </div>
+   </div>
+</div>
 
 

@@ -5,7 +5,7 @@
     <div class="span10">
       <h2> Sign Safety Waiver (Required) </h2>
         <div class="span12">
-        <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
+        <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004");
              echo form_open($this->uri->uri_string())
          ?>
             <div class="clearfix">
@@ -15,7 +15,7 @@
                 <button class="btn primary"> READ ME </button>
               </a>
               </div>
-            </div> 
+            </div>
          <div class="clearfix">
                 <label>Agreements</label>
                 <div class="input">
@@ -40,7 +40,7 @@
               <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
             </div>
             </fieldset>
-        </div> 
+        </div>
       <h2> Profile Information (Optional) </h2>
         <div class="span12">
             <fieldset>
@@ -83,11 +83,11 @@
                   <label>   </label>
   				            <input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
                   </label>
-              </div>         
+              </div>
             </fieldset>
                 <div class="actions">
-                  <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
-              </div>          
-        </div>  
+                  <input type="submit" value = "Save and Finish" class = "btn success"/></form>
+              </div>
+        </div>
     </div>
  </div>
