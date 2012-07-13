@@ -47,8 +47,8 @@ if ($this->config->item('use_username', 'tank_auth')) {
 		<td><?php echo form_input($login); ?></td>
 		<div class="error-text"><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?></div>
 	</tr>
-
-<?php echo form_submit('reset', 'Get a new password', array('class' => 'btn')); ?>
+  <br>
+<?php echo form_submit('reset', 'Get a new password'); ?>
 <?php echo form_close(); ?>
 
 

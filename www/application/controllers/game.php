@@ -165,7 +165,7 @@ class game extends CI_Controller {
 
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-   /*     if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
+        if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
@@ -173,7 +173,7 @@ class game extends CI_Controller {
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data); 
         } else {
-     */       $zombie = $player;
+            $zombie = $player;
 
             $max_feeds = 3; // @TODO: hard coded for now
             for($i = 1; $i <= $max_feeds; $i++){
@@ -257,7 +257,7 @@ class game extends CI_Controller {
                 #$this->load->view('layouts/game_layout', $layout_data);
                 $this->load->view('layouts/main', $layout_data);
             }
-        
+        }
     }
 
     private function loadGenericMessage($message){
