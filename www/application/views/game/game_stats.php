@@ -1,8 +1,31 @@
 
-<h2> Humans: <?php echo $human_count; ?> Zombies: <?php echo $zombie_count; ?> Starved Zombies: <?php echo $zombie_count; ?></h2>
+<h2> Game Statistics </h2>
+<hr>
+<div class="row">
+   <?php $this->load->view("layouts/game_sidebar"); ?>
+
+
+
+   
+      <h3>
+      <div class="span2">
+         <div class="alert alert-blue"> Players: <?php echo $count; ?> </div>
+      </div>
+      <div class="span2">
+         <div class="alert alert-green"> Humans: <?php echo $human_count; ?> </div>
+      </div>
+      <div class="span2">
+         <div class="alert alert-yellow"> Zombies: <?php echo $zombie_count; ?> </div>
+      </div>
+      <div class="span3">
+         <div class="alert alert-red"> Starved Zombies: <?php echo $zombie_count; ?> </div>
+      </div>
+   </h3>
+  
+</div>
 <div id = "chart1"></div>
 
-</div>
+
   <script type="text/javascript">
    var chart;
    $(document).ready(function() {

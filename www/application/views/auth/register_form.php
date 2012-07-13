@@ -52,21 +52,21 @@ $captcha = array(
       <div id = "fields">
           <fieldset>
 
-            <?php echo form_open($this->uri->uri_string()); ?>
-            <form class="form-horizontal"> <!-- still working on this! Works, but no red -->
+            <?php echo form_open($this->uri->uri_string(), array('class' => 'form-horizontal')); ?>
+            <!-- still working on this! Works, but no red -->
                   <legend>User Registration</legend>
                 <?php if ($use_username) { ?>
                 <tr>
                     <td><?php echo form_label('Username', $username['id']); ?></td>
                     <td><?php echo form_input($username); ?></td>
-                    <div class="error-text"><?php echo form_error($username['name']); ?><?php echo isset($errors[$username['name']])?$errors[$username['name']]:''; ?>
+                    <div class="error-text"><?php echo form_error($username['name']); ?>
                     </div>
                 </tr>
                 <?php } ?>
                 <tr>
                     <td><?php echo form_label('Email Address', $email['id']); ?></td>
                     <td><?php echo form_input($email); ?> <? //echo form_dropdown('emailsuffix', $emailsuffixoptions, '1'); ?></td>
-                    <div class="error-text"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']])?$errors[$email['name']]:''; ?>
+                    <div class="error-text"><?php echo form_error($email['name']); ?>
                   </div>
                 </tr>
                 <tr>
@@ -120,11 +120,12 @@ $captcha = array(
                 <?php }
                 } ?>
             </table>
+            <br>
               <div id = "register_button">
-                    <input type="submit" value = "Register" class = "btn success"/>  </form>
+                    <input type="submit" value = "Register" class = "btn"/>  </form>
                     <?php echo form_close(); ?>
               </div>
-            </form>
+          
             </fieldset>
       </div>
    </div>

@@ -3,9 +3,16 @@
 -->
   <!--<div id = "sortable_tables" >
    <!-- <div class = "hvz_table" > -->
-   <table class="table table-striped>
+<h2> Players </h2>
+<hr>
+
+<div class="row-fluid">
+  <?php $this->load->view("layouts/game_sidebar"); ?>
+  <div class="span10">
       <?php echo $game_table; ?>
-      </table>
-    </div>
   </div>
+</div>
+
+
+      
 
