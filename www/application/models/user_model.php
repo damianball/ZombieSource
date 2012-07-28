@@ -69,7 +69,7 @@ class User_model extends CI_Model{
     //     if(isset($result->{'value'})){
     //         $value = $result->{'value'};
     //     }
-        
+
     //     return $value;
     // }
 

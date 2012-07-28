@@ -11,10 +11,11 @@ class User{
         $this->ci->load->library('PlayerCreator');
 
         $this->ci->load->model('User_model','',TRUE);
+        $this->ci->load->model('Player_model','',TRUE);
         if($userid){
             $this->userid = $userid;
         } else {
-            throw new ClassCreationException('userid in User object is null');     
+            throw new ClassCreationException('userid in User object is null');
         }
     }
 
@@ -50,10 +51,24 @@ class User{
 
     //====== Data methods to migrate from player model
 
+    public function getModeratorPlayers(){
+        try{
+            $playerids = $this->ci->Player_model->getModeratorPlayerIDsByUserID($this->userid);
+        } catch (UnexpectedValueException $e){
+            return FALSE;
+        } catch (UserIsNotModeratorException $e){
+            return FALSE;
+        }
+        $player_objects = array();
+        foreach($playerids as $playerid){
+            $player_objects[$playerid] = $this->ci->PlayerCreator->getPlayerByPlayerID($playerid);
+        }
+        return $player_objects;
+    }
     // public function getData($key){
     //     if(!array_key_exists($key,$this->data)){
     //         $this->data[$key] = $this->ci->User_model->getUserData($this->userid, $key);
-    //     } 
+    //     }
     //     return $this->data[$key];
     // }
 
