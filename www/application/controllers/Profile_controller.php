@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Profile extends CI_Controller {
+class Profile_controller extends CI_Controller {
   // var $logged_in_player;
   // var $logged_in_players_team;
     private $logged_in_player = null;

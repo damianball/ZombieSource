@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+error_reporting(E_ALL);
 
-class game extends CI_Controller {
+class Game_controller extends CI_Controller {
     private $logged_in_player = null;
-
     public function __construct()
     {
         parent::__construct();
@@ -12,6 +12,7 @@ class game extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('TeamCreator', null);
+        $this->load->library('GameCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
@@ -19,12 +20,30 @@ class game extends CI_Controller {
 
         // load the logged in player (if one exists) into the controller
         $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            if($player->isActive()){
-                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            }   
+
+        $get = $this->uri->uri_to_assoc(1);
+        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        $teamid = $get['team'];
+        $teamid = $this->security->xss_clean($teamid);
+
+
+        if(params is null || !validGameName(prams)){
+            if(userinanygame(userid){
+                redirect("game/". their game)
+            }
+            else{
+                redirect("game/overview");
+            }
+        }else(!userExistsInGame(userid, game_key)){
+            redirect("game/overview")
         }
+
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        if($player->isActive()){
+            $this->logged_in_player = $player;
+        }   
+        $game = $this->gameCreator->getGameByGameID(GAME_KEY);
+        
     }
 
     public function index()
@@ -32,6 +51,20 @@ class game extends CI_Controller {
         if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
             redirect("home");
         }
+
+        // you land on the game page
+        //   if you aren't in any game you get redirected to game/overview
+        //   if you are in a game you get redirected to game/:gameid
+
+        // if((params == nul) && validGames(params)){
+        //     redirect("game/".default);
+        // }
+        
+        // if(userExistsInGame($userid, GAME_KEY)){
+        //     $player -> $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        // }else{
+        //     redirect("game/overview");
+        // }
 
         //load the content variables
         $this->table->set_heading(
@@ -59,6 +92,10 @@ class game extends CI_Controller {
         //-- Display Table
         $game_table = $this->table->generate();     
         $data = array('game_table' => $game_table);
+        $gameid = $player->getCurrentGameId();
+        $game = $this->gamecreator->getGameByGameID($gameid);
+        $data['game_name'] = $game->name();
+
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -405,4 +442,15 @@ class game extends CI_Controller {
         $this->load->view('layouts/main', $layout_data); 
 
     }
+
+    public function overview(){
+   
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/overview','', true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);   
+        $this->load->view('layouts/main', $layout_data); 
+    }
+
 }
+
+

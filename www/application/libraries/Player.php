@@ -91,8 +91,9 @@ class Player{
         return $this->playerid;
     }
 
-    // @TODO: write this function
-    public function getGameID(){}
+    public function getCurrentGameId(){
+        return $this->ci->Player_model->getGameIDbyPlayerID($this->playerid);
+    }
 
     public function isMemberOfATeam(){
         $hasTeam = FALSE;

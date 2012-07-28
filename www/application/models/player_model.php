@@ -31,7 +31,7 @@ class Player_model extends CI_Model{
         
         return $query->row()->playerid;
     }
-    
+
     public function playerExistsByPlayerID($playerid){
         $this->db->select('id');
         $this->db->from($this->table_name);
@@ -55,6 +55,19 @@ class Player_model extends CI_Model{
         }
         
         return $query->row()->id;
+    }
+
+
+    public function getGameIDbyPlayerID($playerid){
+        $this->db->select('gameid');
+        $this->db->from($this->table_name);
+        $this->db->where('id',$playerid);
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new PlayerDoesNotExistException('Did not find a playerid for userid '.$userid);
+        }
+        
+        return $query->row()->gameid;
     }
 
     // @TODO: restrict active to not banned... probably need a column in the db for that

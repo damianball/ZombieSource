@@ -1,5 +1,10 @@
 <?php
 
+function validGameName($gamename){
+    return true;
+}
+
+
 function getActivePlayers($gameid){
     if(!$gameid){
         throw new UnexpectedValueException('Gameid not set.');
