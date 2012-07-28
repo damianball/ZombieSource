@@ -124,6 +124,7 @@ class Auth_controller extends CI_Controller
    */
   function register()
   {
+    //$this->form_validation->set_error_delimiters('<div class="error-text">', '</div>'); // set error delimiters
     if ($this->tank_auth->is_logged_in()) {                 // logged in
       redirect('/profile');
 
@@ -209,6 +210,7 @@ class Auth_controller extends CI_Controller
 
           }
         } else {
+          
           $errors = $this->tank_auth->get_error_message();
           foreach ($errors as $k => $v) $data['errors'][$k] = $this->lang->line($v);
         }

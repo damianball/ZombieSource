@@ -128,6 +128,11 @@ class Player{
         $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
     }
 
+    public function leaveGame(){
+        $this->ci->Player_model->makePlayerInactive($this->playerid);
+    }
+
+
     public function isElligibleForTagUndo(){
         return false;
     }

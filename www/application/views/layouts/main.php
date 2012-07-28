@@ -9,13 +9,6 @@
    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>css/bootswatch.less">
    
    
-   <!--<?php
-  #echo link_tag("css/style.css");
-  #echo link_tag("css/variables.less");
-  #echo link_tag("css/bootswatch.less");
-  #echo "\n";
-  #?>
-  -->
   <script type="text/javascript" src="<?php echo base_url();?>js/less.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src= <?php echo base_url("js/highcharts/highcharts.js") ?> ></script>
@@ -36,7 +29,7 @@
       </div>
     -->
     <div class = "container">
-         <?php echo $content_body; ?>        
+         <?php echo $content_body; ?>     
       </div>
     <hr>
     <center>
