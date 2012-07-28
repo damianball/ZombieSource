@@ -1,5 +1,9 @@
 
+<div class="row-fluid">
+  <div class="span2">
    <div id = "contact" > brains@zombiesource.org</div>
+  </div>
+ </div>
 	<script type="text/javascript">
 	  var uvOptions = {};
 	  (function() {

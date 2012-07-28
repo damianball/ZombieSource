@@ -1,0 +1,129 @@
+// Bootswatch.less
+// Swatch: United
+// Version: 2.0.4
+// -----------------------------------------------------
+
+// TYPOGRAPHY
+// -----------------------------------------------------
+
+@import url(https://fonts.googleapis.com/css?family=Ubuntu);
+@import "bootstrap_zombies/less/variables.less";
+@import "bootstrap_zombies/less/bootstrap.less";
+
+// NAVBAR
+// -----------------------------------------------------
+body {
+    padding-top: 90px;
+}
+.navbar {
+
+	.nav > li > a {
+		border-right: 1px solid #C03D14;
+		border-left: 1px solid #E6633A;
+
+		&:hover {
+			background-color: @linkColorHover;
+		}
+	}
+		
+	.btn {
+	    margin-bottom: 0;
+	 }
+
+
+
+	    
+	.basic_link > a{
+        margin-top: 10px;
+        margin-left: 5px;
+        float: right;
+        height: 10px;
+        color: @white;
+        &:hover {
+            color: @linkColorHover;
+		}
+    }
+
+	.nav .active > a,
+	.nav .active > a:hover {
+	  background-color: rgba(0,0,0,.2);
+	}
+
+	.divider-vertical {
+		background-color: inherit;
+		border-right: 0px solid #CE4213;
+	}
+
+	.navbar-text {
+		padding: 9px 10px 11px;
+		line-height: 19px;
+		color: @white;
+	}
+
+	.navbar-search .search-query {
+		margin-bottom: 3px;
+		border: 1px solid darken(@navbarBackground, 15%);
+	}
+
+	.nav-collapse.in > .nav li > a {
+		color: @white;
+		border-left: 0px solid @orange;
+		border-right: 0px solid @orange;
+
+		&:hover {
+			background-color: @linkColorHover;
+		}
+	}
+
+	.nav-collapse.in .navbar-form,
+	.nav-collapse.in .navbar-search {
+		border-top: 0px solid @orange;
+		border-bottom: 0px solid @orange;
+		.box-shadow(none);
+	}
+}
+
+// BUTTONS
+// -----------------------------------------------------
+
+.btn-primary {
+  .buttonBackground(lighten(@btnPrimaryBackground, 15%), @btnPrimaryBackground);
+}
+
+.btn-warning {
+  .buttonBackground(lighten(@orange, 15%), @orange);
+}
+
+
+// FORMS
+// -----------------------------------------------------
+
+
+// MISC
+// -----------------------------------------------------
+
+.alert {
+	text-shadow: none;
+}
+
+.hero-unit {
+    border: 1px solid rgba(0,0,0,.05);
+    .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+
+	h1 {
+		line-height: 1.6em;
+	}
+}
+
+// User-defined styles
+
+#graph1 {
+    height: 400px;
+}
+
+ul.tumblr {
+    list-style-type: none;
+    li {
+        .well;
+    }
+}
