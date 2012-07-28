@@ -3,6 +3,8 @@ error_reporting(E_ALL);
 
 class Game_controller extends CI_Controller {
     private $logged_in_player = null;
+    private $current_game_id = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -10,6 +12,7 @@ class Game_controller extends CI_Controller {
             redirect('/auth/login');
         }
         $this->load->model('Player_model','',TRUE);
+        $this->load->model('Game_model','',TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
@@ -23,35 +26,24 @@ class Game_controller extends CI_Controller {
         $userid = $this->tank_auth->get_user_id();
         $user = $this->usercreator->getUserByUserID($userid);
 
+        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        $get = $this->uri->uri_to_assoc(1);
+        $game_slug = $this->security->xss_clean($get['game']);
 
-        // $get = $this->uri->uri_to_assoc(1);
-        // // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
-        // $game_name = $get['game'];
-        // $teamid = $this->security->xss_clean($teamid);
-
-        // if(url is a valid game){
-            
-
-        // }else{
-        //     if($user->isActiveInCurrentGame()){
-        //         redirect(current_game_url)
-        //     }
-        //     else{
-        //         redirect("game/overview");
-        //     }
-        // }
-
-
-
-
-
+        if(!validGameSlug($game_slug)){
+            if($user->isActiveInCurrentGame()){
+                $current_game_id = $user->currentGameID();
+                redirect("game/".$this->Game_model->getGameSlugByGameID($current_game_id));
+            }
+            else{
+                redirect("game/overview");
+            } 
+        }
 
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
         if($player->isActive()){
             $this->logged_in_player = $player;
-        }   
-        // $game = $this->gameCreator->getGameByGameID(GAME_KEY);
-        
+        }           
     }
 
     public function index()
@@ -59,20 +51,6 @@ class Game_controller extends CI_Controller {
         if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
             redirect("home");
         }
-
-        // you land on the game page
-        //   if you aren't in any game you get redirected to game/overview
-        //   if you are in a game you get redirected to game/:gameid
-
-        // if((params == nul) && validGames(params)){
-        //     redirect("game/".default);
-        // }
-        
-        // if(userExistsInGame($userid, GAME_KEY)){
-        //     $player -> $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        // }else{
-        //     redirect("game/overview");
-        // }
 
         //load the content variables
         $this->table->set_heading(

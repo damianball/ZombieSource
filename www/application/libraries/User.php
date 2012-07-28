@@ -11,6 +11,8 @@ class User{
         $this->ci->load->library('PlayerCreator');
 
         $this->ci->load->model('User_model','',TRUE);
+        $this->ci->load->model('Player_model','',TRUE);
+
         if($userid){
             $this->userid = $userid;
         } else {
@@ -32,8 +34,12 @@ class User{
     }
     public function isActiveInCurrentGame(){
         $current_game_id = GAME_KEY; //TODO fix
-        $player = getPlayerByUserIDGameID($userid, $current_game_id);
-        return $player && $player->isActive();
+        try{
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $this->currentGameID());
+            return $player->isActive();
+        }catch(InvalidParametersException $e){
+            return false;
+        }
     }
 
     public function getUserID(){
@@ -46,6 +52,10 @@ class User{
 
     public function getUsername(){
         return $this->ci->User_model->getUsernameByUserID($this->userid);
+    }
+
+    public function currentGameID(){
+        return $this->ci->Player_model->getCurrentGameIDByUserID($this->userid);
     }
 
     //====== Data methods to migrate from player model

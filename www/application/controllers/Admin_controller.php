@@ -20,9 +20,9 @@ class Admin_controller extends CI_Controller {
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
 
-        if(!$player->isModerator()){
-            redirect('/game');
-        }
+        // if(!$player->isModerator()){
+        //     redirect('/game');
+        // }
         $this->logged_in_user = $player;
     }
 

@@ -2,13 +2,14 @@
 
 require_once(APPPATH . 'libraries/Game.php');
 
-// Factory class for instanciating a team
+// Factory class for instanciating a game
 
 class GameCreator{
     private $ci = null;
 
     public function __construct(){
         $this->ci =& get_instance();
+        $this->ci->load->model('Game_model','',true);
     }
 
     public function getGameByGameID($gameid){

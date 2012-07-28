@@ -45,7 +45,7 @@ $route['team/new'] = "Game_controller/register_new_team";
 $route['game/teams'] = "Game_controller/teams";
 
 $route['game'] = "Game_controller";
-$route['game/(:any)'] = "Game_controller/$1";
+$route['game/(:any)'] = "Game_controller";
 
 $route['auth'] = "Auth_controller";
 $route['auth/(:any)'] = "Auth_controller/$1";
