@@ -20,12 +20,30 @@ class Game_controller extends CI_Controller {
 
         // load the logged in player (if one exists) into the controller
         $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            if($player->isActive()){
-                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            }   
+
+        $get = $this->uri->uri_to_assoc(1);
+        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        $teamid = $get['team'];
+        $teamid = $this->security->xss_clean($teamid);
+
+
+        if(params is null || !validGameName(prams)){
+            if(userinanygame(userid){
+                redirect("game/". their game)
+            }
+            else{
+                redirect("game/overview");
+            }
+        }else(!userExistsInGame(userid, game_key)){
+            redirect("game/overview")
         }
+
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        if($player->isActive()){
+            $this->logged_in_player = $player;
+        }   
+        $game = $this->gameCreator->getGameByGameID(GAME_KEY);
+        
     }
 
     public function index()
@@ -33,6 +51,20 @@ class Game_controller extends CI_Controller {
         if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
             redirect("home");
         }
+
+        // you land on the game page
+        //   if you aren't in any game you get redirected to game/overview
+        //   if you are in a game you get redirected to game/:gameid
+
+        // if((params == nul) && validGames(params)){
+        //     redirect("game/".default);
+        // }
+        
+        // if(userExistsInGame($userid, GAME_KEY)){
+        //     $player -> $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+        // }else{
+        //     redirect("game/overview");
+        // }
 
         //load the content variables
         $this->table->set_heading(
