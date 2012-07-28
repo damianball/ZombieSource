@@ -24,6 +24,13 @@ class PlayerDoesNotExistException extends Exception{
     }
 }
 
+
+class GameDoesNotExistException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 class IllegalFunctionResultException extends Exception{
     public function __construct($message, $code=null) {
         parent::__construct($message, $code);
@@ -43,6 +50,12 @@ class InvalidHumanCodeException extends Exception{
 }
 
 class PlayerDoesNotHaveAnyValidFeedsException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class InvalidParametersException extends Exception{
     public function __construct($message, $code=null) {
         parent::__construct($message, $code);
     }

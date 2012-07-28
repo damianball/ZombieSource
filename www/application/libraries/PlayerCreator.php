@@ -45,7 +45,7 @@ class PlayerCreator{
 
     public function getPlayerByUserIDGameID($userid, $gameid){
         if(!$userid || !$gameid){
-            throw new Exception("Userid nor Gameid can be null.");
+            throw new InvalidParametersException("Userid nor Gameid can be null.");
         }
 
         $this->ci->load->library('PlayerCreator');

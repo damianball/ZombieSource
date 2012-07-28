@@ -84,6 +84,23 @@ class Player_model extends CI_Model{
         return $playeridArray;
     }
 
+    //This will only return 1 game id!
+    //There should only be 1 active player!
+    public function getCurrentGameIDByUserID($userid){
+        $this->db->select('gameid');
+        $this->db->from($this->table_name);
+        $this->db->where('userid',$userid);
+        $this->db->order_by("datecreated", "desc");
+        $query = $this->db->get();
+        
+        $playeridArray = array();
+        foreach($query->result() as $row){
+            $gameidArray[] = $row->gameid;
+        }
+        return $gameidArray[0];
+    }
+
+
     private function getPlayerTableData($playerid, $name){
         $this->db->select($name);
         $this->db->from($this->table_name);
