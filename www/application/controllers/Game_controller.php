@@ -75,6 +75,9 @@ class Game_controller extends CI_Controller {
         array('data' => 'Kills', 'class' => 'sortable'),
         array('data' => 'Last Feed', 'class' => 'sortable'));
 
+        # make the table bootstrap pretty! #
+        $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
+
         $players = getViewablePlayers(GAME_KEY);
         $this->load->helper('date_helper');
         foreach($players as $player){
@@ -111,6 +114,8 @@ class Game_controller extends CI_Controller {
             redirect("home");
         }
 
+        $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
+
         $this->table->set_heading(
             array('data' => 'Avatar'),
             array('data' => 'Team', 'class' => 'sortable', 'class' => "medium_width_column"),
@@ -136,13 +141,17 @@ class Game_controller extends CI_Controller {
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/team_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
     }
 
     public function stats() {
         if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
             redirect("home");
         }
+
+        # make the table bootstrap pretty! #
+        $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
 
         //this should probably be done though the game library, whenever we write the game library. 
         // $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
@@ -182,7 +191,8 @@ class Game_controller extends CI_Controller {
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_stats',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
     }
 
     public function register_kill() {
@@ -198,7 +208,7 @@ class Game_controller extends CI_Controller {
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', 
                                                             array("message"=>"Not eligible to tag a kill"), true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-            $this->load->view('layouts/game_layout', $layout_data); 
+            $this->load->view('layouts/main', $layout_data); 
         } else {
             $zombie = $player;
 
@@ -281,7 +291,8 @@ class Game_controller extends CI_Controller {
                 $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
                 $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
                 $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-                $this->load->view('layouts/game_layout', $layout_data);
+                #$this->load->view('layouts/game_layout', $layout_data);
+                $this->load->view('layouts/main', $layout_data);
             }
         }
     }
@@ -292,7 +303,8 @@ class Game_controller extends CI_Controller {
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/game_layout', $layout_data);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
     }
 
     public function validate_human_code() {

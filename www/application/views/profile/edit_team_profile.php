@@ -1,7 +1,8 @@
 
 <div class="row">
     <div class="span10">
-      <h2> Edit Team '<?php echo $team_name ?>'</h2>
+      <h2> Edit Team <small> <?php echo $team_name ?></small></h2>
+      <hr>
         <div class="span12">
               <?php 
               echo form_open($this->uri->uri_string());
@@ -27,7 +28,7 @@
               </div>    
             </fieldset>
                 <div class="actions">
-                  <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
+                  <input type="submit" value = "Save and Finish" class = "btn btn-margin"/></form> 
               </div>          
         </div>  
     </div>

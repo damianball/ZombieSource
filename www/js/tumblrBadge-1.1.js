@@ -35,7 +35,9 @@ var tumblrBadge = function () {
 				// Only get content for text, photo, quote and link posts
 				if (/regular|photo|quote|link|conversation/.test(post.type)) {
 					listItem = document.createElement("li");
-					text = post["regular-body"] || post["photo-caption"] || post["quote-source"] || post["link-text"] || post["link-url"] || "";
+                    text = post["regular-title"] || post["conversation-title"] || post["Question"] || "";
+                    if (text !== ""){ text = "<h3>" + text + "</h3>";}
+					text += post["regular-body"] || post["photo-caption"] || post["quote-source"] || post["link-text"] || post["link-url"] || "";
 					if (post.type === "photo") {
 						link = document.createElement("a");
 						link.href = post.url;

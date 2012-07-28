@@ -9,9 +9,17 @@
               <li>
               <div class = "basic_link">
               
-                <a href="<?php echo site_url("auth/forgot_password"); ?>"> Reset Password </a>
+                <a href="<?php echo site_url("auth/forgot_password"); ?>"><small> Reset Password </small></a>
               
             </div>
+            </li>
+            <li>
+              <div id = "registration_prompt">
+                    <a href=" <?php echo site_url("auth/register"); ?> " id = "test" class = "btn btn-primary pull-right"> 
+                        Register
+                    </a>
+
+                </div> 
             </li>
           </ul>
             
@@ -29,12 +37,11 @@
                   
                 
               </form>
-
+             
             
         </div>
       </div>
     </div>
-    <div id = topline></div>
     
 
 
