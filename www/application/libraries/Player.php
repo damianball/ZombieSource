@@ -91,8 +91,9 @@ class Player{
         return $this->playerid;
     }
 
-    // @TODO: write this function
-    public function getGameID(){}
+    public function getCurrentGameId(){
+        return $this->ci->Player_model->getGameIDbyPlayerID($this->playerid);
+    }
 
     public function isMemberOfATeam(){
         $hasTeam = FALSE;
@@ -126,6 +127,11 @@ class Player{
         $this->ci->load->model('Player_team_model');
         $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);
     }
+
+    public function leaveGame(){
+        $this->ci->Player_model->makePlayerInactive($this->playerid);
+    }
+
 
     public function isElligibleForTagUndo(){
         return false;

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class admin extends CI_Controller {
+class Admin_controller extends CI_Controller {
 
     private $logged_in_user;
 
