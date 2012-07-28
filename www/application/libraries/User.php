@@ -8,12 +8,32 @@ class User{
     {
         //parent::__construct();
         $this->ci =& get_instance();
+        $this->ci->load->library('PlayerCreator');
+
         $this->ci->load->model('User_model','',TRUE);
         if($userid){
             $this->userid = $userid;
         } else {
             throw new ClassCreationException('userid in User object is null');     
         }
+    }
+
+    public function joinGame($userid, $gameid){
+        //TODO if player has already left game once what do
+        $player = $CI->playercreator->createPlayerByJoiningGame($userid, $gameid);
+        return $player->getPlayerID();
+    }
+
+    public function leaveGame($userid, $gameid){
+        //change player state to inactive
+        $player = getPlayerByUserIDGameID($userid, $gameid);
+        $player->leaveGame();
+
+    }
+    public function isActiveInCurrentGame(){
+        $current_game_id = GAME_KEY; //TODO fix
+        $player = getPlayerByUserIDGameID($userid, $current_game_id);
+        return $player && $player->isActive();
     }
 
     public function getUserID(){

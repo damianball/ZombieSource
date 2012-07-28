@@ -11,6 +11,7 @@ class Game_controller extends CI_Controller {
         }
         $this->load->model('Player_model','',TRUE);
         $this->load->library('PlayerCreator', null);
+        $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
         $this->load->library('GameCreator', null);
         $this->load->helper('game_helper');
@@ -20,29 +21,36 @@ class Game_controller extends CI_Controller {
 
         // load the logged in player (if one exists) into the controller
         $userid = $this->tank_auth->get_user_id();
-
-        $get = $this->uri->uri_to_assoc(1);
-        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
-        $teamid = $get['team'];
-        $teamid = $this->security->xss_clean($teamid);
+        $user = $this->usercreator->getUserByUserID($userid);
 
 
-        if(params is null || !validGameName(prams)){
-            if(userinanygame(userid){
-                redirect("game/". their game)
-            }
-            else{
-                redirect("game/overview");
-            }
-        }else(!userExistsInGame(userid, game_key)){
-            redirect("game/overview")
-        }
+        // $get = $this->uri->uri_to_assoc(1);
+        // // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        // $game_name = $get['game'];
+        // $teamid = $this->security->xss_clean($teamid);
+
+        // if(url is a valid game){
+            
+
+        // }else{
+        //     if($user->isActiveInCurrentGame()){
+        //         redirect(current_game_url)
+        //     }
+        //     else{
+        //         redirect("game/overview");
+        //     }
+        // }
+
+
+
+
+
 
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
         if($player->isActive()){
             $this->logged_in_player = $player;
         }   
-        $game = $this->gameCreator->getGameByGameID(GAME_KEY);
+        // $game = $this->gameCreator->getGameByGameID(GAME_KEY);
         
     }
 

@@ -116,6 +116,22 @@ class Player_model extends CI_Model{
         }
     }
 
+    public function makePlayerActive($playerid){
+        changeState($playerid, 1);
+    }
+
+    public function makePlayerInactive($playerid){
+        changeState($playerid, 2);
+    }
+
+    private function changeState($playerid, $stateid){
+        $data = array(
+            "player_stateid" => $stateid
+        );
+        $this->db->where('id',$playerid);
+        $this->db->update($this->table_name,$data);
+    }
+
     private function setPlayerDataTableData($playerid, $name, $value){
         //date created
         $datecreated = gmdate("Y-m-d H:i:s", time());
