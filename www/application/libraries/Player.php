@@ -42,12 +42,12 @@ class Player{
     }
 
     public function isModerator(){
-        if($this->getData('moderator') == "1"){
-            return true;
-        }else
-        {
-            return false;
-        }
+        return $this->getData('moderator') == "1";
+    }
+
+    public function setModerator($make_moderator){
+        $value = $make_moderator ? "1" : "0";
+        $this->ci->Player_model->setPlayerData($this->playerid, 'moderator', $value);
     }
 
     public function isViewable(){
@@ -78,7 +78,7 @@ class Player{
     public function getData($key){
         if(!array_key_exists($key,$this->data)){
             $this->data[$key] = $this->ci->Player_model->getPlayerData($this->playerid, $key);
-        } 
+        }
         return $this->data[$key];
     }
 
@@ -86,7 +86,7 @@ class Player{
         $this->ci->Player_model->setPlayerData($this->playerid, $key, $value);
         $this->data[$key] = $value;
     }
-    
+
     public function getPlayerID(){
         return $this->playerid;
     }
@@ -101,19 +101,19 @@ class Player{
             $this->ci->teamcreator->getTeamByTeamID($this->getTeamID());
             $hasTeam = TRUE;
         } catch (PlayerNotMemberOfAnyTeamException $e) {
-          
+
         }
         return $hasTeam;
     }
 
     public function isMemberOfTeam($teamid){
         if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
-        
+
         $isMember = FALSE;
         try{
             if($teamid == $this->getTeamID()) $isMember = TRUE;
         } catch (PlayerNotMemberOfAnyTeamException $e){
-        
+
         }
         return $isMember;
     }
@@ -122,7 +122,7 @@ class Player{
         $this->ci->load->model('Player_team_model');
         return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
     }
-    
+
     public function leaveCurrentTeam(){
         $this->ci->load->model('Player_team_model');
         $this->ci->Player_team_model->removePlayerFromTeam($this->getTeamID(), $this->playerid);

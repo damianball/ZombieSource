@@ -14,19 +14,19 @@
     <div class ="controls" id = "player_controls" ></div>
   </div> -->
 
-
+  <?php foreach($player_in_game as $gameid=>$player_list){ ?>
     <div class="well">
       <div class="form-horizontal">
         <fieldset>
           <div class="control-group">
-            <div id="player_panel">
+            <div id="player_panel<?php echo $gameid?>">
               <label class="control-label">Search for a player</label>
               <div class="controls">
-                <input id ="player_chooser" type="text" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'>
-                <input type="text" value="<? echo $gameid ?>">
+                <input id ="player_chooser<?php echo $gameid?>" type="text" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'>
+                <input id="gameid<?php echo $gameid?>" type="hidden" value="<? echo $gameid ?>">
                 <span class="help-inline">
-                  <button id="manage_player" class="btn">Manage Player</button>
-                  <div class ="controls" id = "player_controls" ></div>
+                  <button id="manage_player<?php echo $gameid?>" class="btn">Manage Player</button>
+                  <div class ="controls" id = "player_controls<?php echo $gameid?>" ></div>
                 </span>
               </div>
             </div>
@@ -34,27 +34,21 @@
         </fieldset>
       </div>
     </div>
-
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#manage_player<?php echo $gameid?>").click(function(){
+            $("#player_controls<?php echo $gameid?>").load('admin/player_controls',
+                {player:$('#player_chooser<?php echo $gameid?>').val(),
+                 gameid:$('#gameid<?php echo $gameid?>').val()});
+        });
+    });
+    </script>
+    <?php } ?>
 
 
   <div class = "tinyline"></div>
 
 
-  <script type="text/javascript">
-
-$(document).ready(function(){
-  $("#manage_player").click(function(){
-    $("#player_controls").load('admin/player_controls',{player:$('#player_chooser').val()});
-  });
-
-});
-
-// $(document).ready(function(){
-//   $("#manage_team").click(function(){
-//     $("#team_controls").load('admin/team_controls',{player:$('#team_chooser').val()});
-//   });
-// });
-</script>
 
 
 

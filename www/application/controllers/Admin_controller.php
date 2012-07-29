@@ -29,13 +29,10 @@ class Admin_controller extends CI_Controller {
 
 	public function index(){
        //is mod check
-        $data['players'] = $this->players;
-        $data['player_list'] = array();
-        $data['gameids'] = array();
+        $data['player_in_game'] = array();
         foreach($this->players as $player){
             $gameid = $player->getCurrentGameId();
-            $data[$gameid] = $gameid;
-            $data['player_list'][$gameid] = getPlayerString($gameid);
+            $data['player_in_game'][$gameid] = getPlayerString($gameid);
         }
 
         $layout_data = array();
@@ -54,6 +51,11 @@ class Admin_controller extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
             $data = getPrivatePlayerProfileDataArray($player);
 
+            $is_mod = ($player->getData('moderator') == "1");
+            $data['is_mod'] = $is_mod;
+            $data['moderator_button_text'] = "euaeou";//$is_mod ? "Remove Moderator" : "Make Moderator";
+            print_r($data);
+            //$moderator_button_text = $data['moderator_button_text'];
             if(is_a($player, 'zombie')){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
@@ -142,6 +144,8 @@ class Admin_controller extends CI_Controller {
                 $analyticslogger->addToPayload('message', 'feed not generated');
                 LogManager::storeLog($analyticslogger);
             }
+        } else {
+            $this->loadGenericMessageWithoutLayout("$username is not a zombie!");
         }
         // event logging
         $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
@@ -149,6 +153,31 @@ class Admin_controller extends CI_Controller {
         $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
         $analyticslogger->addToPayload('message', 'not a zombie');
         LogManager::storeLog($analyticslogger);
+    }
+
+    public function make_mod(){
+        //mod
+        $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
+        $username = $player->getUser()->getUsername();
+        $making_moderator = $this->input->post('make_mod') == "true";
+
+        $player->setModerator($making_moderator);
+        if($making_moderator == $player->isModerator()){
+            $this->loadGenericMessageWithoutLayout("Success! $username moderator status changed.");
+            // event logging
+            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_make_mod','succeeded');
+            $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+            $analyticslogger->addToPayload('admin_making_mod', $making_moderator);
+            LogManager::storeLog($analyticslogger);
+        } else {
+            $this->loadGenericMessageWithoutLayout("Something went wrong, $username may not have been fed");
+            //event logging
+            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_make_mod','failed');
+            $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+            $analyticslogger->addToPayload('admin_making_mod', $making_moderator);
+            $analyticslogger->addToPayload('message', 'moderator status unexpected');
+            LogManager::storeLog($analyticslogger);
+        }
     }
 
     public function email_list(){
