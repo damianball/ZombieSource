@@ -14,9 +14,6 @@
     <div class ="controls" id = "player_controls" ></div>
   </div> -->
 
-  <?php echo $players ?>
-  <?php echo $player_list ?>
-
 
     <div class="well">
       <div class="form-horizontal">

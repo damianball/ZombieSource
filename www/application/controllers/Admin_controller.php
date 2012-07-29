@@ -31,8 +31,10 @@ class Admin_controller extends CI_Controller {
        //is mod check
         $data['players'] = $this->players;
         $data['player_list'] = array();
+        $data['gameids'] = array();
         foreach($this->players as $player){
             $gameid = $player->getCurrentGameId();
+            $data[$gameid] = $gameid;
             $data['player_list'][$gameid] = getPlayerString($gameid);
         }
 
