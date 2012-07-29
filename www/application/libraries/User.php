@@ -63,13 +63,15 @@ class User{
         try{
             $playerids = $this->ci->Player_model->getModeratorPlayerIDsByUserID($this->userid);
         } catch (UnexpectedValueException $e){
+            return $e;
             return FALSE;
         } catch (UserIsNotModeratorException $e){
+            return $e;
             return FALSE;
         }
         $player_objects = array();
         foreach($playerids as $playerid){
-            $player_objects[$playerid] = $this->ci->PlayerCreator->getPlayerByPlayerID($playerid);
+            $player_objects[$playerid] = $this->ci->playercreator->getPlayerByPlayerID($playerid);
         }
         return $player_objects;
     }

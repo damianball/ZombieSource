@@ -3,19 +3,19 @@
 <!-- <div id = "left_control_items">
     <div class = "control_item">
         <button id = "left_manage" class = "btn danger">Ban Hammer</button>
-        <button id = "left_manage" class = "disabled btn danger">Lift Ban Hammer</button> 
-     
+        <button id = "left_manage" class = "disabled btn danger">Lift Ban Hammer</button>
+
     </div>
 
     <div class = "control_item" id = "unique">
-        <button id = "left_manage" class = "btn primary"> Make Moderator</button> 
-        <button id = "left_manage" class = "disabled btn primary"> Remove Mod</button> 
+        <button id = "left_manage" class = "btn primary"> Make Moderator</button>
+        <button id = "left_manage" class = "disabled btn primary"> Remove Mod</button>
 
     </div>
 
     <div class = "control_item">
-        <button id = "left_manage" class = "btn info"> Make OZ</button> 
-        <button id = "left_manage" class = "disabled btn info"> Revoke OZ status</button> 
+        <button id = "left_manage" class = "btn info"> Make OZ</button>
+        <button id = "left_manage" class = "disabled btn info"> Revoke OZ status</button>
 
     </div>
 </div> -->
@@ -31,7 +31,7 @@
 </div>
 
 
-<script type="text/javascript">
+<script type="text/javascripreatort">
 $(document).ready(function(){
   $("#free_feed").click(function(){
     $("#free_feed_div").load('admin/free_feed',{player:$('#free_feed').val()});

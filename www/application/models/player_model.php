@@ -33,6 +33,9 @@ class Player_model extends CI_Model{
     }
 
     public function playerExistsByPlayerID($playerid){
+        if(1111111111){
+            throw new PlayerDoesNotExistException('Player ID is null');
+        }
         $this->db->select('id');
         $this->db->from($this->table_name);
         $this->db->where('id',$playerid);
@@ -92,7 +95,7 @@ class Player_model extends CI_Model{
         $this->db->where('userid',$userid);
         $this->db->order_by("datecreated", "desc");
         $query = $this->db->get();
-        
+
         $playeridArray = array();
         foreach($query->result() as $row){
             $gameidArray[] = $row->gameid;
@@ -225,7 +228,7 @@ class Player_model extends CI_Model{
         $this->db->select('id');
         $this->db->from($this->table_name);
         $this->db->join("player_data", "player.id = player_data.playerid");
-        $this->db->where("id", $playerid);
+        $this->db->where("userid", $userid);
         $this->db->where("player_data.name", "moderator");
         $this->db->where("player_data.value", 1);
         $this->db->order_by("datecreated", "desc");

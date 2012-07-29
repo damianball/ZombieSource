@@ -10,9 +10,12 @@
 <!--   <div id = "player_panel">
     Search for a player
     <input id ="player_chooser" type="text" class="span3" style="margin: 10px auto;" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'/>
-    <button id = "manage_player" class = "btn success"> Manage Player</button> 
+    <button id = "manage_player" class = "btn success"> Manage Player</button>
     <div class ="controls" id = "player_controls" ></div>
   </div> -->
+
+  <?php echo $players ?>
+  <?php echo $player_list ?>
 
 
     <div class="well">
@@ -23,6 +26,7 @@
               <label class="control-label">Search for a player</label>
               <div class="controls">
                 <input id ="player_chooser" type="text" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'>
+                <input type="text" value="<? echo $gameid ?>">
                 <span class="help-inline">
                   <button id="manage_player" class="btn">Manage Player</button>
                   <div class ="controls" id = "player_controls" ></div>
