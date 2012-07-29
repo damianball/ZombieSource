@@ -33,9 +33,6 @@ class Player_model extends CI_Model{
     }
 
     public function playerExistsByPlayerID($playerid){
-        if(1111111111){
-            throw new PlayerDoesNotExistException('Player ID is null');
-        }
         $this->db->select('id');
         $this->db->from($this->table_name);
         $this->db->where('id',$playerid);
@@ -233,10 +230,15 @@ class Player_model extends CI_Model{
         $this->db->where("player_data.value", 1);
         $this->db->order_by("datecreated", "desc");
         $query = $this->db->get();
+        $ids = array();
         if($query->num_rows() == 0){
             throw new UserIsNotModeratorException("User " .$userid. " is not a moderator in any games.");
         }
-        return $query->result();
+        $result_arr = $query->result_array();
+        for($i = 0; $i < $query->num_rows(); $i++){
+            $ids[$i] = $result_arr[$i]['id'];
+        }
+        return $ids;
     }
     // both name and value must match exactly(upper/lower)
     public function getNumberOfPlayersInGameByNVP($gameid,$name,$value){
