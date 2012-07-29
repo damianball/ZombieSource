@@ -57,7 +57,6 @@ $route['profile'] = "Profile_controller";
 $route['profile/(:any)'] = "Profile_controller/$1";
 
 $route['admin'] = "Admin_controller";
-$route['admin/(:any)'] = "Admin_controller/$1";
 
 $route['default_controller'] = "Home_controller";
 $route['404_override'] = '';

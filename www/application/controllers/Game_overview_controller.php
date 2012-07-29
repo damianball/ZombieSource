@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Game_overview_controller extends CI_Controller {
-  // var $logged_in_player;
-  // var $logged_in_players_team;
-    private $logged_in_player = null;
+
+    private $user = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -15,30 +15,17 @@ class Game_overview_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->library('GameCreator');
         $this->load->library('PlayerCreator');
+        $this->load->library('UserCreator');
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
         
-
         // load the logged in player (if one exists) into the controller
-        $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            if($player->isActive()){
-                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            }   
-        }
+        $this->user = $this->usercreator->getUserByUserID($this->tank_auth->get_user_id());
     
-        // @TODO: what if team is null?
-        // $teamid = $this->logged_in_player->current_team();      
-        // $this->logged_in_players_team = new team($teamid);
     }
 
     public function index()
     {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
-            redirect("home");
-        }
-
         $zombie_count = 0;
         $human_count = 0;
         $starved_zombie_count = 0;
@@ -64,9 +51,10 @@ class Game_overview_controller extends CI_Controller {
                       'starved_zombie_count'  => $starved_zombie_count
         );
 
+        $game = $this->gamecreator->getGameByGameID($this->user->currentGameID());
+        $data["current_game"] = $game->name();
 
         $layout_data = array();
-        $player = $this->logged_in_player;
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true); //$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -77,18 +65,20 @@ class Game_overview_controller extends CI_Controller {
 
     public function joinGame()
     {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(false) {
             redirect("home");
         }
+
         $gameid = $username = $this->input->post('gameid');
         return $user->joinGame($gameid);
     }
 
     public function leaveGame()
     {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+        if(false) {
             redirect("home");
         }
+
         $gameid = $username = $this->input->post('gameid'); 
         return $user->leaveGame($gameid);
     }
