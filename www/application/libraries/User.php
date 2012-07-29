@@ -20,18 +20,42 @@ class User{
         }
     }
 
-    public function joinGame($userid, $gameid){
+    public function joinGame($gameid){
         //TODO if player has already left game once what do
-        $player = $CI->playercreator->createPlayerByJoiningGame($userid, $gameid);
-        return $player->getPlayerID();
+        //TODO if this user has users in another game they become inactive
+        // should probably warn them about that
+        if($this->userCanJoinGame($gameid)){
+            $player = $CI->playercreator->createPlayerByJoiningGame($userid, $gameid);
+        }
+        return $this->isInGame($gameid);
     }
 
-    public function leaveGame($userid, $gameid){
+    public function leaveGame($gameid){
         //change player state to inactive
         $player = getPlayerByUserIDGameID($userid, $gameid);
         $player->leaveGame();
-
+        return !$this->isInGame($gameid);
     }
+
+    public function canJoinGame($gameid){
+        if(validGameID($gameid)){
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            if($game->registrationOpen() && !isInGame($gameid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isInGame($gameid){
+        try{
+            $player = $this->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+            return true;
+        }catch(PlayerDoesNotExistException $e){
+            return false;
+        }
+    }
+
     public function isActiveInCurrentGame(){
         $current_game_id = GAME_KEY; //TODO fix
         try{

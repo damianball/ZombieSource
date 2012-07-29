@@ -19,9 +19,10 @@ class Player{
     }
 
     public function isActive(){
+        //TODO this is no longer accurate 
         //also should check if isInGame(GAME_KEY)
         // dateremoved in the database
-
+        return true;
         if(!$this->isBanned() && !$this->hasLeftGame()){
             return true;
         }

@@ -44,12 +44,25 @@ class Game_overview_controller extends CI_Controller {
             $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', '', true); //$data, true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data);
-        
-                        
-            
-        
     }
 
+    public function joinGame()
+    {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+        $gameid = $username = $this->input->post('gameid');
+        return $user->joinGame($gameid);
+    }
+
+    public function leaveGame()
+    {
+        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
+            redirect("home");
+        }
+        $gameid = $username = $this->input->post('gameid'); 
+        return $user->leaveGame($gameid);
+    }
 
 
 

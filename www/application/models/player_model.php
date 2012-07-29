@@ -184,6 +184,7 @@ class Player_model extends CI_Model{
     }
 
     public function createPlayerInGame($userid, $gameid){
+        
         $added = false;
             
         //date created
