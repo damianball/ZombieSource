@@ -29,14 +29,20 @@
                           echo $status;
                         echo "</button>";
 
-                      }else{
+                      }else if($status == 'starved zombie'){
                       #  echo "warning";
+                        echo " <br><br><br>
+                        <button class=\"btn btn-large btn-red disabled pull-right\" disabled=\"disabled\">";  
+                          echo $status;
+                        echo "</button>";
+                      }else{
                         echo " <br><br><br>
                         <button class=\"btn btn-large btn-success disabled pull-right\" disabled=\"disabled\">";  
                           echo $status;
                         echo "</button>";
                       }
-                      ?>      
+
+                      ?>    
           </div>
         </div>
       </div>

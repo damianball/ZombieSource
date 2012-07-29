@@ -70,6 +70,37 @@
   color: @blueText;
 }
 
+
+.alert-human {
+  padding: padding: 13px 19px 13px 19px;
+   font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  text-align: center;
+  background-color: @successBackground;
+  border-color: @successBorder;  
+  color: @successText;
+}
+
+.alert-zombie {
+  font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  text-align: center;
+  padding: padding: 13px 19px 13px 19px;
+  
+}
+
+.alert-starved {
+  font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  padding: padding: 13px 19px 13px 19px;
+  text-align: center;
+  background-color: @errorBackground;
+  border-color: @errorBorder;
+  color: @errorText;
+}
 // Block alerts
 // ------------------------
 .alert-block {
