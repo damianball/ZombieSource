@@ -39,11 +39,40 @@ class Game_overview_controller extends CI_Controller {
             redirect("home");
         }
 
-            $player = $this->logged_in_player;
-            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', '', true); //$data, true);
-            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-            $this->load->view('layouts/main', $layout_data);
+        $zombie_count = 0;
+        $human_count = 0;
+        $starved_zombie_count = 0;
+
+        $players = getViewablePlayers(GAME_KEY);
+        foreach($players as $player){
+                if(is_a($player, 'Zombie')){
+                    if($player->isStarved()){
+                      $starved_zombie_count += 1;
+                    }else{
+                      $zombie_count += 1;    
+                    }
+                }else {
+                    $human_count += 1;
+                }
+
+        }
+
+        $data = array(
+                      'count'                 => $zombie_count + $human_count,
+                      'human_count'           => $human_count,
+                      'zombie_count'          => $zombie_count,
+                      'starved_zombie_count'  => $starved_zombie_count
+        );
+
+
+        $layout_data = array();
+        $player = $this->logged_in_player;
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true); //$data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data);
+        
+                        
     }
 
     public function joinGame()
