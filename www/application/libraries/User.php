@@ -30,7 +30,8 @@ class User{
             }
 
         }elseif($this->canJoinGame($gameid)){
-            $this->leaveGame($this->currentGameID());
+            $currgameid = $this->currentGameID();
+            if($currgameid){ $this->leaveGame($currgameid);}
             $player = $this->ci->playercreator->createPlayerByJoiningGame($this->userid, $gameid, NULL);
         }
         return $this->isInGame($gameid);
