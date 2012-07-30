@@ -22,9 +22,9 @@ class Admin_controller extends CI_Controller {
         $userid = $this->tank_auth->get_user_id();
         $this->user = $this->usercreator->getUserByUserID($userid);
         $this->players = $this->user->getModeratorPlayers();
-         //if(!$this->players){
-             //redirect('/game');
-         //}
+         if(!$this->players){
+             redirect('/home');
+         }
     }
 
 

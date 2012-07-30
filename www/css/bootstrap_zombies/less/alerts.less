@@ -38,9 +38,20 @@
   color: @errorText;
 }
 .alert-info {
-  background-color: @infoBackground;
-  border-color: @infoBorder;
-  color: @infoText;
+  background-color: @blueBackground;
+  border-color: @blueBorder;
+  color: @blueText;
+}
+// inline alerts 
+.alert-inline{
+  padding: 4px 35px 4px 14px;
+  margin-top: 5px;
+  margin-bottom: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background-color: @warningBackground;
+  border: 1px solid @warningBorder;
+  .border-radius(4px);
+  color: @warningText;
 }
 
 // For player state stats //
