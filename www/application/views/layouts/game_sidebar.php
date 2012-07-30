@@ -22,6 +22,13 @@
 			<li>
 				<a href = "<?php echo site_url("game/stats");?>"><i class="icon-tasks"></i> Game Stats</a>
 			</li>
+			<li class="divider"></li>
+			<li class="nav-header">
+				All Games
+			</li>
+			<li>
+				<a href = "<?php echo site_url("overview");?>"><i class="icon-th-list"></i> Overview</a>
+			</li>
 		</ul>
 	</div>
 </div>
