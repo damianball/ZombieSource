@@ -13,30 +13,35 @@
         </div>
         <div class="span9">
           <div class="font-profile">
-          <dl class="dl-horizontal"> 
-            <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age; ?></dd></span>
-            <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender; ?></dd> </span>
-            <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major; ?></dd> </span>
-            <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd> 
-          </dl>
-</div>
-          <div id = "player_status" class = "alert-message">
-                     <?php 
-                      if($status == 'zombie'){
-                      #  echo "danger";
-                        echo "<br><br><br>
-                        <button class=\"btn btn-large btn-yellow disabled pull-right\" disabled=\"disabled\">";   
-                          echo $status;
-                        echo "</button>";
+            <dl class="dl-horizontal"> 
+              <dt>Status </dt> 
+              <?php 
+                if($status == 'zombie'){
+                #  echo "danger";
+                  echo "
+                  <dd><span class=\"label label-warning\">";   
+                    echo $status;
+                  echo "</span></dd>";
 
-                      }else{
-                      #  echo "warning";
-                        echo " <br><br><br>
-                        <button class=\"btn btn-large btn-success disabled pull-right\" disabled=\"disabled\">";  
-                          echo $status;
-                        echo "</button>";
-                      }
-                      ?>      
+                }else if($status == 'starved zombie'){
+                #  echo "warning";
+                  echo " 
+                  <dd><span class=\"label label-important\">";   
+                    echo $status;
+                  echo "</span></dd>";
+                }else{
+                  echo " 
+                  <dd><span class=\"label label-success\">";   
+                    echo $status;
+                  echo "</span></dd>";
+                }
+
+              ?> 
+              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age; ?></dd></span>
+              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender; ?></dd> </span>
+              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major; ?></dd> </span>
+              <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd> 
+            </dl>
           </div>
         </div>
       </div>

@@ -20,6 +20,11 @@ class Game{
         return $this->gameid;
     }
 
+    public function getStateID(){
+        return $this->ci->Game_model->getStateID($this->gameid);
+    }
+
+
     public function name(){
         return $this->ci->Game_model->getGameName($this->gameid);
     }
