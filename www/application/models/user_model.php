@@ -3,6 +3,8 @@ class User_model extends CI_Model{
     private $table_name			= 'users';			// user accounts
     private $profile_table_name	= 'user_profiles';	// user profiles
     private $data_table_name    = 'user_data';      // user data <- migrate from profiles
+    private $table_editable_fields = array(
+    );
 
     function __construct(){
         parent::__construct();

@@ -92,12 +92,10 @@ class Player_model extends CI_Model{
         $this->db->where('userid',$userid);
         $this->db->order_by("datecreated", "desc");
         $query = $this->db->get();
-
-        $playeridArray = array();
-        foreach($query->result() as $row){
-            $gameidArray[] = $row->gameid;
+        if($query->num_rows() != 1){
+            throw new DataStoreException('More (or less) results for gameid than expected! Got: '.$query->num_rows());
         }
-        return $gameidArray[0];
+        return $query->row()->gameid;
     }
 
 

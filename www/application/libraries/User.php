@@ -3,6 +3,7 @@
 class User{
     private $userid = null;
     private $ci = null;
+    private $data = array();
 
     function __construct($userid)
     {
@@ -57,7 +58,6 @@ class User{
         return $this->ci->Player_model->getCurrentGameIDByUserID($this->userid);
     }
 
-    //====== Data methods to migrate from player model
 
     public function getModeratorPlayers(){
         try{
@@ -73,16 +73,17 @@ class User{
         }
         return $player_objects;
     }
-    // public function getData($key){
-    //     if(!array_key_exists($key,$this->data)){
-    //         $this->data[$key] = $this->ci->User_model->getUserData($this->userid, $key);
-    //     }
-    //     return $this->data[$key];
-    // }
 
-    // public function saveData($key, $value){
-    //     $this->ci->User_model->setUserData($this->userid, $key, $value);
-    //     $this->data[$key] = $value;
-    // }
+     public function getData($key){
+         if(!array_key_exists($key,$this->data)){
+             $this->data[$key] = $this->ci->User_model->getUserData($this->userid, $key);
+         }
+         return $this->data[$key];
+     }
+
+     public function saveData($key, $value){
+         $this->ci->User_model->setUserData($this->userid, $key, $value);
+         $this->data[$key] = $value;
+     }
 
 }
