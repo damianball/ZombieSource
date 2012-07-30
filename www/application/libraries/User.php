@@ -9,7 +9,7 @@ class User{
         //parent::__construct();
         $this->ci =& get_instance();
         $this->ci->load->library('PlayerCreator');
-
+        $this->ci->load->library('GameCreator');
         $this->ci->load->model('User_model','',TRUE);
         $this->ci->load->model('Player_model','',TRUE);
 
@@ -21,26 +21,31 @@ class User{
     }
 
     public function joinGame($gameid){
-        //TODO if player has already left game once what do
-        //TODO if this user has users in another game they become inactive
-        // should probably warn them about that
-        if($this->userCanJoinGame($gameid)){
-            $player = $CI->playercreator->createPlayerByJoiningGame($userid, $gameid);
+        if($this->isInGame($gameid)){
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid, NULL);
+            if(!$player->isActive(){
+                $this->leaveGame($this->currentGameID());
+                $this->ci->Player_model->makePlayerActive($player->getPlayerID()); 
+            }
+
+        }elseif($this->canJoinGame($gameid)){
+            $this->leaveGame($this->currentGameID());
+            $player = $this->ci->playercreator->createPlayerByJoiningGame($this->userid, $gameid, NULL);
         }
         return $this->isInGame($gameid);
     }
 
     public function leaveGame($gameid){
         //change player state to inactive
-        $player = getPlayerByUserIDGameID($userid, $gameid);
+        $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
         $player->leaveGame();
         return !$this->isInGame($gameid);
     }
 
     public function canJoinGame($gameid){
         if(validGameID($gameid)){
-            $game = $this->gamecreator->getGameByGameID($gameid);
-            if($game->registrationOpen() && !isInGame($gameid)){
+            $game = $this->ci->gamecreator->getGameByGameID($gameid);
+            if($game->registrationOpen() && !$this->isInGame($gameid)){
                 return true;
             }
         }
@@ -49,7 +54,7 @@ class User{
 
     public function isInGame($gameid){
         try{
-            $player = $this->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
             return true;
         }catch(PlayerDoesNotExistException $e){
             return false;

@@ -92,17 +92,26 @@
 
 
  <script type="text/javascript">
-   var chart;
+  var chart;
   $(document).ready(function(){
     $(".join_game").click(function(event){
-      debugger;
-      alert("cool");
+      var gameid = $(event.target).data("gameid");
+      $.ajax({
+        url: "overview/join_game",
+        type: "POST",
+        data: {gameid : gameid},
+      }).done(function( msg ) {
+        alert( "Data Saved: " + msg );
+      });
     });
-  });
 
-  $(document).ready(function(){
     $(".leave_game").click(function(event){
-      alert("leave");
+      var gameid = $(event.target).data("gameid");
+      $.ajax({
+        url: "overview/leave_game",
+        type: "POST",
+        data: {gameid : gameid},
+      });
     });
   });
 

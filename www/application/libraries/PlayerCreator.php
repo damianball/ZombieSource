@@ -30,6 +30,7 @@ class PlayerCreator{
         foreach($params as $key => $value){
             $newPlayer->saveData($key, $value);
         }
+        $newPlayer->saveData("stateid", 1); //new players always start active.
         return $newPlayer;
     }
 

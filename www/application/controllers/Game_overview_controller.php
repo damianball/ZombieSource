@@ -51,8 +51,14 @@ class Game_overview_controller extends CI_Controller {
                       'starved_zombie_count'  => $starved_zombie_count
         );
 
-        $game = $this->gamecreator->getGameByGameID($this->user->currentGameID());
-        $data["current_game"] = $game->name();
+        $gameid = $this->user->currentGameID();
+        if($gameid){
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            $data["current_game"] = $game->name();
+        }else{
+            $data["current_game"] = "Not in a game!";
+        }
+
 
         $layout_data = array();
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
@@ -63,24 +69,16 @@ class Game_overview_controller extends CI_Controller {
                         
     }
 
-    public function joinGame()
+    public function join_game()
     {
-        if(false) {
-            redirect("home");
-        }
-
         $gameid = $username = $this->input->post('gameid');
-        return $user->joinGame($gameid);
+        echo json_encode($this->user->joinGame($gameid));
     }
 
-    public function leaveGame()
+    public function leave_game()
     {
-        if(false) {
-            redirect("home");
-        }
-
         $gameid = $username = $this->input->post('gameid'); 
-        return $user->leaveGame($gameid);
+        echo json_encode($this->user->leaveGame($gameid));
     }
 
 

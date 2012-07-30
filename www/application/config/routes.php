@@ -38,6 +38,8 @@
 |
 */
 $route['overview'] = "Game_overview_controller";
+$route['overview/(:any)'] = "Game_overview_controller/$1";
+
 $route['user/:num'] = "Profile_controller/public_profile";
 $route['team/edit/:any'] = "Profile_controller/edit_team_profile";
 $route['team/:any'] = "Profile_controller/team_public_profile";

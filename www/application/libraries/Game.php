@@ -23,4 +23,9 @@ class Game{
     public function name(){
         return $this->ci->Game_model->getGameName($this->gameid);
     }
+
+    //TODO actually check.
+    public function registrationOpen(){
+        return true;
+    }
 }
