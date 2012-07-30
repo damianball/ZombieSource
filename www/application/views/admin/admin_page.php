@@ -19,6 +19,7 @@
       <div class="form-horizontal">
         <fieldset>
           <div class="control-group">
+          <h2><?php echo $game_names[$gameid];?></h2>
             <div id="player_panel<?php echo $gameid?>">
               <label class="control-label">Search for a player</label>
               <div class="controls">

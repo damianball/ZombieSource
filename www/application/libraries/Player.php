@@ -50,6 +50,10 @@ class Player{
         $this->ci->Player_model->setPlayerData($this->playerid, 'moderator', $value);
     }
 
+    public function toggleModerator(){
+        return $this->setModerator(!$this->isModerator());
+    }
+
     public function isViewable(){
         if($this->isActive()) {
             return true;

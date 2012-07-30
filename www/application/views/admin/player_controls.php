@@ -16,7 +16,7 @@
 </div> -->
 
 <div id = "right_control_items">
-    <div class = "control_item" id = "make_mod_div">
+    <div class="control_item" class="make_mod_div">
         <button id = "make_mod" class = "btn primary" value="<?php echo $playerid;?>">
         <?php echo $moderator_button_text;?></button>
     </div>
@@ -34,7 +34,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
   $("#make_mod").click(function(){
-      $("#make_mod_div").load('admin/make_mod',{player:$('#make_mod').val(), make_mod:<?php echo !$is_mod;?>});
+      $.post('admin/make_mod',
+            {player:$('#make_mod').val()},
+            function(data){$('#make_mod').html(data)}
+      );
   });
 });
 

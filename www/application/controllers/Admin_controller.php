@@ -13,8 +13,9 @@ class Admin_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Team_model','',TRUE);
         $this->load->library('PlayerCreator', null);
-        $this->load->library('TeamCreator', null);
         $this->load->library('UserCreator', null);
+        $this->load->library('GameCreator', null);
+        $this->load->library('TeamCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
 
@@ -32,7 +33,10 @@ class Admin_controller extends CI_Controller {
         $data['player_in_game'] = array();
         foreach($this->players as $player){
             $gameid = $player->getCurrentGameId();
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            $game_name = $game->name();
             $data['player_in_game'][$gameid] = getPlayerString($gameid);
+            $data['game_names'][$gameid] = $game_name;
         }
 
         $layout_data = array();
@@ -52,10 +56,8 @@ class Admin_controller extends CI_Controller {
             $data = getPrivatePlayerProfileDataArray($player);
 
             $is_mod = ($player->getData('moderator') == "1");
-            $data['is_mod'] = $is_mod;
-            $data['moderator_button_text'] = "euaeou";//$is_mod ? "Remove Moderator" : "Make Moderator";
-            print_r($data);
-            //$moderator_button_text = $data['moderator_button_text'];
+            $data['toggle_mod_to'] = $is_mod ? "0" : "1";
+            $data['moderator_button_text'] = $is_mod ? "Remove Moderator" : "Make Moderator";
             if(is_a($player, 'zombie')){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
@@ -159,24 +161,17 @@ class Admin_controller extends CI_Controller {
         //mod
         $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
         $username = $player->getUser()->getUsername();
-        $making_moderator = $this->input->post('make_mod') == "true";
+        $was_moderator = $player->isModerator();
 
-        $player->setModerator($making_moderator);
-        if($making_moderator == $player->isModerator()){
-            $this->loadGenericMessageWithoutLayout("Success! $username moderator status changed.");
-            // event logging
-            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_make_mod','succeeded');
-            $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
-            $analyticslogger->addToPayload('admin_making_mod', $making_moderator);
-            LogManager::storeLog($analyticslogger);
+        $player->toggleModerator();
+        if($was_moderator == $player->isModerator()){
+            if($was_moderator){
+                echo 'Make Moderator';
+            } else {
+                echo 'Remove Moderator';
+            }
         } else {
-            $this->loadGenericMessageWithoutLayout("Something went wrong, $username may not have been fed");
-            //event logging
-            $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_make_mod','failed');
-            $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
-            $analyticslogger->addToPayload('admin_making_mod', $making_moderator);
-            $analyticslogger->addToPayload('message', 'moderator status unexpected');
-            LogManager::storeLog($analyticslogger);
+            echo 'Error';
         }
     }
 
