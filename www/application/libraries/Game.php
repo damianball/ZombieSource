@@ -24,6 +24,9 @@ class Game{
         return $this->ci->Game_model->getStateID($this->gameid);
     }
 
+    public function slug(){
+        return $this->ci->Game_model->getGameSlugByGameID($this->gameid);
+    }
 
     public function name(){
         return $this->ci->Game_model->getGameName($this->gameid);

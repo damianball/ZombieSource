@@ -5,7 +5,10 @@
 
 
 <div class="row-fluid">
-    <?php $this->load->view("layouts/game_sidebar"); ?>       
+    <?php
+      $data["slug"] = $url_slug;
+      $this->load->view("layouts/game_sidebar", $data);
+    ?>       
     <div class="span6">
       <?php echo $game_table; ?>
     </div>
