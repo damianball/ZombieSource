@@ -41,7 +41,9 @@ class Profile_controller extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPrivatePlayerProfileDataArray($player);
             } catch(DataStoreException $e){
-                // don't fill in player data if not a player in any games
+                // fill in defaults if user not in game
+                $data['status'] = '(not in game)';
+                $data['link_to_team'] = '';
             }
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('profile/profile_page', $data, true);
