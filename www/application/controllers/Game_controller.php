@@ -33,10 +33,10 @@ class Game_controller extends CI_Controller {
         if(!validGameSlug($game_slug)){
             if($user->isActiveInCurrentGame()){
                 $current_game_id = $user->currentGameID();
-                redirect("game/".$this->Game_model->getGameSlugByGameID($current_game_id));
+                redirect("/game/".$this->Game_model->getGameSlugByGameID($current_game_id));
             }
             else{
-                redirect("game/overview");
+                redirect("/overview");
             } 
         }
 
