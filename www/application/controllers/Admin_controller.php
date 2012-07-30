@@ -165,6 +165,7 @@ class Admin_controller extends CI_Controller {
 
         $player->toggleModerator();
         if($was_moderator == $player->isModerator()){
+            // echo the button text to be applied via AJAX
             if($was_moderator){
                 echo 'Make Moderator';
             } else {
