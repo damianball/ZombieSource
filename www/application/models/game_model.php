@@ -54,5 +54,17 @@ class Game_model extends CI_Model{
 	public function setGameSetting($gameid, $name, $value){}
 	
 	public function getGames(){}
+
+	public function getGameIDs(){
+		$this->db->select('id');
+		$this->db->from($this->table_name);
+		$query=$this->db->get();
+		
+		$gameidArray = array();
+		foreach($query->result() as $row){
+			$gameidArray[] = $row->id;
+		}
+		return $gameidArray;
+	}
 }
 ?>
