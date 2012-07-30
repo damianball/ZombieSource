@@ -29,7 +29,7 @@ class Team{
             //still in a team
             throw new PlayerMemberOfTeamException('Cannot join a team in this game while still a member of another team.');
         } catch (PlayerNotMemberOfAnyTeamException $e){
-    
+
         }
         $this->ci->load->model('Player_team_model');
         $this->ci->Player_team_model->addPlayerToTeam($this->teamid, $player->getPlayerID());
@@ -53,6 +53,10 @@ class Team{
 
     public function getTeamID(){
         return $this->teamid;
+    }
+
+    public function getGameID(){
+        return $this->gameid;
     }
 
     public function getData($key){

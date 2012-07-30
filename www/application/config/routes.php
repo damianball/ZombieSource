@@ -37,6 +37,8 @@
 | in the URL cannot be matched to a valid route.
 |
 */
+$route['overview'] = "Game_overview_controller";
+$route['overview/(:any)'] = "Game_overview_controller/$1";
 
 $route['user/:num'] = "Profile_controller/public_profile";
 $route['team/edit/:any'] = "Profile_controller/edit_team_profile";
@@ -45,7 +47,7 @@ $route['team/new'] = "Game_controller/register_new_team";
 $route['game/teams'] = "Game_controller/teams";
 
 $route['game'] = "Game_controller";
-$route['game/(:any)'] = "Game_controller/$1";
+$route['game/(:any)'] = "Game_controller";
 
 $route['auth'] = "Auth_controller";
 $route['auth/(:any)'] = "Auth_controller/$1";
@@ -57,7 +59,6 @@ $route['profile'] = "Profile_controller";
 $route['profile/(:any)'] = "Profile_controller/$1";
 
 $route['admin'] = "Admin_controller";
-$route['admin/(:any)'] = "Admin_controller/$1";
 
 $route['default_controller'] = "Home_controller";
 $route['404_override'] = '';

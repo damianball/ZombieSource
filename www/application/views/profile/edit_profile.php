@@ -71,7 +71,7 @@
               </div>                 
             </fieldset>
                 <div class="actions">
-                  <input type="submit" value = "Save and Finish" class = "btn success"/>
+                  <input type="submit" value = "Save and Finish" class = "btn btn-margin"/>
               </div>
             </form>
         </div>
