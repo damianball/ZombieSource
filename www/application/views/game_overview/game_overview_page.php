@@ -1,4 +1,3 @@
-
 <h2> All Games </h2>
 <hr>
 <!-- START GAMES LOOP -->
@@ -22,7 +21,7 @@
 					a;sldkja;lsja;lkjfa;ljsa;lkfd.
 				</div>
 				<div class=" span2">
-					<button class="btn btn-info">Join Game</button>
+          <?php echo $game["game_options"]?>
 				</div>
 			</div>
 			<br>
@@ -48,3 +47,24 @@
 
 <!-- END GAMES LOOP -->
 
+ <script type="text/javascript">
+  $(document).ready(function(){
+    $(".join_game").click(function(event){
+      var gameid = $(event.target).data("gameid");
+      $.ajax({
+        url: "overview/join_game",
+        type: "POST",
+        data: {gameid : gameid},
+      });
+    });
+
+    $(".leave_game").click(function(event){
+      var gameid = $(event.target).data("gameid");
+      $.ajax({
+        url: "overview/leave_game",
+        type: "POST",
+        data: {gameid : gameid},
+      });
+    });
+  });
+ </script>

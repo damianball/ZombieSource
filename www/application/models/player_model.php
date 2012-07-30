@@ -57,6 +57,16 @@ class Player_model extends CI_Model{
         return $query->row()->id;
     }
 
+    public function getPlayerStateID($playerid){
+        $this->db->select('player_stateid');
+        $this->db->from($this->table_name);
+        $this->db->where('id',$playerid);
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new PlayerDoesNotExistException('Did not find a player_stateid for userid '.$userid.' and gameid'.$gameid);
+        }
+        return $query->row()->player_stateid;
+    }
 
     public function getGameIDbyPlayerID($playerid){
         $this->db->select('gameid');
@@ -90,10 +100,14 @@ class Player_model extends CI_Model{
         $this->db->select('gameid');
         $this->db->from($this->table_name);
         $this->db->where('userid',$userid);
+        $this->db->where('player_stateid', 1);
         $this->db->order_by("datecreated", "desc");
         $query = $this->db->get();
-        if($query->num_rows() != 1){
-            throw new DataStoreException('More (or less) results for gameid than expected! Got: '.$query->num_rows());
+        if($query->num_rows() != 1){ return false; }
+
+        $gameidArray = array();
+        foreach($query->result() as $row){
+            $gameidArray[] = $row->gameid;
         }
         return $query->row()->gameid;
     }
@@ -132,11 +146,11 @@ class Player_model extends CI_Model{
     }
 
     public function makePlayerActive($playerid){
-        changeState($playerid, 1);
+        $this->changeState($playerid, 1);
     }
 
     public function makePlayerInactive($playerid){
-        changeState($playerid, 2);
+        $this->changeState($playerid, 2);
     }
 
     private function changeState($playerid, $stateid){
@@ -182,6 +196,7 @@ class Player_model extends CI_Model{
     }
 
     public function createPlayerInGame($userid, $gameid){
+
         $added = false;
 
         //date created

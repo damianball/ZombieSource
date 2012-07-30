@@ -1,53 +1,39 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Game_overview_controller extends CI_Controller {
-  // var $logged_in_player;
-  // var $logged_in_players_team;
-    private $logged_in_player = null;
+
+    private $user = null;
+
     public function __construct()
     {
         parent::__construct();
         if(!$this->tank_auth->is_logged_in()){
           redirect('/auth/login');
         }
-    
         $this->load->model('Game_model','',TRUE);
         $this->load->model('Player_model','',TRUE);
         $this->load->library('GameCreator');
         $this->load->library('PlayerCreator');
+        $this->load->library('UserCreator');
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
         
-
-        // load the logged in player (if one exists) into the controller
-        $userid = $this->tank_auth->get_user_id();
-        if(userExistsInGame($userid, GAME_KEY)){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            if($player->isActive()){
-                $this->logged_in_player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-            }   
-        }
+        $this->user = $this->usercreator->getUserByUserID($this->tank_auth->get_user_id());
     
-        // @TODO: what if team is null?
-        // $teamid = $this->logged_in_player->current_team();      
-        // $this->logged_in_players_team = new team($teamid);
     }
 
     public function index()
     {
-        if(!$this->logged_in_player || !$this->logged_in_player->isActive()) {
-            redirect("home");
-        }
         $game_data = array();
-        $games = $this->Game_model->getGameIDs();
+        $gameids = $this->Game_model->getGameIDs();
+        foreach($gameids as $gameid){
 
-        foreach($games as $game){
-            $game_name = $this->Game_model->getGameName($game);
+            $game_name = $this->Game_model->getGameName($gameid);
             $zombie_count = 0;
             $human_count = 0;
             $starved_zombie_count = 0;
 
-            $players = getViewablePlayers($game);
+            $players = getViewablePlayers($gameid);
             foreach($players as $player){
                     if(is_a($player, 'Zombie')){
                         if($player->isStarved()){
@@ -61,36 +47,51 @@ class Game_overview_controller extends CI_Controller {
 
             }
 
-
-            $game_data[$game] = array(
+            $game_data[$gameid] = array(
                           'game_name'             => $game_name,
                           'count'                 => $zombie_count + $human_count,
                           'human_count'           => $human_count,
                           'zombie_count'          => $zombie_count,
-                          'starved_zombie_count'  => $starved_zombie_count
+                          'starved_zombie_count'  => $starved_zombie_count,
+                          'game_options'          => $this->gameOptionsView($gameid)
                         );
         }
         $data["game_data"] = $game_data;
-
         $layout_data = array();
-        $player = $this->logged_in_player;
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true); //$data, true);
+        $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
         
                         
-            
-        
     }
 
+    public function gameOptionsView($gameid){
+        $view = null;
+        $game = $this->gamecreator->getGameByGameID($gameid);
+        $game_stateid = $game->getStateID();
+        $data["user_in_game"] = $this->user->isActiveInGame($gameid);
+        $data["gameid"] = $gameid;
+        
+        if($game_stateid == 2){
+            $view = $this->load->view('game_overview/open_registration_options', $data, true);
+        }elseif($game_stateid == 3){
+            $view = $this->load->view('game_overview/active_game_options', $data, true);
+        }elseif($game_stateid == 4){
+            $view = $this->load->view('game_overview/closed_game_options', $data, true);
+        }
+        return $view;
+    }
 
+    public function join_game()
+    {
+        $gameid = $username = $this->input->post('gameid');
+        echo json_encode($this->user->joinGame($gameid));
+    }
 
-
-
-
-
-
-
-
+    public function leave_game()
+    {
+        $gameid = $username = $this->input->post('gameid'); 
+        echo json_encode($this->user->leaveGame($gameid));
+    }
 }

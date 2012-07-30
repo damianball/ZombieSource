@@ -19,13 +19,17 @@ class Player{
     }
 
     public function isActive(){
+        //TODO this is no longer accurate 
         //also should check if isInGame(GAME_KEY)
         // dateremoved in the database
 
-        if(!$this->isBanned() && !$this->hasLeftGame()){
-            return true;
-        }
-        return false;
+        $stateid = $this->ci->Player_model->getPlayerStateID($this->playerid);
+        return $stateid == 1 ? true : false;
+
+        // if(!$this->isBanned() && !$this->hasLeftGame()){
+        //     return true;
+        // }
+        // return false;
     }
 
     public function hasLeftGame(){

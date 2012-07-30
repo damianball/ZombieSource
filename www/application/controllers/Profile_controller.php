@@ -35,12 +35,12 @@ class Profile_controller extends CI_Controller {
     {
         //if($this->logged_in_player){
             $data = getPrivateUserProfileDataArray($this->logged_in_user);
-            try{
             $current_gameid = $this->logged_in_user->currentGameID();
+            if($current_gameid){
             $userid = $this->logged_in_user->getUserID();
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPrivatePlayerProfileDataArray($player);
-            } catch(DataStoreException $e){
+            } else {
                 // fill in defaults if user not in game
                 $data['status'] = '(not in game)';
                 $data['link_to_team'] = '';

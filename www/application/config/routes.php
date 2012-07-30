@@ -38,6 +38,8 @@
 |
 */
 $route['overview'] = "Game_overview_controller";
+$route['overview/(:any)'] = "Game_overview_controller/$1";
+
 $route['user/:num'] = "Profile_controller/public_profile";
 $route['team/edit/:any'] = "Profile_controller/edit_team_profile";
 $route['team/:any'] = "Profile_controller/team_public_profile";
@@ -57,7 +59,6 @@ $route['profile'] = "Profile_controller";
 $route['profile/(:any)'] = "Profile_controller/$1";
 
 $route['admin'] = "Admin_controller";
-$route['admin/(:any)'] = "Admin_controller/$1";
 
 $route['default_controller'] = "Home_controller";
 $route['404_override'] = '';
