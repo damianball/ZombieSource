@@ -26,7 +26,7 @@ class User{
             if(!$player->isActive()){
                 $currgameid = $this->currentGameID();
                 if($currgameid){ $this->leaveGame($currgameid);}
-                $this->ci->Player_model->makePlayerActive($player->getPlayerID()); 
+                $this->ci->Player_model->makePlayerActive($player->getPlayerID());
             }
 
         }elseif($this->canJoinGame($gameid)){
@@ -63,7 +63,11 @@ class User{
     }
 
     public function isActiveInGame($gameid){
-        $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+        try {
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+        } catch(PlayerDoesNotExistException $e){
+            return false;
+        }
         return $this->isInGame($gameid) && $player->isActive();
     }
 
