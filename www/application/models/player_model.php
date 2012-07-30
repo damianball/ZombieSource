@@ -28,7 +28,7 @@ class Player_model extends CI_Model{
         if($query->num_rows() != 1){
             throw new InvalidHumanCodeException('Did not find a playerid for human_code '.$human_code.' and gameid'.$gameid);
         }
-        
+
         return $query->row()->playerid;
     }
 
@@ -40,7 +40,7 @@ class Player_model extends CI_Model{
         if($query->num_rows() != 1){
             throw new PlayerDoesNotExistException('Did not find a player for playerid '.$playerid);
         }
-        
+
         return $query->row()->id;
     }
 
@@ -53,7 +53,7 @@ class Player_model extends CI_Model{
         if($query->num_rows() != 1){
             throw new PlayerDoesNotExistException('Did not find a playerid for userid '.$userid.' and gameid'.$gameid);
         }
-        
+
         return $query->row()->id;
     }
 
@@ -66,7 +66,7 @@ class Player_model extends CI_Model{
         if($query->num_rows() != 1){
             throw new PlayerDoesNotExistException('Did not find a playerid for userid '.$userid);
         }
-        
+
         return $query->row()->gameid;
     }
 
@@ -76,7 +76,7 @@ class Player_model extends CI_Model{
         $this->db->from($this->table_name);
         $this->db->where('gameid',$gameid);
         $query = $this->db->get();
-        
+
         $playeridArray = array();
         foreach($query->result() as $row){
             $playeridArray[] = $row->id;
@@ -92,7 +92,7 @@ class Player_model extends CI_Model{
         $this->db->where('userid',$userid);
         $this->db->order_by("datecreated", "desc");
         $query = $this->db->get();
-        
+
         $playeridArray = array();
         foreach($query->result() as $row){
             $gameidArray[] = $row->gameid;
@@ -121,7 +121,7 @@ class Player_model extends CI_Model{
         if(isset($result->{'value'})){
             $value = $result->{'value'};
         }
-        
+
         return $value;
     }
 
@@ -185,14 +185,14 @@ class Player_model extends CI_Model{
 
     public function createPlayerInGame($userid, $gameid){
         $added = false;
-            
+
         //date created
         $datecreated = gmdate("Y-m-d H:i:s", time());
-            
+
         //get new UUID
         $query = $this->db->query('SELECT UUID() as "uuid"');
         $uuid = $query->row()->{'uuid'};
-            
+
         //insert new player
         $data = array(
             'id' => $uuid,
@@ -202,10 +202,10 @@ class Player_model extends CI_Model{
             'original_zombie' => NULL
         );
         $this->db->insert('player',$data);
-                
+
         return $uuid;
     }
-    
+
     public function getNumberOfPlayersInGame($gameid){
         $query = $this->db->query('SELECT COUNT(id) as count FROM player WHERE gameid = '.$this->db->escape($gameid));
         $result = $query->row();
@@ -213,31 +213,54 @@ class Player_model extends CI_Model{
         if(isset($result->{'count'})){
             $count = $result->{'count'};
         }
-        
+
         return $count;
     }
-    
+
+
+    public function getModeratorPlayerIDsByUserID($userid){
+        if($userid == null){
+            throw new UnexpectedValueException('userid cannot be null');
+        }
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->join("player_data", "player.id = player_data.playerid");
+        $this->db->where("userid", $userid);
+        $this->db->where("player_data.name", "moderator");
+        $this->db->where("player_data.value", 1);
+        $this->db->order_by("datecreated", "desc");
+        $query = $this->db->get();
+        $ids = array();
+        if($query->num_rows() == 0){
+            throw new UserIsNotModeratorException("User " .$userid. " is not a moderator in any games.");
+        }
+        $result_arr = $query->result_array();
+        for($i = 0; $i < $query->num_rows(); $i++){
+            $ids[$i] = $result_arr[$i]['id'];
+        }
+        return $ids;
+    }
     // both name and value must match exactly(upper/lower)
     public function getNumberOfPlayersInGameByNVP($gameid,$name,$value){
-        $query = $this->db->query('SELECT COUNT(*) as count FROM player_data 
-                                    LEFT JOIN (player) ON (player.id = player_data.playerid) 
-                                    WHERE player_data.name = '.$this->db->escape($name).' 
-                                    AND player_data.value = '.$this->db->escape($value).' 
+        $query = $this->db->query('SELECT COUNT(*) as count FROM player_data
+                                    LEFT JOIN (player) ON (player.id = player_data.playerid)
+                                    WHERE player_data.name = '.$this->db->escape($name).'
+                                    AND player_data.value = '.$this->db->escape($value).'
                                     AND player.gameid = '.$this->db->escape($gameid));
         $result = $query->row();
         $count = "";
         if(isset($result->{'count'})){
             $count = $result->{'count'};
         }
-        
+
         return $count;
     }
-        
+
     // @TODO: write isActiveHuman
     public function isActiveHuman($playerid){
-        
+
     }
-    
+
     // @TODO: write isActiveZombie
     public function isActiveZombie($playerid){
         return true;

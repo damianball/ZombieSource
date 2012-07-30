@@ -13,25 +13,31 @@ class Admin_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Team_model','',TRUE);
         $this->load->library('PlayerCreator', null);
+        $this->load->library('UserCreator', null);
+        $this->load->library('GameCreator', null);
         $this->load->library('TeamCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
 
         $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-
-        // if(!$player->isModerator()){
-        //     redirect('/game');
-        // }
-
-        $this->logged_in_user = $player;
+        $this->user = $this->usercreator->getUserByUserID($userid);
+        $this->players = $this->user->getModeratorPlayers();
+         //if(!$this->players){
+             //redirect('/game');
+         //}
     }
+
 
 	public function index(){
        //is mod check
-        $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
-        $data['player_list'] = getPlayerString(GAME_KEY);
+        $data['player_in_game'] = array();
+        foreach($this->players as $player){
+            $gameid = $player->getCurrentGameId();
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            $game_name = $game->name();
+            $data['player_in_game'][$gameid] = getPlayerString($gameid);
+            $data['game_names'][$gameid] = $game_name;
+        }
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -43,12 +49,16 @@ class Admin_controller extends CI_Controller {
 
     public function player_controls(){
         $username = $this->input->post('player');
+        $gameid = $this->input->post('gameid');
         try{
             $userid = getUserIDByUsername($username);
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, GAME_KEY);
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
             $data = getPrivatePlayerProfileDataArray($player);
 
-            if(is_a($player, 'zombie')){ 
+            $is_mod = ($player->getData('moderator') == "1");
+            $data['toggle_mod_to'] = $is_mod ? "0" : "1";
+            $data['moderator_button_text'] = $is_mod ? "Remove Moderator" : "Make Moderator";
+            if(is_a($player, 'zombie')){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
 
@@ -62,18 +72,18 @@ class Admin_controller extends CI_Controller {
                     //spent 30 min trying to convert utc datetime to current 12 hour PST time to show the tag time and gave up due to time constraints.
                     //probably need a time helper.
                     $message = "TAG: <h3> $tagger_name </h3> tagged <h3> $taggee_name </h3>";
-                    
+
                     $data['undo_tag_disabled'] = "";
-                    $data['undo_tag_message'] = $message;  
+                    $data['undo_tag_message'] = $message;
                 }else{ //is a zombie but can't be untaggged
                     $data['undo_tag_disabled'] = "disabled";
-                    $data['undo_tag_message'] = "Zombie not elligble to be untagged";      
+                    $data['undo_tag_message'] = "Zombie not elligble to be untagged";
                 }
             }else{ //is not a zombie, can't be feed or untagged
                 $data['feed_disabled'] = "disabled";
                 $data['feed_message'] = "Not a zombie";
                 $data['undo_tag_disabled'] = "disabled";
-                $data['undo_tag_message'] = "Not a zombie";               
+                $data['undo_tag_message'] = "Not a zombie";
             }
 
             $this->load->view('admin/player_controls.php', $data);
@@ -113,11 +123,11 @@ class Admin_controller extends CI_Controller {
     }
 
     public function free_feed(){
-        //mod 
+        //mod
         $this->load->library('FeedCreator');
         $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
-        $username = $player->getUser()->getUsername(); 
-        if($player->getStatus() == 'zombie'){ //is_a Zombie scares me, I don't know how it works. So I check the status. 
+        $username = $player->getUser()->getUsername();
+        if($player->getStatus() == 'zombie'){ //is_a Zombie scares me, I don't know how it works. So I check the status.
             //the important part of this method.
             $feed = $this->feedcreator->getNewFeed($player, null, gmdate("Y-m-d H:i:s", time()), true);
             if ($feed) {
@@ -136,6 +146,8 @@ class Admin_controller extends CI_Controller {
                 $analyticslogger->addToPayload('message', 'feed not generated');
                 LogManager::storeLog($analyticslogger);
             }
+        } else {
+            $this->loadGenericMessageWithoutLayout("$username is not a zombie!");
         }
         // event logging
         $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
@@ -143,6 +155,24 @@ class Admin_controller extends CI_Controller {
         $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
         $analyticslogger->addToPayload('message', 'not a zombie');
         LogManager::storeLog($analyticslogger);
+    }
+
+    public function make_mod(){
+        //mod
+        $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
+        $username = $player->getUser()->getUsername();
+        $was_moderator = $player->isModerator();
+
+        $player->toggleModerator();
+        if($was_moderator == $player->isModerator()){
+            if($was_moderator){
+                echo 'Make Moderator';
+            } else {
+                echo 'Remove Moderator';
+            }
+        } else {
+            echo 'Error';
+        }
     }
 
     public function email_list(){
@@ -181,7 +211,7 @@ class Admin_controller extends CI_Controller {
         }
 
         $data['human_names'] = $human_names;
-        $this->load->view('helpers/human_list', $data); 
+        $this->load->view('helpers/human_list', $data);
     }
 
     //Duplicated and modified from Game.php because I'm not sure how to load views from a helper
@@ -190,3 +220,4 @@ class Admin_controller extends CI_Controller {
         $this->load->view('helpers/display_generic_message',$data);
     }
 }
+
