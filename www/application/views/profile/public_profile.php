@@ -1,37 +1,59 @@
-<div class = "row" >
-   <div class="main">
-  <div id = "player_status" class = "alert-message
-   <?php
-    if($status == 'zombie'){
-      echo "danger";
-    }else{
-      echo "warning";
-    }
-    ?>
-    ">
-    <?php echo $status; ?>
+<div class="row-fluid">
+  <div class="span8">
+    <div class="well">
+      <div class = "line"> 
+        <span class = "profile_data_item"> <h3><?php echo $username; ?></h3></span>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">
+
+          <div id = "gravatar"> 
+            <?php echo $profile_pic_url ?><br><br>
+          </div>
+        </div>
+        <div class="span9">
+          <div class="font-profile">
+            <dl class="dl-horizontal"> 
+              <dt>Status </dt> 
+              <?php 
+                if($status == 'zombie'){
+                #  echo "danger";
+                  echo "
+                  <dd><span class=\"label label-warning\">";   
+                    echo $status;
+                  echo "</span></dd>";
+
+                }else if($status == 'starved zombie'){
+                #  echo "warning";
+                  echo " 
+                  <dd><span class=\"label label-important\">";   
+                    echo $status;
+                  echo "</span></dd>";
+                }else{
+                  echo " 
+                  <dd><span class=\"label label-success\">";   
+                    echo $status;
+                  echo "</span></dd>";
+                }
+
+              ?> 
+              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age; ?></dd></span>
+              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender; ?></dd> </span>
+              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major; ?></dd> </span>
+              <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd> 
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id = "gravatar">
-    <?php echo $profile_pic_url ?> </br>
-  </div>
-  <div class = "line">
-    Username: <span class = "profile_data_item"> <?php echo $username; ?> </span>
-  </div>
-  <div class = "line">
-    Age: <span class = "profile_data_item"> <?php echo $age; ?> </span>
-  </div>   <div class = "line">
-    Gender: <span class = "profile_data_item"> <?php echo $gender; ?> </span>
-  </div>
-  <div class = "line">
-    Major: <span class = "profile_data_item"> <?php echo $major; ?> </span>
-  </div>
-  <div class = "line"> Team: <?php echo $link_to_team; ?></div>
+    <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
+      </div>
+    </div>
 
-   </div>
-   <div class="sidebar">
-   <div class="well">
-      <?php $this->load->view("layouts/gameinfo"); ?>
-   </div>
-   </div>
+
 </div>
+

@@ -1,6 +1,6 @@
 <div class="well">
    <div class="row">
-      <div class="span">
+      <div class="span6">
          <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
 
          <div id = "title">
@@ -8,7 +8,7 @@
          </div>
       </div>
    
-      <div class="span2 offset4">
+      <div class="span2 offset3">
         
                      <?php echo $home_content ?>
          
@@ -27,12 +27,14 @@
                   <div id = "graphbox">
                      <div class="info_box">
                         <div id = "label">
-                        <h2> Player Count: </h2>
+                        <div class="alert alert-blue"><h2> Player Count: </h2>
+                        <span style = "font-size: 50px;"><?php echo $count; ?> </span>
                         </div>
                         <div id = "homepage_data">
                            <div id = "graph2" class = "homepage_graph">
-                              <span style = "font-size: 50px;"><?php echo $count; ?> </span>
+                              
                            </div>
+                         </div>
                            <div id = "graph1" class = "homepage_graph"></div>
                         </div>
                      </div>
