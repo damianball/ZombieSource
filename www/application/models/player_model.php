@@ -96,7 +96,7 @@ class Player_model extends CI_Model{
 
     //This will only return 1 game id!
     //There should only be 1 active player!
-    public function getCurrentGameIDByUserID($userid){
+    public function getGameIDByUserID($userid){
         $this->db->select('gameid');
         $this->db->from($this->table_name);
         $this->db->where('userid',$userid);
