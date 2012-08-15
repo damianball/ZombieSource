@@ -48,6 +48,10 @@ class Game_overview_controller extends CI_Controller {
             }
 
             $game_data[$gameid] = array(
+                          'gameid'                => $gameid,
+                          'game_slug'             => $this->Game_model->getGameSlugByGameID($gameid),
+                          'game_photo_url'        => $this->Game_model->getPhotoURL($gameid),
+                          'game_description'      => $this->Game_model->getDescription($gameid),
                           'game_name'             => $game_name,
                           'count'                 => $zombie_count + $human_count,
                           'human_count'           => $human_count,
@@ -72,12 +76,11 @@ class Game_overview_controller extends CI_Controller {
         $game_stateid = $game->getStateID();
         $data["user_in_game"] = $this->user->isActiveInGame($gameid);
         $data["gameid"] = $gameid;
+        $data["registration_open"] = $game->registrationIsOpen();
         
         if($game_stateid == 2){
-            $view = $this->load->view('game_overview/open_registration_options', $data, true);
-        }elseif($game_stateid == 3){
             $view = $this->load->view('game_overview/active_game_options', $data, true);
-        }elseif($game_stateid == 4){
+        }elseif($game_stateid == 3){
             $view = $this->load->view('game_overview/closed_game_options', $data, true);
         }
         return $view;
@@ -86,12 +89,12 @@ class Game_overview_controller extends CI_Controller {
     public function join_game()
     {
         $gameid = $username = $this->input->post('gameid');
-        echo json_encode($this->user->joinGame($gameid));
+        echo json_encode(array("userInGame" => $this->user->joinGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 
     public function leave_game()
     {
         $gameid = $username = $this->input->post('gameid'); 
-        echo json_encode($this->user->leaveGame($gameid));
+        echo json_encode(array("userInGame" => $this->user->leaveGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 }

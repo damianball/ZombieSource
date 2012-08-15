@@ -24,8 +24,20 @@ class Game{
         return $this->ci->Game_model->getStateID($this->gameid);
     }
 
+    public function registrationIsOpen(){
+        return $this->ci->Game_model->getRegistrationState($this->gameid);
+    }
+
     public function slug(){
         return $this->ci->Game_model->getGameSlugByGameID($this->gameid);
+    }
+
+    public function photoURL(){
+        return $this->ci->Game_model->getPhotoURL($this->gameid);
+    }
+
+    public function description(){
+        return $this->ci->Game_model->description($this->gameid);
     }
 
     public function name(){

@@ -5,7 +5,7 @@
   <!--<div id = "sortable_tables" >
    <!-- <div class = "hvz_table" > -->
 
-<h2> Players </h2>
+<h1> <?php echo $game_name; ?> </h1>
 <hr>
 
 <div class="row-fluid">

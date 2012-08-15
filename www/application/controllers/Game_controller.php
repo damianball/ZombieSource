@@ -108,6 +108,7 @@ class Game_controller extends CI_Controller {
         $game_table = $this->table->generate();     
         $data = array('game_table' => $game_table);
         $data["url_slug"] = $this->game->slug();
+        $data["game_name"] = $this->game->name();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'teamlist';
