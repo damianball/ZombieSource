@@ -58,7 +58,7 @@ function getHTMLLinkToProfile($player){
     $username = $user->getUsername();
     $id = $user->getUserID();
     $link = "<a href = \"" . site_url("/user/$id") .  "\"> $username </a>";
-    return $link; 
+    return $link;
 }
 
 // MOVE TO HELPER
@@ -93,6 +93,7 @@ function getPrivatePlayerProfileDataArray($player){
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     $data['status'] = $player->getStatus();
     $data['playerid'] = $player->getPlayerID();
+    $data['game_name'] = $player->getGameName();
     return $data;
 }
 
@@ -110,6 +111,7 @@ function getPublicPlayerProfileDataArray($player){
     $data['gravatar_email'] = $player->getData('gravatar_email');
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     $data['status'] = $player->getPublicStatus();
+    $data['game_name'] = $player->getGameName();
     return $data;
 }
 

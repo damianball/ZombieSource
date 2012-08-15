@@ -34,11 +34,12 @@ class Profile_controller extends CI_Controller {
             $data = getPrivateUserProfileDataArray($this->logged_in_user);
             $current_gameid = $this->logged_in_user->currentGameID();
             if($current_gameid){
-            $userid = $this->logged_in_user->getUserID();
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
-            $data += getPrivatePlayerProfileDataArray($player);
+                $userid = $this->logged_in_user->getUserID();
+                $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
+                $data += getPrivatePlayerProfileDataArray($player);
             } else {
                 // fill in defaults if user not in game
+                $data['game_name'] = 'none';
                 $data['status'] = '(not in game)';
                 $data['link_to_team'] = '';
             }
@@ -101,7 +102,7 @@ class Profile_controller extends CI_Controller {
         }
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('profile/edit_profile', getPrivateuserProfileDataArray($user), true);
+        $layout_data['content_body'] = $this->load->view('profile/edit_profile', getPrivateUserProfileDataArray($user), true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
     }
@@ -109,8 +110,25 @@ class Profile_controller extends CI_Controller {
 
     public function public_profile()
     {
+        // @TODO: potentially unsafe
+        $get = $this->uri->uri_to_assoc(1);
+        $userid = $get['user'];
+        $userid = $this->security->xss_clean($userid);
+        $user = $this->usercreator->getUserByUserID($userid);
+        $data = getPublicUserProfileDataArray($user);
+        $current_gameid = $user->currentGameID();
+        if($current_gameid){
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
+            $data += getPublicPlayerProfileDataArray($player);
+        } else {
+            // fill in defaults if user not in game
+            $data['game_name'] = 'none';
+            $data['status'] = '(not in game)';
+            $data['link_to_team'] = '';
+        }
+
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('profile/public_profile', getPublicUserProfileDataArray($this->user), true);
+        $layout_data['content_body'] = $this->load->view('profile/public_profile', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
     }

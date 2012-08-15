@@ -10,6 +10,7 @@ class Player{
         $this->ci =& get_instance();
         $this->ci->load->model('Player_model','',TRUE);
         $this->ci->load->library('TeamCreator');
+        $this->ci->load->library('GameCreator');
 
         if($playerid){
             $this->playerid = $playerid;
@@ -80,6 +81,11 @@ class Player{
         return $game->isClosedGame();
     }
 
+    public function getGameName(){
+        $game = $this->ci->gamecreator->getGameByGameID($this->getGameID());
+        return $game->name();
+    }
+
     public function getUser(){
         $this->ci->load->library('UserCreator');
         return $this->ci->usercreator->getUserByPlayerID($this->playerid);
@@ -102,7 +108,6 @@ class Player{
     }
 
     public function getPlayerID(){
-        $gameid = $this->getCurrentGameID();
         return $this->playerid;
     }
 
