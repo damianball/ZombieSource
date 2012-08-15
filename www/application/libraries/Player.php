@@ -19,7 +19,7 @@ class Player{
     }
 
     public function isActive(){
-        //TODO this is no longer accurate 
+        //TODO this is no longer accurate
         //also should check if isInGame(GAME_KEY)
         // dateremoved in the database
 
@@ -74,6 +74,12 @@ class Player{
         }
     }
 
+    public function isGameClosed(){
+        $gameid = $this->getCurrentGameId();
+        $game = $this->ci->GameCreator->getGameByGameID(gameid);
+        return $game->isClosedGame();
+    }
+
     public function getUser(){
         $this->ci->load->library('UserCreator');
         return $this->ci->usercreator->getUserByPlayerID($this->playerid);
@@ -96,6 +102,7 @@ class Player{
     }
 
     public function getPlayerID(){
+        $gameid = $this->getCurrentGameID();
         return $this->playerid;
     }
 
