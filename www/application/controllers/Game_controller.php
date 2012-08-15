@@ -74,6 +74,7 @@ class Game_controller extends CI_Controller {
 
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -109,6 +110,7 @@ class Game_controller extends CI_Controller {
         $data = array('game_table' => $game_table);
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
+        $data['is_closed'] = $this->game->isClosedGame();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'teamlist';
@@ -156,6 +158,7 @@ class Game_controller extends CI_Controller {
                       'starved_zombie_count'  => $starved_zombie_count
         );
         $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'stats';
