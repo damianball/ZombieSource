@@ -7,9 +7,10 @@
       <div class="row-fluid">
         <div class="span3">
 
-          <div id = "gravatar">
-            <?php echo $profile_pic_url ?><br><br>
+          <div id = "gravatar" class="thumbnail">
+            <?php echo $profile_pic_url ?>
           </div>
+          <br>
         </div>
         <div class="span9">
           <div class="font-profile">

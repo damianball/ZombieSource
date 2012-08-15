@@ -8,11 +8,10 @@
 	    	<!-- game name -->
 	    	<a href = "<?php echo base_url() . 'game/' . $game["game_slug"]?>"> <h3><?php echo $game["game_name"]?> </h3> </a>
 	    	<div class="row-fluid">
-		    	<div class="span3 ">
-		    		<img src="<?php echo $game["game_photo_url"]?>">
-		    		<!-- PICTURE -->
-
-
+		    	<div class="span3">
+		    		<a href="<?php echo base_url() . 'game/' . $game["game_slug"]?>">
+		    			<img class="thumbnail" src="<?php echo $game["game_photo_url"]?>">
+		    		</a>
 		    	</div>
 				<div class="span7">
 	         <?php echo $game["game_description"]?>
@@ -23,9 +22,20 @@
 			</div>
 			<br>
 			<div class="row-fluid">
-				<div class="span2"></div>
-				<div class="span2">
+				<div class="span3">
 			        <div class="alert alert-blue"> Players: <?php echo $game["count"]; ?> </div>
+			     </div>
+			
+				<div class="span3">
+			        <div class="alert alert-green"> Humans: <?php echo $game["human_count"]; ?> </div>
+			     </div>
+			
+				<div class="span3">
+			        <div class="alert alert-yellow"> Zombies: <?php echo $game["zombie_count"]; ?> </div>
+			     </div>
+			
+				<div class="span3">
+			        <div class="alert alert-red"> Starved Zombies: <?php echo $game["starved_zombie_count"]; ?> </div>
 			     </div>
 			</div>
 		</div>
