@@ -73,7 +73,6 @@ class User{
     }
 
     public function isActiveInCurrentGame(){
-        $current_game_id = GAME_KEY; //TODO fix
         try{
             $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $this->currentGameID());
             return $player->isActive();
@@ -95,7 +94,7 @@ class User{
     }
 
     public function currentGameID(){
-        return $this->ci->Player_model->getCurrentGameIDByUserID($this->userid);
+        return $this->ci->Player_model->getGameIDByUserID($this->userid);
     }
 
 

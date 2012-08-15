@@ -22,7 +22,7 @@ class TeamCreator{
         $newTeam = null;
         $this->ci->db->trans_begin();
         try{
-            $newTeamID = $this->ci->Team_model->createTeam($name, GAME_KEY);
+            $newTeamID = $this->ci->Team_model->createTeam($name, $player->getGameID());
             $newTeam = new Team($newTeamID);
             $newTeam->addPlayer($player);
             $this->ci->db->trans_commit();
