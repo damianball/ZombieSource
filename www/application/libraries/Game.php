@@ -50,6 +50,6 @@ class Game{
     }
 
     public function isClosedGame(){
-        return ($this->getStateID() == 4);
+        return ($this->getStateID() == 3);
     }
 }
