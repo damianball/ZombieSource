@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 
 class Game_controller extends CI_Controller {
-    private $current_game_id = null;
     private $user;
+    private $game;
     public function __construct()
     {
         parent::__construct();
@@ -25,7 +25,7 @@ class Game_controller extends CI_Controller {
         $userid = $this->tank_auth->get_user_id();
         $this->user = $this->usercreator->getUserByUserID($userid);
 
-        // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
+        // @TODO: possibly not safe.
         $get = $this->uri->uri_to_assoc(1);
         $game_slug = $this->security->xss_clean($get['game']);
 
@@ -37,8 +37,7 @@ class Game_controller extends CI_Controller {
                 redirect("/overview");
             }
         }
-        $this->current_game_id = $this->Game_model->getGameIDBySlug($game_slug);
-
+        $this->game = $this->gamecreator->getGameByGameID($this->Game_model->getGameIDBySlug($game_slug));
     }
 
     public function index()
@@ -55,7 +54,7 @@ class Game_controller extends CI_Controller {
         # make the table bootstrap pretty! #
         $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
 
-        $players = getViewablePlayers($this->current_game_id);
+        $players = getViewablePlayers($this->game->getGameID());
         $this->load->helper('date_helper');
         foreach($players as $player){
             $row = array(
@@ -72,10 +71,9 @@ class Game_controller extends CI_Controller {
         //-- Display Table
         $game_table = $this->table->generate();
         $data = array('game_table' => $game_table);
-        $gameid = $this->user->currentGameID();
-        $game = $this->gamecreator->getGameByGameID($gameid);
-        $data['game_name'] = $game->name();
 
+        $data['game_name'] = $this->game->name();
+        $data['url_slug'] = $this->game->slug();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -96,7 +94,7 @@ class Game_controller extends CI_Controller {
             array('data' => 'Size', 'class' => 'sortable')
         );
 
-        $teams = getAllTeamsByGameID($this->current_game_id);
+        $teams = getAllTeamsByGameID($this->game->getGameID());
         foreach($teams as $team){
             $row = array(
                 getGravatarHTML($team->getData('gravatar_email'), $team->getData('name'), 50),
@@ -109,6 +107,8 @@ class Game_controller extends CI_Controller {
         //-- Display Table
         $game_table = $this->table->generate();
         $data = array('game_table' => $game_table);
+        $data["url_slug"] = $this->game->slug();
+        $data["game_name"] = $this->game->name();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'teamlist';
@@ -135,7 +135,7 @@ class Game_controller extends CI_Controller {
         $human_count = 0;
         $starved_zombie_count = 0;
 
-        $players = getViewablePlayers($this->current_game_id);
+        $players = getViewablePlayers($this->game->getGameID());
         foreach($players as $player){
                 if(is_a($player, 'Zombie')){
                     if($player->isStarved()){
@@ -155,7 +155,7 @@ class Game_controller extends CI_Controller {
                       'zombie_count'          => $zombie_count,
                       'starved_zombie_count'  => $starved_zombie_count
         );
-
+        $data['url_slug'] = $this->game->slug();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'stats';
@@ -170,7 +170,7 @@ class Game_controller extends CI_Controller {
 
 
         $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->current_game_id);
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
         if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
             $layout_data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
@@ -193,8 +193,8 @@ class Game_controller extends CI_Controller {
             if ($this->form_validation->run()) {
                 $human_code = $this->input->post('human_code');
                 $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-                if(playerExistsWithHumanCodeByGameID($human_code, $this->current_game_id)){
-                    $playerid = getPlayerIDByHumanCodeGameID($human_code, $this->current_game_id);
+                if(playerExistsWithHumanCodeByGameID($human_code, $this->game->getGameID())){
+                    $playerid = getPlayerIDByHumanCodeGameID($human_code, $this->game->getGameID());
 
                     // is the player an active human?
                     $player = $this->playercreator->getPlayerByPlayerID($playerid);
@@ -229,7 +229,7 @@ class Game_controller extends CI_Controller {
                                     if(!$this->input->post('zombie_friend_'.$i) == ''){
                                         $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
                                         if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
-                                            $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, $this->current_game_id);
+                                            $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, $this->game->getGameID());
                                             if(is_a($friend, 'Zombie') && $friend->canParticipate()){
                                                 $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
                                             }
@@ -252,8 +252,9 @@ class Game_controller extends CI_Controller {
                 }
             } else {
                 $data['form_error'] = $form_error;
-                $data['zombie_list'] = getActiveZombiesString($this->current_game_id);
+                $data['zombie_list'] = getActiveZombiesString($this->game->getGameID());
                 $data['max_feeds'] = $max_feeds;
+                $data['url_slug'] = $this->game->slug();
 
                 //display the regular page, with errors
                 $layout_data['active_sidebar'] = 'logkill';
@@ -289,7 +290,7 @@ class Game_controller extends CI_Controller {
         $this->load->helper('user_helper');
         $userid = getUserIDByUsername($string);
         if($userid){
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->current_game_id);
+            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
             if(is_a($player, 'Zombie') && $player->canParticipate()){
                 return true;
             }
@@ -300,7 +301,7 @@ class Game_controller extends CI_Controller {
     public function register_new_team(){
 
         $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->current_game_id);
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
 
         if(!is_a($player,'Human')){
             $layout_data['active_sidebar'] = 'logkill';
@@ -353,7 +354,7 @@ class Game_controller extends CI_Controller {
 
         $data = array();
         $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->current_game_id);
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
 
         if(!is_a($player,'Human')){
             $layout_data['active_sidebar'] = 'logkill';
@@ -396,7 +397,7 @@ class Game_controller extends CI_Controller {
     public function leave_team(){
 
         $userid = $this->tank_auth->get_user_id();
-        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->current_game_id);
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
         $teamid = $this->input->post('teamid');
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $teamLink = getHTMLLinkToTeam($team);

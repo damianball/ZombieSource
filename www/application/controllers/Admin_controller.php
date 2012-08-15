@@ -32,7 +32,7 @@ class Admin_controller extends CI_Controller {
        //is mod check
         $data['player_in_game'] = array();
         foreach($this->players as $player){
-            $gameid = $player->getCurrentGameId();
+            $gameid = $player->getGameID();
             $game = $this->gamecreator->getGameByGameID($gameid);
             $game_name = $game->name();
             $data['player_in_game'][$gameid] = getPlayerString($gameid);

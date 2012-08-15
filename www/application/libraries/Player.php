@@ -106,7 +106,7 @@ class Player{
         return $this->playerid;
     }
 
-    public function getCurrentGameId(){
+    public function getGameID(){
         return $this->ci->Player_model->getGameIDbyPlayerID($this->playerid);
     }
 

@@ -44,9 +44,9 @@ $route['user/:num'] = "Profile_controller/public_profile";
 $route['team/edit/:any'] = "Profile_controller/edit_team_profile";
 $route['team/:any'] = "Profile_controller/team_public_profile";
 $route['team/new'] = "Game_controller/register_new_team";
-$route['game/teams'] = "Game_controller/teams";
 
 $route['game'] = "Game_controller";
+$route['game/(:any)/teams'] = "Game_controller/teams";
 $route['game/(:any)'] = "Game_controller";
 
 $route['auth'] = "Auth_controller";

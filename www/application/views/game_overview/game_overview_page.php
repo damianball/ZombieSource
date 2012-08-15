@@ -6,21 +6,18 @@
 	  <div class="span12">
 	    <div class="well">
 	    	<!-- game name -->
-	    	<h3> <?php echo $game["game_name"]?> </h3> 
+	    	<a href = "<?php echo base_url() . 'game/' . $game["game_slug"]?>"> <h3><?php echo $game["game_name"]?> </h3> </a>
 	    	<div class="row-fluid">
-		    	<div class="span3">
-		    		<img src="http://fineartamerica.com/images-medium/winter-tree-silhouette-john-stephens.jpg">
+		    	<div class="span3 ">
+		    		<img src="<?php echo $game["game_photo_url"]?>">
 		    		<!-- PICTURE -->
 
 
 		    	</div>
 				<div class="span7">
-					This is a super awesome description! aksdjflkasdlksfasld
-					alkdfjladfa;lsdjfalkdsfja;sldjfalsjfaldska;lsdjfalsdkj;asldf
-					aldsjflksjdf;aldskjfa;slfa;lsfka;sldjf;aldkfa;lkfa;sdk
-					a;sldkja;lsja;lkjfa;ljsa;lkfd.
+	         <?php echo $game["game_description"]?>
 				</div>
-				<div class=" span2">
+				<div class=" span2 game_options" id="<?php echo $game["gameid"]?>">
           <?php echo $game["game_options"]?>
 				</div>
 			</div>
@@ -29,15 +26,6 @@
 				<div class="span2"></div>
 				<div class="span2">
 			        <div class="alert alert-blue"> Players: <?php echo $game["count"]; ?> </div>
-			     </div>
-			     <div class="span2">
-			        <div class="alert alert-green"> Humans: <?php echo $game["human_count"]; ?> </div>
-			     </div>
-			     <div class="span2">
-			        <div class="alert alert-yellow"> Zombies: <?php echo $game["zombie_count"]; ?> </div>
-			     </div>
-			     <div class="span3">
-			        <div class="alert alert-red"> Starved Zombies: <?php echo $game["zombie_count"]; ?> </div>
 			     </div>
 			</div>
 		</div>
@@ -49,22 +37,44 @@
 
  <script type="text/javascript">
   $(document).ready(function(){
-    $(".join_game").click(function(event){
-      var gameid = $(event.target).data("gameid");
+
+    //choose the right modal by game id
+    //TODO dynmaically add gameid to modal button
+    //instead of setting it in active_game_options.php
+
+    $(document).on("click", ".leave_game_modal", function(event){
+      gameid = $(event.target).data("gameid");
+      $('#' + gameid).find('#leave').modal('show');
+    });
+
+
+    $(document).on("click",".join_game", function(event){
+      gameid = $(event.target).data("gameid");
       $.ajax({
         url: "overview/join_game",
         type: "POST",
         data: {gameid : gameid},
+        success: function(data){
+          response = JSON.parse(data)
+          $('#'+gameid + '.game_options').html($(response.replacementView))
+        }
       });
     });
 
-    $(".leave_game").click(function(event){
-      var gameid = $(event.target).data("gameid");
+    $(document).on("click",".leave_game",  function(event){
+      gameid = $(event.target).data("gameid");
       $.ajax({
         url: "overview/leave_game",
         type: "POST",
         data: {gameid : gameid},
+        success: function(data){
+          response = JSON.parse(data)
+          $('#'+gameid + '.game_options').html($(response.replacementView))
+        }
       });
     });
+
   });
  </script>
+ <script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-modal.js"></script>
+
