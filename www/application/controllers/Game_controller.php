@@ -45,14 +45,14 @@ class Game_controller extends CI_Controller {
         //load the content variables
         $this->table->set_heading(
         array('data' => 'Avatar'),
-        array('data' => 'Player', 'class' => 'sortable'),
-        array('data' => 'Team', 'class' => 'sortable'),
-        array('data' => 'Status', 'class' => 'sortable'),
-        array('data' => 'Kills', 'class' => 'sortable'),
-        array('data' => 'Last Feed', 'class' => 'sortable'));
+        array('data' => 'Player'),
+        array('data' => 'Team'),
+        array('data' => 'Status'),
+        array('data' => 'Kills'),
+        array('data' => 'Last Feed'));
 
         # make the table bootstrap pretty! #
-        $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
+        $this->table->set_template(array('table_open' => '<table id="game_table" class="table table-striped tablesorter" border="0" cellpadding="4" cellspacing="0">'));
 
         $players = getViewablePlayers($this->game->getGameID());
         $this->load->helper('date_helper');
@@ -87,7 +87,7 @@ class Game_controller extends CI_Controller {
 
     public function teams(){
 
-        $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
+        $this->table->set_template(array('table_open' => '<table id="teams_table" class="table table-striped" border="0" cellpadding="4" cellspacing="0">'));
 
         $this->table->set_heading(
             array('data' => 'Avatar'),
