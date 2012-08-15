@@ -135,30 +135,34 @@ class Profile_controller extends CI_Controller {
 
     public function team_public_profile()
     {
-
         $get = $this->uri->uri_to_assoc(1);
         // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
         $teamid = $get['team'];
         $teamid = $this->security->xss_clean($teamid);
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $gameid = $team->getGameID();
-        $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
+        try {
+            $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
+        } catch (PlayerDoesNotExistException $e){
+            $player = NULL;
+        }
         $data = getTeamProfileDataArray($team);
 
-        if ($player->isMemberOfTeam($team->getTeamID())) {
+        if ($player != NULL && $player->isMemberOfTeam($team->getTeamID())) {
             $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
         } else {
             $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);
         }
 
         //this is also checked in the profile/team_edit_profile method
-        if ($team->canEditTeam($player)) {
+        if ($player != NULL && $team->canEditTeam($player)) {
             $data['team_edit_button'] = $this->load->view('profile/edit_team_buttons.php', $data, true);
         } else {
             $data['team_edit_button'] = '';
         }
 
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
+        $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);

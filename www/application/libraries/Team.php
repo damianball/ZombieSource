@@ -56,7 +56,7 @@ class Team{
     }
 
     public function getGameID(){
-        return $this->gameid;
+        return $this->ci->Team_model->getGameIDByTeamID($this->teamid);
     }
 
     public function getData($key){
