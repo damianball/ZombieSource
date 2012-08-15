@@ -5,11 +5,14 @@
   <!--<div id = "sortable_tables" >
    <!-- <div class = "hvz_table" > -->
 
-<h2> Players </h2>
+<h1> <?php echo $game_name; ?> </h1>
 <hr>
 
 <div class="row-fluid">
-  <?php $this->load->view("layouts/game_sidebar"); ?>
+  <?php
+    $data["slug"] = $url_slug;
+    $this->load->view("layouts/game_sidebar", $data); 
+  ?>
   <div class="span10">
       <?php echo $game_table; ?>
   </div>

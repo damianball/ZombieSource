@@ -14,6 +14,40 @@ class Game_model extends CI_Model{
 	public function setGameName($gameid, $name){}
 	public function setGameState($gameid, $stateid){}
 	
+	public function getDescription($gameid){
+	  $this->db->select('description');
+	  $this->db->from($this->table_name);
+	  $this->db->where('id',$gameid);
+	  $query = $this->db->get();
+	  if($query->num_rows() != 1){
+	      throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
+	  }
+	  return $query->row()->description;
+	}
+
+		public function getPhotoURL($gameid){
+	  $this->db->select('game_photo_url');
+	  $this->db->from($this->table_name);
+	  $this->db->where('id',$gameid);
+	  $query = $this->db->get();
+	  if($query->num_rows() != 1){
+	      throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
+	  }
+	  return $query->row()->game_photo_url;
+	}
+
+
+	public function getRegistrationState($gameid){
+	  $this->db->select('registration_state');
+	  $this->db->from($this->table_name);
+	  $this->db->where('id',$gameid);
+	  $query = $this->db->get();
+	  if($query->num_rows() != 1){
+	      throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
+	  }
+	  return $query->row()->registration_state;
+	}
+
 	public function getStateID($gameid){
 	  $this->db->select('game_stateid');
 	  $this->db->from($this->table_name);

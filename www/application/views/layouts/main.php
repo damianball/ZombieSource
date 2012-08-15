@@ -7,6 +7,7 @@
    -->
    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>css/bootstrap_zombies/less/bootstrap.less">
    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>css/bootswatch.less">
+   <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>css/new_style.css">
    
    
   <script type="text/javascript" src="<?php echo base_url();?>js/less.js"></script>

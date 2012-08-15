@@ -2,11 +2,10 @@
 <h2> Game Statistics </h2>
 <hr>
 <div class="row">
-   <?php $this->load->view("layouts/game_sidebar"); ?>
-
-
-
-   
+    <?php
+      $data["slug"] = $url_slug;
+      $this->load->view("layouts/game_sidebar", $data);
+    ?>   
       <h3>
       <div class="span2">
          <div class="alert alert-blue"> Players: <?php echo $count; ?> </div>
