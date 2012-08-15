@@ -7,9 +7,10 @@
       <div class="row-fluid">
         <div class="span3">
 
-          <div id = "gravatar">
-            <?php echo $profile_pic_url ?><br><br>
+          <div id = "gravatar" class="thumbnail">
+            <?php echo $profile_pic_url ?>
           </div>
+          <br>
           <div class="row-fluid">
             <div class="span8">
               <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn btn-info"> Edit Profile</a>
