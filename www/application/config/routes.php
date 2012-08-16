@@ -47,6 +47,8 @@ $route['team/new'] = "Game_controller/register_new_team";
 
 $route['game'] = "Game_controller";
 $route['game/(:any)/teams'] = "Game_controller/teams";
+$route['game/(:any)/stats'] = "Game_controller/stats";
+$route['game/(:any)/register_kill'] = "Game_controller/register_kill";
 $route['game/(:any)'] = "Game_controller";
 
 $route['auth'] = "Auth_controller";
@@ -59,6 +61,7 @@ $route['profile'] = "Profile_controller";
 $route['profile/(:any)'] = "Profile_controller/$1";
 
 $route['admin'] = "Admin_controller";
+$route['admin/(:any)'] = "Admin_controller/$1";
 
 $route['default_controller'] = "Home_controller";
 $route['404_override'] = '';
