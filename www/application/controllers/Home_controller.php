@@ -6,6 +6,7 @@ class Home_controller extends CI_Controller {
         parent::__construct();
         $this->load->model('Player_model','',TRUE);
         $this->load->helper('player_helper');
+        $this->load->library('GameCreator');
     }
 
     public function index()
@@ -23,6 +24,9 @@ class Home_controller extends CI_Controller {
         $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
         $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
         $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+
+        $game = $this->gamecreator->getGameByGameID(GAME_KEY);
+        $name = $game->name();
 
         if($is_logged_in){
             $home_content = $this->load->view('home/logged_in_home','', true);
@@ -49,7 +53,8 @@ class Home_controller extends CI_Controller {
             'home_banner'  => $home_banner,
             'home_content' => $home_content,
             'tumblr_username'  =>  $tumblr_username,
-            'tumblr_num_posts' =>  $tumblr_num_posts
+            'tumblr_num_posts' =>  $tumblr_num_posts,
+            'game_name'        =>  $name
         );
 
 

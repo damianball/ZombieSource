@@ -48,4 +48,8 @@ class Game{
     public function registrationOpen(){
         return true;
     }
+
+    public function isClosedGame(){
+        return ($this->getStateID() == 3);
+    }
 }
