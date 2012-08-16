@@ -39,7 +39,7 @@ class Team_model extends CI_Model{
     public function getGameIDByTeamID($teamid){
         $this->db->select('gameid');
         $this->db->from($this->table_name);
-        $this->db->where('teamid', $teamid);
+        $this->db->where('id', $teamid);
         $query = $this->db->get();
         return $query->row()->gameid;
     }

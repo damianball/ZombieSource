@@ -10,6 +10,7 @@ class Player{
         $this->ci =& get_instance();
         $this->ci->load->model('Player_model','',TRUE);
         $this->ci->load->library('TeamCreator');
+        $this->ci->load->library('GameCreator');
 
         if($playerid){
             $this->playerid = $playerid;
@@ -19,7 +20,7 @@ class Player{
     }
 
     public function isActive(){
-        //TODO this is no longer accurate 
+        //TODO this is no longer accurate
         //also should check if isInGame(GAME_KEY)
         // dateremoved in the database
 
@@ -72,6 +73,17 @@ class Player{
         } else {
             return false;
         }
+    }
+
+    public function isGameClosed(){
+        $gameid = $this->getCurrentGameId();
+        $game = $this->ci->GameCreator->getGameByGameID(gameid);
+        return $game->isClosedGame();
+    }
+
+    public function getGameName(){
+        $game = $this->ci->gamecreator->getGameByGameID($this->getGameID());
+        return $game->name();
     }
 
     public function getUser(){

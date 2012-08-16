@@ -14,7 +14,7 @@
 				Game Info
 			</li>
 			<li>
-				<a href = "<?php echo site_url("game");?>"><i class="icon-user"></i> Players</a>
+				<a href = "<?php echo site_url('game/'. $slug);?>"><i class="icon-user"></i> Players</a>
 			</li>
 			<li>
 				<a href = "<?php echo site_url('game/'. $slug . '/teams');?>"><i class="icon-flag"></i> Teams</a>

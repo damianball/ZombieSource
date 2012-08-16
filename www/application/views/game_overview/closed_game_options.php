@@ -1,3 +1,3 @@
 <?php
-  echo '<h2> Game is closed </h2>';
+  echo '<h1><small> Game is closed </small></h1>';
 ?>
