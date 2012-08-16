@@ -14,12 +14,7 @@
             </div>
             </li>
             <li>
-              <div id = "registration_prompt">
-                    <a href=" <?php echo site_url("auth/register"); ?> " id = "test" class = "btn btn-primary pull-right"> 
-                        Register
-                    </a>
-
-                </div> 
+            
             </li>
           </ul>
             
