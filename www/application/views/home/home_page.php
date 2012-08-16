@@ -1,6 +1,6 @@
 <div class="well">
    <div class="row">
-      <div class="span6">
+      <div class="span8">
       <h1>Humans vs Zombies <small><?php echo $game_name ?></small></h1>
 
          <div id = "title">
@@ -8,7 +8,7 @@
          </div>
       </div>
 
-      <div class="span2 offset3">
+      <div class="span2 pull-right">
 
                      <?php echo $home_content ?>
 
