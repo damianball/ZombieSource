@@ -1,5 +1,3 @@
-<script type="text/javascript" src="js/jquery-latest.js"></script>
-<script type="text/javascript" src="js/jquery.tablesorter.js"></script>
 <h1> <?php echo $game_name; ?>
  <!-- Check if game is closed and style accordingly  -->
 <?php 
@@ -29,7 +27,13 @@
 <script type="text/javascript">
 $(document).ready(function() 
     { 
-        $("game_table").tablesorter(); 
+        $("#game_table").tablesorter({
+          headers:{
+            0: { // disable the avatar column sorting
+              sorter: false
+            }
+          }
+        }); 
     } 
 ); 
 </script>

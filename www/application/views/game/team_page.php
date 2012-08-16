@@ -1,5 +1,3 @@
- <script type="text/javascript" src=" <?php echo base_url("js/tablesort.js"); ?> "></script>
- <!-- <link rel="stylesheet" href="<?php echo base_url("css/table_style.css"); ?>" > -->
 <h1> <?php echo $game_name; ?>
  <!-- Check if game is closed and style accordingly  -->
 <?php 
@@ -48,3 +46,16 @@
   
 </div>
 
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#teams_table").tablesorter({
+          headers:{
+            0: { // disable the avatar column sorting
+              sorter: false 
+            }
+          }
+        }); 
+    } 
+); 
+</script>
