@@ -434,14 +434,6 @@ class Game_controller extends CI_Controller {
 
     }
 
-    public function overview(){
-
-        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/overview','', true);
-        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/main', $layout_data);
-    }
-
 }
 
 
