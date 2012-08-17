@@ -17,9 +17,9 @@ class Game_overview_controller extends CI_Controller {
         $this->load->library('UserCreator');
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
-        
+
         $this->user = $this->usercreator->getUserByUserID($this->tank_auth->get_user_id());
-    
+
     }
 
     public function index()
@@ -39,7 +39,7 @@ class Game_overview_controller extends CI_Controller {
                         if($player->isStarved()){
                           $starved_zombie_count += 1;
                         }else{
-                          $zombie_count += 1;    
+                          $zombie_count += 1;
                         }
                     }else {
                         $human_count += 1;
@@ -66,8 +66,8 @@ class Game_overview_controller extends CI_Controller {
         $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
-        
-                        
+
+
     }
 
     public function gameOptionsView($gameid){
@@ -77,7 +77,7 @@ class Game_overview_controller extends CI_Controller {
         $data["user_in_game"] = $this->user->isActiveInGame($gameid);
         $data["gameid"] = $gameid;
         $data["registration_open"] = $game->registrationIsOpen();
-        
+
         if($game_stateid == 2){
             $view = $this->load->view('game_overview/active_game_options', $data, true);
         }elseif($game_stateid == 3){
@@ -94,7 +94,7 @@ class Game_overview_controller extends CI_Controller {
 
     public function leave_game()
     {
-        $gameid = $username = $this->input->post('gameid'); 
+        $gameid = $username = $this->input->post('gameid');
         echo json_encode(array("userInGame" => $this->user->leaveGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 }

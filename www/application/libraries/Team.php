@@ -45,7 +45,10 @@ class Team{
         $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->teamid);
         $playerArray = array();
         for($i = 0; $i<count($playeridarray); $i++){
-            $playerArray[] = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            $potential_player = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            if($potential_player->canParticipate()){
+                $playerArray[] = $potential_player;
+            }
         }
 
         return $playerArray;
