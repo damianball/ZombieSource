@@ -153,7 +153,7 @@ class Profile_controller extends CI_Controller {
         $data = getTeamProfileDataArray($team);
         $data['url_slug'] = $game->slug();
 
-        if ($player != NULL && $player->isMemberOfTeam($team->getTeamID() && $player->canParticipate())) {
+        if ($player != NULL && $player->isMemberOfTeam($team->getTeamID()) && $player->canParticipate()) {
             $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
         } else {
             $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);

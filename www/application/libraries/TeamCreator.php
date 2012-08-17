@@ -22,11 +22,14 @@ class TeamCreator{
         $newTeam = null;
         $this->ci->db->trans_begin();
         try{
+            if($player->isMemberOfATeam()){
+                $player->leaveCurrentTeam();
+            }
             $newTeamID = $this->ci->Team_model->createTeam($name, $player->getGameID());
             $newTeam = new Team($newTeamID);
             $newTeam->addPlayer($player);
             $this->ci->db->trans_commit();
-        } 
+        }
         catch (PlayerMemberOfTeamException $e){
             $this->ci->db->trans_rollback();
             throw new DatastoreException('Could not create new team: '.$e->getMessage());
