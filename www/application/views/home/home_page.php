@@ -9,9 +9,7 @@
       </div>
 
       <div class="span2 pull-right">
-
-                     <?php echo $home_content ?>
-
+        <?php echo $home_content ?>
       </div>
    </div>
 
