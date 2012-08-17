@@ -123,6 +123,10 @@ class Player{
         return $this->ci->Player_model->getGameIDbyPlayerID($this->playerid);
     }
 
+    public function getGame(){
+        return $this->ci->gamecreator->getGameByGameID($this->getGameID());
+    }
+
     public function isMemberOfATeam(){
         $hasTeam = FALSE;
         try{

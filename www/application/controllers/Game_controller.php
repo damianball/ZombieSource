@@ -73,7 +73,7 @@ class Game_controller extends CI_Controller {
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
                 (is_a($player, 'Zombie') ? $player->getKills() : null),
-                (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeed()) : null)
+                (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
           $this->table->add_row($row);
         }
