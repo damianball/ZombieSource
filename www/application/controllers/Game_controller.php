@@ -65,8 +65,9 @@ class Game_controller extends CI_Controller {
         $players = getViewablePlayers($this->game->getGameID());
         $this->load->helper('date_helper');
         foreach($players as $player){
+            $user = $player->getUser();
             $row = array(
-                getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 50),
+                getGravatarHTML($user->getData('gravatar_email'), $user->getEmail(), 50),
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
