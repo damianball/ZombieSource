@@ -37,7 +37,15 @@ class Game_controller extends CI_Controller {
                 redirect("/overview");
             }
         }
+
         $this->game = $this->gamecreator->getGameByGameID($this->Game_model->getGameIDBySlug($game_slug));
+        try {
+            $this->player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
+        } catch (PlayerDoesNotExistException $e){
+            // this is okay. it means this user isn't in the current game
+            $this->player = NULL;
+        }
+
     }
 
     public function index()
@@ -75,6 +83,7 @@ class Game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
+        $data['is_zombie'] = is_a($this->player, 'Zombie');
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -111,6 +120,7 @@ class Game_controller extends CI_Controller {
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
+        $data['is_zombie'] = is_a($this->player, 'Zombie');
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'teamlist';
@@ -159,6 +169,8 @@ class Game_controller extends CI_Controller {
         );
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
+        $data['game_name'] = $this->game->name();
+        $data['is_zombie'] = is_a($this->player, 'Zombie');
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'stats';
@@ -258,6 +270,7 @@ class Game_controller extends CI_Controller {
                 $data['zombie_list'] = getActiveZombiesString($this->game->getGameID());
                 $data['max_feeds'] = $max_feeds;
                 $data['url_slug'] = $this->game->slug();
+                $data['is_zombie'] = is_a($this->player, 'Zombie');
 
                 //display the regular page, with errors
                 $layout_data['active_sidebar'] = 'logkill';
