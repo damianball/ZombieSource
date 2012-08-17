@@ -103,6 +103,26 @@ class Game_model extends CI_Model{
 	  return $query->row()->url_slug;
 	}
 
+    public function getCurrentGame(){
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('game_stateid', 2);
+        $query = $this->db->get();
+        if($query->num_rows() == 1){
+            return $query->row()->id;
+        }
+
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('game_stateid', 3);
+        $this->db->order_by('end_date', 'desc');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->row()->id;
+        }
+        throw new GameDoesNotExistException('The current game could not be determined.');
+    }
+
 	public function getGameTimezone($gameid){}
 
 	public function getGameSetting($gameid,$name){}

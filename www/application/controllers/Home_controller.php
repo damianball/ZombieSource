@@ -7,6 +7,7 @@ class Home_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->helper('player_helper');
         $this->load->library('GameCreator');
+        $this->load->model('Game_model', '', TRUE);
     }
 
     public function index()
@@ -19,19 +20,21 @@ class Home_controller extends CI_Controller {
 
         $userid = $this->tank_auth->get_user_id();
 
-        $num_players = $this->Player_model->getNumberOfPlayersInGame(GAME_KEY);
-        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','male');
-        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','female');
-        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','other');
-        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP(GAME_KEY,'gender','');
+        $current_gameid = $this->Game_model->getCurrentGame();
 
-        $game = $this->gamecreator->getGameByGameID(GAME_KEY);
+        $num_players = $this->Player_model->getNumberOfPlayersInGame($current_gameid);
+        $num_males = $this->Player_model->getNumberOfPlayersInGameByNVP($current_gameid,'gender','male');
+        $num_females = $this->Player_model->getNumberOfPlayersInGameByNVP($current_gameid,'gender','female');
+        $num_other_gender = $this->Player_model->getNumberOfPlayersInGameByNVP($current_gameid,'gender','other');
+        $num_no_gender_response = $this->Player_model->getNumberOfPlayersInGameByNVP($current_gameid,'gender','');
+
+        $game = $this->gamecreator->getGameByGameID($current_gameid);
         $name = $game->name();
 
         if($is_logged_in){
             $home_content = $this->load->view('home/logged_in_home','', true);
             $top_bar = $this->load->view('layouts/logged_in_topbar','', true);
-            if(!userExistsInGame($userid, GAME_KEY)){
+            if(!userExistsInGame($userid, $current_gameid)){
               $home_banner = $this->load->view('home/waiver_banner','', true);
             }
             else{
