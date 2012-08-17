@@ -41,8 +41,11 @@
               echo site_url("team/new");
               echo "id = \"create_new_team\" class = \"btn btn-margin btn-yellow\"> Create New Team </a>";
             }
-            if ($is_closed){
+            else if ($is_closed){
               echo "This game is <b>closed</b>. You cannot create teams for this game.";
+            }
+            else{
+              echo "<b> Join a Game</b> if you want to create/join a team!";
             }
           ?>
         </div>
