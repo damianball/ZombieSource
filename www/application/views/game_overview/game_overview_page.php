@@ -76,7 +76,6 @@
         type: "POST",
         data: {gameid : gameid},
         success: function(data){
-            console.log(data)
           response = JSON.parse(data)
           $('#'+gameid + '.game_options').html($(response.replacementView))
         }
@@ -90,7 +89,6 @@
         type: "POST",
         data: {gameid : gameid},
         success: function(data){
-            console.log(data)
           response = JSON.parse(data)
           $('#'+gameid + '.game_options').html($(response.replacementView))
         }
