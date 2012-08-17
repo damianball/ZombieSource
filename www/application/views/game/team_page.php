@@ -1,6 +1,6 @@
 <h1> <?php echo $game_name; ?>
  <!-- Check if game is closed and style accordingly  -->
-<?php 
+<?php
   if($is_closed){
     echo "<small> (Closed)</small></h1>";
     echo "<script type=\"text/javascript\">";
@@ -17,7 +17,7 @@
     <?php
       $data["slug"] = $url_slug;
       $this->load->view("layouts/game_sidebar", $data);
-    ?>       
+    ?>
     <div class="span6">
       <?php echo $game_table; ?>
     </div>
@@ -30,32 +30,32 @@
           <br>
           To join a team, click their name to visit their profile.</br></br>
           Please make sure you are welcome on a team before you join.</br>
-          <?php 
+          <?php
             if($is_closed == FALSE){
               echo "<br>";
               echo "<strong> Think you can do Better? </strong> </br>";
 
-              echo "<a href="; 
+              echo "<a href=\"";
 
-              echo site_url("team/new");
-              echo "id = \"create_new_team\" class = \"btn btn-margin btn-yellow\"> Create New Team </a>";
+              echo site_url("game/$url_slug/register_new_team");
+              echo "\" id = \"create_new_team\" class = \"btn btn-margin btn-yellow\"> Create New Team </a>";
             }
           ?>
         </div>
     </div>
-  
+
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() 
-    { 
+$(document).ready(function()
+    {
         $("#teams_table").tablesorter({
           headers:{
             0: { // disable the avatar column sorting
-              sorter: false 
+              sorter: false
             }
           }
-        }); 
-    } 
-); 
+        });
+    }
+);
 </script>

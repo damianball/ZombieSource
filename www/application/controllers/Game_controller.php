@@ -369,7 +369,6 @@ class Game_controller extends CI_Controller {
     }
 
     public function join_team(){
-
         $data = array();
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());

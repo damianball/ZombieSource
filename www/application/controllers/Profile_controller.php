@@ -141,12 +141,14 @@ class Profile_controller extends CI_Controller {
         $teamid = $this->security->xss_clean($teamid);
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $gameid = $team->getGameID();
+        $game = $this->gamecreator->getGameByGameID($gameid);
         try {
             $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         } catch (PlayerDoesNotExistException $e){
             $player = NULL;
         }
         $data = getTeamProfileDataArray($team);
+        $data['url_slug'] = $game->slug();
 
         if ($player != NULL && $player->isMemberOfTeam($team->getTeamID())) {
             $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
