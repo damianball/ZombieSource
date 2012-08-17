@@ -26,8 +26,10 @@ class PlayerCreator{
         $this->ci->load->model('Player_model','',TRUE);
         $playerid = $this->ci->Player_model->createPlayerInGame($userid, $gameid);
         $newPlayer = $this->getPlayerByPlayerID($playerid);
-        foreach($params as $key => $value){
-            $newPlayer->saveData($key, $value);
+        if($params != NULL){
+            foreach($params as $key => $value){
+                $newPlayer->saveData($key, $value);
+            }
         }
         $newPlayer->saveData("stateid", 1); //new players always start active.
         return $newPlayer;

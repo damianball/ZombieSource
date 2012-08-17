@@ -89,7 +89,8 @@ class Game_overview_controller extends CI_Controller {
     public function join_game()
     {
         $gameid = $username = $this->input->post('gameid');
-        echo json_encode(array("userInGame" => $this->user->joinGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
+        $userInGame = $this->user->joinGame($gameid);
+        echo json_encode(array("userInGame" => $this->user->isActiveInGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 
     public function leave_game()
