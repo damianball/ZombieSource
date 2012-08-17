@@ -122,6 +122,7 @@ class Game_controller extends CI_Controller {
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['is_zombie'] = is_a($this->player, 'Zombie');
+        $data['is_human'] = is_a($this->player, 'Human');
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'teamlist';
