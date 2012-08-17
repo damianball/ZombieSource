@@ -117,6 +117,9 @@ class Profile_controller extends CI_Controller {
         $user = $this->usercreator->getUserByUserID($userid);
         $data = getPublicUserProfileDataArray($user);
         $current_gameid = $user->currentGameID();
+        if($userid == $this->logged_in_user->getUserID()){
+            redirect("profile");
+        }
         if($current_gameid){
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
