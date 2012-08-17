@@ -75,6 +75,14 @@ class Player{
         }
     }
 
+    public function isActiveHuman(){
+        return $this->canParticipate() && is_a($this, 'Human');
+    }
+
+    public function isActiveZombie(){
+        return $this->canParticipate() && is_a($this, 'Zombie');
+    }
+
     public function isGameClosed(){
         $gameid = $this->getCurrentGameId();
         $game = $this->ci->GameCreator->getGameByGameID(gameid);
