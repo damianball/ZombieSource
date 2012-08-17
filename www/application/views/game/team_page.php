@@ -28,10 +28,11 @@
           <strong>Teams</strong> are groups of people banding together for fun and mutual benefit.
           <br>
           <br>
-          To join a team, click their name to visit their profile.</br></br>
-          Please make sure you are welcome on a team before you join.</br>
+          
           <?php 
-            if($is_closed == FALSE){
+            if($is_closed == FALSE && $is_human){
+              echo "To join a team, click their name to visit their profile.</br></br>
+              Please make sure you are welcome on a team before you join.</br>";
               echo "<br>";
               echo "<strong> Think you can do Better? </strong> </br>";
 
@@ -39,6 +40,9 @@
 
               echo site_url("team/new");
               echo "id = \"create_new_team\" class = \"btn btn-margin btn-yellow\"> Create New Team </a>";
+            }
+            if ($is_closed){
+              echo "This game is <b>closed</b>. You cannot create teams for this game.";
             }
           ?>
         </div>
