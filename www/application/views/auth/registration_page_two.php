@@ -1,11 +1,9 @@
-<div class="page-header">
-  <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
-</div>
+
   <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004");
              echo form_open($this->uri->uri_string(), array('class'=>'form-horizontal'));
          ?>
   <div class="row-fluid">
-      <legend> Sign Safety Waiver (Required) </legend>
+<!--       <legend> Sign Safety Waiver (Required) </legend>
         
             <div class="clearfix">
               <label>Safety Waiver</label>
@@ -41,7 +39,7 @@
               <input type="text" name="sig" value="<?php echo set_value('sig'); ?>">
             </div>
             <br>
-           
+            -->
       
       <legend> Profile Information (Optional) </legend>
  

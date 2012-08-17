@@ -75,8 +75,11 @@ class Game_overview_controller extends CI_Controller {
         $game = $this->gamecreator->getGameByGameID($gameid);
         $game_stateid = $game->getStateID();
         $data["user_in_game"] = $this->user->isActiveInGame($gameid);
+        $data["profile_is_empty"] = true; // TODO fix
         $data["gameid"] = $gameid;
         $data["registration_open"] = $game->registrationIsOpen();
+        $data['edit_profile_fields'] = $this->load->view('auth/registration_page_two', '', true);
+
         
         if($game_stateid == 2){
             $view = $this->load->view('game_overview/active_game_options', $data, true);

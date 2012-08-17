@@ -8,12 +8,23 @@
 	    	<!-- game name -->
 	    	<a href = "<?php echo base_url() . 'game/' . $game["game_slug"]?>"> <h3><?php echo $game["game_name"]?> </h3> </a>
 	    	<div class="row-fluid">
+
 		    	<div class="span3">
 		    		<a href="<?php echo base_url() . 'game/' . $game["game_slug"]?>">
 		    			<img class="thumbnail" src="<?php echo $game["game_photo_url"]?>">
 		    		</a>
+          </div>
+        
+		    	<div class="span3 ">
 		    	</div>
-				<div class="span7">
+        
+          <div class="span3 ">
+          </div>
+        
+          <div class="span3 ">
+          </div>
+				
+        <div class="span7">
 	         <?php echo $game["game_description"]?>
 				</div>
 				<div class=" span2 game_options" id="<?php echo $game["gameid"]?>">
@@ -55,6 +66,11 @@
     $(document).on("click", ".leave_game_modal", function(event){
       gameid = $(event.target).data("gameid");
       $('#' + gameid).find('#leave').modal('show');
+    });
+
+    $(document).on("click", ".join_game_modal", function(event){
+      gameid = $(event.target).data("gameid");
+      $('#' + gameid).find('#join').modal('show');
     });
 
 
