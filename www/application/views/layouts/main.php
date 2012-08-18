@@ -20,7 +20,6 @@
          <?php echo $content_body; ?>
         </div>
       </div>
-    <hr>
     <center>
       <?php echo $footer; ?>
     </center>

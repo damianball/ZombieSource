@@ -173,10 +173,23 @@ class Profile_controller extends CI_Controller {
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
         $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+        $data['human_code'] = (!is_null($player) && $player->isActiveHuman()) ? $player->getHumanCode() : NULL;
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
+    public function print_human_code(){
+        $current_gameid = $this->logged_in_user->currentGameID();
+        $userid = $this->logged_in_user->getUserID();
+        $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
+        //$this->load->view('profile/print_human_code', array('human_code' => $player->getHumanCode()));
+        //$layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['top_bar'] = '';
+        $layout_data['content_body'] = $this->load->view('profile/print_human_code', array('human_code' => $player->getHumanCode()), true);
+        $layout_data['footer'] = '';
         $this->load->view('layouts/main', $layout_data);
     }
 
