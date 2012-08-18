@@ -169,6 +169,7 @@ class Profile_controller extends CI_Controller {
         }
 
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
+        $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
         $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
 
