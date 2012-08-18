@@ -91,18 +91,6 @@
       }
     })
 
-      
-      $(document).on("change", '[name="originalzombiepool"]', function(event){
-        waiver_box = $(event.target)
-        if( waiver_box.is(':checked')){
-          $('#' + gameid).find('.join_game').attr("disabled", false);
-        }else{
-          $('#' + gameid).find('.join_game').attr("disabled", true);          
-        }
-      });
-
-    
-
       $('#' + gameid).find('#join').modal('show');
     });
 
