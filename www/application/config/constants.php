@@ -36,8 +36,6 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
-// Game settings
-define('GAME_KEY', '9a051bbc-3ebc-11e1-b778-000c295b88cf');
 
 // Analytics settings
 // define('LOGFILE_DIR',"/home/zsource/log/");

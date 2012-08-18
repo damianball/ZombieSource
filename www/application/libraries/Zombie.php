@@ -13,7 +13,7 @@ class Zombie extends Player implements IPlayer{
 
     // @Implements getStatus()
     public function getStatus(){
-        return "zombie"; 
+        return "zombie";
     }
 
     // @Implements getPublicStatus()
@@ -47,13 +47,26 @@ class Zombie extends Player implements IPlayer{
                 $utcTime = $tag->getTagDateTimeClaimed();
             }
         }
-        
+
         if($utcTime){
             $this->ci->load->helper('date_helper');
             $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
-            
+
             return $seconds;
         }
+    }
+
+    public function secondsSinceLastFeedOrGameEnd(){
+        $lastfeed = $this->secondsSinceLastFeed();
+        $gameend = $this->getGame()->getEndTime();
+        $now = time();
+        $pasttime = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", $now), $gameend);
+        if($pasttime > 0){
+            $time = $lastfeed - $pasttime;
+        } else {
+            $time = $lastfeed - $now;
+        }
+        return $time;
     }
 
     // MOVE TO ZOMBIE
@@ -79,8 +92,8 @@ class Zombie extends Player implements IPlayer{
     }
 
     public function isStarved(){
-        $secondsSinceFeed = $this->secondsSinceLastFeed();
-        if($secondsSinceFeed > 60*60*48 ){
+        $secondsSinceFeed = $this->secondsSinceLastFeedOrGameEnd();
+        if($secondsSinceFeed > 60*60*24*2 ){
             return true;
         }
         return false;
@@ -88,7 +101,7 @@ class Zombie extends Player implements IPlayer{
 
     public function registerTag($humanCode, $claimed_tag_time_offset = null, $long = null, $lat = null){
         $this->ci->load->model('Tag_model','',true);
-        
+
         $tagid = $this->ci->Tag_model->storeNewTag($taggeeid, $this->getPlayerID(), $claimed_tag_time_offset, $long, $lat);
         return $tagid;
     }

@@ -3,6 +3,7 @@
 class Admin_controller extends CI_Controller {
 
     private $logged_in_user;
+    private $current_gameid;
 
     public function __construct()
     {
@@ -12,6 +13,7 @@ class Admin_controller extends CI_Controller {
         }
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Team_model','',TRUE);
+        $this->load->model('Game_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('GameCreator', null);
@@ -19,6 +21,7 @@ class Admin_controller extends CI_Controller {
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
 
+        $this->$current_gameid = $this->Game_model->getCurrentGame();
         $userid = $this->tank_auth->get_user_id();
         $this->user = $this->usercreator->getUserByUserID($userid);
         $this->players = $this->user->getModeratorPlayers();
@@ -183,11 +186,11 @@ class Admin_controller extends CI_Controller {
         $type = $this->security->xss_clean($type);
 
         if ($type == 'all') {
-            $players = getViewablePlayers(GAME_KEY);
+            $players = getViewablePlayers($current_gameid);
         } else if ($type == 'human') {
-            $players = getCanParticipateHumans(GAME_KEY);
+            $players = getCanParticipateHumans($current_gameid);
         } else if ($type == 'zombie') {
-            $players = getCanParticipateZombies(GAME_KEY);
+            $players = getCanParticipateZombies($current_gameid);
         } else {
             // @TODO: Should be an error
             return null;
@@ -206,7 +209,7 @@ class Admin_controller extends CI_Controller {
     }
 
     public function human_list(){
-        $players = getCanParticipateHumans(GAME_KEY);
+        $players = getCanParticipateHumans($current_gameid);
         foreach($players as $player){
             $human_names[] = $player->getUser()->getUsername();
         }

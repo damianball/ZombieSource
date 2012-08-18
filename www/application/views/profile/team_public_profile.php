@@ -37,8 +37,9 @@
           <br>
           <div id = "teamlist">
             <?php
+            #TODO: move the getting gravitar and link to the controller
             foreach($members_list as $member){
-              $team_member_photo = getGravatarHTML($member->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
+              $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
               $team_member_name = getHTMLLinkToProfile($member);
               echo "<div class = \"team_member\">
                         <div id = \"team_member_photo\" class = \"team_member_attribute\">

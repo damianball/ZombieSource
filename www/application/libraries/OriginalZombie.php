@@ -13,7 +13,7 @@ class OriginalZombie extends Zombie implements IPlayer{
 
     // @Implements getStatus()
     public function getStatus(){
-        return "zombie"; 
+        return "zombie";
     }
 
     // @Implements getPublicStatus()
@@ -39,7 +39,7 @@ class OriginalZombie extends Zombie implements IPlayer{
             return parent::getKills();
         } else {
             return null;
-        } 
+        }
     }
 
     public function secondsSinceLastFeed(){
@@ -47,7 +47,7 @@ class OriginalZombie extends Zombie implements IPlayer{
             return parent::secondsSinceLastFeed();
         } else {
             return null;
-        } 
+        }
     }
 
     public function isExposed(){

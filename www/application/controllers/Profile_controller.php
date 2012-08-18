@@ -117,6 +117,9 @@ class Profile_controller extends CI_Controller {
         $user = $this->usercreator->getUserByUserID($userid);
         $data = getPublicUserProfileDataArray($user);
         $current_gameid = $user->currentGameID();
+        if($userid == $this->logged_in_user->getUserID()){
+            redirect("profile");
+        }
         if($current_gameid){
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
@@ -141,17 +144,21 @@ class Profile_controller extends CI_Controller {
         $teamid = $this->security->xss_clean($teamid);
         $team = $this->teamcreator->getTeamByTeamID($teamid);
         $gameid = $team->getGameID();
+        $game = $this->gamecreator->getGameByGameID($gameid);
         try {
             $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         } catch (PlayerDoesNotExistException $e){
             $player = NULL;
         }
         $data = getTeamProfileDataArray($team);
+        $data['url_slug'] = $game->slug();
 
-        if ($player != NULL && $player->isMemberOfTeam($team->getTeamID())) {
+        if ($player != NULL && $player->isMemberOfTeam($team->getTeamID()) && $player->canParticipate()) {
             $data['team_profile_buttons'] = $this->load->view('profile/leave_team_buttons.php', $data, true);
-        } else {
+        } else if($player != NULL && $player->canParticipate()){
             $data['team_profile_buttons'] = $this->load->view('profile/join_team_buttons.php', $data, true);
+        } else {
+            $data['team_profile_buttons'] = '';
         }
 
         //this is also checked in the profile/team_edit_profile method
@@ -163,6 +170,7 @@ class Profile_controller extends CI_Controller {
 
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
+        $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);
@@ -177,6 +185,7 @@ class Profile_controller extends CI_Controller {
         $get = $this->uri->uri_to_assoc(2, $default);
         $teamid = $get['edit'];
         $team = $this->teamcreator->getTeamByTeamID($teamid);
+        $gameid = $team->getData('gameid');
         $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         if($team->canEditTeam($player)){
             $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
@@ -197,9 +206,11 @@ class Profile_controller extends CI_Controller {
 
                 redirect("team/".$team->getTeamID());
             }
+            $data = getTeamProfileDataArray($team);
+            $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
 
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-            $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', getTeamProfileDataArray($team), true);
+            $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', $data, true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data);
         } else {
