@@ -1,3 +1,5 @@
+
+
 <?php
 if ($use_username) {
     $username = array(
@@ -45,7 +47,11 @@ $captcha = array(
 </div>
 <div class = "row" >
    <div class="main">
-
+    <div class="alert fade in">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Did you play in Dead of Winter?</strong>
+         Then you're already registered!
+    </div>
       <div class="row">
       <div class="span12">
       <div class="span7">
@@ -147,3 +153,4 @@ $captcha = array(
 </div>
 
 
+<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-alert.js"></script>

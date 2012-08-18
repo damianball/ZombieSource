@@ -8,37 +8,37 @@
           <ul class="nav pull-right">
               <li>
               <div class = "basic_link">
-              
+
                 <a href="<?php echo site_url("auth/forgot_password"); ?>"><small> Reset Password </small></a>
-              
+
             </div>
             </li>
             <li>
-            
+
             </li>
           </ul>
-            
-            
+
+
               <form action = "<?php echo site_url("auth/login"); ?>" method="post" accept-charset="utf-8" class="navbar-form pull-right" >
-                
-                  
-                  <input placeholder="Username" class="input-small" type="text" name="login" value="" id="login" maxlength="80" size="30" class="span1" />
-               
-                
-                  <input placeholder="Password" class="input-small" type="password" name="password" value="" id="password" size="30"  class="span1"/>
-                
+
+
+                  <input placeholder="Username" class="input-small placeholder" type="text" name="login" value="" id="login" maxlength="80" size="30" class="span1" />
+
+
+                  <input placeholder="Password" class="input-small placeholder" type="password" name="password" value="" id="password" size="30"  class="span1"/>
+
 
                 <button class="btn btn-success" type="submit">Sign in</button>
-                  
-                
+
+
               </form>
-             
-            
+
+
         </div>
       </div>
     </div>
-    
 
 
 
-    
+
+
