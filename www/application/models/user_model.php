@@ -10,6 +10,18 @@ class User_model extends CI_Model{
         parent::__construct();
     }
 
+    public function profileIsEmpty($userid){
+        if($userid != null){
+            $this->db->select('*');
+            $this->db->where('userid', $userid);
+            $query = $this->db->get($this->data_table_name);
+            if ($query->num_rows() > 0) return false;
+            return true;
+        } else {
+            throw new UnexpectedValueException('userid cannot be null');
+        }
+    }
+
     public function getEmailByUserID($userid){
         if($userid != null){
             $this->db->select('email');

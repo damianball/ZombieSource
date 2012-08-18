@@ -37,6 +37,7 @@
                         </div>
                      </div>
 
+
                   </div>
             <div class="well">
             <a href="<?php echo 'http://' . $tumblr_username . '.tumblr.com'; ?>">
