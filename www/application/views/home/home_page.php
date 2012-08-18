@@ -25,21 +25,18 @@
                   <div id = "graphbox">
                      <div class="info_box">
                         <div id = "label">
-                        <div class="alert alert-blue"><h2> Player Count: </h2>
-                        <span style = "font-size: 50px;"><?php echo $count; ?> </span>
-                        </div>
-                        <div id = "homepage_data">
-                           <div id = "graph2" class = "homepage_graph">
+                          <div class="alert alert-blue"><h2> Player Count: </h2>
+                          <span style = "font-size: 50px;"><?php echo $count; ?> </span>
+                          </div>
+                          <div id = "homepage_data">
 
-                           </div>
-                         </div>
-                           <div id = "graph1" class = "homepage_graph"></div>
+                            </div>
                         </div>
                      </div>
 
 
                   </div>
-            <div class="well">
+            <div >
             <a href="<?php echo 'http://' . $tumblr_username . '.tumblr.com'; ?>">
                 <h2>Announcements</h2>
             </a>
