@@ -55,6 +55,15 @@
               <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd>
             </dl>
           </div>
+        <div id="human_code" class="pull-right">
+            <h4 style="text-align: center;">Human Code</h4>
+            <br>
+            <a href="<?php echo site_url('profile/print_human_code'); ?>">
+            <div class="btn btn-large btn-yellow">
+                <h1><big><?php echo $human_code ?></big></h1>
+            </div>
+            </a>
+        </div>
         </div>
       </div>
     </div>

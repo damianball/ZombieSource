@@ -3,7 +3,7 @@
     <h3>Hey!</h3>
   </div>
   <div class="modal-body">
-    <p>Are you sure you want to leave the game??</p>
+    <p>Are you sure you want to leave the game?</p>
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">No</a>

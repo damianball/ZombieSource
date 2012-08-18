@@ -75,6 +75,23 @@ class Player_team_model extends CI_Model{
         return $playeridArray;
     }
 
+    public function getListOfFormerPlayerIDByTeamID($teamid){
+        if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
+        $this->db->select('playerid');
+        $this->db->select_max('datecreated', 'max_date');
+        $this->db->from($this->table_name);
+        $this->db->where('teamid', $teamid);
+        $this->db->where('dateremoved is not NULL', NULL);
+        $this->db->group_by('playerid');
+
+        $query = $this->db->get();
+        $playeridArray = array();
+        foreach($query->result() as $row){
+            $playeridArray[] = $row->playerid;
+        }
+        return $playeridArray;
+    }
+
     public function getCountOfPlayersByTeamID($teamid){
         if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
 
