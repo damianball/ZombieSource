@@ -60,10 +60,12 @@
             foreach($zombies_list as $member){
               $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
               $team_member_name = getHTMLLinkToProfile($member);
+              $greenx = site_url('images/green-x.png');
+
               echo "<div class = \"team_member\">
                       
                         <div class=\"image-overlay\">
-                            <img class=\"overlay-image\" src=\"../../../images/green-x.png\" />
+                            <img class=\"overlay-image\" src=\"$greenx\" />
                             $team_member_photo
                         </div>
                         <div class = \"zombie_member_text\">

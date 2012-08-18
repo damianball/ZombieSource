@@ -64,7 +64,10 @@
     //instead of setting it in active_game_options.php
 
 
-
+     $(document).on("c", ".leave_game_modal", function(event){
+      gameid = $(event.target).data("gameid");
+      $('#' + gameid).find('#leave').modal('show');
+    });
 
 
     $(document).on("click", ".leave_game_modal", function(event){
@@ -74,11 +77,38 @@
 
     $(document).on("click", ".join_game_modal", function(event){
       gameid = $(event.target).data("gameid");
+      waiver_box = $('#' + gameid).find('[name="waiversigned"]')
+      if(!waiver_box.is(':checked')){
+        $('#' + gameid).find('.join_game').attr("disabled", true);
+      }
+
+    $('input[name="waiversigned"]').change(function(event){
+      waiver_box = $(event.target);
+      if(waiver_box.is(':checked')){
+        $('#' + gameid).find('.join_game').attr("disabled", false);
+      }else{
+        $('#' + gameid).find('.join_game').attr("disabled", true);
+      }
+    })
+
+      
+      $(document).on("change", '[name="originalzombiepool"]', function(event){
+        waiver_box = $(event.target)
+        if( waiver_box.is(':checked')){
+          $('#' + gameid).find('.join_game').attr("disabled", false);
+        }else{
+          $('#' + gameid).find('.join_game').attr("disabled", true);          
+        }
+      });
+
+    
+
       $('#' + gameid).find('#join').modal('show');
     });
 
 
     $(document).on("click",".join_game", function(event){
+
       if( $('#' + gameid).find('.join_game_sign_waiver') ){
         waiversigned = $('#' + gameid).find('[name]="waiversigned"').is(':checked')
       }
@@ -89,17 +119,17 @@
         gender = $('#' + gameid).find('[name="gender"]').val()
       }
 
-      original_zombie = $('#' + gameid).find('[name="originalzombiepool"]').is(':checked')
+      original_zombie = $('#' + gameid).find('[name="originalzombiepool"]').is(':checked') ?  1 : 0
     
       if(waiversigned){
         gameid = $(event.target).data("gameid");
         params = {};
         params["gameid"] = gameid;
-        params["waiversigned"] == true;
+        params["waiver_is_signed"] = "TRUE";
         if(age){ params["age"] = age };
         if(major){ params["major"] = major };
         if(gender){ params["gender"] = gender };
-        if(original_zombie){ params["originalzombiepool"] = original_zombie };
+        if(original_zombie){ params["OriginalZombiePool"] = original_zombie };
 
         $.ajax({
           url: "overview/join_game",
