@@ -37,35 +37,35 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-$route['overview'] = "Game_overview_controller";
-$route['overview/(:any)'] = "Game_overview_controller/$1";
+$route['overview'] = "game_overview_controller";
+$route['overview/(:any)'] = "game_overview_controller/$1";
 
-$route['user/:num'] = "Profile_controller/public_profile";
-$route['team/edit/:any'] = "Profile_controller/edit_team_profile";
-$route['team/:any'] = "Profile_controller/team_public_profile";
+$route['user/:num'] = "profile_controller/public_profile";
+$route['team/edit/:any'] = "profile_controller/edit_team_profile";
+$route['team/:any'] = "profile_controller/team_public_profile";
 
-$route['game'] = "Game_controller";
-$route['game/(:any)/teams'] = "Game_controller/teams";
-$route['game/(:any)/stats'] = "Game_controller/stats";
-$route['game/(:any)/register_kill'] = "Game_controller/register_kill";
-$route['game/(:any)/register_new_team'] = "Game_controller/register_new_team";
-$route['game/(:any)/join_team'] = "Game_controller/join_team";
-$route['game/(:any)/leave_team'] = "Game_controller/leave_team";
-$route['game/(:any)'] = "Game_controller";
+$route['game'] = "game_controller";
+$route['game/(:any)/teams'] = "game_controller/teams";
+$route['game/(:any)/stats'] = "game_controller/stats";
+$route['game/(:any)/register_kill'] = "game_controller/register_kill";
+$route['game/(:any)/register_new_team'] = "game_controller/register_new_team";
+$route['game/(:any)/join_team'] = "game_controller/join_team";
+$route['game/(:any)/leave_team'] = "game_controller/leave_team";
+$route['game/(:any)'] = "game_controller";
 
-$route['auth'] = "Auth_controller";
-$route['auth/(:any)'] = "Auth_controller/$1";
+$route['auth'] = "auth_controller";
+$route['auth/(:any)'] = "auth_controller/$1";
 
-$route['home'] = "Home_controller";
-$route['home/(:any)'] = "Home_controller/$1";
+$route['home'] = "home_controller";
+$route['home/(:any)'] = "home_controller/$1";
 
-$route['profile'] = "Profile_controller";
-$route['profile/(:any)'] = "Profile_controller/$1";
+$route['profile'] = "profile_controller";
+$route['profile/(:any)'] = "profile_controller/$1";
 
-$route['admin'] = "Admin_controller";
-$route['admin/(:any)'] = "Admin_controller/$1";
+$route['admin'] = "admin_controller";
+$route['admin/(:any)'] = "admin_controller/$1";
 
-$route['default_controller'] = "Home_controller";
+$route['default_controller'] = "home_controller";
 $route['404_override'] = '';
 
 
