@@ -20,9 +20,22 @@ class User{
         }
     }
 
-    public function joinGame($gameid){
+    public function profileIsEmpty(){
+        return $this->ci->User_model->profileIsEmpty($this->userid);
+    }
+
+    public function signedWaiverForGame($gameid){
         if($this->isInGame($gameid)){
-            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid, NULL);
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+            return $player->waiverSigned();
+        }else{
+            return false;
+        }
+    }
+
+    public function joinGame($gameid, $params){
+        if($this->isInGame($gameid)){
+            $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
             if(!$player->isActive()){
                 $currgameid = $this->currentGameID();
                 if($currgameid){ $this->leaveGame($currgameid);}
@@ -32,7 +45,7 @@ class User{
         }elseif($this->canJoinGame($gameid)){
             $currgameid = $this->currentGameID();
             if($currgameid){ $this->leaveGame($currgameid);}
-            $player = $this->ci->playercreator->createPlayerByJoiningGame($this->userid, $gameid, NULL);
+            $player = $this->ci->playercreator->createPlayerByJoiningGame($this->userid, $gameid, $params);
         }
         return $this->isInGame($gameid);
     }

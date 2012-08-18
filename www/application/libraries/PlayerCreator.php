@@ -31,7 +31,7 @@ class PlayerCreator{
                 $newPlayer->saveData($key, $value);
             }
         }
-        $newPlayer->saveData("stateid", 1); //new players always start active.
+        $this->ci->Player_model->makePlayerActive($newPlayer->getPlayerID());
         return $newPlayer;
     }
 
