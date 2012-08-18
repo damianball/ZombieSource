@@ -40,9 +40,9 @@
                 }
 
               ?>
-              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age; ?></dd></span>
-              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender; ?></dd> </span>
-              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major; ?></dd> </span>
+              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age ? $age : "not given"; ?></dd></span>
+              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender ? $gender : "not given"; ?></dd> </span>
+              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major ? $major : "not given"; ?></dd> </span>
               <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd>
             </dl>
           </div>

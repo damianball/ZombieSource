@@ -25,15 +25,15 @@
 				<div class="span3">
 			        <div class="alert alert-blue"> Players: <?php echo $game["count"]; ?> </div>
 			     </div>
-			
+
 				<div class="span3">
 			        <div class="alert alert-green"> Humans: <?php echo $game["human_count"]; ?> </div>
 			     </div>
-			
+
 				<div class="span3">
 			        <div class="alert alert-yellow"> Zombies: <?php echo $game["zombie_count"]; ?> </div>
 			     </div>
-			
+
 				<div class="span3">
 			        <div class="alert alert-red"> Starved Zombies: <?php echo $game["starved_zombie_count"]; ?> </div>
 			     </div>
@@ -60,6 +60,17 @@
 
     $(document).on("click",".join_game", function(event){
       gameid = $(event.target).data("gameid");
+      $.ajax({
+        url: "overview/join_game",
+        type: "POST",
+        data: {gameid : gameid},
+        success: function(data){
+            console.log(data)
+          response = JSON.parse(data)
+          $('#'+gameid + '.game_options').html($(response.replacementView))
+        }
+      });
+      // Lord, wouldst thou forgive my transgression, for I have double-requested to make it work in my desperation
       $.ajax({
         url: "overview/join_game",
         type: "POST",

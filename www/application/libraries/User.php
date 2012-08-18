@@ -40,6 +40,9 @@ class User{
     public function leaveGame($gameid){
         //change player state to inactive
         $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+        if($player->isMemberOfATeam()){
+            $player->leaveCurrentTeam();
+        }
         $player->leaveGame();
         return !$this->isInGame($gameid);
     }

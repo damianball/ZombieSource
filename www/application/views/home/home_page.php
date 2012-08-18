@@ -9,9 +9,7 @@
       </div>
 
       <div class="span2 pull-right">
-
-                     <?php echo $home_content ?>
-
+        <?php echo $home_content ?>
       </div>
    </div>
 
@@ -41,7 +39,9 @@
 
                   </div>
             <div class="well">
+            <a href="<?php echo 'http://' . $tumblr_username . '.tumblr.com'; ?>">
                 <h2>Announcements</h2>
+            </a>
                 <div id="tumblr-badge"></div>
             </div>
                </div>

@@ -75,6 +75,14 @@ class Player{
         }
     }
 
+    public function isActiveHuman(){
+        return $this->canParticipate() && is_a($this, 'Human');
+    }
+
+    public function isActiveZombie(){
+        return $this->canParticipate() && is_a($this, 'Zombie');
+    }
+
     public function isGameClosed(){
         $gameid = $this->getCurrentGameId();
         $game = $this->ci->GameCreator->getGameByGameID(gameid);
@@ -113,6 +121,10 @@ class Player{
 
     public function getGameID(){
         return $this->ci->Player_model->getGameIDbyPlayerID($this->playerid);
+    }
+
+    public function getGame(){
+        return $this->ci->gamecreator->getGameByGameID($this->getGameID());
     }
 
     public function isMemberOfATeam(){

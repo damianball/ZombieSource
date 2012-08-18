@@ -52,4 +52,8 @@ class Game{
     public function isClosedGame(){
         return ($this->getStateID() == 3);
     }
+
+    public function getEndTime(){
+        return $this->ci->Game_model->getEndTime($this->gameid);
+    }
 }
