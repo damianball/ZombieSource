@@ -21,7 +21,7 @@ class Admin_controller extends CI_Controller {
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
 
-        $this->$current_gameid = $this->Game_model->getCurrentGame();
+        $this->current_gameid = $this->Game_model->getCurrentGame();
         $userid = $this->tank_auth->get_user_id();
         $this->user = $this->usercreator->getUserByUserID($userid);
         $this->players = $this->user->getModeratorPlayers();
