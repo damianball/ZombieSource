@@ -12,9 +12,11 @@
           </div>
           <br>
           <div class="row-fluid">
-            <div class="span8">
-              <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn btn-info"> Edit Profile</a>
+              <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile">
+            <div class="btn btn-info">
+                Edit Profile
             </div>
+            </a>
 
           </div>
         </div>
