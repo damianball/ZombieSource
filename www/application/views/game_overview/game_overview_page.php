@@ -77,19 +77,20 @@
 
     $(document).on("click", ".join_game_modal", function(event){
       gameid = $(event.target).data("gameid");
+
       waiver_box = $('#' + gameid).find('[name="waiversigned"]')
-      if(!waiver_box.is(':checked')){
+      if(!waiver_box && !waiver_box.is(':checked')){
         $('#' + gameid).find('.join_game').attr("disabled", true);
       }
 
-    $('input[name="waiversigned"]').change(function(event){
-      waiver_box = $(event.target);
-      if(waiver_box.is(':checked')){
-        $('#' + gameid).find('.join_game').attr("disabled", false);
-      }else{
-        $('#' + gameid).find('.join_game').attr("disabled", true);
-      }
-    })
+      $('input[name="waiversigned"]').change(function(event){
+        waiver_box = $(event.target);
+        if(waiver_box.is(':checked')){
+          $('#' + gameid).find('.join_game').attr("disabled", false);
+        }else{
+          $('#' + gameid).find('.join_game').attr("disabled", true);
+        }
+      })
 
       $('#' + gameid).find('#join').modal('show');
     });
@@ -108,29 +109,26 @@
       }
 
       original_zombie = $('#' + gameid).find('[name="originalzombiepool"]').is(':checked') ?  1 : 0
-    
-      if(waiversigned){
-        gameid = $(event.target).data("gameid");
-        params = {};
-        params["gameid"] = gameid;
-        params["waiver_is_signed"] = "TRUE";
-        if(age){ params["age"] = age };
-        if(major){ params["major"] = major };
-        if(gender){ params["gender"] = gender };
-        if(original_zombie){ params["OriginalZombiePool"] = original_zombie };
+      
+      gameid = $(event.target).data("gameid");
+      params = {};
+      params["gameid"] = gameid;
+      if(waiversigned) params["waiver_is_signed"] = "TRUE";
+      if(age){ params["age"] = age };
+      if(major){ params["major"] = major };
+      if(gender){ params["gender"] = gender };
+      if(original_zombie){ params["OriginalZombiePool"] = original_zombie };
 
-        $.ajax({
-          url: "overview/join_game",
-          type: "POST",
-          data: params,
-          success: function(data){
-            response = JSON.parse(data)
-            $('#'+gameid + '.game_options').html($(response.replacementView))
-          }
-        });
-      }else{
-        //TODO something if they don't check the box
-      }
+      $.ajax({
+        url: "overview/join_game",
+        type: "POST",
+        data: params,
+        success: function(data){
+          response = JSON.parse(data)
+          $('#'+gameid + '.game_options').html($(response.replacementView))
+        }
+      });
+
     });
 
     $(document).on("click",".leave_game",  function(event){
