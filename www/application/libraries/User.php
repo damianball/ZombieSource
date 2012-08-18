@@ -36,6 +36,11 @@ class User{
     public function joinGame($gameid, $params){
         if($this->isInGame($gameid)){
             $player = $this->ci->playercreator->getPlayerByUserIDGameID($this->userid, $gameid);
+            if($params != NULL){
+                foreach($params as $key => $value){
+                    $player->saveData($key, $value);
+                }
+            }
             if(!$player->isActive()){
                 $currgameid = $this->currentGameID();
                 if($currgameid){ $this->leaveGame($currgameid);}
