@@ -75,8 +75,15 @@ class Game_overview_controller extends CI_Controller {
         $game = $this->gamecreator->getGameByGameID($gameid);
         $game_stateid = $game->getStateID();
         $data["user_in_game"] = $this->user->isActiveInGame($gameid);
+        $data["profile_is_empty"] = $this->user->profileIsEmpty(); 
+        $data["waiver_signed"] = $this->user->SignedWaiverForGame($gameid);false; 
+
         $data["gameid"] = $gameid;
         $data["registration_open"] = $game->registrationIsOpen();
+
+        $data['join_game_sign_waiver'] = $this->load->view('profile/join_game_sign_waiver', '', true);
+        $data['join_game_edit_profile'] = $this->load->view('profile/join_game_edit_profile', getPrivateUserProfileDataArray($this->user), true);
+
         
         if($game_stateid == 2){
             $view = $this->load->view('game_overview/active_game_options', $data, true);
@@ -88,13 +95,23 @@ class Game_overview_controller extends CI_Controller {
 
     public function join_game()
     {
-        $gameid = $username = $this->input->post('gameid');
-        echo json_encode(array("userInGame" => $this->user->joinGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
+        $gameid = $this->input->post('gameid');
+        $this->user->saveData("age", $this->input->post('age'));
+        $this->user->saveData("gender", $this->input->post('gender'));
+        $this->user->saveData("major", $this->input->post('major'));
+
+        $originalzombiepool = $this->input->post('originalzombiepool') == "true" ? 1 : 0;
+        $waiversigned = $this->input->post('waiversigned') ? 1 : 0;
+
+        $params = array("originalzombiepool" => $originalzombiepool,
+                        "waiversigned"       => $waiversigned);
+
+        echo json_encode(array("userInGame" => $this->user->joinGame($gameid, $params), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 
     public function leave_game()
     {
-        $gameid = $username = $this->input->post('gameid'); 
+        $gameid = $this->input->post('gameid'); 
         echo json_encode(array("userInGame" => $this->user->leaveGame($gameid), "replacementView" =>$this->gameOptionsView($gameid)));
     }
 }

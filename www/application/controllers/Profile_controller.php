@@ -101,8 +101,9 @@ class Profile_controller extends CI_Controller {
             redirect("profile");
         }
 
+        $data['edit_profile_fields'] = $this->load->view('profile/edit_profile_fields', getPrivateUserProfileDataArray($user), true);
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('profile/edit_profile', getPrivateUserProfileDataArray($user), true);
+        $layout_data['content_body'] = $this->load->view('profile/edit_profile', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
     }
