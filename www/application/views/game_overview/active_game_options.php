@@ -30,6 +30,6 @@
   }elseif($registration_open){
     echo '<a class="btn btn-info join_game" data-gameid=' . $gameid . ' >Join Game</a>';
   }else{
-    echo '<h2> Sorry, Registration is closed </h2>';
+    echo '<h2> Sorry, Registration is closed. </h2>';
   }
 ?>
