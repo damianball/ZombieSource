@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin_controller extends CI_Controller {
+class admin_controller extends CI_Controller {
 
     private $logged_in_user;
     private $current_gameid;

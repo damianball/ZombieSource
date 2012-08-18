@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Auth_controller extends CI_Controller
+class auth_controller extends CI_Controller
 {
   function index()
   {
