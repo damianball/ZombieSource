@@ -58,10 +58,14 @@
             <?php
             #TODO: move the getting gravitar and link to the controller
             foreach($zombies_list as $member){
-              $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50, array('class'=>'orig_image'));
+              $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
               $team_member_name = getHTMLLinkToProfile($member);
               echo "<div class = \"team_member\">
+                      
+                        <div class=\"image-overlay\">
+                            <img class=\"overlay-image\" src=\"../../../images/green-x.png\" />
                             $team_member_photo
+                        </div>
                         <div class = \"zombie_member_text\">
                             $team_member_name
                         </div>

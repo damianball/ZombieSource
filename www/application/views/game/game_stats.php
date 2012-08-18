@@ -18,7 +18,7 @@
       $data["slug"] = $url_slug;
       $this->load->view("layouts/game_sidebar", $data);
     ?>   
-      <h3>
+      <h4>
       <div class="span2">
          <div class="alert alert-blue"> Players: <?php echo $count; ?> </div>
       </div>
@@ -31,10 +31,9 @@
       <div class="span3">
          <div class="alert alert-red"> Starved Zombies: <?php echo $starved_zombie_count; ?> </div>
       </div>
-   </h3>
-  
+   </h4>
 </div>
-<div id = "chart1"></div>
+  <div id = "chart1"></div>
 
 
   <script type="text/javascript">
