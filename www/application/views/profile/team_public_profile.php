@@ -51,6 +51,7 @@
               }
             ?>
           </div>
+          <?php if(count($zombies_list) > 0){ ?>
         <h4>Fallen Members</h4>
         <br>
           <div id = "zombielist">
@@ -69,6 +70,7 @@
               }
             ?>
           </div>
+        <?php } ?>
       </div>
     </div>
   </div>
