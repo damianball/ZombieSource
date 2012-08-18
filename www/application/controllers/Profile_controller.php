@@ -37,11 +37,13 @@ class Profile_controller extends CI_Controller {
                 $userid = $this->logged_in_user->getUserID();
                 $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
                 $data += getPrivatePlayerProfileDataArray($player);
+                $data['human_code'] = (!is_null($player) && $player->isActiveHuman()) ? $player->getHumanCode() : NULL;
             } else {
                 // fill in defaults if user not in game
                 $data['game_name'] = 'none';
                 $data['status'] = '(not in game)';
                 $data['link_to_team'] = '';
+                $data['human_code'] = NULL;
             }
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('profile/profile_page', $data, true);
@@ -173,7 +175,6 @@ class Profile_controller extends CI_Controller {
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
         $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
-        $data['human_code'] = (!is_null($player) && $player->isActiveHuman()) ? $player->getHumanCode() : NULL;
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);

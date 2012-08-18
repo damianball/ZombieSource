@@ -55,6 +55,7 @@
               <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd>
             </dl>
           </div>
+        <?php if($human_code){ ?>
         <div id="human_code" class="pull-right">
             <h4 style="text-align: center;">Human Code</h4>
             <br>
@@ -64,6 +65,7 @@
             </div>
             </a>
         </div>
+        <?php } ?>
         </div>
       </div>
     </div>
