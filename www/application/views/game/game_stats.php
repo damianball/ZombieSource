@@ -18,22 +18,26 @@
       $data["slug"] = $url_slug;
       $this->load->view("layouts/game_sidebar", $data);
     ?>   
-      <h4>
-      <div class="span2">
-         <div class="alert alert-blue"> Players: <?php echo $count; ?> </div>
-      </div>
-      <div class="span2">
-         <div class="alert alert-green"> Humans: <?php echo $human_count; ?> </div>
-      </div>
-      <div class="span2">
-         <div class="alert alert-yellow"> Zombies: <?php echo $zombie_count; ?> </div>
-      </div>
-      <div class="span3">
-         <div class="alert alert-red"> Starved Zombies: <?php echo $starved_zombie_count; ?> </div>
-      </div>
-   </h4>
+   
+  <div class="row">
+        <h4>
+        <div class="span2">
+           <div class="alert alert-blue"> Players: <?php echo $count; ?> </div>
+        </div>
+        <div class="span2">
+           <div class="alert alert-green"> Humans: <?php echo $human_count; ?> </div>
+        </div>
+        <div class="span2">
+           <div class="alert alert-yellow"> Zombies: <?php echo $zombie_count; ?> </div>
+        </div>
+        <div class="span3">
+           <div class="alert alert-red"> Starved Zombies: <?php echo $starved_zombie_count; ?> </div>
+        </div>
+     </h4>
+    <div class="span9" id="chart1"></div>
+  </div>
 </div>
-  <div id = "chart1"></div>
+  
 
 
   <script type="text/javascript">
