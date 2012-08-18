@@ -30,6 +30,8 @@ class Tank_auth
 		$this->ci->load->database();
 		$this->ci->load->model('tank_auth/users');
 
+		$this->ci->load->library('UserCreator');
+
 		// Try to autologin
 		$this->autologin();
 	}
@@ -68,10 +70,17 @@ class Tank_auth
 						$this->error = array('banned' => $user->ban_reason);
 
 					} else {
+						$zombies_user = $this->ci->usercreator->getUserByUserID($user->id); 
+						if($zombies_user->getModeratorPlayers()){ // made by ZombieSource, not Tank Auth
+							$is_moderator = TRUE;
+						}else{
+							$is_moderator = FALSE;
+						}
 						$this->ci->session->set_userdata(array(
 								'user_id'	=> $user->id,
 								'username'	=> $user->username,
 								'status'	=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
+								'is_moderator' => $is_moderator, // made by ZombieSource, not Tank Auth 
 						));
 
 						if ($user->activated == 0) {							// fail - not activated
@@ -162,6 +171,11 @@ class Tank_auth
 	{
 		$data = $this->ci->users->get_email_by_userid($this->ci->session->userdata('user_id'));
 		return $data->email;
+	}
+
+	function is_moderator() // made by ZombieSource, not Tank Auth
+	{
+		return $this->ci->session->userdata('is_moderator');
 	}
 
 	/**
@@ -655,6 +669,7 @@ class Tank_auth
 		}
 	}
 }
+
 
 /* End of file Tank_auth.php */
 /* Location: ./application/libraries/Tank_auth.php */

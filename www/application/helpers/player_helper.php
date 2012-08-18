@@ -58,7 +58,7 @@ function getHTMLLinkToProfile($player){
     $username = $user->getUsername();
     $id = $user->getUserID();
     $link = "<a href = \"" . site_url("/user/$id") .  "\"> $username </a>";
-    return $link; 
+    return $link;
 }
 
 // MOVE TO HELPER
@@ -87,12 +87,13 @@ function getPrivatePlayerProfileDataArray($player){
     $data['age'] = $player->getData("age");
     $data['gender'] = $player->getData("gender");
     $data['major'] = $player->getData("major");
-    $data['profile_pic_url'] = getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
+    $data['profile_pic_url'] = getGravatarHTML($player->getUser()->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
     $data['gravatar_email'] = $player->getData('gravatar_email');
     $data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null);
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     $data['status'] = $player->getStatus();
     $data['playerid'] = $player->getPlayerID();
+    $data['game_name'] = $player->getGameName();
     return $data;
 }
 
@@ -106,10 +107,11 @@ function getPublicPlayerProfileDataArray($player){
     $data['age'] = $player->getData("age");
     $data['gender'] = $player->getData("gender");
     $data['major'] = $player->getData("major");
-    $data['profile_pic_url'] = getGravatarHTML($player->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
+    $data['profile_pic_url'] = getGravatarHTML($player->getUser()->getData('gravatar_email'), $player->getUser()->getEmail(), 150);
     $data['gravatar_email'] = $player->getData('gravatar_email');
     $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     $data['status'] = $player->getPublicStatus();
+    $data['game_name'] = $player->getGameName();
     return $data;
 }
 

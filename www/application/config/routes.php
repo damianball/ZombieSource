@@ -37,14 +37,35 @@
 | in the URL cannot be matched to a valid route.
 |
 */
+$route['overview'] = "Game_overview_controller";
+$route['overview/(:any)'] = "Game_overview_controller/$1";
 
-$route['user/:num'] = "profile/public_profile";
-$route['team/edit/:any'] = "profile/edit_team_profile";
-$route['team/:any'] = "profile/team_public_profile";
+$route['user/:num'] = "Profile_controller/public_profile";
+$route['team/edit/:any'] = "Profile_controller/edit_team_profile";
+$route['team/:any'] = "Profile_controller/team_public_profile";
 
-$route['team/new'] = "game/register_new_team";
+$route['game'] = "Game_controller";
+$route['game/(:any)/teams'] = "Game_controller/teams";
+$route['game/(:any)/stats'] = "Game_controller/stats";
+$route['game/(:any)/register_kill'] = "Game_controller/register_kill";
+$route['game/(:any)/register_new_team'] = "Game_controller/register_new_team";
+$route['game/(:any)/join_team'] = "Game_controller/join_team";
+$route['game/(:any)/leave_team'] = "Game_controller/leave_team";
+$route['game/(:any)'] = "Game_controller";
 
-$route['default_controller'] = "home";
+$route['auth'] = "Auth_controller";
+$route['auth/(:any)'] = "Auth_controller/$1";
+
+$route['home'] = "Home_controller";
+$route['home/(:any)'] = "Home_controller/$1";
+
+$route['profile'] = "Profile_controller";
+$route['profile/(:any)'] = "Profile_controller/$1";
+
+$route['admin'] = "Admin_controller";
+$route['admin/(:any)'] = "Admin_controller/$1";
+
+$route['default_controller'] = "Home_controller";
 $route['404_override'] = '';
 
 

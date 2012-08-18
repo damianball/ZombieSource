@@ -1,0 +1,127 @@
+// ALERT STYLES
+// ------------
+
+// Base alert styles
+.alert {
+  padding: 8px 35px 8px 14px;
+  margin-bottom: @baseLineHeight;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background-color: @warningBackground;
+  border: 1px solid @warningBorder;
+  .border-radius(4px);
+  color: @warningText;
+}
+.alert-heading {
+  color: inherit;
+}
+
+// Adjust close link position
+.alert .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  line-height: 18px;
+}
+
+// Alternate styles
+// ----------------
+
+.alert-success {
+  background-color: @successBackground;
+  border-color: @successBorder;  
+  color: @successText;
+}
+.alert-danger,
+.alert-error {
+  background-color: @errorBackground;
+  border-color: @errorBorder;
+  color: @errorText;
+}
+.alert-info {
+  background-color: @blueBackground;
+  border-color: @blueBorder;
+  color: @blueText;
+}
+// inline alerts 
+.alert-inline{
+  padding: 4px 35px 4px 14px;
+  margin-top: 5px;
+  margin-bottom: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background-color: @warningBackground;
+  border: 1px solid @warningBorder;
+  .border-radius(4px);
+  color: @warningText;
+}
+
+// For player state stats //
+.alert-green {
+  padding: 8px 14px 8px 14px;
+  text-align: center;
+  background-color: @successBackground;
+  border-color: @successBorder;  
+  color: @successText;
+}
+.alert-red {
+  padding: 8px 14px 8px 14px;
+  text-align: center;
+  background-color: @errorBackground;
+  border-color: @errorBorder;
+  color: @errorText;
+}
+.alert-yellow {
+  padding: 8px 14px 8px 14px;
+  text-align: center;
+}
+.alert-blue {
+  padding: 8px 14px 8px 14px;
+  text-align: center;
+  background-color: @blueBackground;
+  border-color: @blueBorder;
+  color: @blueText;
+}
+
+
+.alert-human {
+  padding: padding: 13px 19px 13px 19px;
+   font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  text-align: center;
+  background-color: @successBackground;
+  border-color: @successBorder;  
+  color: @successText;
+}
+
+.alert-zombie {
+  font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  text-align: center;
+  padding: padding: 13px 19px 13px 19px;
+  
+}
+
+.alert-starved {
+  font-size: @baseFontSize + 4px;
+  line-height: normal;
+  .border-radius(5px);
+  padding: padding: 13px 19px 13px 19px;
+  text-align: center;
+  background-color: @errorBackground;
+  border-color: @errorBorder;
+  color: @errorText;
+}
+// Block alerts
+// ------------------------
+.alert-block {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.alert-block > p,
+.alert-block > ul {
+  margin-bottom: 0;
+}
+.alert-block p + p {
+  margin-top: 5px;
+}

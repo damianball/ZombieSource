@@ -36,6 +36,14 @@ class Team_model extends CI_Model{
         return $teamidArray;
     }
 
+    public function getGameIDByTeamID($teamid){
+        $this->db->select('gameid');
+        $this->db->from($this->table_name);
+        $this->db->where('id', $teamid);
+        $query = $this->db->get();
+        return $query->row()->gameid;
+    }
+
     public function createTeam($name, $gameid){
         if($name == null || $name == ''){
             throw new UnexpectedValueException('game name cannot be null');

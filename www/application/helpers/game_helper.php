@@ -1,5 +1,34 @@
 <?php
 
+
+function validGameSlug($game_slug){
+    $CI =& get_instance();
+    $CI->load->model('Game_model','',TRUE);
+    try{
+        $CI->Game_model->getGameIDBySlug($game_slug);
+        return true;
+    }catch(GameDoesNotExistException $e){
+        return false;
+    }
+}
+
+function validGameID($gameid){
+    $CI =& get_instance();
+    $CI->load->model('Game_model','',TRUE);
+    try{
+        $CI->Game_model->getGameName($gameid);
+        return true;
+    }catch(GameDoesNotExistException $e){
+        return false;
+    }
+}
+
+
+function validGameName($gamename){
+    return true;
+}
+
+
 function getActivePlayers($gameid){
     if(!$gameid){
         throw new UnexpectedValueException('Gameid not set.');

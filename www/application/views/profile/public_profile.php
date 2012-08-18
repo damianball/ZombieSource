@@ -1,59 +1,62 @@
-<div class = "row" >
-   <div class="main">
-  <div id = "player_status" class = "alert-message
-   <?php 
-    if($status == 'zombie'){
-      echo "danger";
-    }else{
-      echo "warning";
-    }
-    ?>
-    "> 
-    <?php echo $status; ?> 
+<div class="row-fluid">
+  <div class="span8">
+    <div class="well">
+      <div class = "line">
+        <span class = "profile_data_item"> <h3><?php echo $username; ?></h3></span>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">
+
+          <div id = "gravatar" class="thumbnail">
+            <?php echo $profile_pic_url ?>
+          </div>
+          <br>
+        </div>
+        <div class="span9">
+          <div class="font-profile">
+            <dl class="dl-horizontal">
+              <dt>Game</dt>
+                <dd><?php echo $game_name ?></dd>
+              <dt>Status </dt>
+              <?php
+                if($status == 'zombie'){
+                #  echo "danger";
+                  echo "
+                  <dd><span class=\"label label-warning\">";
+                    echo $status;
+                  echo "</span></dd>";
+
+                }else if($status == 'starved zombie'){
+                #  echo "warning";
+                  echo "
+                  <dd><span class=\"label label-important\">";
+                    echo $status;
+                  echo "</span></dd>";
+                }else{
+                  echo "
+                  <dd><span class=\"label label-success\">";
+                    echo $status;
+                  echo "</span></dd>";
+                }
+
+              ?>
+              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age ? $age : "not given"; ?></dd></span>
+              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender ? $gender : "not given"; ?></dd> </span>
+              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major ? $major : "not given"; ?></dd> </span>
+              <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id = "gravatar"> 
-    <?php echo $profile_pic_url ?> </br>
-  </div>
-  <div class = "line"> 
-    Username: <span class = "profile_data_item"> <?php echo $username; ?> </span>
-  </div>
-  <div class = "line"> 
-    Age: <span class = "profile_data_item"> <?php echo $age; ?> </span>
-  </div>   <div class = "line"> 
-    Gender: <span class = "profile_data_item"> <?php echo $gender; ?> </span>
-  </div>
-  <div class = "line"> 
-    Major: <span class = "profile_data_item"> <?php echo $major; ?> </span>
-  </div>
-  <div class = "line"> Team: <?php echo $link_to_team; ?></div>
+    <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
+      </div>
+    </div>
 
-   </div>
-   <div class="sidebar">
-      <h3>Info</h3>
-      <div class = "infoitem">
-         <b> Game Play:</b> <br>
-         Feb 6th - Feb 12th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Registration Deadline:</b><br>
-         Jan 27th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Contact:</b><br>
-         <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
-      </div>
-   </div>
+
 </div>
+
