@@ -94,7 +94,11 @@ class User{
     }
 
     public function isActiveInCurrentGame(){
-        $game = $this->ci->gamecreator->getGameByGameID($this->currentGameID());
+        $gameid = $this->currentGameID();
+        if(!$gameid){
+            return false;
+        }
+        $game = $this->ci->gamecreator->getGameByGameID($gameid);
         if($game->isClosedGame()){
             return false;
         }
