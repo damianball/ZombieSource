@@ -59,14 +59,22 @@ $captcha = array(
                 <tr>
                     <td><?php echo form_label('Username', $username['id']); ?></td>
                     <td><?php echo form_input($username); ?></td>
-                    <div class="error-text"><?php echo form_error($username['name']); ?>
+                    <div class="error-text"><?php 
+                        if(isset($errors["username"])){
+                            echo $errors["username"];
+                        }
+                        echo form_error($username['name']); ?>
                     </div>
                 </tr>
                 <?php } ?>
                 <tr>
                     <td><?php echo form_label('Email Address', $email['id']); ?></td>
                     <td><?php echo form_input($email); ?> <? //echo form_dropdown('emailsuffix', $emailsuffixoptions, '1'); ?></td>
-                    <div class="error-text"><?php echo form_error($email['name']); ?>
+                    <div class="error-text"><?php 
+                        if(isset($errors["email"])){
+                            echo $errors["email"];
+                        }
+                        echo form_error($email['name']); ?>
                   </div>
                 </tr>
                 <tr>
