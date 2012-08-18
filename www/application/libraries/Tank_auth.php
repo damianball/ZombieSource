@@ -116,7 +116,6 @@ class Tank_auth
 		}
         // event logging
         $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','failed');
-        $analyticslogger->addToPayload('userid',$user->id);
         LogManager::storeLog($analyticslogger);
 		return FALSE;
 	}
