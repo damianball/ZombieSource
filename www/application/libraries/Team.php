@@ -54,6 +54,21 @@ class Team{
         return $playerArray;
     }
 
+    public function getArrayOfPlayersZombifiedOnTeam(){
+        $this->ci->load->library('PlayerCreator');
+        $playeridarray = $this->ci->Player_team_model->getListOfFormerPlayerIDByTeamID($this->teamid);
+        $playerArray = array();
+        for($i = 0; $i<count($playeridarray); $i++){
+            $potential_player = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            // ensure these are zombies, and not players that left their last team
+            if(is_a($potential_player, 'Zombie')){
+                $playerArray[] = $potential_player;
+            }
+        }
+
+        return $playerArray;
+    }
+
     public function getTeamID(){
         return $this->teamid;
     }
