@@ -98,15 +98,22 @@ class game_overview_controller extends CI_Controller {
     {
 
         $gameid = $this->input->post('gameid');
-        $this->user->saveData("age", $this->input->post('age'));
-        $this->user->saveData("gender", $this->input->post('gender'));
-        $this->user->saveData("major", $this->input->post('major'));
+
+        $age = $this->input->post('age');
+        $major = $this->input->post('major');
+        $gender = $this->input->post('gender');
+
+
+        if($age != ""){ $this->user->saveData("age", $age);}
+        if($major != ""){ $this->user->saveData("major", $major);}
+        if($gender != ""){ $this->user->saveData("gender", $gender);}
 
         $originalzombiepool = $this->input->post('OriginalZombiePool');
         $waiversigned = $this->input->post('waiver_is_signed');
 
-        $params = array("OriginalZombiePool" => $originalzombiepool,
-                        "waiver_is_signed"       => $waiversigned);
+        $params = array();
+        if($originalzombiepool != ""){ $params["OriginalZombiePool"] = $originalzombiepool;}
+        if($waiversigned != ""){ $params["waiver_is_signed"] = $waiversigned;}
 
         echo json_encode(array("userInGame" => $this->user->joinGame($gameid, $params), "replacementView" =>$this->gameOptionsView($gameid)));
     }
