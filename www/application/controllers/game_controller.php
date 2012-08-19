@@ -51,6 +51,7 @@ class game_controller extends CI_Controller {
 
     public function index()
     {
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
         //load the content variables
         $this->table->set_heading(
         array('data' => 'Avatar'),
@@ -82,6 +83,7 @@ class game_controller extends CI_Controller {
         $game_table = $this->table->generate();
         $data = array('game_table' => $game_table);
 
+        $data['is_player_in_game'] = $is_player_in_game;
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
@@ -97,6 +99,7 @@ class game_controller extends CI_Controller {
     }
 
     public function teams(){
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
 
         $this->table->set_template(array('table_open' => '<table id="teams_table" class="table table-striped" border="0" cellpadding="4" cellspacing="0">'));
 
@@ -119,6 +122,7 @@ class game_controller extends CI_Controller {
         //-- Display Table
         $game_table = $this->table->generate();
         $data = array('game_table' => $game_table);
+        $data["is_player_in_game"] = $is_player_in_game;
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
@@ -135,6 +139,7 @@ class game_controller extends CI_Controller {
     }
 
     public function stats() {
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
 
         # make the table bootstrap pretty! #
         $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
@@ -170,6 +175,7 @@ class game_controller extends CI_Controller {
                       'zombie_count'          => $zombie_count,
                       'starved_zombie_count'  => $starved_zombie_count
         );
+        $data['is_player_in_game'] = $is_player_in_game;
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['game_name'] = $this->game->name();

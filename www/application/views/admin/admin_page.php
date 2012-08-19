@@ -1,7 +1,7 @@
 
   <div id = "game_panel">
  <div class="alert alert-info"><strong>With great power comes great responsibilty.</strong> 
-  This is the Moderator Tools page. Undoing changes made on this page are not trivial. So, be careful. </div>
+  This is the Moderator Tools page. Undoing changes made on this page is not trivial. So, be careful. </div>
 
   </br>
   </br>
