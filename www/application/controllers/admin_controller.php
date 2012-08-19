@@ -55,8 +55,6 @@ class admin_controller extends CI_Controller {
         $gameid = $this->input->post('gameid');
         try{
             $userid = getUserIDByUsername($username);
-            echo $username;
-            echo $userid;
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
             $data = getPrivatePlayerProfileDataArray($player);
 
