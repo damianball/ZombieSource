@@ -90,7 +90,7 @@ class admin_controller extends CI_Controller {
             }
 
             $this->load->view('admin/player_controls.php', $data);
-        }catch (Exception $e){
+        }catch (PlayerDoesNotExistException $e){
             $this->loadGenericMessageWithoutLayout("Player Not Found");
         }
     }
