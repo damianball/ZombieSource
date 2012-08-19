@@ -47,11 +47,12 @@ class User_model extends CI_Model{
     }
 
     public function getUserIDByUsername($username){
-        if($username != null){
+        if($username != NULL){
+            $this->db->distinct();
             $this->db->select('id');
             $this->db->like('username', $username);
             $query = $this->db->get($this->table_name);
-            if ($query->num_rows() == 1){
+            if ($query->num_rows() > 0){
                 return $query->row()->id;
             } else {
                 return NULL;
