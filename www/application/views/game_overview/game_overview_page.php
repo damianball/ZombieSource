@@ -119,11 +119,11 @@
         gameid = $(event.target).data("gameid");
         params = {};
         params["gameid"] = gameid;
-        if(waiversigned) params["waiver_is_signed"] = "TRUE";
+        if(waiversigned && waiversigned != "skip") params["waiver_is_signed"] = "TRUE";
         if(age){ params["age"] = age };
         if(major){ params["major"] = major };
         if(gender){ params["gender"] = gender };
-        if(original_zombie){ params["OriginalZombiePool"] = original_zombie };
+        if(original_zombie ){ params["OriginalZombiePool"] = original_zombie};
 
         $.ajax({
           url: "overview/join_game",
