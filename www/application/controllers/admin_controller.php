@@ -55,6 +55,8 @@ class admin_controller extends CI_Controller {
         $gameid = $this->input->post('gameid');
         try{
             $userid = getUserIDByUsername($username);
+            echo $username;
+            echo $userid;
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
             $data = getPrivatePlayerProfileDataArray($player);
 
@@ -90,7 +92,7 @@ class admin_controller extends CI_Controller {
             }
 
             $this->load->view('admin/player_controls.php', $data);
-        }catch (Exception $e){
+        }catch (PlayerDoesNotExistException $e){
             $this->loadGenericMessageWithoutLayout("Player Not Found");
         }
     }
