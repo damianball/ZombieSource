@@ -87,7 +87,7 @@ class game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
 
         $layout_data = array();
         $layout_data['active_sidebar'] = 'playerlist';
@@ -98,6 +98,23 @@ class game_controller extends CI_Controller {
         $this->load->view('layouts/main', $layout_data);
     }
 
+    public function newsfeed(){
+        $data = array();
+        $data['tagNews'] = getTagNews($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $data['is_player_in_game'] = $is_player_in_game;
+        $data['game_name'] = $this->game->name();
+        $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+
+        $layout_data = array();
+        $layout_data['active_sidebar'] = 'newsfeed';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/newsfeed', $data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data);
+    }
     public function teams(){
         $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
 

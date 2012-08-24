@@ -15,6 +15,9 @@
 				Game Info
 			</li>
 			<li>
+				<a href = "<?php echo site_url('game/'. $slug . '/newsfeed');?>"><i class="icon-bullhorn"></i> Newsfeed</a>
+			</li>
+			<li>
 				<a href = "<?php echo site_url('game/'. $slug);?>"><i class="icon-user"></i> Players</a>
 			</li>
 			<li>

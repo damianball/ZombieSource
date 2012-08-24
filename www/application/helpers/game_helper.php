@@ -4,6 +4,7 @@
 function validGameSlug($game_slug){
     $CI =& get_instance();
     $CI->load->model('Game_model','',TRUE);
+    $CI->load->helper('gravatar_helper');
     try{
         $CI->Game_model->getGameIDBySlug($game_slug);
         return true;
@@ -214,6 +215,22 @@ function getCanParticipatePlayerString($gameid){
     }
     $my_string .= "\"\"]";
     return $my_string;
+}
+
+function getTagNews($gameid){
+    $CI =& get_instance();
+    $CI->load->model('Game_model','',TRUE);
+    $news = $CI->Game_model->getTagNews($gameid);
+    $messages = array();
+    foreach($news as $row){
+        $tagger = $row['tagger'];
+        $tagger_gravatar = getGravatarHTML($row['tagger_gravatar_email'], $row['tagger_email'], 50);
+        $taggee = $row['taggee'];
+        $taggee_gravatar = getGravatarHTML($row['taggee_gravatar_email'], $row['taggee_email'], 50);
+        $datetimeclaimed = $row['datetimeclaimed'];
+        $messages[] = "<img src=\"http://i.imgur.com/fvkyT.png\"> $tagger_gravatar $tagger fed upon $taggee_gravatar $taggee at $datetimeclaimed";
+    }
+    return $messages;
 }
 
 ?>

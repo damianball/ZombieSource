@@ -130,6 +130,23 @@ class Game_model extends CI_Model{
 
 	public function getGames(){}
 
+    public function getTagNews($gameid){
+        $this->db->select('tagger_user.username as tagger, tagger_data.value as tagger_gravatar_email, tagger_user.email as tagger_email, taggee_user.username as taggee, taggee_data.value as taggee_gravatar_email, taggee_user.email as taggee_email, datetimeclaimed');
+        $this->db->from('tag');
+        $this->db->join('player as tagger', 'taggerid = tagger.id');
+        $this->db->join('users as tagger_user', 'tagger.userid = tagger_user.id');
+        $this->db->join('user_data as tagger_data', 'tagger_data.userid = tagger.id AND tagger_data.name="gravatar_email"', 'left');
+        $this->db->join('player as taggee', 'taggeeid = taggee.id');
+        $this->db->join('users as taggee_user', 'taggee.userid = taggee_user.id');
+        $this->db->join('user_data as taggee_data', 'taggee_data.userid = taggee.id AND taggee_data.name="gravatar_email"', 'left');
+        $this->db->where('tagger.gameid', $gameid);
+        //$this->db->where('taggee.gameid', $gameid); // unnecessary, only a sanity check
+        $this->db->where('tag.invalid !=', 1);
+        $this->db->order_by('datetimeclaimed', 'desc');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
 	public function getGameIDs(){
 		$this->db->select('id');
 		$this->db->from($this->table_name);
