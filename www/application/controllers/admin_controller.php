@@ -54,8 +54,16 @@ class admin_controller extends CI_Controller {
         $username = $this->input->post('player');
         $gameid = $this->input->post('gameid');
         try{
-            $userid = getUserIDByUsername($username);
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+            try{
+                $userid = getUserIDByUsername($username);
+            } catch(UnexpectedValueException $e){
+                throw new PlayerDoesNotExistException('Username was empty');
+            }
+            try{
+                $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+            } catch(InvalidParametersException $e){
+                throw new PlayerDoesNotExistException('Username was invalid');
+            }
             $data = getPrivatePlayerProfileDataArray($player);
 
             $is_mod = ($player->getData('moderator') == "1");
