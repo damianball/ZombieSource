@@ -200,7 +200,7 @@ class game_controller extends CI_Controller {
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['game_name'] = $this->game->name();
-        $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
 
         $layout_data = array();
         $data['active_sidebar'] = 'stats';
@@ -293,18 +293,19 @@ class game_controller extends CI_Controller {
                         }
                     } else {
                         // PLAYER IS NOT A HUMAN OR ACTIVE
-                        $this->loadGenericMessage('Cannot tag player with human code: '.$human_code);
+                        $this->loadGenericError('Cannot tag player with human code: '.$human_code);
                     }
                 } else {
                     // HUMAN CODE DOES NOT EXIST ... NOW WHAT?
-                    $this->loadGenericMessage('Human code does not exist: '.$human_code);
+                    $this->loadGenericError('Human code does not exist: '.$human_code);
                 }
             } else {
                 $data['form_error'] = $form_error;
+                $data['game_name'] = $this->game->name();
                 $data['zombie_list'] = getActiveZombiesString($this->game->getGameID());
                 $data['max_feeds'] = $max_feeds;
                 $data['url_slug'] = $this->game->slug();
-                $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+                $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
 
                 //display the regular page, with errors
                 $data['active_sidebar'] = 'logkill';
@@ -317,14 +318,22 @@ class game_controller extends CI_Controller {
         }
     }
 
-    private function loadGenericMessage($message){
+    private function loadGenericMessage($message, $error=FALSE){
         $data = array("message" => $message);
+        $data['url_slug'] = $this->game->slug();
+        $data['game_name'] = $this->game->name();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
         $data['active_sidebar'] = '';
+        $data['error'] = $error;
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',$data, true);
+        $layout_data['content_body'] = $this->load->view('game/generic',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         #$this->load->view('layouts/game_layout', $layout_data);
         $this->load->view('layouts/main', $layout_data);
+    }
+
+    private function loadGenericError($message){
+        $this->loadGenericMessage($message, TRUE);
     }
 
     public function validate_human_code() {
