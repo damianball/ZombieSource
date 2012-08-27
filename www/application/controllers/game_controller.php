@@ -21,6 +21,7 @@ class game_controller extends CI_Controller {
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
         $this->load->helper('gravatar_helper');
+        $this->load->helper('tweet_helper');
 
         // load the logged in player (if one exists) into the controller
         $userid = $this->tank_auth->get_user_id();
@@ -211,15 +212,13 @@ class game_controller extends CI_Controller {
     }
 
     public function register_kill() {
-
-
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
         if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
             $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',
-                                                            array("message"=>"Not eligible to tag a kill"), true);
+                                                            array("message"=>"Not eligible to tag a kill. You must be a well-fed active zombie."), true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data);
         } else {
@@ -256,10 +255,17 @@ class game_controller extends CI_Controller {
                             }
 
                             $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
+                            tweet_tag($tag);
                             if($tag){
                                 // remove human from any teams
                                 // was human on team?
                                 if($human->isMemberOfATeam()){
+                                    // tweet if this destroys the team
+                                    $teamid = $human->getTeamID();
+                                    $team = $this->teamcreator->getTeamByTeamID($teamid);
+                                    if($team->getTeamSize() == 1){ // last player on team
+                                        tweet_team_destroyed($team->getData('name'));
+                                    }
                                     $human->leaveCurrentTeam();
                                 }
 
@@ -281,8 +287,7 @@ class game_controller extends CI_Controller {
                                     }
                                 }
                             }
-                            // @TODO: a message would probably be nice :-)
-                            redirect('game');
+                            $this->loadGenericMessage("The kill and corresponding feast was successfully recorded.");
                         } catch (DatastoreException $e){
                             $form_error = $e->getMessage();
                         }
@@ -314,7 +319,7 @@ class game_controller extends CI_Controller {
 
     private function loadGenericMessage($message){
         $data = array("message" => $message);
-        $data['active_sidebar'] = 'logkill';
+        $data['active_sidebar'] = '';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
