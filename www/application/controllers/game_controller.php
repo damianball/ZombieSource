@@ -49,7 +49,27 @@ class game_controller extends CI_Controller {
 
     }
 
-    public function index()
+
+    public function index(){
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $data['is_player_in_game'] = $is_player_in_game;
+        $data['game_name'] = $this->game->name();
+        $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['twitter_search'] = $this->config->item('twitter_search');
+        $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
+
+        $layout_data = array();
+        $data['active_sidebar'] = 'newsfeed';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/newsfeed', $data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
+    public function players()
     {
         $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
         //load the content variables
@@ -87,12 +107,12 @@ class game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
 
         $layout_data = array();
-        $layout_data['active_sidebar'] = 'playerlist';
+        $data['active_sidebar'] = 'playerlist';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('game/game_page', $data, true);
+        $layout_data['content_body'] = $this->load->view('game/players', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         #$this->load->view('layouts/game_layout', $layout_data);
         $this->load->view('layouts/main', $layout_data);
@@ -130,7 +150,7 @@ class game_controller extends CI_Controller {
         $data['is_human'] = !is_null($this->player) && $this->player->isActiveHuman();
 
         $layout_data = array();
-        $layout_data['active_sidebar'] = 'teamlist';
+        $data['active_sidebar'] = 'teamlist';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/team_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -182,7 +202,7 @@ class game_controller extends CI_Controller {
         $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
 
         $layout_data = array();
-        $layout_data['active_sidebar'] = 'stats';
+        $data['active_sidebar'] = 'stats';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_stats',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -196,7 +216,7 @@ class game_controller extends CI_Controller {
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
         if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
-            $layout_data['active_sidebar'] = 'logkill';
+            $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',
                                                             array("message"=>"Not eligible to tag a kill"), true);
@@ -282,7 +302,7 @@ class game_controller extends CI_Controller {
                 $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
 
                 //display the regular page, with errors
-                $layout_data['active_sidebar'] = 'logkill';
+                $data['active_sidebar'] = 'logkill';
                 $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
                 $layout_data['content_body'] = $this->load->view('game/register_kill',$data, true);
                 $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -294,7 +314,7 @@ class game_controller extends CI_Controller {
 
     private function loadGenericMessage($message){
         $data = array("message" => $message);
-        $layout_data['active_sidebar'] = 'logkill';
+        $data['active_sidebar'] = 'logkill';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -329,7 +349,7 @@ class game_controller extends CI_Controller {
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
 
         if(!is_a($player,'Human')){
-            $layout_data['active_sidebar'] = 'logkill';
+            $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',
                                             array("message" => "Sorry, zombies cannot do that"), true);
@@ -367,7 +387,7 @@ class game_controller extends CI_Controller {
             }
 
             //display the regular page, with errors
-            $layout_data['active_sidebar'] = 'logkill';
+            $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('game/register_new_team', '', true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -381,7 +401,7 @@ class game_controller extends CI_Controller {
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
 
         if(!is_a($player,'Human')){
-            $layout_data['active_sidebar'] = 'logkill';
+            $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',
                                             array("message" => "Sorry, zombies cannot do that"), true);
@@ -405,7 +425,7 @@ class game_controller extends CI_Controller {
                 $data['message'] = "Successfully joined " . $newTeamLink;
             }
 
-            $layout_data['active_sidebar'] = 'logkill';
+            $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -432,7 +452,7 @@ class game_controller extends CI_Controller {
             $data['message'] = "You are not a member of " . $teamLink;
         }
 
-        $layout_data['active_sidebar'] = 'logkill';
+        $data['active_sidebar'] = 'logkill';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);

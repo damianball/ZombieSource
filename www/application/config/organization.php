@@ -9,3 +9,7 @@ $config['tumblr_info_tag'] = 'info';
 $config['tumblr_api_key'] = "QTCRcblt2a8XOalgBp2F7KIpZUqjtrHUIkMmDVMAgj1PvgCUJv";
 // The number of Tumblr announcements (posts) to display
 $config['tumblr_num_posts'] = 1;
+// The Twitter hashtag for people to get their tweets posted
+$config['twitter_hashtag'] = '#VandalsHvZ';
+// The search string for the Twitter feed
+$config['twitter_search'] = json_encode('from:cba OR #fml OR ' . $config['twitter_hashtag']);
