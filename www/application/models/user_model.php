@@ -50,12 +50,12 @@ class User_model extends CI_Model{
         if($username != NULL){
             $this->db->distinct();
             $this->db->select('id');
-            $this->db->like('username', $username);
+            $this->db->where('username', $username);
             $query = $this->db->get($this->table_name);
             if ($query->num_rows() > 0){
                 return $query->row()->id;
             } else {
-                return NULL;
+                throw new PlayerDoesNotExistException('Player not found');
             }
         } else {
             throw new UnexpectedValueException('username cannot be null');
