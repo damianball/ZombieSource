@@ -62,7 +62,23 @@ class User_model extends CI_Model{
         }
     }
 
-       private function getUserTableData($userid, $name){
+    public function getUserIDByPhone($phone){
+        if($phone != NULL){
+            $this->db->where('name', 'phone');
+            $this->db->where('value', $phone);
+            $query = $this->db->get($this->data_table_name);
+            if ($query->num_rows() > 0){
+                return $query->row()->userid;
+            } else {
+                return NULL;
+            }
+        } else {
+            throw new UnexpectedValueException('phone cannot be null');
+        }
+    }
+
+
+    private function getUserTableData($userid, $name){
          $this->db->select($name);
          $this->db->from($this->table_name);
          $this->db->where('id',$userid);
