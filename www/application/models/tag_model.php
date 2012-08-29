@@ -66,8 +66,19 @@ class Tag_model extends CI_Model{
         return false;
     }
 
+    // returns array of taggees
+    public function getTaggeeIDAndTimeByPlayerID($playerid){
+        $this->db->select('taggeeid, datetimeclaimed');
+        $this->db->from($this->table_name);
+        $this->db->where('taggerid', $playerid);
+        $this->db->where('invalid', 0);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     //returns true if player has tagged anyone
     public function checkForTagByPlayerID($playerid){
+        // @TODO: do this via COUNT
         $this->db->select('id');
         $this->db->from($this->table_name);
         $this->db->where('taggerid',$playerid);

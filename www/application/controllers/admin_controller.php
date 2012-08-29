@@ -54,8 +54,16 @@ class admin_controller extends CI_Controller {
         $username = $this->input->post('player');
         $gameid = $this->input->post('gameid');
         try{
-            $userid = getUserIDByUsername($username);
-            $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+            try{
+                $userid = getUserIDByUsername($username);
+            } catch(UnexpectedValueException $e){
+                throw new PlayerDoesNotExistException('Username was empty');
+            }
+            try{
+                $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+            } catch(InvalidParametersException $e){
+                throw new PlayerDoesNotExistException('Username was invalid');
+            }
             $data = getPrivatePlayerProfileDataArray($player);
 
             $is_mod = ($player->getData('moderator') == "1");
@@ -108,17 +116,21 @@ class admin_controller extends CI_Controller {
             //the important part of this method.
             $tag->invalidate();
             if($tag->isInvalid()){
+                // regenerate zombie tree
+                $this->load->helper('tree_helper');
+                writeZombieTreeJSONByGameID($player->getGameID());
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','succeeded');
-                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('admin_id',$this->logged_in_user->getPlayerID());
                 $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             }else{
                 $this->loadGenericMessageWithoutLayout("$username is a Zombie still, something went wrong : /");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','failed');
-                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $adminplayer = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $player->getGameID());
+                $analyticslogger->addToPayload('admin_playerid',$adminplayer->getPlayerID());
                 $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             }
@@ -222,6 +234,14 @@ class admin_controller extends CI_Controller {
     private function loadGenericMessageWithoutLayout($message){
         $data = array("message" => $message);
         $this->load->view('helpers/display_generic_message',$data);
+    }
+
+    public function regenerate_zombie_tree(){
+        $gameid = $this->input->post('gameid');
+        $this->load->helper('tree_helper');
+        $bytes = writeZombieTreeJSONByGameID($gameid);
+        $message = $bytes ? "Success" : "An error occured";
+        $this->loadGenericMessageWithoutLayout($message);
     }
 }
 

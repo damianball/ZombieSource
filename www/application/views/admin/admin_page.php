@@ -1,6 +1,6 @@
 
   <div id = "game_panel">
- <div class="alert alert-info"><strong>With great power comes great responsibilty.</strong> 
+ <div class="alert alert-info"><strong>With great power comes great responsibilty.</strong>
   This is the Moderator Tools page. Undoing changes made on this page is not trivial. So, be careful. </div>
 
   </br>
@@ -22,6 +22,10 @@
           <!-- <div class="span7"> -->
             <div class="control-group">
             <h2><?php echo $game_names[$gameid];?></h2>
+            <div>
+                <button id="regenerate_zombie_tree<?php echo $gameid?>" class="btn" value="<?php echo $gameid?>">Regenerate Zombie Family Tree</button>
+                <div id="message<?php echo $gameid?>"></div>
+            </div>
               <div id="player_panel<?php echo $gameid?>">
                 <label class="control-label">Search for a player</label>
                 <div class="controls">
@@ -48,6 +52,10 @@
             $("#player_controls<?php echo $gameid?>").load('admin/player_controls',
                 {player:$('#player_chooser<?php echo $gameid?>').val(),
                  gameid:$('#gameid<?php echo $gameid?>').val()});
+        });
+        $("#regenerate_zombie_tree<?php echo $gameid; ?>").click(function(){
+            $("#message<?php echo $gameid; ?>").load("admin/regenerate_zombie_tree",
+                {gameid:"<?php echo $gameid; ?>"});
         });
     });
     </script>
