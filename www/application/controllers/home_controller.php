@@ -17,6 +17,8 @@ class home_controller extends CI_Controller {
 
         $tumblr_num_posts = $this->config->item('tumblr_num_posts');
         $tumblr_username = $this->config->item('tumblr_username');
+        $twitter_search = $this->config->item('twitter_search');
+        $twitter_hashtag = $this->config->item('twitter_hashtag');
 
         $userid = $this->tank_auth->get_user_id();
 
@@ -57,6 +59,8 @@ class home_controller extends CI_Controller {
             'home_content' => $home_content,
             'tumblr_username'  =>  $tumblr_username,
             'tumblr_num_posts' =>  $tumblr_num_posts,
+            'twitter_search' =>  $twitter_search,
+            'twitter_hashtag' =>  $twitter_hashtag,
             'game_name'        =>  $name
         );
 
