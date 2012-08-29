@@ -29,7 +29,6 @@
                           <span style = "font-size: 50px;"><?php echo $count; ?> </span>
                           </div>
                           <div id = "homepage_data">
-
                             </div>
                         </div>
                      </div>
@@ -52,69 +51,40 @@
                 <?php $this->load->view("layouts/gameinfo"); ?>
             </div>
       </div>
+      <div>
+<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: <?php echo $twitter_search?>,
+  interval: 30000,
+  title: 'Tweet with <?php echo $twitter_hashtag?> to join in!',
+  width: 'auto',
+  height: 350,
+  theme: {
+    shell: {
+      background: '#DD4814',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#DD4814'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: false,
+    live: true,
+    behavior: 'all'
+  },
+}).render().start();
+</script>
+
+      </div>
    </div>
 </div>
-
-
-  <script type="text/javascript">
-   var chart;
-   $(document).ready(function() {
-      chart = new Highcharts.Chart({
-         chart: {
-            renderTo: 'graph1',
-            plotBackgroundColor: "transparent",
-         },
-         title: {
-            text: ""
-         },
-         tooltip: {
-            formatter: function() {
-               return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';
-            }
-         },
-         plotOptions: {
-            pie: {
-               allowPointSelect: false,
-               cursor: 'pointer',
-               dataLabels: {
-                  enabled: false
-               },
-               showInLegend: true
-            }
-         },
-          series: [{
-            type: 'pie',
-            name: 'Browser share',
-            data: [
-                {
-                  name: 'Male',
-                  y: <?php echo $male; ?>,
-                  color: "#39869B"
-
-                },
-               {
-                  name: 'Female',
-                  y: <?php echo $female; ?>,
-                  color: "#46A1B9"
-
-               },
-               {
-                  name: 'Other',
-                  y: <?php echo $other; ?>,
-                  color: "#7CBBCF"
-               },
-               {
-                  name: 'No Response',
-                  y: <?php echo $noresponse; ?>,
-                  color: "#B5D4E0"
-
-               }
-
-            ]
-         }]
-      });
-   });
-  </script>
 <script type="text/javascript">
 	var tumblrSettings = {
         userName : "<?php echo $tumblr_username; ?>", // Your Tumblr user name
