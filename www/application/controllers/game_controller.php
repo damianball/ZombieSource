@@ -256,6 +256,8 @@ class game_controller extends CI_Controller {
 
                             $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
                             tweet_tag($tag);
+                            $this->load->helper('tree_helper');
+                            writeZombieTreeJSONByGameID($this->game->getGameID());
                             if($tag){
                                 // remove human from any teams
                                 // was human on team?
