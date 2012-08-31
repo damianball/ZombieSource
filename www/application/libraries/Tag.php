@@ -32,6 +32,11 @@ class Tag{
         return $this->ci->playercreator->getPlayerByPlayerID($taggerid);
     }
 
+    public function getTaggee(){
+        $taggeeid = $this->ci->Tag_model->getData($this->tagid, 'taggeeid');
+        return $this->ci->playercreator->getPlayerByPlayerID($taggeeid);
+    }
+
     public function invalidate(){
         $this->ci->Tag_model->invalidateTag($this->tagid, 'taggerid');
     }

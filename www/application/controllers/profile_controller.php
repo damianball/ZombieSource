@@ -204,6 +204,7 @@ class profile_controller extends CI_Controller {
         $gameid = $team->getData('gameid');
         $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         if($team->canEditTeam($player)){
+            $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
             $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
             $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 

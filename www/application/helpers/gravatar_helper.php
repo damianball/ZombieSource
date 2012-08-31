@@ -1,12 +1,12 @@
 <?php
     // gravatar helper
 
-function getGravatarHTML($email, $default, $size, $atts=array()){
+function getGravatarHTML($email, $default, $size, $atts=array(), $img=true){
     if($email && $email != ''){
-        return build_gravatar($email, $size, 'identicon', 'x', true, $atts);
+        return build_gravatar($email, $size, 'identicon', 'x', $img, $atts);
     }
     else{
-        return build_gravatar($default, $size, 'identicon', 'x', true, $atts);
+        return build_gravatar($default, $size, 'identicon', 'x', $img, $atts);
     }
 }
 

@@ -1,4 +1,4 @@
 
 <br/>
-<h2> <?php echo $message ?></h2>
+<h3> <?php echo $message ?></h3>
 <br/>

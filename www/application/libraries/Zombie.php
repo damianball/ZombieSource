@@ -9,6 +9,7 @@ class Zombie extends Player implements IPlayer{
     public function __construct($playerid){
         parent::__construct($playerid);
         $this->ci =& get_instance();
+        $this->ci->load->helper('date_helper');
     }
 
     // @Implements getStatus()
@@ -27,7 +28,6 @@ class Zombie extends Player implements IPlayer{
         }
     }
 
-    // MOVE TO ZOMBIE
     public function secondsSinceLastFeed(){
         //check model
         $this->ci->load->model('Feed_model');
@@ -49,7 +49,6 @@ class Zombie extends Player implements IPlayer{
         }
 
         if($utcTime){
-            $this->ci->load->helper('date_helper');
             $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
 
             return $seconds;
@@ -69,7 +68,6 @@ class Zombie extends Player implements IPlayer{
         return $time;
     }
 
-    // MOVE TO ZOMBIE
     public function getKills(){
         $this->ci->load->helper('tag_helper');
         return getTagCountByPlayerID($this->getPlayerID());
