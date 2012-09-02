@@ -77,7 +77,6 @@ class User_model extends CI_Model{
         }
     }
 
-
     private function getUserTableData($userid, $name){
          $this->db->select($name);
          $this->db->from($this->table_name);

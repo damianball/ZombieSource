@@ -56,6 +56,9 @@ $route['game/(:any)'] = "game_controller";
 $route['auth'] = "auth_controller";
 $route['auth/(:any)'] = "auth_controller/$1";
 
+$route['job'] = "job_controller";
+$route['job/(:any)'] = "job_controller/$1";
+
 $route['home'] = "home_controller";
 $route['home/(:any)'] = "home_controller/$1";
 

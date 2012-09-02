@@ -141,5 +141,6 @@ class Game_model extends CI_Model{
 		}
 		return $gameidArray;
 	}
+
 }
 ?>
