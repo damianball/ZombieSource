@@ -143,7 +143,16 @@ class User_model extends CI_Model{
          }
      }
 
+     public function userSubscribedToGroup($group_id, $user_id){
+        $this->db->from('user_subscriptions');
+        $this->db->where('user_id', $user_id);
+        $this->db->where('subscription_group_id', $group_id);
 
-
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return true;
+        }
+        return false;
+     }
 
 }

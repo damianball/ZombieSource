@@ -43,7 +43,7 @@ class sms_controller extends CI_Controller {
         }
 
         if($command == "stats"){
-            list($human_count, $active_zombies, $starved_zombies) = $game->playerStatusCounts();
+            list($human_count, $zombie_count, $starved_zombies) = $game->playerStatusCounts();
             $response = "humans: $human_count active_zombies: $active_zombies starved_zombies: $starved_zombies"; 
         }elseif($command == "tag" && $user){
             $response = "tag feature not ready yet";

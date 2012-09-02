@@ -29,7 +29,7 @@ class Game{
         foreach($players as $player){
                 if(is_a($player, 'Zombie')){
                     if($player->isStarved()){
-                      $starved_zombie_count += 1;
+                      $starved_zombie_count += 1;;
                     }else{
                       $zombie_count += 1;
                     }
@@ -40,6 +40,10 @@ class Game{
         }
 
         return array($human_count, $zombie_count, $starved_zombie_count);
+    }
+
+    public function dayKills(){
+        return 5;
     }
 
     //Game Attributes
