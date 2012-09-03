@@ -136,6 +136,7 @@ class User_model extends CI_Model{
      }
 
      public function setUserData($userid, $name, $value){
+
          if(array_key_exists($name, $this->table_editable_fields)){
              return $this->setUserTableData($userid, $name, $value);
          } else {
@@ -143,7 +144,7 @@ class User_model extends CI_Model{
          }
      }
 
-     public function userSubscribedToGroup($group_id, $user_id){
+     public function userSubscribedToGroupByID($group_id, $user_id){
         $this->db->from('user_subscriptions');
         $this->db->where('user_id', $user_id);
         $this->db->where('subscription_group_id', $group_id);
@@ -155,4 +156,35 @@ class User_model extends CI_Model{
         return false;
      }
 
+     public function getSubscriptionGroupIDbyName($group_name){
+        $this->db->select("id");
+        $this->db->from('subscription_groups');
+        $this->db->where('name', $group_name);
+
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new NoSubscriptionGroupException('No subscription_group for ' . $group_name);
+        }
+        return $query->row()->id;
+     }
+
+    public function subscribeUserToGroup($group_id, $user_id){
+        if(!$this->userSubscribedToGroupByID($group_id, $user_id)){
+            $data = array(
+               'user_id' => $user_id,
+               'subscription_group_id' => $group_id
+            );
+            $this->db->insert('user_subscriptions', $data);
+        }
+     }
+
+    public function unsubscribeUserFromGroup($group_id, $user_id){
+        if($this->userSubscribedToGroupByID($group_id, $user_id)){
+            $data = array(
+               'user_id' => $user_id,
+               'subscription_group_id' => $group_id
+            );
+            $this->db->delete('user_subscriptions', $data);
+        }
+     }
 }

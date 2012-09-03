@@ -65,12 +65,6 @@
     //instead of setting it in active_game_options.php
 
 
-     $(document).on("c", ".leave_game_modal", function(event){
-      gameid = $(event.target).data("gameid");
-      $('#' + gameid).find('#leave').modal('show');
-    });
-
-
     $(document).on("click", ".leave_game_modal", function(event){
       gameid = $(event.target).data("gameid");
       $('#' + gameid).find('#leave').modal('show');

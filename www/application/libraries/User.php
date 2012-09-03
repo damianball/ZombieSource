@@ -20,6 +20,15 @@ class User{
         }
     }
 
+    public function subscribe($group_name, $value){
+        $group_id = $this->ci->User_model->getSubscriptionGroupIDbyName($group_name);
+        if($value){
+            $this->ci->User_model->subscribeUserToGroup($group_id, $this->userid);
+        }else{
+            $this->ci->User_model->unsubscribeUserFromGroup($group_id, $this->userid);
+        }
+    }
+
     public function profileIsEmpty(){
         return $this->ci->User_model->profileIsEmpty($this->userid);
     }

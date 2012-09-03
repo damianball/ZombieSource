@@ -85,4 +85,10 @@ class NoNotificationException extends Exception{
     }
 }
 
+class NoSubscriptionGroupException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 ?>
