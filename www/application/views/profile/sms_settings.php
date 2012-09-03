@@ -26,7 +26,6 @@
       </div>
     </div>
 
-
       <div class="clearfix subscription_option">
       <label class="checkbox">   
           <input type="checkbox" <?php echo $team_updates ? "checked" : "" ?> name="team_updates" value="1"> <h3> Team Updates.</h3>
