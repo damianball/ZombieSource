@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="<?php echo base_url();?>images/zombiesource.png">
 
    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootswatch.css">
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap_overrides.css">
+   <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap_overrides.css"> -->
 
 
   <script type="text/javascript" src="<?php echo base_url('js/modernizr.custom.05649.min.js'); ?>"></script>
