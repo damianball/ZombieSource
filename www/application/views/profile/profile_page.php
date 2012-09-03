@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="span8">
-    <div class="well">
+    <div class="well-profile">
       <div class = "line">
         <span class = "profile_data_item"> <h3><?php echo $username; ?></h3></span>
       </div>

@@ -34,7 +34,6 @@
     </div>
 
 
-
       <div class="clearfix subscription_option">
       <label class="checkbox">   
           <input type="checkbox" <?php echo $mission_updates? "checked" : "" ?> name="mission_updates" value="1"> <h3> Mission Updates.</h3>
@@ -52,12 +51,35 @@
 
 <div class = "row-fluid sms_faq well span3">
  <h2> Commands  </h2> <h3> Text us at: +1 208-402-4500 </h3>
-  <dl class="dl-horizontal">
-  <div class = "command_item"> <dt>stop</dt><dd>Stop recieving any text messages from Zombie Source.</dd> </div>
-  <div class = "command_item"><dt>start</dt><dd>Resume receiving texts according to your subscription settings.</dd></div>
-  <div class = "command_item"><dt>tag &#60human_code&#62</dt><dd>Tag a user by sending the word tag and then their human code.</dd> </div>
-  <div class = "command_item"><dt>stats</dt><dd>Get human and zombie counts at any time.</dd></div>
-</dl>
+<table cellspacing="20px">
+<tr>
+<div class = "command_item">
+<td><strong>stop</strong></td>
+<td>Stop recieving any text messages from Zombie Source.</td>
+</div>
+</tr>
+<tr>
+  <div class = "command_item">
+<td><strong>start</strong></td>
+<td>Resume receiving texts according to your subscription settings.</td>
+</div>
+</tr>
+
+<tr>
+  <div class = "command_item">
+<td><strong>tag &#60human_code&#62</strong></td>
+<td>    Tag a user by sending the word tag and then their human code.</td>
+</div>
+</tr>
+
+<tr>
+  <div class = "command_item">
+<td><strong>stats</strong></td>
+<td>Get human and zombie counts at any time.</td>
+</div>
+</tr>
+</table>
+
 
 </div>
  <script type="text/javascript">
