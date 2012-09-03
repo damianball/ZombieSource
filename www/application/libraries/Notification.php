@@ -88,7 +88,7 @@ class Notification{
       $new_list = array();
       $group_id = $this->ci->Notification_model->groupIDfromNotificationID($this->notification_id);
       foreach($user_id_list as $user_id){
-        if($this->ci->User_model->userSubscribedToGroup($group_id, $user_id)){
+        if($this->ci->User_model->userSubscribedToGroupByID($group_id, $user_id)){
           $new_list[] = $user_id;
         }
       }

@@ -50,7 +50,8 @@ class job_controller extends CI_Controller {
         //if we're past or at the start time
         //AND in the right hour of the day
         //AND the job didn't run today.
-        if($start_epoch <= $now && $start_hour == $current_hour && $last_run_day != $current_day){
+        // if($start_epoch <= $now && $start_hour == $current_hour && $last_run_day != $current_day){
+        if($start_epoch <= $now && $last_run_day != $current_day){
             return true;
         }else{
             return false;
