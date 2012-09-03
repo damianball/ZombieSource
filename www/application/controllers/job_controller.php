@@ -14,7 +14,7 @@ class job_controller extends CI_Controller {
     }
 
     public function daily_update(){
-        $notification_id = $this->Notification_model->getNotifictionIDByName("daily_update");
+        $notification_id = $this->Notification_model->getNotificationIDByName("daily_update");
         $games = $this->gamecreator->getActiveGames();
         foreach($this->gamecreator->getActiveGames() as $game){
             $game_id = $game->getGameID();
@@ -25,8 +25,7 @@ class job_controller extends CI_Controller {
                 $data_obj->date_id = date('Y-m-d', time());
 
                 $notification = new Notification($game_id, $data_obj);
-                // $notification->send();
-                echo $notification->message();
+                $notification->send();
             }
         }
     }
