@@ -29,39 +29,13 @@
     $this->load->view("layouts/game_sidebar", $data);
   ?>
   <div class="span10">
-<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
-<script>
-new TWTR.Widget({
-  version: 2,
-  type: 'search',
-  search: <?php echo $twitter_search?>,
-  interval: 20000,
-  title: 'Tweet with <?php echo $twitter_hashtag?> to join in!',
-  width: 'auto',
-  height: 755,
-  theme: {
-    shell: {
-      background: '#DD4814',
-      color: '#ffffff'
-    },
-    tweets: {
-      background: '#ffffff',
-      color: '#444444',
-      links: '#DD4814'
-    }
-  },
-  features: {
-    scrollbar: false,
-    loop: false,
-    live: true,
-    behavior: 'all'
-  },
-  ready: function(){
-      console.log('READY');
-  }
-}).render().start();
-</script>
-  </div>
+    <table id="newsfeed" class="table table-striped" border="0" cellpadding="4" cellspacing="0"></table>
+      </div>
 </div>
+<!-- <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script> -->
+<script>
+var twtr_search = <?php echo $twitter_search ?>;
+</script>
 
 
+<script type="text/javascript" src="<?php echo base_url();?>js/newsfeed.js"/>
