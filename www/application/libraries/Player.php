@@ -164,6 +164,9 @@ class Player{
         $this->ci->Player_model->makePlayerInactive($this->playerid);
     }
 
+    public function isHiddenOriginalZombie(){
+    }
+
 
     public function isElligibleForTagUndo(){
         return false;

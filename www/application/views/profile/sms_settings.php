@@ -1,9 +1,11 @@
 
-<h2> Subscription Settings </h2>
+
+
 <div class = "row-fluid sms_faq well span3">
   <div class="alert-green save_success">
     Settings Saved
   </div>
+  <h2> Subscription Settings </h2>
   <div class="clearfix">
       <label><h3>SMS Number</h3></label>
       <div class="input">
@@ -42,18 +44,20 @@
       </div>
     </div>
   <div class = "row-fluid"> 
-    <div class = "btn btn-info save_sms_settings" disabled="disabled"> Save </div>
+    <div class = "btn btn-info btn-margin save_sms_settings" disabled="disabled"> Save </div>
   </div>
 </div>
 
 
-<h2> Commands  </h2> <h3> Text us at: +1 208-402-4500 </h3>
-<div class = "row-fluid sms_faq well span3">
-  <div class = "command_item"> "stop" - Stop recieving any text messages from Zombie Source. </div>
-  <div class = "command_item">"start" - Resume receiving texts according to your subscription settings.</div>
-  <div class = "command_item">"tag &#60 human_code&#62" - Tag a user by sending the word tag and then their human code </div>
-  <div class = "command_item">"stats" - Get human and zombie counts at any time</div>
 
+<div class = "row-fluid sms_faq well span3">
+ <h2> Commands  </h2> <h3> Text us at: +1 208-402-4500 </h3>
+  <dl class="dl-horizontal">
+  <div class = "command_item"> <dt>stop</dt><dd>Stop recieving any text messages from Zombie Source.</dd> </div>
+  <div class = "command_item"><dt>start</dt><dd>Resume receiving texts according to your subscription settings.</dd></div>
+  <div class = "command_item"><dt>tag &#60human_code&#62</dt><dd>Tag a user by sending the word tag and then their human code.</dd> </div>
+  <div class = "command_item"><dt>stats</dt><dd>Get human and zombie counts at any time.</dd></div>
+</dl>
 
 </div>
  <script type="text/javascript">

@@ -45,11 +45,22 @@ class sms_controller extends CI_Controller {
         if($command == "stats"){
             list($human_count, $zombie_count, $starved_zombies) = $game->playerStatusCounts();
             $response = "humans: $human_count active_zombies: $active_zombies starved_zombies: $starved_zombies"; 
-        }elseif($command == "tag" && $user){
-            $response = "tag feature not ready yet";
+        }else if($user){ //All commands except stats required a registered user.
+            if($command == "start"){
+                $user->subscribe("pause_updates", false);
+                $response = "SMS alerts actived. To pause, text \"stop\". Visit http://bit.ly/Tf26sx to manage your subscription settings";
+            }else if($command == "stop"){
+                $user->subscribe("pause_updates", true);
+                $response = "SMS alerts paused. to resume, text \"start\". Visit http://bit.ly/Tf26sx to manage your subscription settings";
+            }else if($command == "tag"){ //TODO update before game starts.
+                $response = "Cannot register a tag until game starts. Visit http://bit.ly/Tf26sx to see a list of valid commands";
+            }else{
+                $response = "Sorry, command not recognized. Visit http://bit.ly/Tf26sx to see a list of valid commands";
+            }
         }else{
-            $response = "Sorry, command not recognized. Visit http://bit.ly/NyHPZs to see a list of valid commands";
+            $response = "To use Zombie Source texting register your phone at http://bit.ly/Tf26sx. Unregistered phones can still text \"stats\".";
         }
+
         return $response;
     }
 }

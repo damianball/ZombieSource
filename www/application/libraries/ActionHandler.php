@@ -11,8 +11,9 @@ class ActionHandler{
 
     public function tagAction($tag_id, $gameid){
       $data_obj = new stdClass();
-      $data->notification_name = 'teammate_tagged';
+      $data_obj->notification_name = 'teammate_tagged';
+      $data_obj->tag_id = $tag_id;
       $notification = new Notification($gameid, $data_obj);
-      // $notification->send();
+      $notification->send();
     }
 }

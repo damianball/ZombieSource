@@ -33,6 +33,7 @@ class Tag{
     }
 
     public function getTaggee(){
+        $taggeeid = $this->ci->Tag_model->getData($this->tagid, 'taggeeid');
         $taggerid = $this->ci->Tag_model->getData($this->tagid, 'taggeeid');
         return $this->ci->playercreator->getPlayerByPlayerID($taggeeid);
     }

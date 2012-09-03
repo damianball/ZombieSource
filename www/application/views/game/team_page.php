@@ -51,6 +51,8 @@
             }
             else if ($is_closed){
               echo "This game is <b>closed</b>. You cannot create teams for this game.";
+            }else if(!$is_human){
+              echo "Zombies cannot create teams, sorry";
             }
             else{
               echo "<b> Join a Game</b> if you want to create/join a team!";

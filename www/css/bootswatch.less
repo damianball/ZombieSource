@@ -96,6 +96,23 @@ body {
   .buttonBackground(lighten(@orange, 15%), @orange);
 }
 
+.btn-light-blue
+{
+  background-color: hsl(194, 81%, 51%) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#4ac6ec", endColorstr="#1cb8e7");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#4ac6ec), to(#1cb8e7));
+  background-image: -moz-linear-gradient(top, #4ac6ec, #1cb8e7);
+  background-image: -ms-linear-gradient(top, #4ac6ec, #1cb8e7);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4ac6ec), color-stop(100%, #1cb8e7));
+  background-image: -webkit-linear-gradient(top, #4ac6ec, #1cb8e7);
+  background-image: -o-linear-gradient(top, #4ac6ec, #1cb8e7);
+  background-image: linear-gradient(#4ac6ec, #1cb8e7);
+  border-color: #1cb8e7 #1cb8e7 hsl(194, 81%, 48.5%);
+  color: #333 !important;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.16);
+  -webkit-font-smoothing: antialiased;
+}
 
 // FORMS
 // -----------------------------------------------------
@@ -169,4 +186,58 @@ img.overlay-image{
 .form textarea {
     width: 500px;
     height: 100px;
+}
+
+.container .twtr-widget {
+    .twtr-avatar {
+        width: 50px;
+        height: 50px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+    }
+    .twtr-img {
+        width: 50px;
+        height: 50px;
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+}
+
+.twtr-pic {
+  padding: 4px;
+  line-height: 1;
+  border: 1px solid #ddd;
+  .border-radius(4px);
+  .box-shadow(0 1px 1px rgba(0,0,0,.075));
+  margin: 5px;
+}
+.twtr-text{
+    margin-top: 5px;
+    
+}
+
+
+
+.sms_settings_box{
+  margin-top: 20px;
+  margin-bottom: -5px;
+  width: 200px;
+}
+
+.sms_text{
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.subscription_option{
+background-color: @grayLightened;
+  padding: 5px;
+  margin: 3px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.subscription_description{
+  margin-left: 30px;
 }

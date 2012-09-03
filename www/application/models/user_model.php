@@ -50,12 +50,12 @@ class User_model extends CI_Model{
         if($username != NULL){
             $this->db->distinct();
             $this->db->select('id');
-            $this->db->like('username', $username);
+            $this->db->where('username', $username);
             $query = $this->db->get($this->table_name);
             if ($query->num_rows() > 0){
                 return $query->row()->id;
             } else {
-                return NULL;
+                throw new PlayerDoesNotExistException('Player not found');
             }
         } else {
             throw new UnexpectedValueException('username cannot be null');
@@ -145,7 +145,7 @@ class User_model extends CI_Model{
      }
 
      public function userSubscribedToGroupByID($group_id, $user_id){
-        $this->db->from('user_subscriptions');
+        $this->db->from('user_subscription');
         $this->db->where('user_id', $user_id);
         $this->db->where('subscription_group_id', $group_id);
 
@@ -174,7 +174,7 @@ class User_model extends CI_Model{
                'user_id' => $user_id,
                'subscription_group_id' => $group_id
             );
-            $this->db->insert('user_subscriptions', $data);
+            $this->db->insert('user_subscription', $data);
         }
      }
 
@@ -184,7 +184,7 @@ class User_model extends CI_Model{
                'user_id' => $user_id,
                'subscription_group_id' => $group_id
             );
-            $this->db->delete('user_subscriptions', $data);
+            $this->db->delete('user_subscription', $data);
         }
      }
 }

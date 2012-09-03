@@ -51,6 +51,7 @@ $route['game/(:any)/register_kill'] = "game_controller/register_kill";
 $route['game/(:any)/register_new_team'] = "game_controller/register_new_team";
 $route['game/(:any)/join_team'] = "game_controller/join_team";
 $route['game/(:any)/leave_team'] = "game_controller/leave_team";
+$route['game/(:any)/players'] = "game_controller/players";
 $route['game/(:any)'] = "game_controller";
 
 $route['auth'] = "auth_controller";

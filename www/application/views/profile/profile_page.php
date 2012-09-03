@@ -20,26 +20,21 @@
 
           </div>
               <?php
-                if(!$phone){
+                if($phone){
                   echo' 
-                    <div class="row-fluid sms_settings_box well">
-                    <dd> Setup an SMS number to: </dd>
-                    <dd> * Tag via text </dd>
-                    <dd> * Recieve optional game updates </dd>
-                    <dd> * More! </dd>'
+                    <a href="';
+                    echo site_url("profile/sms_settings"); 
+                    echo '" id = "sms_settings">
+                <div class="btn btn-light-blue btn-margin">
+                   Edit SMS Settings
+                </div>
+              </a>'
                   ;
-                }else{
-                    echo '<div class="row-fluid sms_settings_box">';
                 }
                 ?>
 
-              <a href=" <?php echo site_url("profile/sms_settings"); ?>" id = "sms_settings">
-                <div class="btn btn-light-blue">
-                    SMS Settings/FAQ
-                </div>
-              </a>
 
-          </div>   
+            
         </div>
         <div class="span9">
           <div class="font-profile">
@@ -105,3 +100,23 @@
 
 </div>
 
+              <?php
+                if(!$phone){
+                  echo' 
+                    <div class="row-fluid sms_settings_box well">
+                    <h3>Do you have Texting?</h3>
+                    <dd> Setup an <strong>SMS Number</strong> to: </dd>
+                    <li> Tag via text </li>
+                    <li> Recieve optional game updates </li>
+                    <li> More! </li>';
+                    echo '<a href="';
+                    echo site_url("profile/sms_settings"); 
+                    echo' " id = "sms_settings">
+                <div class="btn btn-light-blue btn-margin">
+                    SMS Settings/FAQ
+                </div>
+              </a>';
+                }
+                ?>
+                </div> 
+          </div> 

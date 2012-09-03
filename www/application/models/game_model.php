@@ -59,6 +59,19 @@ class Game_model extends CI_Model{
 	  return $query->row()->game_stateid;
 	}
 
+  public function getUTCoffset($gameid){
+        $query = $this->db->query(
+            'select offset_from_utc from timezone
+            join  game
+            where game.timezoneid = timezone.id
+            and   game.id = \'' . $gameid . '\''
+        );
+    if($query->num_rows() != 1){
+        throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
+    }
+    return $query->row()->offset_from_utc;
+  }
+
 	public function getGameName($gameid){
 	  $this->db->select('name');
 	  $this->db->from($this->table_name);
@@ -71,14 +84,14 @@ class Game_model extends CI_Model{
 	}
 
     public function getEndTime($gameid){
-        $this->db->select('end_date');
-        $this->db->from($this->table_name);
-        $this->db->where('id', $gameid);
-        $query = $this->db->get();
-        if($query->num_rows() != 1){
-            throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
-        }
-        return $query->row()->end_date;
+      $this->db->select('end_date');
+      $this->db->from($this->table_name);
+      $this->db->where('id', $gameid);
+      $query = $this->db->get();
+      if($query->num_rows() != 1){
+          throw new GameDoesNotExistException('Did not find a game for gameid '.$gameid);
+      }
+      return $query->row()->end_date;
     }
 
 	public function getGameIDBySlug($game_slug){

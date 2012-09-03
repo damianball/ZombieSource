@@ -205,6 +205,7 @@ class profile_controller extends CI_Controller {
             $data['team_edit_button'] = '';
         }
 
+        $data['active_sidebar'] = "";
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
@@ -238,6 +239,7 @@ class profile_controller extends CI_Controller {
         $gameid = $team->getData('gameid');
         $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         if($team->canEditTeam($player)){
+            $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
             $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
             $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 
