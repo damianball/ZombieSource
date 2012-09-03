@@ -46,6 +46,7 @@
     <div class="span9" id="chart1"></div>
   </div>
 </div>
+<div id="chart1"></div>
 <div id="chart"></div>
 
 
@@ -85,19 +86,19 @@
                 {
                   name: 'Human',
                   y: <?php echo $human_count; ?>,
-                  color: "#04819e"
+                  color: "#38B44A"
 
                 },
                {
                   name: 'Zombie',
                   y: <?php echo $zombie_count; ?>,
-                  color: "#FF4500"
+                  color: "#ECA918"
 
                },
                {
                   name: 'Starved Zombie',
                   y: <?php echo $starved_zombie_count; ?>,
-                  color: "#000 "
+                  color: "#DF382C"
                }
             ]
          }]
