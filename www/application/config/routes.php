@@ -57,6 +57,9 @@ $route['game/(:any)'] = "game_controller";
 $route['auth'] = "auth_controller";
 $route['auth/(:any)'] = "auth_controller/$1";
 
+$route['job'] = "job_controller";
+$route['job/(:any)'] = "job_controller/$1";
+
 $route['home'] = "home_controller";
 $route['home/(:any)'] = "home_controller/$1";
 
@@ -65,6 +68,10 @@ $route['profile/(:any)'] = "profile_controller/$1";
 
 $route['admin'] = "admin_controller";
 $route['admin/(:any)'] = "admin_controller/$1";
+
+$route['sms'] = "sms_controller";
+$route['sms/(:any)'] = "sms_controller/$1";
+
 
 $route['default_controller'] = "home_controller";
 $route['404_override'] = '';

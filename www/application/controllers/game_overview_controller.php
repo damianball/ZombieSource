@@ -27,32 +27,15 @@ class game_overview_controller extends CI_Controller {
         $game_data = array();
         $gameids = $this->Game_model->getGameIDs();
         foreach($gameids as $gameid){
-
-            $game_name = $this->Game_model->getGameName($gameid);
-            $zombie_count = 0;
-            $human_count = 0;
-            $starved_zombie_count = 0;
-
-            $players = getViewablePlayers($gameid);
-            foreach($players as $player){
-                    if(is_a($player, 'Zombie')){
-                        if($player->isStarved()){
-                          $starved_zombie_count += 1;
-                        }else{
-                          $zombie_count += 1;
-                        }
-                    }else {
-                        $human_count += 1;
-                    }
-
-            }
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            list($human_count, $zombie_count, $starved_zombie_count) = $game->playerStatusCounts();
 
             $game_data[$gameid] = array(
                           'gameid'                => $gameid,
                           'game_slug'             => $this->Game_model->getGameSlugByGameID($gameid),
-                          'game_photo_url'        => $this->Game_model->getPhotoURL($gameid),
-                          'game_description'      => $this->Game_model->getDescription($gameid),
-                          'game_name'             => $game_name,
+                          'game_photo_url'        => $game->photoURL(),
+                          'game_description'      => $game->description(),
+                          'game_name'             => $game->name(),
                           'count'                 => $zombie_count + $human_count,
                           'human_count'           => $human_count,
                           'zombie_count'          => $zombie_count,
@@ -66,8 +49,6 @@ class game_overview_controller extends CI_Controller {
         $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
-
-
     }
 
     public function gameOptionsView($gameid){

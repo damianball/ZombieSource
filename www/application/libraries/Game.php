@@ -8,12 +8,52 @@ class Game{
     {
         $this->ci =& get_instance();
         $this->ci->load->model('Game_model', '', true);
+        $this->ci->load->model('Stats_model', '', true);
+        $this->ci->load->helper('game_helper');
 
         if($gameid){
             $this->gameid = $gameid;
         } else {
             throw new ClassCreationException("gameid cannot be null.");
         }
+    }
+
+    //Game Statistics
+
+    public function playerStatusCounts(){
+        $zombie_count = 0;
+        $human_count = 0;
+        $starved_zombie_count = 0;
+
+        $players = getViewablePlayers($this->gameid);
+        foreach($players as $player){
+                if(is_a($player, 'Zombie')){
+                    if($player->isStarved()){
+                      $starved_zombie_count += 1;;
+                    }else{
+                      $zombie_count += 1;
+                    }
+                }else {
+                    $human_count += 1;
+                }
+
+        }
+
+        return array($human_count, $zombie_count, $starved_zombie_count);
+    }
+
+    public function dayKills(){
+        return 5;
+    }
+
+    //Game Attributes
+
+    public function getPlayerIDs(){
+
+    }
+    
+    public function getUserIDs(){
+
     }
 
     public function getGameID(){
@@ -37,7 +77,7 @@ class Game{
     }
 
     public function description(){
-        return $this->ci->Game_model->description($this->gameid);
+        return $this->ci->Game_model->getDescription($this->gameid);
     }
 
     public function name(){

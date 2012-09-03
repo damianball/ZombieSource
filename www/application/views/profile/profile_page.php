@@ -13,12 +13,33 @@
           <br>
           <div class="row-fluid">
               <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile">
-            <div class="btn btn-info">
-                Edit Profile
-            </div>
-            </a>
+                <div class="btn btn-info">
+                    Edit Profile
+                </div>
+              </a>
 
           </div>
+              <?php
+                if(!$phone){
+                  echo' 
+                    <div class="row-fluid sms_settings_box well">
+                    <dd> Setup an SMS number to: </dd>
+                    <dd> * Tag via text </dd>
+                    <dd> * Recieve optional game updates </dd>
+                    <dd> * More! </dd>'
+                  ;
+                }else{
+                    echo '<div class="row-fluid sms_settings_box">';
+                }
+                ?>
+
+              <a href=" <?php echo site_url("profile/sms_settings"); ?>" id = "sms_settings">
+                <div class="btn btn-light-blue">
+                    SMS Settings/FAQ
+                </div>
+              </a>
+
+          </div>   
         </div>
         <div class="span9">
           <div class="font-profile">
@@ -54,7 +75,9 @@
               <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age ? $age : "not given"; ?></dd></span>
               <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender ? $gender : "not given"; ?></dd> </span>
               <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major ? $major : "not given"; ?></dd> </span>
-              <dt>Team </dt> <dd><?php echo $link_to_team; ?><dd>
+              <dt>Team </dt> <dd><?php echo $link_to_team ? $link_to_team : "No Team"; ?><dd>
+              <dt>SMS </dt><span class = "profile_data_item"> <dd><?php echo $phone ? $phone : "not given"; ?> <gray-font>(not public)</gray-font></dd></span>
+
             </dl>
           </div>
         <?php if($human_code){ ?>

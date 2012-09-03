@@ -78,6 +78,16 @@ class profile_controller extends CI_Controller {
         //}
     }
 
+    public function sms_settings(){
+        $data['daily_updates'] = "d";
+        $data['phone'] = $this->logged_in_user->getData("phone");
+
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('profile/sms_settings', $data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
     public function edit_profile()
     {
         $user = $this->logged_in_user;
@@ -99,6 +109,9 @@ class profile_controller extends CI_Controller {
             }
             if ($user->getData('gravatar_email') != $this->input->post('gravatar_email')) {
                 $user->saveData('gravatar_email',$this->input->post('gravatar_email'));
+            }
+            if ($user->getData('phone') != $this->input->post('phone')) {
+                $user->saveData('phone',$this->input->post('phone'));
             }
             redirect("profile");
         }

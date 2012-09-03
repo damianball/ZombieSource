@@ -54,6 +54,17 @@ class Team{
         return $playerArray;
     }
 
+    public function getTeamMemberUserIDs(){
+        $this->ci->load->model('Player_model', '', true);
+        $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->teamid);
+        $userArray = array();
+        for($i = 0; $i<count($playeridarray); $i++){
+            $userArray[] = $this->ci->Player_model->getUserIDByPlayerID($playeridarray[$i]);   
+        }
+        return $userArray;
+    }
+
+
     public function getArrayOfPlayersZombifiedOnTeam(){
         $this->ci->load->library('PlayerCreator');
         $playeridarray = $this->ci->Player_team_model->getListOfFormerPlayerIDByTeamID($this->teamid);

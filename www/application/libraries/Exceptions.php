@@ -72,4 +72,17 @@ class UserIsNotModeratorException extends Exception{
         parent::__construct($message, $code);
     }
 }
+
+class NoJobException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class NoNotificationException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 ?>

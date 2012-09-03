@@ -41,7 +41,8 @@ function getPrivateUserProfileDataArray($user){
     $data['gravatar_email'] = $user->getData('gravatar_email');
     //$data['human_code'] = (is_a($player,'Human') ? $player->getHumanCode() : $data['human_code'] = null); $data['link_to_team'] = getHTMLLinkToPlayerTeam($player);
     //$data['status'] = $player->getStatus();
-    $data['user'] = $user->getUserID();
+    $data['user']  = $user->getUserID();
+    $data['phone'] = $user->getData("phone");
     return $data;
 }
 ?>
