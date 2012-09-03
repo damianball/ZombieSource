@@ -6,7 +6,7 @@ class Notification_model extends CI_Model{
     parent::__construct();
   }
 
-    public function getNotifictionIDByName($name){
+    public function getNotificationIDByName($name){
       $this->db->select('id');
       $this->db->from($this->table_name);
       $this->db->where('name', $name);

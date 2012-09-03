@@ -48,6 +48,14 @@ class Game{
 
     //Game Attributes
 
+    public function getPlayerIDs(){
+
+    }
+    
+    public function getUserIDs(){
+
+    }
+
     public function getGameID(){
         return $this->gameid;
     }

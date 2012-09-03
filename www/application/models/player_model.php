@@ -104,7 +104,7 @@ class Player_model extends CI_Model{
 
     // @TODO: restrict active to not banned... probably need a column in the db for that
     public function getActivePlayerUserIDsByGameID($gameid){
-        $playerids = getActivePlayerIDsByGameID($gameid);
+        $playerids = $this->getActivePlayerIDsByGameID($gameid);
         $userids  = array();
         foreach($playerids as $playerid){
             $userids[] = $this->getUserIDbyPlayerID($playerid);

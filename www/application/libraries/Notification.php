@@ -20,6 +20,7 @@ class Notification{
         $this->ci->load->library('GameCreator', null);
         $this->ci->load->library('TagCreator', null);
         $this->ci->load->model('User_model', '', true);
+        $this->ci->load->model('Player_model', '', true);
         $this->ci->load->model('Notification_model', '', true);
 
         $this->initialize($data_obj);
@@ -55,7 +56,7 @@ class Notification{
         $taggee       = $tag->getTaggee()->getUser();
         $team         = $this->teamcreator->getTeamByTeamID($taggee->getTeamID());
 
-        $user_id_list = purgeUnsubscribedUsers($team->getTeamMemberUserIDs());
+        $user_id_list = $this->purgeUnsubscribedUsers($team->getTeamMemberUserIDs());
         $tagger_name  = $tag->getTagger()->getUser()->getUsername();
         $taggee_name  = $taggee->getUsername();
         $teamname     = $team->getData("name");
@@ -69,8 +70,8 @@ class Notification{
     private function daily_update($data_obj){
       try{
         $game = $this->ci->gamecreator->getGameByGameID($this->gameid);
-        $user_id_list = $this->Player_modal->getActivePlayerUserIDsByGameID($game->getGameID());
-        $user_id_list = purgeUnsubscribedUsers($user_id_list);
+        $user_id_list = $this->ci->Player_model->getActivePlayerUserIDsByGameID($game->getGameID());
+        $user_id_list = $this->purgeUnsubscribedUsers($user_id_list);
 
         $date = new DateTime($data_obj->date_id);
         $date = $date->format('m/d');
@@ -85,9 +86,9 @@ class Notification{
 
     private function purgeUnsubscribedUsers($user_id_list){
       $new_list = array();
-      $group_id = $this->Notification_model->groupIDfromNotificationID($this->notification_id);
+      $group_id = $this->ci->Notification_model->groupIDfromNotificationID($this->notification_id);
       foreach($user_id_list as $user_id){
-        if($this->User_model->userSubscribedToGroup($group_id, $user_id)){
+        if($this->ci->User_model->userSubscribedToGroup($group_id, $user_id)){
           $new_list[] = $user_id;
         }
       }
@@ -96,10 +97,15 @@ class Notification{
 
     public function send(){
       if($this->message && $this->user_id_list){
-        foreach($this->user_id_list() as $user_id){
+        foreach($this->user_id_list() as $recipient_user_id){
           $recipient_number = $this->ci->User_model->getUserData($recipient_user_id, "phone");
-          $message = $notification->me;
+          $message = $this->message;
           $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters.
+          
+          echo "userid: ". $recipient_user_id. "<br>";
+          echo "Destination: ".$recipient_number." --   Message: ".$this->message;
+          echo "<br> <br>";
+
           // $client->account->sms_messages->create(
           //   $this->TwilioNumber,
           //   $recipient_number,
