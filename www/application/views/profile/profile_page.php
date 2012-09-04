@@ -13,19 +13,20 @@
           <br>
           <div class="row-fluid">
               <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile">
-                <div class="btn btn-info">
+                <div class="btn btn-info btn-mid">
                     Edit Profile
                 </div>
               </a>
 
           </div>
+
               <?php
                 if($phone){
-                  echo' 
+                  echo'
                     <a href="';
                     echo site_url("profile/sms_settings"); 
                     echo '" id = "sms_settings">
-                <div class="btn btn-light-blue btn-margin">
+                <div class="btn btn-cute-blue btn-margin btn-mid">
                    Edit SMS Settings
                 </div>
               </a>'
@@ -112,7 +113,7 @@
                     echo '<a href="';
                     echo site_url("profile/sms_settings"); 
                     echo' " id = "sms_settings">
-                <div class="btn btn-light-blue btn-margin">
+                <div class="btn btn-cute-blue btn-margin">
                     SMS Settings/FAQ
                 </div>
               </a>';
