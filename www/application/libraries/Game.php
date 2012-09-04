@@ -8,7 +8,6 @@ class Game{
     {
         $this->ci =& get_instance();
         $this->ci->load->model('Game_model', '', true);
-        $this->ci->load->model('Stats_model', '', true);
         $this->ci->load->model('Tag_model', '', true);
         $this->ci->load->helper('game_helper');
 
@@ -61,14 +60,6 @@ class Game{
 
     public function UTCoffset(){
         return $this->ci->Game_model->getUTCoffset($this->gameid);
-    }
-
-    public function getPlayerIDs(){
-
-    }
-    
-    public function getUserIDs(){
-
     }
 
     public function getGameID(){

@@ -72,7 +72,6 @@ $route['admin/(:any)'] = "admin_controller/$1";
 $route['sms'] = "sms_controller";
 $route['sms/(:any)'] = "sms_controller/$1";
 
-
 $route['default_controller'] = "home_controller";
 $route['404_override'] = '';
 

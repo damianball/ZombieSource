@@ -45,9 +45,9 @@ class sms_controller extends CI_Controller {
             $response = "humans: $human_count active_zombies: $zombie_count starved_zombies: $starved_zombies"; 
         }else if($user){ //All commands except stats required a registered user.
             if($command == "start"){
-                $user->subscribe("pause_updates", false);
+                $user->updateSubscription("pause_updates", false);
             }else if($command == "stop"){
-                $user->subscribe("pause_updates", true);
+                $user->updateSubscription("pause_updates", true);
             }else if($command == "tag"){ //TODO update before game starts.
                 $response = "Cannot register a tag until game starts. Visit http://bit.ly/Tf26sx to see a list of valid commands";
             }else{

@@ -14,10 +14,6 @@ class job_controller extends CI_Controller {
 
     }
 
-    public function tag_test(){
-        $this->actionhandler->tagAction('2a2086e8-5392-11e1-93ae-007048df7e24','0b84d632-da0e-11e1-a3a8-5d69f9a5509e');
-    }
-
     public function daily_update(){
         $notification_id = $this->Notification_model->getNotificationIDByName("daily_update");
         $games = $this->gamecreator->getActiveGames();
@@ -56,8 +52,7 @@ class job_controller extends CI_Controller {
         //if we're past or at the start time
         //AND in the right hour of the day
         //AND the job didn't run today.
-        // if($start_epoch <= $now && $start_hour == $current_hour && $last_run_day != $current_day){
-        if($start_epoch <= $now && $last_run_day != $current_day){
+        if($start_epoch <= $now && $start_hour == $current_hour && $last_run_day != $current_day){
             return true;
         }else{
             return false;

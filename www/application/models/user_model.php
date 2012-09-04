@@ -136,7 +136,6 @@ class User_model extends CI_Model{
      }
 
      public function setUserData($userid, $name, $value){
-
          if(array_key_exists($name, $this->table_editable_fields)){
              return $this->setUserTableData($userid, $name, $value);
          } else {
