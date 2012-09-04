@@ -115,7 +115,7 @@
         data['mission_updates']   = $('[name="mission_updates"]').is(':checked');
 
         $.ajax({
-          url: "/profile/save_sms_settings",
+          url: "~/profile/save_sms_settings",
           type: "POST",
           data: data,
           success: function(response){

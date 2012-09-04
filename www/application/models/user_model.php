@@ -158,7 +158,7 @@ class User_model extends CI_Model{
 
      public function getSubscriptionGroupIDbyName($group_name){
         $this->db->select("id");
-        $this->db->from('subscription_groups');
+        $this->db->from('subscription_group');
         $this->db->where('name', $group_name);
 
         $query = $this->db->get();

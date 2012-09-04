@@ -65,7 +65,7 @@ class PlayerCreator{
     private function buildPlayerByStatusInGame($playerid){
         $player = null;
         if($this->ci->Player_model->getPlayerData($playerid, 'original_zombie')){
-            $player = new OriginalZombie($playerid);
+            $player = new Zombie($playerid);
         } else if ($this->ci->Tag_model->validTagExistsForPlayer($playerid)){
             $player = new Zombie($playerid);
         } else {

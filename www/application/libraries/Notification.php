@@ -99,11 +99,8 @@ class Notification{
           $recipient_number = $this->ci->User_model->getUserData($recipient_user_id, "phone");
           $message = $this->message;
           $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters.
-          
-          echo "userid: ". $recipient_user_id. "<br>";
-          echo "Destination: ".$recipient_number." --   Message: ".$this->message;
-          echo "<br> <br>";
 
+          //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.        
           // $this->client->account->sms_messages->create(
           //   $this->TwilioNumber,
           //   $recipient_number,
