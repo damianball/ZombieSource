@@ -78,12 +78,22 @@ class game_overview_controller extends CI_Controller {
     public function join_game()
     {
 
-        $gameid = $this->input->post('gameid');
+        //sms subscription handling
+        $phone           = $this->input->post('phone');
+        $daily_updates   = $this->input->post('daily_updates');
+        $team_updates    = $this->input->post('team_updates');
+        $mission_updates = $this->input->post('mission_updates');
+        
+        if($phone != "") { $this->user->saveData("phone", $phone);}
+        if($daily_updates   != ""){ $this->user->updateSubscription("daily_updates",   $daily_updates == "true");}
+        if($team_updates    != ""){ $this->user->updateSubscription("team_updates",    $team_updates == "true");}
+        if($mission_updates != ""){ $this->user->updateSubscription("mission_updates", $mission_updates == "true");}
 
+        //profile info handling
+        $gameid = $this->input->post('gameid');
         $age = $this->input->post('age');
         $major = $this->input->post('major');
         $gender = $this->input->post('gender');
-
 
         if($age != ""){ $this->user->saveData("age", $age);}
         if($major != ""){ $this->user->saveData("major", $major);}

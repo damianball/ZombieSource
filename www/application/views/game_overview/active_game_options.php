@@ -22,16 +22,16 @@
     }
     if($profile_is_empty){
       echo $join_game_edit_profile;
+    }else{
+      echo '<br>
+            <div class="clearfix">
+              <label class="checkbox">   
+                  <input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
+              </label>
+            </div>
+            <br>';
     }
     ?>
-    <br>
-    <div class="clearfix">
-      <label class="checkbox">   
-          <input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
-      </label>
-    </div>
-    <br>
-
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cancel</a>

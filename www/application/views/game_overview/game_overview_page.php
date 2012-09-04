@@ -113,6 +113,14 @@
         gameid = $(event.target).data("gameid");
         params = {};
         params["gameid"] = gameid;
+
+
+        params['phone']             = $('#' + gameid).find('input[name="phone"]').val();
+        params['daily_updates']     = $('#' + gameid).find('input[name="daily_updates"]').is(':checked');
+        params['team_updates']      = $('#' + gameid).find('input[name="team_updates"]').is(':checked');
+        params['mission_updates']   = $('#' + gameid).find('input[name="mission_updates"]').is(':checked');
+
+
         if(waiversigned && waiversigned != "skip") params["waiver_is_signed"] = "TRUE";
         if(age){ params["age"] = age };
         if(major){ params["major"] = major };

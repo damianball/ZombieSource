@@ -19,7 +19,7 @@
           <input type="checkbox" <?php echo $daily_updates ? "checked" : "" ?> name="daily_updates" value="1"> <h3> Daily Updates </h3>
       </label>
       <div class ="subscription_description">
-        1 text messsage every night that tells you you the current Human and Zombie count.
+        Recieve an update on zombie count every night.
       </div>
     </div>
 
@@ -29,7 +29,7 @@
           <input type="checkbox" <?php echo $team_updates ? "checked" : "" ?> name="team_updates" value="1"> <h3> Team Updates.</h3>
       </label>
       <div class ="subscription_description">
-        You recieve a text if someone on your team gets turned into a zombie!
+        Recieve a text if someone on your team gets turned into a zombie!
       </div>
     </div>
 
@@ -39,7 +39,7 @@
           <input type="checkbox" <?php echo $mission_updates? "checked" : "" ?> name="mission_updates" value="1"> <h3> Mission Updates.</h3>
       </label>    
       <div class ="subscription_description">
-        Admins can send mass messages to either zombies or humans during active missions.
+        Recieve mission updates from admins.
       </div>
     </div>
   <div class = "row-fluid"> 
