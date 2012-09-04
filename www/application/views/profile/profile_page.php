@@ -26,7 +26,7 @@
                     <a href="';
                     echo site_url("profile/sms_settings"); 
                     echo '" id = "sms_settings">
-                <div class="btn btn-cute-blue btn-margin btn-mid">
+                <div class="btn btn-light-blue btn-margin btn-mid">
                    Edit SMS Settings
                 </div>
               </a>'
@@ -113,7 +113,7 @@
                     echo '<a href="';
                     echo site_url("profile/sms_settings"); 
                     echo' " id = "sms_settings">
-                <div class="btn btn-cute-blue btn-margin">
+                <div class="btn btn-light-blue btn-margin">
                     SMS Settings/FAQ
                 </div>
               </a>';
