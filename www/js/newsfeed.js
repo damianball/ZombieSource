@@ -29,7 +29,8 @@ function display_tweets($) {
                     .replace(/(^|\s)@(\w+)/g,'$1<a href="http://twitter.com/$2">@$2</a>'))
 
                   // + '<br /><a href="http://www.twitter.com/' + this.from_user + '/status/' + this.id_str 
-                  // + '" class="view" target="_blank">' + $.timeSinceTweet(this.created_at) + '</a>
+                  // + '" class="view" target="_blank">' + $.timeSinceTweet(this.date_created) + '</a>
+                  + '<br>' + $.timeSinceTweet(this.date_created)
 
                   + '</div>' + '</td>'
 
@@ -57,7 +58,8 @@ function display_tweets($) {
     var day_diff = Math.floor(diff / 86400);
     
     if (day_diff < 0 || day_diff >= 31 || isNaN(day_diff)) {
-      return "View tweet";
+      
+      return "a long time ago";
     }
     
     if(day_diff == 0) {
@@ -88,7 +90,7 @@ function display_tweets($) {
       return Math.ceil( day_diff / 7 ) + " weeks ago";
     }
     else {
-      return "View Tweet";
+      return Math.ceil(day_diff / 30) + " months ago";
     } 
   }
 })(jQuery);
