@@ -57,9 +57,10 @@ function writeZombieTreeJSONByGameID($gameid){
     if($f){
         $bytes = fwrite($f, getZombieFamilyTreeJSON($gameid));
         fclose($f);
+        return $bytes;
     }
     // @TODO: do something useful if cannot write to file
-    return $bytes;
+    return FALSE;
 }
 
 ?>
