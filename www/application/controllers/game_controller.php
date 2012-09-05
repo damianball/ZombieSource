@@ -12,8 +12,8 @@ class game_controller extends CI_Controller {
             redirect('/auth/login');
         }
         $this->load->model('Player_model','',TRUE);
-        $this->load->model('Newsfeed_model','',TRUE);
         $this->load->model('Game_model','',TRUE);
+        $this->load->model('Newsfeed_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
@@ -53,7 +53,8 @@ class game_controller extends CI_Controller {
 
 
     public function index(){
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $gameid = $this->game->getGameID();
+        $is_player_in_game = $this->user->isActiveInGame($gameid);
         $data['is_player_in_game'] = $is_player_in_game;
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
@@ -62,8 +63,12 @@ class game_controller extends CI_Controller {
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
 
+        $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
+        $url = base_url();
+
         $layout_data = array();
         $data['active_sidebar'] = 'newsfeed';
+        $data["newsfeed_url"] = $url . 'game/' . $game_slug . '/newsfeed_json';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/newsfeed', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
@@ -478,6 +483,17 @@ class game_controller extends CI_Controller {
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
 
+    }
+
+    public function newsfeed_json()
+    {
+        $gameid = $this->game->getGameID();
+        $is_player_in_game = $this->user->isActiveInGame($gameid);
+        $newsitems = $this->Newsfeed_model->getNewsItemsByGameID($gameid);
+        $json_newsitems = json_encode($newsitems);
+        //load the content variables
+        
+        print_r($json_newsitems);
     }
 
 }
