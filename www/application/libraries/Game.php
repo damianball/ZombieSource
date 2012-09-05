@@ -8,7 +8,7 @@ class Game{
     {
         $this->ci =& get_instance();
         $this->ci->load->model('Game_model', '', true);
-        $this->ci->load->model('Stats_model', '', true);
+        $this->ci->load->model('Tag_model', '', true);
         $this->ci->load->helper('game_helper');
 
         if($gameid){
@@ -42,18 +42,24 @@ class Game{
         return array($human_count, $zombie_count, $starved_zombie_count);
     }
 
-    public function dayKills(){
-        return 5;
+    public function dayKills($date_id){
+        return $this->ci->Tag_model->numTagsForDate($date_id, $this->gameid);
+    }
+
+    public function daysRemaining(){
+        $end_date =  $this->ci->Game_model->getEndTime($this->gameid);
+        $end_epoch = strtotime($end_date);
+        $now = time();
+        $diff = $end_epoch - $now;
+        $diff_days = $diff/86400;
+        return round($diff_days);
     }
 
     //Game Attributes
 
-    public function getPlayerIDs(){
 
-    }
-    
-    public function getUserIDs(){
-
+    public function UTCoffset(){
+        return $this->ci->Game_model->getUTCoffset($this->gameid);
     }
 
     public function getGameID(){

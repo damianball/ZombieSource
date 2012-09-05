@@ -136,7 +136,6 @@ class User_model extends CI_Model{
      }
 
      public function setUserData($userid, $name, $value){
-
          if(array_key_exists($name, $this->table_editable_fields)){
              return $this->setUserTableData($userid, $name, $value);
          } else {
@@ -145,7 +144,7 @@ class User_model extends CI_Model{
      }
 
      public function userSubscribedToGroupByID($group_id, $user_id){
-        $this->db->from('user_subscriptions');
+        $this->db->from('user_subscription');
         $this->db->where('user_id', $user_id);
         $this->db->where('subscription_group_id', $group_id);
 
@@ -158,7 +157,7 @@ class User_model extends CI_Model{
 
      public function getSubscriptionGroupIDbyName($group_name){
         $this->db->select("id");
-        $this->db->from('subscription_groups');
+        $this->db->from('subscription_group');
         $this->db->where('name', $group_name);
 
         $query = $this->db->get();
@@ -174,7 +173,7 @@ class User_model extends CI_Model{
                'user_id' => $user_id,
                'subscription_group_id' => $group_id
             );
-            $this->db->insert('user_subscriptions', $data);
+            $this->db->insert('user_subscription', $data);
         }
      }
 
@@ -184,7 +183,7 @@ class User_model extends CI_Model{
                'user_id' => $user_id,
                'subscription_group_id' => $group_id
             );
-            $this->db->delete('user_subscriptions', $data);
+            $this->db->delete('user_subscription', $data);
         }
      }
 }

@@ -103,9 +103,9 @@ class profile_controller extends CI_Controller {
         $mission_updates = $this->input->post('mission_updates');
         
         if($phone != "") { $this->logged_in_user->saveData("phone", $phone);}
-        if($daily_updates   != ""){ $this->logged_in_user->subscribe("daily_updates",   $daily_updates == "true");}
-        if($team_updates    != ""){ $this->logged_in_user->subscribe("team_updates",    $team_updates == "true");}
-        if($mission_updates != ""){ $this->logged_in_user->subscribe("mission_updates", $mission_updates == "true");}
+        if($daily_updates   != ""){ $this->logged_in_user->updateSubscription("daily_updates",   $daily_updates == "true");}
+        if($team_updates    != ""){ $this->logged_in_user->updateSubscription("team_updates",    $team_updates == "true");}
+        if($mission_updates != ""){ $this->logged_in_user->updateSubscription("mission_updates", $mission_updates == "true");}
 
     }
 
@@ -129,10 +129,10 @@ class profile_controller extends CI_Controller {
                 $user->saveData('major',$this->input->post('major'));
             }
             if ($user->getData('gravatar_email') != $this->input->post('gravatar_email')) {
-                $user->saveData('gravatar_email',$this->input->post('gravatar_email'));
+                $user->saveData('gravatar_email', $this->input->post('gravatar_email'));
             }
             if ($user->getData('phone') != $this->input->post('phone')) {
-                $user->saveData('phone',$this->input->post('phone'));
+                $user->saveData('phone', $this->input->post('phone'));
             }
             redirect("profile");
         }
@@ -205,6 +205,7 @@ class profile_controller extends CI_Controller {
             $data['team_edit_button'] = '';
         }
 
+        $data['active_sidebar'] = "";
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);

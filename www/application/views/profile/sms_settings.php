@@ -3,11 +3,14 @@
 
 <div class = "row-fluid sms_faq well span3">
 
+
   <h2> Subscription Settings </h2>
 
   <div class="alert-green save_success">
     Settings Saved
   </div>
+
+
 
   <div class="clearfix">
       <label><h3>SMS Number</h3></label>
@@ -117,7 +120,7 @@
         data['mission_updates']   = $('[name="mission_updates"]').is(':checked');
 
         $.ajax({
-          url: "/profile/save_sms_settings",
+          url: "~/profile/save_sms_settings",
           type: "POST",
           data: data,
           success: function(response){

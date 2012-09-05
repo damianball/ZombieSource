@@ -245,6 +245,7 @@ class game_controller extends CI_Controller {
                         $human = $player;
                         try{
                             $this->load->library('TagCreator');
+                            $this->load->library('ActionHandler');
 
                             $dateclaimed = null;
                             // generate time claimed offset
@@ -255,6 +256,8 @@ class game_controller extends CI_Controller {
                             }
 
                             $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
+                            $this->actionhandler->tagAction($tag->getTagID(),$this->game->getGameID());
+
                             tweet_tag($tag);
                             $this->load->helper('tree_helper');
                             writeZombieTreeJSONByGameID($this->game->getGameID());

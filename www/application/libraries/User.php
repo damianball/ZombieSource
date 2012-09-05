@@ -20,7 +20,7 @@ class User{
         }
     }
 
-    public function subscribe($group_name, $value){
+    public function updateSubscription($group_name, $value){
         $group_id = $this->ci->User_model->getSubscriptionGroupIDbyName($group_name);
         if($value){
             $this->ci->User_model->subscribeUserToGroup($group_id, $this->userid);

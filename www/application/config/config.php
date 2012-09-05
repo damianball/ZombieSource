@@ -15,8 +15,7 @@
 |
 */
 
-$config['base_url']	= 'http://localhost';
-
+$config['base_url']  = 'http://vandals.zombiesource.org/';
 /*
 |--------------------------------------------------------------------------
 | Index File
