@@ -267,7 +267,7 @@ class game_controller extends CI_Controller {
                                     $teamid = $human->getTeamID();
                                     $team = $this->teamcreator->getTeamByTeamID($teamid);
                                     if($team->getTeamSize() == 1){ // last player on team
-                                        tweet_team_destroyed($team->getData('name'));
+                                        tweet_team_destroyed($team);
                                     }
                                     $human->leaveCurrentTeam();
                                 }
