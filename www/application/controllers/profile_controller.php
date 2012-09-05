@@ -78,6 +78,37 @@ class profile_controller extends CI_Controller {
         //}
     }
 
+    public function sms_settings(){
+        $group_id = $this->User_model->getSubscriptionGroupIDbyName("daily_updates");
+        $data['daily_updates'] = $this->User_model->userSubscribedToGroupByID($group_id, $this->logged_in_user->getUserID());
+
+        $group_id = $this->User_model->getSubscriptionGroupIDbyName("team_updates");
+        $data['team_updates'] = $this->User_model->userSubscribedToGroupByID($group_id, $this->logged_in_user->getUserID());
+
+        $group_id = $this->User_model->getSubscriptionGroupIDbyName("mission_updates");
+        $data['mission_updates'] = $this->User_model->userSubscribedToGroupByID($group_id, $this->logged_in_user->getUserID());
+
+        $data['phone'] = $this->logged_in_user->getData("phone");
+
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('profile/sms_settings', $data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
+    public function save_sms_settings(){
+        $phone           = $this->input->post('phone');
+        $daily_updates   = $this->input->post('daily_updates');
+        $team_updates    = $this->input->post('team_updates');
+        $mission_updates = $this->input->post('mission_updates');
+        
+        if($phone != "") { $this->logged_in_user->saveData("phone", $phone);}
+        if($daily_updates   != ""){ $this->logged_in_user->updateSubscription("daily_updates",   $daily_updates == "true");}
+        if($team_updates    != ""){ $this->logged_in_user->updateSubscription("team_updates",    $team_updates == "true");}
+        if($mission_updates != ""){ $this->logged_in_user->updateSubscription("mission_updates", $mission_updates == "true");}
+
+    }
+
     public function edit_profile()
     {
         $user = $this->logged_in_user;
@@ -98,7 +129,10 @@ class profile_controller extends CI_Controller {
                 $user->saveData('major',$this->input->post('major'));
             }
             if ($user->getData('gravatar_email') != $this->input->post('gravatar_email')) {
-                $user->saveData('gravatar_email',$this->input->post('gravatar_email'));
+                $user->saveData('gravatar_email', $this->input->post('gravatar_email'));
+            }
+            if ($user->getData('phone') != $this->input->post('phone')) {
+                $user->saveData('phone', $this->input->post('phone'));
             }
             redirect("profile");
         }
@@ -171,6 +205,7 @@ class profile_controller extends CI_Controller {
             $data['team_edit_button'] = '';
         }
 
+        $data['active_sidebar'] = "";
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);

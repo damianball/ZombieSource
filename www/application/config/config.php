@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://vandals.zombiesource.org/';
 
+$config['base_url']  = 'http://vandals.zombiesource.org/';
 /*
 |--------------------------------------------------------------------------
 | Index File

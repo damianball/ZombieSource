@@ -8,12 +8,58 @@ class Game{
     {
         $this->ci =& get_instance();
         $this->ci->load->model('Game_model', '', true);
+        $this->ci->load->model('Tag_model', '', true);
+        $this->ci->load->helper('game_helper');
 
         if($gameid){
             $this->gameid = $gameid;
         } else {
             throw new ClassCreationException("gameid cannot be null.");
         }
+    }
+
+    //Game Statistics
+
+    public function playerStatusCounts(){
+        $zombie_count = 0;
+        $human_count = 0;
+        $starved_zombie_count = 0;
+
+        $players = getViewablePlayers($this->gameid);
+        foreach($players as $player){
+                if(is_a($player, 'Zombie')){
+                    if($player->isStarved()){
+                      $starved_zombie_count += 1;;
+                    }else{
+                      $zombie_count += 1;
+                    }
+                }else {
+                    $human_count += 1;
+                }
+
+        }
+
+        return array($human_count, $zombie_count, $starved_zombie_count);
+    }
+
+    public function dayKills($date_id){
+        return $this->ci->Tag_model->numTagsForDate($date_id, $this->gameid);
+    }
+
+    public function daysRemaining(){
+        $end_date =  $this->ci->Game_model->getEndTime($this->gameid);
+        $end_epoch = strtotime($end_date);
+        $now = time();
+        $diff = $end_epoch - $now;
+        $diff_days = $diff/86400;
+        return round($diff_days);
+    }
+
+    //Game Attributes
+
+
+    public function UTCoffset(){
+        return $this->ci->Game_model->getUTCoffset($this->gameid);
     }
 
     public function getGameID(){
@@ -37,7 +83,7 @@ class Game{
     }
 
     public function description(){
-        return $this->ci->Game_model->description($this->gameid);
+        return $this->ci->Game_model->getDescription($this->gameid);
     }
 
     public function name(){

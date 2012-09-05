@@ -65,6 +65,5 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 $db['default']['port'] = 8889;
 
-
 /* End of file database.php */
 /* Location: ./application/config/database.php */
