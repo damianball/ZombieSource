@@ -163,4 +163,10 @@ class User{
          $this->data[$key] = $value;
      }
 
+     public function getGravatarHTML($size=50){
+         $this->ci->load->helper('gravatar_helper');
+
+         return getGravatarHTML($this->getData('gravatar_email'), $this->getEmail(), $size, array('class' => 'twtr-pic'));
+     }
+
 }
