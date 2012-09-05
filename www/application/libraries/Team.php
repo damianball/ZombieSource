@@ -98,6 +98,6 @@ class Team{
      public function getGravatarHTML($size=50){
          $this->ci->load->helper('gravatar_helper');
 
-         return getGravatarHTML($this->getData('gravatar_email'), $this->getData('name'), $size);
+         return getGravatarHTML($this->getData('gravatar_email'), $this->getData('name'), $size, array('class' => 'twtr-pic'));
      }
 }

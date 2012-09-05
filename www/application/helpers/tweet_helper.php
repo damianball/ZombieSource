@@ -33,22 +33,28 @@ function tweet_tag($tag){
     $tagger = $tag->getTagger();
     if(is_a($tagger, 'OriginalZombie') && !$tagger->isExposed()){
         $tagger_username = "A deadly creature";
+        $tagger_open = '';
+        $tagger_close = '';
         $tagger_gravatar = '';
     } else {
         $user = $tagger->getUser();
         $tagger_username = $user->getUsername();
+        $tagger_open = '<a href="/user/' . $user->getUserID() . '">';
+        $tagger_close = '</a>';
         $tagger_gravatar = $user->getGravatarHTML();
     }
     $taggee_user = $tag->getTaggee()->getUser();
     $taggee_username = $taggee_user->getUsername();
+    $taggee_open = '<a href="/user/' . $taggee_user->getUserID() . '">';
+    $taggee_close = '</a>';
     $taggee_gravatar = $taggee_user->getGravatarHTML();
 
     $text = tweet_text('tag');
     $text = str_replace('%TAGGER%', $tagger_username, $text);
     $text = str_replace('%TAGGEE%', $taggee_username, $text);
     $html = tweet_text('tag');
-    $html = str_replace('%TAGGER%', $tagger_gravatar . $tagger_username, $html);
-    $html = str_replace('%TAGGEE%', $taggee_gravatar . $taggee_username, $html);
+    $html = str_replace('%TAGGER%', $tagger_open . $tagger_gravatar . " " . $tagger_username . $tagger_close, $html);
+    $html = str_replace('%TAGGEE%', $taggee_open . $taggee_gravatar . " " . $taggee_username . $taggee_close, $html);
     $payload = array('tagid' => $tag->getTagID(),
                      'html' => $html,
                      'text' => $text);
@@ -57,10 +63,12 @@ function tweet_tag($tag){
 
 function tweet_team_destroyed($team){
     $name = $team->getData('name');
+    $open = '<a href="/team/' . $team->getTeamID() . '">';
+    $close = '</a>';
     $text = tweet_text('team_destroyed');
     $text = str_replace('%TEAM%', $name, $text);
     $html = tweet_text('team_destroyed');
-    $html = str_replace('%TEAM%', $team->getGravatarHTML() . $name, $html);
+    $html = str_replace('%TEAM%', $open . $team->getGravatarHTML() . " " . $name . $close, $html);
     $payload = array('teamid' => $team->getTeamID(),
                      'html' => $html,
                      'text' => $text);
