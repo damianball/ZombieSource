@@ -12,6 +12,7 @@ class game_controller extends CI_Controller {
             redirect('/auth/login');
         }
         $this->load->model('Player_model','',TRUE);
+        $this->load->model('Newsfeed_model','',TRUE);
         $this->load->model('Game_model','',TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);

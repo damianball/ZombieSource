@@ -51,38 +51,6 @@
                 <?php $this->load->view("layouts/gameinfo"); ?>
             </div>
       </div>
-      <div>
-<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
-<script>
-new TWTR.Widget({
-  version: 2,
-  type: 'search',
-  search: <?php echo $twitter_search?>,
-  interval: 30000,
-  title: 'Tweet with <?php echo $twitter_hashtag?> to join in!',
-  width: 'auto',
-  height: 350,
-  theme: {
-    shell: {
-      background: '#DD4814',
-      color: '#ffffff'
-    },
-    tweets: {
-      background: '#ffffff',
-      color: '#444444',
-      links: '#DD4814'
-    }
-  },
-  features: {
-    scrollbar: false,
-    loop: false,
-    live: true,
-    behavior: 'all'
-  },
-}).render().start();
-</script>
-
-      </div>
    </div>
 </div>
 <script type="text/javascript">
