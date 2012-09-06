@@ -19,7 +19,7 @@ function display_tweets($) {
                 // analyse our tweet text and turn urls into working links, hash tags into search links, and @replies into profile links.
                 // tweet.html('<td>' + '<a href="http://www.twitter.com/' + this.from_user + '" target="_blank"><img class="twtr-pic span1" src="' 
                   // + this.profile_image_url + '" width="48" height="48" /></a>' + '<div class="twtr-text span2">' + this.from_user + '</div>' + '<div class="twtr-text span8">' +
-                  tweet.html('<td><div class="twtr-text span8">' + 
+                  tweet.html('<td><div class="twtr-text span12">' + 
                   unescape(tweet.html()
 
                     // .replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi,'<a href="$1">$1</a>')
