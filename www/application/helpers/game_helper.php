@@ -1,5 +1,17 @@
 <?php
 
+function validate_phone($phone){
+    $valid_phone = null;    
+    $stripped = preg_replace("/[^0-9]/", "", $phone);
+    $length = strlen($stripped);
+    if(($length == 10) && ($stripped[0] != "1")){
+      $valid_phone = "1" . $stripped;
+    }else if(($length == 11) && ($stripped[0] == "1")){
+      $valid_phone = $stripped;
+    }
+    return $valid_phone;
+}
+
 
 function validGameSlug($game_slug){
     $CI =& get_instance();

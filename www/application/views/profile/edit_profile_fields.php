@@ -59,4 +59,5 @@
                    Click here to set up a Gravatar
                    </a>
               </div>
+              <br>
             </fieldset>

@@ -53,10 +53,14 @@ function getTreeNodeByPlayerObject($CI, $player, $date, $showName=TRUE){
 function writeZombieTreeJSONByGameID($gameid){
     $CI =& get_instance();
     $CI->load->model('Game_model');
-    $f = fopen("json/" . $CI->Game_model->getGameSlugByGameID($gameid) . ".json", "w");
-    $bytes = fwrite($f, getZombieFamilyTreeJSON($gameid));
-    fclose($f);
-    return $bytes;
+    $f = @fopen("json/" . $CI->Game_model->getGameSlugByGameID($gameid) . ".json", "w");
+    if($f){
+        $bytes = fwrite($f, getZombieFamilyTreeJSON($gameid));
+        fclose($f);
+        return $bytes;
+    }
+    // @TODO: do something useful if cannot write to file
+    return FALSE;
 }
 
 ?>

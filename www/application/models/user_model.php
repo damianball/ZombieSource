@@ -62,7 +62,22 @@ class User_model extends CI_Model{
         }
     }
 
-       private function getUserTableData($userid, $name){
+    public function getUserIDByPhone($phone){
+        if($phone != NULL){
+            $this->db->where('name', 'phone');
+            $this->db->where('value', $phone);
+            $query = $this->db->get($this->data_table_name);
+            if ($query->num_rows() > 0){
+                return $query->row()->userid;
+            } else {
+                return NULL;
+            }
+        } else {
+            throw new UnexpectedValueException('phone cannot be null');
+        }
+    }
+
+    private function getUserTableData($userid, $name){
          $this->db->select($name);
          $this->db->from($this->table_name);
          $this->db->where('id',$userid);
@@ -128,7 +143,47 @@ class User_model extends CI_Model{
          }
      }
 
+     public function userSubscribedToGroupByID($group_id, $user_id){
+        $this->db->from('user_subscription');
+        $this->db->where('user_id', $user_id);
+        $this->db->where('subscription_group_id', $group_id);
 
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return true;
+        }
+        return false;
+     }
 
+     public function getSubscriptionGroupIDbyName($group_name){
+        $this->db->select("id");
+        $this->db->from('subscription_group');
+        $this->db->where('name', $group_name);
 
+        $query = $this->db->get();
+        if($query->num_rows() != 1){
+            throw new NoSubscriptionGroupException('No subscription_group for ' . $group_name);
+        }
+        return $query->row()->id;
+     }
+
+    public function subscribeUserToGroup($group_id, $user_id){
+        if(!$this->userSubscribedToGroupByID($group_id, $user_id)){
+            $data = array(
+               'user_id' => $user_id,
+               'subscription_group_id' => $group_id
+            );
+            $this->db->insert('user_subscription', $data);
+        }
+     }
+
+    public function unsubscribeUserFromGroup($group_id, $user_id){
+        if($this->userSubscribedToGroupByID($group_id, $user_id)){
+            $data = array(
+               'user_id' => $user_id,
+               'subscription_group_id' => $group_id
+            );
+            $this->db->delete('user_subscription', $data);
+        }
+     }
 }

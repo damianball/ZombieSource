@@ -26,4 +26,17 @@ class UserCreator{
         $userid = $this->ci->User_player_model->getUserIDByPlayerID($playerid);
         return new User($userid);
     }
+
+    public function getUserByPhone($phone){
+        if(!$phone){
+            throw new UnexpectedValueException('phone cannot be null');
+        }
+        $this->ci->load->model('User_model','',TRUE);
+        $userid = $this->ci->User_model->getUserIDByPhone($phone);
+        if($userid){
+            return new User($userid);
+        }else{
+            return null;
+        }
+    }
 }

@@ -66,6 +66,19 @@ class Tag_model extends CI_Model{
         return false;
     }
 
+    public function numTagsForDate($date_id, $game_id){
+        $query = $this->db->query(
+          'SELECT COUNT(*) as count
+            FROM tag, game
+            JOIN player
+            WHERE player.id = taggeeid
+            AND game.id = \'' . $game_id . '\'
+            AND tag.datetimeclaimed >= '. $date_id .' 
+            AND tag.datetimeclaimed < DATE_ADD(' . $date_id . ', INTERVAL 24 hour)'
+        );
+        return $query->row()->{'count'};
+    }
+
     // returns array of taggees
     public function getTaggeeIDAndTimeByPlayerID($playerid){
         $this->db->select('taggeeid, datetimeclaimed');
