@@ -2,6 +2,13 @@
 
 class auth_controller extends CI_Controller
 {
+
+  public function __construct()
+  {
+        parent::__construct();
+        $this->load->library('UserCreator');
+  }
+
   function index()
   {
     if ($message = $this->session->flashdata('message')) {
@@ -74,8 +81,13 @@ class auth_controller extends CI_Controller
         $this->form_validation->set_value('password'),
         $this->form_validation->set_value('remember'),
         $data['login_by_username'],
-        $data['login_by_email'])) {               // success
-          redirect('profile');
+        $data['login_by_email'])) {            // success
+          $user = $this->usercreator->getUserByUserID($this->tank_auth->get_user_id());
+          if($user->isActiveInCurrentGame()){
+            redirect('profile');
+          }else{
+            redirect('overview');
+          }
       } else {
         $errors = $this->tank_auth->get_error_message();
         if (isset($errors['banned'])) {               // banned user

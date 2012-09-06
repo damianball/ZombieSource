@@ -15,4 +15,14 @@ class GameCreator{
     public function getGameByGameID($gameid){
       return new Game($gameid);
     }
+
+    public function getActiveGames(){
+      $game_list = array();
+      foreach ($this->ci->Game_model->getGameIDs() as $game_id){
+        if($this->ci->Game_model->getStateID($game_id) == 2) { //TODO replace 2 with check for state with name "active"
+          $game_list[] = $this->getGameByGameID($game_id);
+        }
+      }
+      return $game_list;
+    }
 }

@@ -20,6 +20,15 @@ class User{
         }
     }
 
+    public function updateSubscription($group_name, $value){
+        $group_id = $this->ci->User_model->getSubscriptionGroupIDbyName($group_name);
+        if($value){
+            $this->ci->User_model->subscribeUserToGroup($group_id, $this->userid);
+        }else{
+            $this->ci->User_model->unsubscribeUserFromGroup($group_id, $this->userid);
+        }
+    }
+
     public function profileIsEmpty(){
         return $this->ci->User_model->profileIsEmpty($this->userid);
     }
@@ -152,6 +161,12 @@ class User{
      public function saveData($key, $value){
          $this->ci->User_model->setUserData($this->userid, $key, $value);
          $this->data[$key] = $value;
+     }
+
+     public function getGravatarHTML($size=50){
+         $this->ci->load->helper('gravatar_helper');
+
+         return getGravatarHTML($this->getData('gravatar_email'), $this->getEmail(), $size, array('class' => 'twtr-pic'));
      }
 
 }

@@ -23,4 +23,5 @@ function build_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $at
     }
     return $url;
 }
+
 ?>
