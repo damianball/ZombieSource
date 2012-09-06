@@ -17,6 +17,8 @@ class profile_controller extends CI_Controller {
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
         $this->load->helper('user_helper');
+        $this->load->helper('game_helper');
+
 
         // load the logged in player (if one exists) into the controller
         $userid = $this->tank_auth->get_user_id();
@@ -102,12 +104,20 @@ class profile_controller extends CI_Controller {
         $team_updates    = $this->input->post('team_updates');
         $mission_updates = $this->input->post('mission_updates');
         
-        if($phone != "") { $this->logged_in_user->saveData("phone", $phone);}
-        if($daily_updates   != ""){ $this->logged_in_user->updateSubscription("daily_updates",   $daily_updates == "true");}
-        if($team_updates    != ""){ $this->logged_in_user->updateSubscription("team_updates",    $team_updates == "true");}
-        if($mission_updates != ""){ $this->logged_in_user->updateSubscription("mission_updates", $mission_updates == "true");}
+        $formatted_phone = validate_phone($phone);
+        if($formatted_phone){
+            $response = array("phone_success" => "true");
+            $this->logged_in_user->saveData("phone", $formatted_phone);
 
+            if($daily_updates   != ""){ $this->logged_in_user->updateSubscription("daily_updates",   $daily_updates == "true");}
+            if($team_updates    != ""){ $this->logged_in_user->updateSubscription("team_updates",    $team_updates == "true");}
+            if($mission_updates != ""){ $this->logged_in_user->updateSubscription("mission_updates", $mission_updates == "true");}
+        }else{
+            $response = array("phone_success" => "false");
+        }
+        echo json_encode($response);
     }
+
 
     public function edit_profile()
     {
@@ -130,9 +140,6 @@ class profile_controller extends CI_Controller {
             }
             if ($user->getData('gravatar_email') != $this->input->post('gravatar_email')) {
                 $user->saveData('gravatar_email', $this->input->post('gravatar_email'));
-            }
-            if ($user->getData('phone') != $this->input->post('phone')) {
-                $user->saveData('phone', $this->input->post('phone'));
             }
             redirect("profile");
         }

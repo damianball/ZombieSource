@@ -6,7 +6,8 @@
 	  <div class="span12">
 	    <div class="well">
 	    	<!-- game name -->
-	    	<a href = "<?php echo base_url() . 'game/' . $game["game_slug"]?>"> <h3><?php echo $game["game_name"]?> </h3> </a>
+        <button class="view_game btn btn-primary" data-url="<?php echo base_url() . 'game/' . $game["game_slug"]?>" > <?php echo $game["game_name"]?> </button>
+
 	    	<div class="row-fluid">
 
 		    	<div class="span3">
@@ -59,6 +60,12 @@
  <script type="text/javascript">
 
   $(document).ready(function(){
+    
+    $(".view_game").click(function(event){
+      document.location.href = $(event.target).data("url");
+    });
+
+
 
     //choose the right modal by game id
     //TODO dynmaically add gameid to modal button
@@ -72,8 +79,10 @@
     $(document).on("click", ".join_game_modal", function(event){
       gameid = $(event.target).data("gameid");
 
-      if( $('#' + gameid).find('.join_game_sign_waiver').length > 0 ){
 
+
+      //see if waiver box is checked
+      if( $('#' + gameid).find('.join_game_sign_waiver').length > 0 ){
         waiver_box = $('#' + gameid).find('[name="waiversigned"]')
         if(!waiver_box || !waiver_box.is(':checked')){
           $('#' + gameid).find('.join_game').attr("disabled", true);
@@ -92,9 +101,15 @@
       $('#' + gameid).find('#join').modal('show');
     });
 
-
     $(document).on("click",".join_game", function(event){
 
+      //red warning when bad phone number is present.
+      $('#' + gameid).find('input[name="phone"]').change(function(event){
+        $(event.target);
+        debugger;
+      })
+
+      
       if( $('#' + gameid).find('.join_game_sign_waiver').length > 0 ){
         waiversigned = $('#' + gameid).find('[name]="waiversigned"').is(':checked')
       }else{
@@ -113,7 +128,6 @@
         gameid = $(event.target).data("gameid");
         params = {};
         params["gameid"] = gameid;
-
 
         params['phone']             = $('#' + gameid).find('input[name="phone"]').val();
         params['daily_updates']     = $('#' + gameid).find('input[name="daily_updates"]').is(':checked');

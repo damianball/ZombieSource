@@ -2,12 +2,21 @@
 
 
 <div class = "row-fluid sms_faq well span3">
-  <div class="alert-green save_success">
+
+
+  <h2> Subscription Settings </h2>
+
+  <div class="alert alert-green save_success">
     Settings Saved
   </div>
-  <h2> Subscription Settings </h2>
+
+  <div class="alert alert-red save_fail">
+        Invalid Phone!
+  </div>
+
+
   <div class="clearfix">
-      <label><h3>SMS Number</h3></label>
+      <label><h3>SMS Number</h3> (exactly 10 digits) </label>
       <div class="input">
          <?php echo form_error('phone'); ?>
           <input type="text" name = "phone" value="<?php echo $phone; ?>"/>
@@ -22,7 +31,6 @@
         Recieve an update on zombie count every night.
       </div>
     </div>
-
 
       <div class="clearfix subscription_option">
       <label class="checkbox">   
@@ -85,25 +93,26 @@
  <script type="text/javascript">
 
   $(document).ready(function(){
-      $(".save_success").hide();
+      $(".alert").hide();
 
       $(".save_sms_settings").attr("disabled", true);
 
       $('input[name="phone"]').change(function(event){
           $(".save_sms_settings").attr("disabled", false);
-          $(".save_success").hide();
+          $(".alert").hide();
       })
+      
       $('input[name="daily_updates"]').change(function(event){
           $(".save_sms_settings").attr("disabled", false);
-          $(".save_success").hide();
+          $(".alert").hide();
       })
       $('input[name="team_updates"]').change(function(event){
           $(".save_sms_settings").attr("disabled", false);
-          $(".save_success").hide();
+          $(".alert").hide();
       })
       $('input[name="mission_updates"]').change(function(event){
           $(".save_sms_settings").attr("disabled", false);
-          $(".save_success").hide();
+          $(".alert").hide();
       })
 
     $(document).on("click", ".save_sms_settings", function(event){
@@ -115,12 +124,17 @@
         data['mission_updates']   = $('[name="mission_updates"]').is(':checked');
 
         $.ajax({
-          url: "~/profile/save_sms_settings",
+          url: "save_sms_settings",
           type: "POST",
           data: data,
           success: function(response){
-            $(".save_success").show();
-            $(".save_sms_settings").attr("disabled", true);
+            var response = jQuery.parseJSON(response);
+            if(response.phone_success == "false"){
+              $(".save_fail").show();
+            }else{
+              $(".save_success").show();
+              $(".save_sms_settings").attr("disabled", true);
+            }
           }
         });
       }

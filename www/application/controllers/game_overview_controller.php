@@ -77,14 +77,17 @@ class game_overview_controller extends CI_Controller {
 
     public function join_game()
     {
-
         //sms subscription handling
         $phone           = $this->input->post('phone');
         $daily_updates   = $this->input->post('daily_updates');
         $team_updates    = $this->input->post('team_updates');
         $mission_updates = $this->input->post('mission_updates');
         
-        if($phone != "") { $this->user->saveData("phone", $phone);}
+        $formatted_phone = validate_phone($phone);
+        if($formatted_phone){
+            $this->user->saveData("phone", $formatted_phone);
+        }
+
         if($daily_updates   != ""){ $this->user->updateSubscription("daily_updates",   $daily_updates == "true");}
         if($team_updates    != ""){ $this->user->updateSubscription("team_updates",    $team_updates == "true");}
         if($mission_updates != ""){ $this->user->updateSubscription("mission_updates", $mission_updates == "true");}

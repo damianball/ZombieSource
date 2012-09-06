@@ -60,14 +60,4 @@
                    </a>
               </div>
               <br>
-              <div class="clearfix">
-                  <label>SMS Number</label>
-                  <div class="input">
-                      <td style="color: red;"><?php echo form_error('phone'); ?></td>
-                      <input type="text" name = "phone" value="<?php echo $phone; ?>"/>
-                  </div>
-                  <a  target="_blank" id = "setup_gravatar" href= "https://en.gravatar.com/site/signup/">
-                   Manage SMS notification settings.
-                   </a>
-              </div>
             </fieldset>

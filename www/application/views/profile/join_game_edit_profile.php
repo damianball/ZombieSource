@@ -45,8 +45,8 @@
       <br>
       </div>
       <div class = "well join_game_setup_sms">
-        <label>SMS Settings</label>
-          <input type="text" placeholder="Phone Number" name="phone">
+        <label class "phone_label">SMS Settings <span class="ten_digits">(phone must be 10 digits) </span> </label>
+          <input class = "error" type="text" placeholder="10 Digit Phone Number" name="phone">
           <div class="checkbox small_subscription_option">
             <input type="checkbox" checked="checked" name="daily_updates"> Daily Updates: Recieve an update on zombie count every night. 
           </div>      

@@ -34,7 +34,8 @@
 </div>
 <!-- <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script> -->
 <script>
-var twtr_search = <?php echo $twitter_search ?>;
+ var twtr_search = <?php echo $twitter_search ?>;
+newsfeed_url = "<?php echo $newsfeed_url?>";
 </script>
 
 

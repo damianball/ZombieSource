@@ -47,11 +47,12 @@ $route['team/:any'] = "profile_controller/team_public_profile";
 $route['game'] = "game_controller";
 $route['game/(:any)/teams'] = "game_controller/teams";
 $route['game/(:any)/stats'] = "game_controller/stats";
+$route['game/(:any)/newsfeed_json'] = "game_controller/newsfeed_json";
+$route['game/(:any)/players'] = "game_controller/players";
 $route['game/(:any)/register_kill'] = "game_controller/register_kill";
 $route['game/(:any)/register_new_team'] = "game_controller/register_new_team";
 $route['game/(:any)/join_team'] = "game_controller/join_team";
 $route['game/(:any)/leave_team'] = "game_controller/leave_team";
-$route['game/(:any)/players'] = "game_controller/players";
 $route['game/(:any)'] = "game_controller";
 
 $route['auth'] = "auth_controller";
@@ -71,6 +72,7 @@ $route['admin/(:any)'] = "admin_controller/$1";
 
 $route['sms'] = "sms_controller";
 $route['sms/(:any)'] = "sms_controller/$1";
+
 
 $route['default_controller'] = "home_controller";
 $route['404_override'] = '';

@@ -4,36 +4,40 @@ display_tweets($);
 function display_tweets($) {
   $.ajax({
             type: 'GET',
-            url: 'http://search.twitter.com/search.json?q=' + twtr_search,
-            dataType: 'jsonp',
+            url: newsfeed_url, //'http://search.twitter.com/search.json?q=' + twtr_search,
+            dataType: 'json',
             success: function(data){
-              $.each(data.results, function() {
+              console.log(data);
+              $.each(data, function() {
                 // console.log(data);
 
-              var text = this.text;
+              var text = this.message_text;
               if(text.charAt(0) != '@') {
                 // construct tweet and add append to our #tweets div
                 var tweet = $("<tr></tr>").addClass('tweet').html(text);
 
                 // analyse our tweet text and turn urls into working links, hash tags into search links, and @replies into profile links.
-                tweet.html('<td>' + '<a href="http://www.twitter.com/' + this.from_user + '" target="_blank"><img class="twtr-pic span1" src="' 
-                  + this.profile_image_url + '" width="48" height="48" /></a>' + '<div class="twtr-text span2">' + this.from_user + '</div>' + '<div class="twtr-text span8">' +
-
+                // tweet.html('<td>' + '<a href="http://www.twitter.com/' + this.from_user + '" target="_blank"><img class="twtr-pic span1" src="' 
+                  // + this.profile_image_url + '" width="48" height="48" /></a>' + '<div class="twtr-text span2">' + this.from_user + '</div>' + '<div class="twtr-text span8">' +
+                  tweet.html('<td><div class="twtr-text span8">' + 
                   unescape(tweet.html()
 
-                    .replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi,'<a href="$1">$1</a>')
+                    // .replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi,'<a href="$1">$1</a>')
 
                     .replace(/(^|\s)#(\w+)/g,'$1<a href="http://search.twitter.com/search?q=%23$2">#$2</a>')
 
                     .replace(/(^|\s)@(\w+)/g,'$1<a href="http://twitter.com/$2">@$2</a>'))
 
-                  + '<br /><a href="http://www.twitter.com/' + this.from_user + '/status/' + this.id_str 
-                  + '" class="view" target="_blank">' + $.timeSinceTweet(this.created_at) + '</a></div>' + '</td>'
+                  // + '<br /><a href="http://www.twitter.com/' + this.from_user + '/status/' + this.id_str 
+                  // + '" class="view" target="_blank">' + $.timeSinceTweet(this.date_created) + '</a>
+                  + '<br>' + $.timeSinceTweet(this.date_created)
+
+                  + '</div>' + '</td>'
 
                  )
 
                 
-                .prependTo('#newsfeed')
+                .appendTo('#newsfeed')
 
                 .fadeIn()
                 .slideDown('slow');
@@ -54,7 +58,8 @@ function display_tweets($) {
     var day_diff = Math.floor(diff / 86400);
     
     if (day_diff < 0 || day_diff >= 31 || isNaN(day_diff)) {
-      return "View tweet";
+      
+      return "a long time ago";
     }
     
     if(day_diff == 0) {
@@ -85,7 +90,7 @@ function display_tweets($) {
       return Math.ceil( day_diff / 7 ) + " weeks ago";
     }
     else {
-      return "View Tweet";
+      return Math.ceil(day_diff / 30) + " months ago";
     } 
   }
 })(jQuery);
