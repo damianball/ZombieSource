@@ -86,12 +86,12 @@ class game_overview_controller extends CI_Controller {
         $formatted_phone = validate_phone($phone);
         if($formatted_phone){
             $this->user->saveData("phone", $formatted_phone);
+            
+            if($daily_updates   != ""){ $this->user->updateSubscription("daily_updates",   $daily_updates == "true");}
+            if($team_updates    != ""){ $this->user->updateSubscription("team_updates",    $team_updates == "true");}
+            if($mission_updates != ""){ $this->user->updateSubscription("mission_updates", $mission_updates == "true");}
+
         }
-
-        if($daily_updates   != ""){ $this->user->updateSubscription("daily_updates",   $daily_updates == "true");}
-        if($team_updates    != ""){ $this->user->updateSubscription("team_updates",    $team_updates == "true");}
-        if($mission_updates != ""){ $this->user->updateSubscription("mission_updates", $mission_updates == "true");}
-
         //profile info handling
         $gameid = $this->input->post('gameid');
         $age = $this->input->post('age');

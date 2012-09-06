@@ -114,7 +114,7 @@
                     echo site_url("profile/sms_settings"); 
                     echo' " id = "sms_settings">
                 <div class="btn btn-light-blue btn-margin">
-                    SMS Settings/FAQ
+                    SMS Setup/FAQ
                 </div>
               </a>';
                 }
