@@ -14,6 +14,7 @@
 | path to your installation.
 |
 */
+$config['base_url']	= 'http://192.168.1.139/';
 
 $config['base_url']  = 'http://vandals.zombiesource.org/';
 /*
