@@ -2,6 +2,13 @@
 
 class auth_controller extends CI_Controller
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('UserCreator');
+    }
+
     function index()
     {
         if ($message = $this->session->flashdata('message')) {
@@ -76,6 +83,12 @@ class auth_controller extends CI_Controller
                                                 $data['login_by_email']);
 
                 if ($login_result) {               // success
+                    $user = $this->usercreator->getUserByUserID($this->tank_auth->get_user_id());
+                    if ($user->isActiveInCurrentGame()) {
+                        redirect('profile');
+                    } else {
+                        redirect('overview');
+                    }
                     redirect('profile');
                 } else {
                     $errors = $this->tank_auth->get_error_message();
@@ -101,7 +114,6 @@ class auth_controller extends CI_Controller
             redirect("home");
         }
     }
-
 
   /**
    * Logout user

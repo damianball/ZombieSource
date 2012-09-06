@@ -27,32 +27,15 @@ class game_overview_controller extends CI_Controller {
         $game_data = array();
         $gameids = $this->Game_model->getGameIDs();
         foreach($gameids as $gameid){
-
-            $game_name = $this->Game_model->getGameName($gameid);
-            $zombie_count = 0;
-            $human_count = 0;
-            $starved_zombie_count = 0;
-
-            $players = getViewablePlayers($gameid);
-            foreach($players as $player){
-                    if(is_a($player, 'Zombie')){
-                        if($player->isStarved()){
-                          $starved_zombie_count += 1;
-                        }else{
-                          $zombie_count += 1;
-                        }
-                    }else {
-                        $human_count += 1;
-                    }
-
-            }
+            $game = $this->gamecreator->getGameByGameID($gameid);
+            list($human_count, $zombie_count, $starved_zombie_count) = $game->playerStatusCounts();
 
             $game_data[$gameid] = array(
                           'gameid'                => $gameid,
                           'game_slug'             => $this->Game_model->getGameSlugByGameID($gameid),
-                          'game_photo_url'        => $this->Game_model->getPhotoURL($gameid),
-                          'game_description'      => $this->Game_model->getDescription($gameid),
-                          'game_name'             => $game_name,
+                          'game_photo_url'        => $game->photoURL(),
+                          'game_description'      => $game->description(),
+                          'game_name'             => $game->name(),
                           'count'                 => $zombie_count + $human_count,
                           'human_count'           => $human_count,
                           'zombie_count'          => $zombie_count,
@@ -66,8 +49,6 @@ class game_overview_controller extends CI_Controller {
         $layout_data['content_body'] = $this->load->view('game_overview/game_overview_page', $data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         $this->load->view('layouts/main', $layout_data);
-
-
     }
 
     public function gameOptionsView($gameid){
@@ -96,13 +77,26 @@ class game_overview_controller extends CI_Controller {
 
     public function join_game()
     {
+        //sms subscription handling
+        $phone           = $this->input->post('phone');
+        $daily_updates   = $this->input->post('daily_updates');
+        $team_updates    = $this->input->post('team_updates');
+        $mission_updates = $this->input->post('mission_updates');
+        
+        $formatted_phone = validate_phone($phone);
+        if($formatted_phone){
+            $this->user->saveData("phone", $formatted_phone);
+            
+            if($daily_updates   != ""){ $this->user->updateSubscription("daily_updates",   $daily_updates == "true");}
+            if($team_updates    != ""){ $this->user->updateSubscription("team_updates",    $team_updates == "true");}
+            if($mission_updates != ""){ $this->user->updateSubscription("mission_updates", $mission_updates == "true");}
 
+        }
+        //profile info handling
         $gameid = $this->input->post('gameid');
-
         $age = $this->input->post('age');
         $major = $this->input->post('major');
         $gender = $this->input->post('gender');
-
 
         if($age != ""){ $this->user->saveData("age", $age);}
         if($major != ""){ $this->user->saveData("major", $major);}

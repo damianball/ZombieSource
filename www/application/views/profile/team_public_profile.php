@@ -1,5 +1,7 @@
 <div class = "row-fluid" >
-  <?php $this->load->view("layouts/game_sidebar"); ?>
+  <?php
+  $data['active_sidebar'] = $active_sidebar;
+  $this->load->view("layouts/game_sidebar", $data); ?>
   <div class="span6">
     <div class="well">
       <div class="main">
