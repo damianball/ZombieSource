@@ -22,7 +22,7 @@ d3.json(json_path, function(json) {
     update(root = json);
     var height = widestBranch(root) * 80 + 100;
     tree.size([height, w - 160]);
-    $('svg').animate({height: height}, duration);
+    $('#chart svg').animate({height: height}, duration);
     update(root);
     $('image').tooltip();
 });
@@ -176,7 +176,7 @@ function click(d) {
     var height = widestBranch(root) * 80 + 100;
     tree.size([height, w - 160]);
     update(d);
-    $('svg').animate({height: height}, duration);
+    $('#chart svg').animate({height: height}, duration);
     $('image').tooltip();
 }
 
