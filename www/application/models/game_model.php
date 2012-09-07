@@ -25,7 +25,7 @@ class Game_model extends CI_Model{
 	  return $query->row()->description;
 	}
 
-		public function getPhotoURL($gameid){
+	public function getPhotoURL($gameid){
 	  $this->db->select('game_photo_url');
 	  $this->db->from($this->table_name);
 	  $this->db->where('id',$gameid);
