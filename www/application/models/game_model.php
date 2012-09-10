@@ -155,5 +155,21 @@ class Game_model extends CI_Model{
 		return $gameidArray;
 	}
 
+
+
+    public function emailListFall2012(){
+        $query = $this->db->query("select email from users
+        join player
+        WHERE
+        (player.datecreated > '2012-06-01 00:00:00' AND player.userid = users.id)
+        OR users.created > '2012-06-01 00:00:00'
+        group by users.id
+        ");
+        $list = array();
+        foreach($query->result() as $row){
+          $list[] = $row->{'email'};
+        }
+        return $list;
+    }
 }
 ?>

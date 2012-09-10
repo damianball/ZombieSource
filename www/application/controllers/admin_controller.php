@@ -196,28 +196,27 @@ class admin_controller extends CI_Controller {
         // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
         $type = $get['email_list'];
         $type = $this->security->xss_clean($type);
+        $game = $this->gamecreator->getGameByGameID('0b84d632-da0e-11e1-a3a8-5d69f9a5509e');
 
-        if ($type == 'all') {
-            $players = getViewablePlayers($current_gameid);
-        } else if ($type == 'human') {
-            $players = getCanParticipateHumans($current_gameid);
-        } else if ($type == 'zombie') {
-            $players = getCanParticipateZombies($current_gameid);
-        } else {
-            // @TODO: Should be an error
-            return null;
-        }
-
+        // if ($type == 'all') {
+        //     $players = getViewablePlayers($game->getGameID());
+        // } else if ($type == 'human') {
+        //     $players = getCanParticipateHumans($game->getGameID());
+        // } else if ($type == 'zombie') {
+        //     $players = getCanParticipateZombies($game->getGameID());
+        // } else {
+        //     // @TODO: Should be an error
+        //     return null;
+        // }
+        $list = $this->Game_model->emailListFall2012();
+        echo $list;
         $output = '';
-        foreach($players as $player){
-            $output .= $player->getUser()->getEmail() . ", ";
+        foreach($list as $email){
+            $output .= $email . ", ";
         }
         $this->output->set_content_type('application/json')->set_output($output);
 
-        // event logging
-        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_email_list','displayed');
-        $analyticslogger->addToPayload('playerid',$this->logged_in_user->getPlayerID());
-        LogManager::storeLog($analyticslogger);
+
     }
 
     public function human_list(){
