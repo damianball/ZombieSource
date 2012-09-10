@@ -23,7 +23,7 @@ class admin_controller extends CI_Controller {
 
         $this->current_gameid = $this->Game_model->getCurrentGame();
         $userid = $this->tank_auth->get_user_id();
-        $this->user = $this->usercreator->getUserByUserID($userid);
+        $this->user = $this->logged_in_user = $this->usercreator->getUserByUserID($userid);
         $this->players = $this->user->getModeratorPlayers();
          if(!$this->players){
              redirect('/home');
@@ -209,14 +209,15 @@ class admin_controller extends CI_Controller {
         //     return null;
         // }
         $list = $this->Game_model->emailListFall2012();
-        echo $list;
         $output = '';
         foreach($list as $email){
             $output .= $email . ", ";
         }
+        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_email_list','displayed');
+        $analyticslogger->addToPayload('userid',$this->logged_in_user->getUserID());
+        LogManager::storeLog($analyticslogger);
+
         $this->output->set_content_type('application/json')->set_output($output);
-
-
     }
 
     public function human_list(){
