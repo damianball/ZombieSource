@@ -238,7 +238,8 @@ class profile_controller extends CI_Controller {
 
 
     public function edit_team_profile()
-    {
+    {            
+
         $default = array('edit');
         $get = $this->uri->uri_to_assoc(2, $default);
         $teamid = $get['edit'];
@@ -246,11 +247,12 @@ class profile_controller extends CI_Controller {
         $gameid = $team->getData('gameid');
         $player = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $gameid);
         if($team->canEditTeam($player)){
-            $this->form_validation->set_rules('team_name', 'Team Name', 'trim|xss_clean|required');
+
             $this->form_validation->set_rules('team_gravatar_email', 'Gravatar Email', 'email|trim|xss_clean');
             $this->form_validation->set_rules('description', 'Description', 'trim|xss_clean');
 
             if ($this->form_validation->run()) {
+
             //save the data
                 $name = $this->input->post('team_name');
                 $gravatar_email = $this->input->post('team_gravatar_email');
@@ -273,7 +275,7 @@ class profile_controller extends CI_Controller {
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data);
         } else {
-
+            echo "HEY";
             $data['message'] = "Insufficient privileges to edit this team";
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
