@@ -275,7 +275,6 @@ class profile_controller extends CI_Controller {
             $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
             $this->load->view('layouts/main', $layout_data);
         } else {
-            echo "HEY";
             $data['message'] = "Insufficient privileges to edit this team";
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message', $data, true);
