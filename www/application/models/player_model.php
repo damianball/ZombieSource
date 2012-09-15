@@ -44,6 +44,25 @@ class Player_model extends CI_Model{
         return $query->row()->id;
     }
 
+    public function getPlayerIDByHumanCode($humancode){
+        if($humancode != NULL){
+            $this->db->select('playerid');
+            $this->db->from('player_data');
+            $this->db->where('name', 'human_code');
+            $this->db->where('value', strtoupper($humancode));
+            $this->db->order_by('timestamp', 'desc');
+            $this->db->limit(1);
+            $query = $this->db->get();
+            if($query->num_rows() > 0){
+                return $query->row()->playerid;
+            } else {
+                throw new PlayerDoesNotExistException('Player not found');
+            }
+        } else {
+            throw new UnexpectedValueException('human code cannot be null');
+        }
+    }
+
     public function getPlayerIDsByUserID($userid){
         $this->db->select('id');
         $this->db->from($this->table_name);

@@ -80,7 +80,7 @@ class Player{
     }
 
     public function isActiveZombie(){
-        return $this->canParticipate() && is_a($this, 'Zombie');
+        return $this->canParticipate() && (is_a($this, 'Zombie') || is_a($this, 'OriginalZombie'));
     }
 
     public function isGameClosed(){

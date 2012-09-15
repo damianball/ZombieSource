@@ -52,24 +52,34 @@ class admin_controller extends CI_Controller {
 
     public function player_controls(){
         $username = $this->input->post('player');
+        $human_code = $this->input->post('human_code');
         $gameid = $this->input->post('gameid');
         try{
             try{
                 $userid = getUserIDByUsername($username);
             } catch(UnexpectedValueException $e){
-                throw new PlayerDoesNotExistException('Username was empty');
+                try{
+                    $playerid = getPlayerIDByHumanCode($human_code);
+                } catch(UnexpectedValueException $e){
+                    throw new PlayerDoesNotExistException('Username and human code were empty');
+                }
             }
             try{
-                $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+                if(isset($userid)){
+                    $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+                } else if(isset($playerid)){
+                    $player = $this->playercreator->getPlayerByPlayerID($playerid);
+                }
             } catch(InvalidParametersException $e){
-                throw new PlayerDoesNotExistException('Username was invalid');
+                throw new PlayerDoesNotExistException('Player does not exist');
             }
             $data = getPrivatePlayerProfileDataArray($player);
 
             $is_mod = ($player->getData('moderator') == "1");
             $data['toggle_mod_to'] = $is_mod ? "0" : "1";
             $data['moderator_button_text'] = $is_mod ? "Remove Moderator" : "Make Moderator";
-            if(is_a($player, 'zombie')){
+            $data['status'] = $player->getStatus();
+            if($player->isActiveZombie()){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
 
@@ -91,6 +101,9 @@ class admin_controller extends CI_Controller {
                     $data['undo_tag_message'] = "Zombie not elligble to be untagged";
                 }
             }else{ //is not a zombie, can't be feed or untagged
+                if($player->isActiveHuman()){
+                    $data['human_code'] = $player->getHumanCode();
+                }
                 $data['feed_disabled'] = "disabled";
                 $data['feed_message'] = "Not a zombie";
                 $data['undo_tag_disabled'] = "disabled";
