@@ -15,11 +15,52 @@
     </div>
 </div> -->
 <div class="well">
-  
-  <h2> Player: <?php echo $username; ?> </h2>
+
+  <h3> Player: <?php echo $username; ?> </h3>
   <div class="row-fluid">
+  <div class="row-fluid">
+<div class="span12">
+    <p> <b>Player Status:</b>
+                <?php
+                  if($status == 'zombie'){
+                  #  echo "danger";
+                    echo "
+                    <span class=\"label label-warning\">";
+                      echo $status;
+                    echo "</span>";
+
+                  }else if($status == 'starved zombie'){
+                  #  echo "warning";
+                    echo "
+                    <span class=\"label label-important\">";
+                      echo $status;
+                    echo "</span>";
+                  }else{
+                    echo "
+                    <span class=\"label label-success\">";
+                      echo $status;
+                    echo "</span>";
+                  }
+
+                echo "</p>";
+
+                if($human_code){
+                    echo "<p><b>Human code:</b> $human_code</p>";
+                }
+                ?>
+</div>
+  </div>
     <div class="span10">
       <div id = "right_control_items">
+
+        <div class="row-fluid">
+          <div class="span4">
+            <div class="control_item" class="change_active_div">
+                <button id = "change_active" class = "btn btn-margin btn-long" value="<?php echo $playerid;?>">
+                <?php echo $active_button_text;?></button>
+            </div>
+          </div>
+        </div>
 
         <div class="row-fluid">
           <div class="span4">
@@ -33,14 +74,14 @@
           <div class="row-fluid">
             <div class="span4">
               <div id = "free_feed_div" class = "control_item">
-                  <button id = "free_feed" value = <?php echo $playerid; ?> class = "<?php echo $feed_disabled; ?> btn btn-margin btn-long" <?php echo $feed_disabled; ?> > Grant Free Zombie Feed</button> 
+                  <button id = "free_feed" value = <?php echo $playerid; ?> class = "<?php echo $feed_disabled; ?> btn btn-margin btn-long" <?php echo $feed_disabled; ?> > Grant Free Zombie Feed</button>
               </div>
             </div>
             <div class="span8">
-              <?php if($feed_message){ ?> 
+              <?php if($feed_message){ ?>
                 <div class="alert alert-inline fade in">
                   <button type="button" class="close" data-dismiss="alert">×</button>
-                  <strong>Feed Warning: </strong><?php echo $feed_message; ?>
+                  <?php echo $feed_message; ?>
                 </div>
               <?php } ?>
           </div>
@@ -49,14 +90,14 @@
           <div class="row-fluid">
             <div class="span4">
               <div id = "undo_tag_div" class = "control_item">
-                  <button id = "undo_tag" value = <?php echo $playerid; ?> class = "<?php echo $undo_tag_disabled; ?> btn btn-margin btn-long" <?php echo $undo_tag_disabled; ?> > Undo Tag </button> 
+                  <button id = "undo_tag" value = <?php echo $playerid; ?> class = "<?php echo $undo_tag_disabled; ?> btn btn-margin btn-long" <?php echo $undo_tag_disabled; ?> > Undo Tag </button>
               </div>
             </div>
             <div class="span8">
               <?php if($undo_tag_message){ ?>
                 <div class="alert alert-inline fade in">
                   <button type="button" class="close" data-dismiss="alert">×</button>
-                  <strong>Tag Warning: </strong><?php echo $undo_tag_message; ?>
+                  <?php echo $undo_tag_message; ?>
                 </div>
               <?php } ?>
             </div>
@@ -72,6 +113,15 @@ $(document).ready(function(){
       $.post('admin/make_mod',
             {player:$('#make_mod').val()},
             function(data){$('#make_mod').html(data)}
+      );
+  });
+});
+
+$(document).ready(function(){
+  $("#change_active").click(function(){
+      $.post('admin/change_active',
+            {player:$('#change_active').val()},
+            function(data){$('#change_active').html(data)}
       );
   });
 });
