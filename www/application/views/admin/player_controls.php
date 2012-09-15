@@ -72,7 +72,7 @@
               <?php if($feed_message){ ?>
                 <div class="alert alert-inline fade in">
                   <button type="button" class="close" data-dismiss="alert">×</button>
-                  <strong>Feed Warning: </strong><?php echo $feed_message; ?>
+                  <?php echo $feed_message; ?>
                 </div>
               <?php } ?>
           </div>
@@ -88,7 +88,7 @@
               <?php if($undo_tag_message){ ?>
                 <div class="alert alert-inline fade in">
                   <button type="button" class="close" data-dismiss="alert">×</button>
-                  <strong>Tag Warning: </strong><?php echo $undo_tag_message; ?>
+                  <?php echo $undo_tag_message; ?>
                 </div>
               <?php } ?>
             </div>

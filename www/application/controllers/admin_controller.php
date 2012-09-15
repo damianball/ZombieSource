@@ -92,7 +92,7 @@ class admin_controller extends CI_Controller {
 
                     //spent 30 min trying to convert utc datetime to current 12 hour PST time to show the tag time and gave up due to time constraints.
                     //probably need a time helper.
-                    $message = "TAG: <h3> $tagger_name </h3> tagged <h3> $taggee_name </h3>";
+                    $message = "<b> $tagger_name </b> tagged <b> $taggee_name </b>";
 
                     $data['undo_tag_disabled'] = "";
                     $data['undo_tag_message'] = $message;
