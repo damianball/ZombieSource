@@ -55,6 +55,15 @@
 
         <div class="row-fluid">
           <div class="span4">
+            <div class="control_item" class="change_active_div">
+                <button id = "change_active" class = "btn btn-margin btn-long" value="<?php echo $playerid;?>">
+                <?php echo $active_button_text;?></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-fluid">
+          <div class="span4">
             <div class="control_item" class="make_mod_div">
                 <button id = "make_mod" class = "btn btn-margin btn-long" value="<?php echo $playerid;?>">
                 <?php echo $moderator_button_text;?></button>
@@ -104,6 +113,15 @@ $(document).ready(function(){
       $.post('admin/make_mod',
             {player:$('#make_mod').val()},
             function(data){$('#make_mod').html(data)}
+      );
+  });
+});
+
+$(document).ready(function(){
+  $("#change_active").click(function(){
+      $.post('admin/change_active',
+            {player:$('#change_active').val()},
+            function(data){$('#change_active').html(data)}
       );
   });
 });

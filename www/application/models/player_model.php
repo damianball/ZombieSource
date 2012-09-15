@@ -9,7 +9,8 @@ class Player_model extends CI_Model{
     // );
     private $table_editable_fields = array(
         'original_zombie' => 'int',
-        'dateremoved' => 'datetime'
+        'dateremoved' => 'datetime',
+        'player_stateid' => 'int'
     );
 
     function __construct(){
