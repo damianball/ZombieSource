@@ -11,15 +11,20 @@ class Achievement{
         $this->ci->load->model('Player_team_model', '', true);
         $this->ci->load->model('Tag_model', '', true);
         $this->ci->load->library('TagCreator');
+        $this->ci->load->library('PlayerCreator');
 
     }
 
     // recalculate achievements (does not delete, only adds)
     public function backgenerate(){
+        // this cannot work for Brains are Better!
         $tags_raw = $this->ci->Tag_model->getTagsInOrder();
+        $count = 0;
         foreach($tags_raw as $tag){
-            $this->registerKillAchievements($tag['id'], FALSE);
+            $new = $this->registerKillAchievements($tag['id'], FALSE);
+            $count += count($new);
         }
+        return $count;
     }
 
     public function registerKillAchievements($tagid, $break_early=TRUE){
@@ -39,7 +44,7 @@ class Achievement{
             if($kill_info->count >= $kills){
                 $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                 if($success){
-                    $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                    $new_ach[$achievementid] = array('playerid' => $taggerid, 'date' => $kill_info->latest);
                 }
                 if($break_early) break; // presumably the other cases have already happened
             }
@@ -59,7 +64,7 @@ class Achievement{
             if($kill_info->count >= $kills){
                 $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                 if($success){
-                    $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                    $new_ach[$achievementid] = array('playerid' => $taggerid, 'date' => $kill_info->latest);
                 }
                 if($break_early) break; // presumably the other cases have already happened
             }
@@ -72,13 +77,23 @@ class Achievement{
                 $taggee_team = $this->ci->Player_team_model->getLastTeam($tag->getTaggeeID());
                 if($tagger_team == $taggee_team){ // former teammates
                     // this totally ignores corner cases, like if the tagger quit the team and didn't join another
-                    $success = $this->addAchievement($taggerid, 8, $kill_info->latest);
+                    $success = $this->addAchievement($taggerid, 16, $kill_info->latest);
                     if($success){
-                        $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                        $new_ach[$achievementid] = array('playerid' => $taggerid, 'date' => $kill_info->latest);
                     }
                 }
             } catch (PlayerNotMemberOfAnyTeamException $e){
                 // no fear, and no achievement
+            }
+        }
+
+        // check for Brains are Better
+        $gameid = $this->ci->playercreator->getPlayerByPlayerID($taggerid)->getGameID();
+        if($this->ci->Tag_model->countTagsByGameID($gameid) == 1){
+            $taggeeid = $tag->getTaggeeID();
+            $success = $this->addAchievement($taggeeid, 17, $kill_info->latest);
+            if($success){
+                $new_ach[$achievementid] = array('playerid' => $taggeeid, 'date' => $kill_info->latest);
             }
         }
         return $new_ach; // array of new achievements

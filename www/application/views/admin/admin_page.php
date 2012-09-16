@@ -24,6 +24,7 @@
             <h2><?php echo $game_names[$gameid];?></h2>
             <div>
                 <button id="regenerate_zombie_tree<?php echo $gameid?>" class="btn" value="<?php echo $gameid?>">Regenerate Zombie Family Tree</button>
+                <button id="check_missed_achievements<?php echo $gameid?>" class="btn" value="<?php echo $gameid?>">Check for Missed Achievements</button>
                 <div id="message<?php echo $gameid?>"></div>
             </div>
               <div id="player_panel<?php echo $gameid?>">
@@ -58,6 +59,10 @@
         });
         $("#regenerate_zombie_tree<?php echo $gameid; ?>").click(function(){
             $("#message<?php echo $gameid; ?>").load("admin/regenerate_zombie_tree",
+                {gameid:"<?php echo $gameid; ?>"});
+        });
+        $("#check_missed_achievements<?php echo $gameid; ?>").click(function(){
+            $("#message<?php echo $gameid; ?>").load("admin/check_missed_achievements",
                 {gameid:"<?php echo $gameid; ?>"});
         });
     });

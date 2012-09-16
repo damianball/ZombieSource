@@ -274,8 +274,16 @@ class admin_controller extends CI_Controller {
         $gameid = $this->input->post('gameid');
         $this->load->helper('tree_helper');
         $bytes = writeZombieTreeJSONByGameID($gameid);
-        $message = $bytes ? "Success" : "An error occured";
+        $message = $bytes ? "Success" : "An error occurred";
         $this->loadGenericMessageWithoutLayout($message);
+    }
+
+    public function check_missed_achievements(){
+        $gameid = $this->input->post('gameid');
+        $this->load->library('AchievementCreator');
+        $ach = $this->achievementcreator->getAchievement();
+        $num_new = $ach->backgenerate();
+        $this->loadGenericMessageWithoutLayout("Added $num_new achievements");
     }
 }
 

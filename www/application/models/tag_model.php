@@ -140,6 +140,16 @@ class Tag_model extends CI_Model{
         return $query->result_array();
     }
 
+    public function countTagsByGameID($gameid){
+        $this->db->select('COUNT(tag.id) as count');
+        $this->db->from($this->table_name);
+        $this->db->join('player', 'tag.taggerid = player.id');
+        $this->db->where('tag.invalid', 0);
+        $this->db->where('player.gameid', $gameid);
+        $query = $this->db->get();
+        return $query->row()->count;
+    }
+
     public function getData($tagid, $name){
         if(array_key_exists($name, $this->tagFields)){
             $this->db->select($name);
