@@ -55,6 +55,14 @@ class Achievement_model extends CI_Model{
         return $query->row();
     }
 
+    public function getAchievementTypes(){
+        $this->db->select('*');
+        $this->db->from('achievement_type');
+        $this->db->order_by('id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function getKillCountByPlayerID($playerid){
         $this->db->select('COUNT(id) as count, MAX(datetimeclaimed) as latest');
         $this->db->from('tag');
