@@ -14,6 +14,7 @@ class admin_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Team_model','',TRUE);
         $this->load->model('Game_model', '', TRUE);
+        $this->load->model('User_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('GameCreator', null);
@@ -94,7 +95,6 @@ class admin_controller extends CI_Controller {
                     $tagger_name = $tag->getTagger()->getUser()->getUsername();
                     $taggee_name = $player->getUser()->getUsername();
 
-                    //spent 30 min trying to convert utc datetime to current 12 hour PST time to show the tag time and gave up due to time constraints.
                     //probably need a time helper.
                     $message = "<b> $tagger_name </b> tagged <b> $taggee_name </b>";
 
@@ -133,13 +133,29 @@ class admin_controller extends CI_Controller {
             //the important part of this method.
             $tag->invalidate();
             if($tag->isInvalid()){
+
+                $taggee = $tag->getTaggee();
+                $old_team_id = $taggee->getFormerTeam();
+                if($old_team_id && !$taggee->isMemberOfATeam()){
+                    $old_team = $this->teamcreator->getTeamByTeamID($old_team_id);
+                    $old_team->unRemovePlayer($taggee);
+
+                    $diff = strtotime($tag->getTagDateTime()) - strtotime($old_team->leaveTime());
+                    if($diff<=60 ){
+                        $old_team->unRemovePlayer($taggee);
+                    }
+                }
+
                 // regenerate zombie tree
+
+
                 $this->load->helper('tree_helper');
                 writeZombieTreeJSONByGameID($player->getGameID());
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','succeeded');
-                $analyticslogger->addToPayload('admin_id',$this->logged_in_user->getUserID());
+                $adminplayer = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $player->getGameID());
+                $analyticslogger->addToPayload('admin_playerid',$adminplayer->getPlayerID());
                 $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             }else{
@@ -232,17 +248,17 @@ class admin_controller extends CI_Controller {
         $type = $this->security->xss_clean($type);
         $game = $this->gamecreator->getGameByGameID('0b84d632-da0e-11e1-a3a8-5d69f9a5509e');
 
-        // if ($type == 'all') {
-        //     $players = getViewablePlayers($game->getGameID());
-        // } else if ($type == 'human') {
-        //     $players = getCanParticipateHumans($game->getGameID());
-        // } else if ($type == 'zombie') {
-        //     $players = getCanParticipateZombies($game->getGameID());
-        // } else {
-        //     // @TODO: Should be an error
-        //     return null;
-        // }
-        $list = $this->Game_model->emailListFall2012();
+        if ($type == 'all') {
+            $list = $this->Game_model->emailListFall2012();
+        } else if ($type == 'humans') {
+            $list = $game->getHumanEmails();
+        } else if ($type == 'zombies') {
+            $list = $game->getZombieEmails();
+        } else {
+            // @TODO: Should be an error
+            return null;
+        }
+
         $output = '';
         foreach($list as $email){
             $output .= $email . ", ";
