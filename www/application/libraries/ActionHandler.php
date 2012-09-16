@@ -7,13 +7,22 @@ class ActionHandler{
 
     public function __construct(){
         $this->ci =& get_instance();
+        $this->ci->load->helper('tree_helper');
+        $this->ci->load->helper('tweet_helper');
     }
 
-    public function tagAction($tag_id, $gameid){
+    public function tagAction($tag, $gameid){
+      //SMS
       $data_obj = new stdClass();
       $data_obj->notification_name = 'teammate_tagged';
-      $data_obj->tag_id = $tag_id;
+      $data_obj->tag = $tag;
       $notification = new Notification($gameid, $data_obj);
       $notification->send();
+
+      //Tweet
+      tweet_tag($tag);
+
+      //rewrite tree
+      writeZombieTreeJSONByGameID($gameid);
     }
 }

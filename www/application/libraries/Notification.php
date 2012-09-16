@@ -44,7 +44,7 @@ class Notification{
     private function teammate_tagged($data_obj){
       try{
         //object hell.
-        $tag          = $this->ci->tagcreator->getTagbyTagID($data_obj->tag_id);
+        $tag          = $data_obj->tag;
         $team         = $this->ci->teamcreator->getTeamByTeamID($tag->getTaggee()->getTeamID());
 
         $user_id_list = $this->purgeUnsubscribedUsers($team->getTeamMemberUserIDs());
@@ -67,8 +67,6 @@ class Notification{
         $date = new DateTime($data_obj->game_date_id);
         $print_date = $date->format('m/d');
 
-        $test_game = $this->ci->gamecreator->getGameByGameID('9a051bbc-3ebc-11e1-b778-000c295b88cf');
-
         list($human_count, $zombie_count, $starved_zombies) = $game->playerStatusCounts();
         
         $day_kills = $game->daykills($date->format('Ymd'));
@@ -77,6 +75,33 @@ class Notification{
     
         return array($user_id_list, "Total zombie count: $zombie_count. $day_kills kills today. $days_remaining $day_text remain.");
       }catch (Exception $e){
+        return array(null, null);
+      }
+    }
+
+
+    private function broadcast($data_obj){
+      try{
+        $game = $this->ci->gamecreator->getGameByGameID($this->gameid);
+
+        $user_id_list = array();
+        if($data_obj->type == "all"){
+            $user_id_list = $this->ci->Player_model->getActivePlayerUserIDsByGameID($game->getGameID());
+            $prefix = "Message from the moderators:";
+        }elseif($data_obj->type == "humans"){
+            $user_id_list = $game->getHumanUserIDs();
+            $prefix = "Message for all humans";
+        }elseif($data_obj->type == "zombies"){
+            $user_id_list = $game->getZombieUserIDs();
+            $prefix = "Message for all zombies:";
+        }
+
+        $user_id_list = $this->purgeUnsubscribedUsers($user_id_list);
+
+        $response = $prefix . ' " ' . $data_obj->message . ' " ';
+        return array($user_id_list, $response);
+      }catch (Exception $e){
+        echo $e;
         return array(null, null);
       }
     }
@@ -98,9 +123,8 @@ class Notification{
         foreach($this->user_id_list as $recipient_user_id){
           $recipient_number = $this->ci->User_model->getUserData($recipient_user_id, "phone");
           $message = $this->message;
-          $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters.
-
-          //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.        
+          $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters.          
+          //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.
           // $this->client->account->sms_messages->create(
           //   $this->TwilioNumber,
           //   $recipient_number,
@@ -109,5 +133,4 @@ class Notification{
         }
       }
     }
-
 }

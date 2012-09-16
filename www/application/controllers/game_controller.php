@@ -61,7 +61,7 @@ class game_controller extends CI_Controller {
         $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
-
+        
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
 
@@ -99,8 +99,8 @@ class game_controller extends CI_Controller {
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
-                (is_a($player, 'Zombie') ? $player->getKills() : null),
-                (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
+                ($player->getPublicStatus() == "zombie" ? $player->getKills() : null),
+                ($player->getPublicStatus() == "zombie" ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
           $this->table->add_row($row);
         }
@@ -241,74 +241,25 @@ class game_controller extends CI_Controller {
             if ($this->form_validation->run()) {
                 $human_code = strtoupper($this->input->post('human_code'));
                 $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
-                if(playerExistsWithHumanCodeByGameID($human_code, $this->game->getGameID())){
-                    $playerid = getPlayerIDByHumanCodeGameID($human_code, $this->game->getGameID());
 
-                    // is the player an active human?
-                    $player = $this->playercreator->getPlayerByPlayerID($playerid);
-                    if(is_a($player, 'Human') && $player->canParticipate()){
-                        $human = $player;
-                        try{
-                            $this->load->library('TagCreator');
-                            $this->load->library('ActionHandler');
-
-                            $dateclaimed = null;
-                            // generate time claimed offset
-                            $maxseconds = 14400;
-                            $minseconds = 0;
-                            if($claimed_tag_time_offset && $claimed_tag_time_offset != '' && $claimed_tag_time_offset >= $minseconds && $claimed_tag_time_offset <= $maxseconds){
-                                $dateclaimed = gmdate("Y-m-d H:i:s", time() - ($claimed_tag_time_offset));
-                            }
-
-                            $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
-                            $this->actionhandler->tagAction($tag->getTagID(),$this->game->getGameID());
-
-                            tweet_tag($tag);
-                            $this->load->helper('tree_helper');
-                            writeZombieTreeJSONByGameID($this->game->getGameID());
-                            if($tag){
-                                // remove human from any teams
-                                // was human on team?
-                                if($human->isMemberOfATeam()){
-                                    // tweet if this destroys the team
-                                    $teamid = $human->getTeamID();
-                                    $team = $this->teamcreator->getTeamByTeamID($teamid);
-                                    if($team->getTeamSize() == 1){ // last player on team
-                                        tweet_team_destroyed($team);
-                                    }
-                                    $human->leaveCurrentTeam();
-                                }
-
-                                // feed the tagger
-                                $this->load->library('FeedCreator');
-                                $feed = $this->feedcreator->getNewFeed($zombie, $tag, $dateclaimed, null);
-
-                                // feed friends
-                                $this->load->helper('user_helper');
-                                for($i = 1; $i <= $max_feeds; $i++){
-                                    if(!$this->input->post('zombie_friend_'.$i) == ''){
-                                        $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
-                                        if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
-                                            $friend = $this->playercreator->getPlayerByUserIDGameID($friendUserID, $this->game->getGameID());
-                                            if(is_a($friend, 'Zombie') && $friend->canParticipate()){
-                                                $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            $this->loadGenericMessage("The kill and corresponding feast was successfully recorded.");
-                        } catch (DatastoreException $e){
-                            $form_error = $e->getMessage();
+                // feed friends
+                $this->load->helper('user_helper');
+                $friends_to_feed = array();
+                for($i = 1; $i <= $max_feeds; $i++){
+                    if(!$this->input->post('zombie_friend_'.$i) == ''){
+                        $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
+                        if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
+                            $friends_to_feed[] = $this->playercreator->getPlayerByUserIDGameID($friendUserID, $this->game->getGameID());
                         }
-                    } else {
-                        // PLAYER IS NOT A HUMAN OR ACTIVE
-                        $this->loadGenericError('Cannot tag player with human code: '.$human_code);
                     }
-                } else {
-                    // HUMAN CODE DOES NOT EXIST ... NOW WHAT?
-                    $this->loadGenericError('Human code does not exist: '.$human_code);
                 }
+
+                try{
+                    $response = $this->game->register_kill($zombie, $human_code, $claimed_tag_time_offset, $friends_to_feed);
+                } catch (DatastoreException $e){
+                    $form_error = $e->getMessage();
+                }
+                $this->loadGenericError($response);
             } else {
                 $data['form_error'] = $form_error;
                 $data['game_name'] = $this->game->name();
