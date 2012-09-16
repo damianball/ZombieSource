@@ -73,7 +73,7 @@ class Tag_model extends CI_Model{
             JOIN player
             WHERE player.id = taggeeid
             AND game.id = \'' . $game_id . '\'
-            AND tag.datetimeclaimed >= '. $date_id .' 
+            AND tag.datetimeclaimed >= '. $date_id .'
             AND tag.datetimeclaimed < DATE_ADD(' . $date_id . ', INTERVAL 24 hour)'
         );
         return $query->row()->{'count'};

@@ -65,6 +65,13 @@ class game_controller extends CI_Controller {
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
 
+        $this->load->library('TagCreator', NULL);
+        $tag = $this->tagcreator->getTagByTagID('f5e3a57e-f715-11e1-9cbc-0800275a77e9');
+        $this->load->Library('AchievementCreator', NULL);
+        $ach = $this->achievementcreator->getAchievement();
+        $ach->register_kill_achievements($tag);
+
+
         $layout_data = array();
         $data['active_sidebar'] = 'newsfeed';
         $data["newsfeed_url"] = $url . 'game/' . $game_slug . '/newsfeed_json';

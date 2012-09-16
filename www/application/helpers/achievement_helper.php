@@ -39,6 +39,12 @@ function getPlayerIDByHumanCodeGameID($human_code, $gameid){
     return $CI->Player_model->getPlayerIDByHumanCodeGameID($human_code,$gameid);
 }
 
+function getPlayerIDByHumanCode($humancode){
+    $CI =& get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    return $CI->Player_model->getPlayerIDByHumanCode($humancode);
+}
+
 // @TODO: Decide how to handle PlayerDoesNotExist...
 function getPlayerIDByUserIDGameID($userid, $gameid){
     $CI = & get_instance();
