@@ -138,10 +138,10 @@ class admin_controller extends CI_Controller {
                     $old_team = $this->teamcreator->getTeamByTeamID($old_team_id);
                     $old_team->unRemovePlayer($taggee);
 
-                    // $diff = strtotime($tag->getTagDateTime()) - strtotime($old_team->leaveTime());
-                    // if($diff<=60 ){
-                    //     $old_team->unRemovePlayer($taggee);
-                    // }
+                    $diff = strtotime($tag->getTagDateTime()) - strtotime($old_team->leaveTime());
+                    if($diff<=60 ){
+                        $old_team->unRemovePlayer($taggee);
+                    }
                 }
 
                 // regenerate zombie tree

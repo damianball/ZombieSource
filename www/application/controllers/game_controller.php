@@ -61,12 +61,7 @@ class game_controller extends CI_Controller {
         $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
-
-        foreach($this->game->getMostStarvingZombies(5) as $zombie){
-            echo $zombie->getUser()->getUsername();
-            echo "<br>";
-        }
-
+        
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
 
