@@ -33,7 +33,7 @@ class Achievement_model extends CI_Model{
         return ($query->row()->count > 0);
     }
 
-    public function getAchievementsByPlayerIDAchievementType($playerid, $achievementtype){
+    public function getAchievementDataByPlayerIDAchievementType($playerid, $achievementtype){
         $this->db->select('*');
         $this->db->from($this->table_name);
         $this->db->where('playerid', $playerid);
@@ -44,6 +44,15 @@ class Achievement_model extends CI_Model{
         } else {
             return $query->result_array();
         }
+    }
+
+    public function getAchievementType($typeid){
+        $this->db->select('*');
+        $this->db->from('achievement_type');
+        $this->db->where('id', $typeid);
+        $this->db->limit(1);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function getKillCountByPlayerID($playerid){
@@ -73,7 +82,7 @@ class Achievement_model extends CI_Model{
             'achievement' => $achievementid,
             'dateachieved' => $date
         );
-        $this->db->insert($this->table_name, $data);
+        return $this->db->insert($this->table_name, $data);
     }
 
 }
