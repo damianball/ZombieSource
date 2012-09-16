@@ -12,6 +12,19 @@ class Player_team_model extends CI_Model{
         parent::__construct();
     }
 
+    public function undoDateRemoved($teamid, $playerid){
+        $data = array(
+            'dateremoved' => null
+        );
+
+        $this->db->where('playerid',$playerid);
+        $this->db->where('teamid',$teamid);
+        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1); 
+        $this->db->update($this->table_name,$data); 
+    }
+
     public function addPlayerToTeam($teamid, $playerid){
         if(!$teamid){
             throw new UnexpectedValueException('teamid name cannot be null or empty');
@@ -121,5 +134,41 @@ class Player_team_model extends CI_Model{
         }
         return $query->row()->teamid;
     }
+
+    public function getDateRemovedByTeamID($teamid){
+        if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
+
+        $this->db->select('dateremoved');
+        $this->db->from($this->table_name);
+        $this->db->where('teamid',$teamid);
+        $this->db->where('dateremoved IS NULL');
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() != 1){
+            throw new PlayerNotMemberOfAnyTeamException('Too many (or few) results for teamid '.$teamid);
+        }
+        return $query->row()->dateremoved;
+    }
+
+
+
+    public function getFormerTeamIDByPlayerID($playerid){
+        if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
+
+        $this->db->select('teamid');
+        $this->db->from($this->table_name);
+        $this->db->where('playerid',$playerid);
+        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() != 1){
+            return false;
+        }
+        return $query->row()->teamid;
+    }
+
+
 }
 ?>

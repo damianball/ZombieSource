@@ -44,7 +44,7 @@ class Notification{
     private function teammate_tagged($data_obj){
       try{
         //object hell.
-        $tag          = $this->ci->tagcreator->getTagbyTagID($data_obj->tag_id);
+        $tag          = $data_obj->tag;
         $team         = $this->ci->teamcreator->getTeamByTeamID($tag->getTaggee()->getTeamID());
 
         $user_id_list = $this->purgeUnsubscribedUsers($team->getTeamMemberUserIDs());
@@ -120,11 +120,14 @@ class Notification{
 
     public function send(){
       if($this->message && $this->user_id_list){
+          echo "SENDING";     
+
         foreach($this->user_id_list as $recipient_user_id){
           $recipient_number = $this->ci->User_model->getUserData($recipient_user_id, "phone");
           $message = $this->message;
           $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters.          
-          //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.        
+          //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.
+          echo "SENDING";     
           // $this->client->account->sms_messages->create(
           //   $this->TwilioNumber,
           //   $recipient_number,

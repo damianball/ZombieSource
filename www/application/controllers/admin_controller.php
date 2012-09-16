@@ -131,13 +131,29 @@ class admin_controller extends CI_Controller {
             //the important part of this method.
             $tag->invalidate();
             if($tag->isInvalid()){
+
+                $taggee = $tag->getTaggee();
+                $old_team_id = $taggee->getFormerTeam();
+                if($old_team_id && !$taggee->isMemberOfATeam()){
+                    $old_team = $this->teamcreator->getTeamByTeamID($old_team_id);
+                    $old_team->unRemovePlayer($taggee);
+
+                    // $diff = strtotime($tag->getTagDateTime()) - strtotime($old_team->leaveTime());
+                    // if($diff<=60 ){
+                    //     $old_team->unRemovePlayer($taggee);
+                    // }
+                }
+
                 // regenerate zombie tree
+
+
                 $this->load->helper('tree_helper');
                 writeZombieTreeJSONByGameID($player->getGameID());
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','succeeded');
-                $analyticslogger->addToPayload('admin_id',$this->logged_in_user->getPlayerID());
+                $adminplayer = $this->playercreator->getPlayerByUserIDGameID($this->logged_in_user->getUserID(), $player->getGameID());
+                $analyticslogger->addToPayload('admin_playerid',$adminplayer->getPlayerID());
                 $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             }else{

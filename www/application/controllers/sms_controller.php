@@ -43,7 +43,7 @@ class sms_controller extends CI_Controller {
 
         if($command == "all" || $command == "humans" || $command == "zombies"){
             if(!(strlen($message) > 0)){
-                return
+                return;
             }
             if($this->isOnAdminWhiteList($number)){
               $data_obj = new stdClass();
@@ -66,7 +66,7 @@ class sms_controller extends CI_Controller {
             }else if($command == "stop"){
                 $user->updateSubscription("pause_updates", true);
             }else if($command == "tag"){ //TODO update before game starts.
-                $response = $this->tagViaText($user, $message);
+                $response = $this->tagViaText($user, $message, $game);
             }else{
                 $response = "Sorry, command not recognized. Visit http://bit.ly/Tf26sx to see a list of valid commands";
             }
@@ -82,7 +82,14 @@ class sms_controller extends CI_Controller {
         return in_array($number,$whitelist);
     }
 
-    private function tagViaText($tagger, $message){
-        
+    private function tagViaText($tagger, $message, $game){
+        $human_code = strtoupper($message);
+        try{
+            $playerid = getPlayerIDByHumanCodeGameID($human_code, $game->getGameID());
+        }catch (InvalidHumanCodeException $e){
+            return "Not a valid human code, sorry!";
+        }
+        $zombie = $this->playercreator->getPlayerByUserIDGameID($tagger->getUserID(), $game->getGameID());
+        return $game->register_kill($zombie,$human_code, null, null);
     }
 }

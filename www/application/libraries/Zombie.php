@@ -63,7 +63,7 @@ class Zombie extends Player implements IPlayer{
         if($pasttime > 0){
             $time = $lastfeed - $pasttime;
         } else {
-            $time = $lastfeed - $now;
+            $time = $lastfeed;
         }
         return $time;
     }

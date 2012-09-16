@@ -13,6 +13,8 @@ class Game{
         $this->ci->load->model('Player_model','',TRUE);
         $this->ci->load->library('PlayerCreator');
         $this->ci->load->helper('game_helper');
+        $this->ci->load->helper('tweet_helper');
+        $this->ci->load->library('FeedCreator');
 
         if($gameid){
             $this->gameid = $gameid;
@@ -20,6 +22,78 @@ class Game{
             throw new ClassCreationException("gameid cannot be null.");
         }
     }
+
+    public function register_kill($zombie, $human_code, $claimed_tag_time_offset = null, $friends_to_feed = null) {
+        $error = null;
+        $human_code = strtoupper($human_code);
+        if(playerExistsWithHumanCodeByGameID($human_code, $this->getGameID())){
+            $playerid = getPlayerIDByHumanCodeGameID($human_code, $this->getGameID());
+
+            // is the player an active human?
+            $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+            if(is_a($player, 'Human') && $player->canParticipate()){
+                $human = $player;
+                    $this->ci->load->library('TagCreator');
+                    $this->ci->load->library('ActionHandler');
+
+                    $dateclaimed = null;
+                    // generate time claime\d offset
+                    $maxseconds = 14400;
+                    $minseconds = 0;
+                    if($claimed_tag_time_offset && $claimed_tag_time_offset != '' && $claimed_tag_time_offset >= $minseconds && $claimed_tag_time_offset <= $maxseconds){
+                        $dateclaimed = gmdate("Y-m-d H:i:s", time() - ($claimed_tag_time_offset));
+                    }
+
+                    $tag = $this->ci->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
+                    $this->ci->actionhandler->tagAction($tag,$this->getGameID());
+
+                    tweet_tag($tag);
+                    $this->ci->load->helper('tree_helper');
+                    if($tag){
+                        // remove human from any teams
+                        // was human on team?
+                        if($human->isMemberOfATeam()){
+                            // tweet if this destroys the team
+                            $teamid = $human->getTeamID();
+                            $team = $this->ci->teamcreator->getTeamByTeamID($teamid);
+                            if($team->getTeamSize() == 1){ // last player on team
+                                tweet_team_destroyed($team);
+                            }
+                            $human->leaveCurrentTeam();
+                        }
+
+                        // feed the tagger
+                        $feed = $this->ci->feedcreator->getNewFeed($zombie, $tag, $dateclaimed, null);
+                        
+                        if($friends_to_feed){
+                            $this->feed_friends($friends_to_feed, $tag, $dateclaimed);
+                        }
+                    }
+                    $error = "The kill and corresponding feast was successfully recorded.";
+
+            } else {
+                // PLAYER IS NOT A HUMAN OR ACTIVE
+                $error = 'Cannot tag player with human code: '.$human_code;
+            }
+        } else {
+            // HUMAN CODE DOES NOT EXIST ... NOW WHAT?
+            $error = 'Human code does not exist: '.$human_code;
+        }
+        return $error;
+    } 
+
+    public function feed_friends($userids, $tag, $dateclaimed){
+        // feed friends
+        foreach($userids as $userid){
+            if($userid){
+                $friend = $this->playercreator->getPlayerByUserIDGameID($userid, $this->getGameID());
+                if(is_a($friend, 'Zombie') && $friend->canParticipate()){
+                    $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
+                }
+            }
+        }
+    }
+
 
     //Game Statistics
 

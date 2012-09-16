@@ -27,6 +27,10 @@ class Tag{
         return $this->ci->Tag_model->getData($this->tagid, 'datetimeclaimed');
     }
 
+    public function getTagDateTime(){
+        return $this->ci->Tag_model->getData($this->tagid, 'datetimecreated');
+    }
+
     public function getTagger(){
         $taggerid = $this->ci->Tag_model->getData($this->tagid, 'taggerid');
         return $this->ci->playercreator->getPlayerByPlayerID($taggerid);
