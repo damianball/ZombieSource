@@ -59,10 +59,12 @@ class admin_controller extends CI_Controller {
                 $userid = getUserIDByUsername($username);
             } catch(UnexpectedValueException $e){
                 try{
-                    $playerid = getPlayerIDByHumanCode($human_code);
+                    $playerid = getPlayerIDByHumanCodeGameID($human_code, $gameid);
                 } catch(UnexpectedValueException $e){
                     throw new PlayerDoesNotExistException('Username and human code were empty');
-                }
+                } catch(InvalidHumanCodeException $e ){
+                    throw new PlayerDoesNotExistException('Username and human code were empty');
+                };
             }
             try{
                 if(isset($userid)){
