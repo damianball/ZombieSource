@@ -14,6 +14,7 @@ class Achievement{
 
     }
 
+    // recalculate achievements (does not delete, only adds)
     public function backgenerate(){
         $tags_raw = $this->ci->Tag_model->getTagsInOrder();
         foreach($tags_raw as $tag){

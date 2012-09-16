@@ -17,6 +17,7 @@ class game_controller extends CI_Controller {
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
         $this->load->library('GameCreator', null);
+        $this->load->library('AchievementCreator', NULL);
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
@@ -64,12 +65,6 @@ class game_controller extends CI_Controller {
 
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
-
-        $this->load->library('TagCreator', NULL);
-        $this->load->Library('AchievementCreator', NULL);
-        $ach = $this->achievementcreator->getAchievement();
-        $ach->backgenerate();
-
 
         $layout_data = array();
         $data['active_sidebar'] = 'newsfeed';
@@ -273,6 +268,8 @@ class game_controller extends CI_Controller {
                             $this->actionhandler->tagAction($tag->getTagID(),$this->game->getGameID());
 
                             tweet_tag($tag);
+                            $ach = $this->achievementcreator->getAchievement();
+                            $ach->registerKillAchievements($tag);
                             $this->load->helper('tree_helper');
                             writeZombieTreeJSONByGameID($this->game->getGameID());
                             if($tag){
