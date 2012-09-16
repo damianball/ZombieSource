@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8888/ZombieSource/www/';
 
+$config['base_url']  = 'http://vandals.zombiesource.org/';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -180,7 +180,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 3;
 
 /*
 |--------------------------------------------------------------------------

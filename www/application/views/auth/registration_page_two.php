@@ -1,32 +1,31 @@
-<div class="page-header">
-  <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
-</div>
-<div class="row">
-    <div class="span10">
-      <h2> Sign Safety Waiver (Required) </h2>
-        <div class="span12">
-        <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
-             echo form_open($this->uri->uri_string())
+
+  <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004");
+             echo form_open($this->uri->uri_string(), array('class'=>'form-horizontal'));
          ?>
+  <div class="row-fluid">
+<!--       <legend> Sign Safety Waiver (Required) </legend>
+        
             <div class="clearfix">
-              <label id = test >Safety Waiver</label>
+              <label>Safety Waiver</label>
               <div class = "linkbutton">
               <a href = "http://dl.dropbox.com/u/30973/dean_of_students_waiver.pdf">
-                <button class="btn primary"> READ ME </button>
+                <button class="btn btn-primary btn-margin"> READ ME </button>
               </a>
               </div>
-            </div> 
+              
+            </div>
+            <br>
          <div class="clearfix">
                 <label>Agreements</label>
                 <div class="input">
-                    <ul class="inputs-list">
+                    <ul class="inputs-list unstyled">
                         <li>
-                            <label>
-  					                   <?php echo form_error('waiver'); ?>
+                            <label class="checkbox">
+  					                   <div class="error-text"><?php echo form_error('waiver');?></div>
                                 <input type="checkbox" name="waiver" value="signed" />
                                 I accept the terms of the Safety Waiver
                             </label>
-                            <label>
+                            <label class="checkbox">
                                 <input type="checkbox" name="awesome" value="yes">
                                 I am awesome
                             </label>
@@ -36,18 +35,19 @@
             </div>
             <label>Signature</label>
             <div class="input">
-  	         <?php echo form_error('sig'); ?>
-              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>"/>
+  	         <div class="error-text"><?php echo form_error('sig'); ?></div>
+              <input type="text" name="sig" value="<?php echo set_value('sig'); ?>">
             </div>
-            </fieldset>
-        </div> 
-      <h2> Profile Information (Optional) </h2>
-        <div class="span12">
-            <fieldset>
+            <br>
+            -->
+      
+      <legend> Profile Information (Optional) </legend>
+ 
+            
               <div class="clearfix">
                   <label>Age</label>
                   <div class="input">
-  			             <?php echo form_error('age'); ?>
+  			             <div class="error-text"><?php echo form_error('age'); ?></div>
                       <select name = "age">
                         <option> </option>
                           <?php
@@ -58,12 +58,12 @@
                             }
                           ?>
                       </select>
+                  </div>
                 </div>
-              </div>
               <div class="clearfix">
                   <label>Gender</label>
                   <div class="input" >
-  			             <?php echo form_error('gender'); ?>
+  			             <div class="error-text"><?php echo form_error('gender'); ?></div>
                       <select name = "gender">
                           <option></option>
                           <option value = "male" >Male</option>
@@ -75,19 +75,19 @@
               <div class="clearfix">
                   <label>Major</label>
                   <div class="input">
-  			              <?php echo form_error('major'); ?>
+  			              <div class="error-text"><?php echo form_error('major'); ?></div>
                       <input type="text" name = "major" value="<?php echo set_value('major'); ?>"/>
                   </div>
               </div>
+              <br>
               <div class="clearfix">
-                  <label>   </label>
+                  <label class="checkbox">   
   				            <input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
                   </label>
-              </div>         
-            </fieldset>
+              </div>
+              <br>
                 <div class="actions">
-                  <input type="submit" value = "Save and Finish" class = "btn success"/></form> 
-              </div>          
-        </div>  
-    </div>
- </div>
+                  <input type="submit" value = "Save and Finish" class = "btn btn-margin"/>
+              </div>
+      </div>
+<?php echo form_close(); ?>

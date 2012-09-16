@@ -9,11 +9,13 @@ class Zombie extends Player implements IPlayer{
     public function __construct($playerid){
         parent::__construct($playerid);
         $this->ci =& get_instance();
+        $this->ci->load->helper('date_helper');
+        $this->ci->load->model('Achievement_model', '', NULL);
     }
 
     // @Implements getStatus()
     public function getStatus(){
-        return "zombie"; 
+        return "zombie";
     }
 
     // @Implements getPublicStatus()
@@ -27,7 +29,6 @@ class Zombie extends Player implements IPlayer{
         }
     }
 
-    // MOVE TO ZOMBIE
     public function secondsSinceLastFeed(){
         //check model
         $this->ci->load->model('Feed_model');
@@ -47,16 +48,27 @@ class Zombie extends Player implements IPlayer{
                 $utcTime = $tag->getTagDateTimeClaimed();
             }
         }
-        
+
         if($utcTime){
-            $this->ci->load->helper('date_helper');
             $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
-            
+
             return $seconds;
         }
     }
 
-    // MOVE TO ZOMBIE
+    public function secondsSinceLastFeedOrGameEnd(){
+        $lastfeed = $this->secondsSinceLastFeed();
+        $gameend = $this->getGame()->getEndTime();
+        $now = time();
+        $pasttime = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", $now), $gameend);
+        if($pasttime > 0){
+            $time = $lastfeed - $pasttime;
+        } else {
+            $time = $lastfeed - $now;
+        }
+        return $time;
+    }
+
     public function getKills(){
         $this->ci->load->helper('tag_helper');
         return getTagCountByPlayerID($this->getPlayerID());
@@ -79,8 +91,8 @@ class Zombie extends Player implements IPlayer{
     }
 
     public function isStarved(){
-        $secondsSinceFeed = $this->secondsSinceLastFeed();
-        if($secondsSinceFeed > 60*60*48 ){
+        $secondsSinceFeed = $this->secondsSinceLastFeedOrGameEnd();
+        if($secondsSinceFeed > 60*60*24*2 ){
             return true;
         }
         return false;
@@ -88,7 +100,7 @@ class Zombie extends Player implements IPlayer{
 
     public function registerTag($humanCode, $claimed_tag_time_offset = null, $long = null, $lat = null){
         $this->ci->load->model('Tag_model','',true);
-        
+
         $tagid = $this->ci->Tag_model->storeNewTag($taggeeid, $this->getPlayerID(), $claimed_tag_time_offset, $long, $lat);
         return $tagid;
     }
@@ -106,4 +118,9 @@ class Zombie extends Player implements IPlayer{
     public function hasTaggedSomeone(){
         return $this->ci->Tag_model->checkForTagByPlayerID($this->getPlayerID());
     }
+
+    public function countAchievements(){
+        return $this->ci->Achievement_model->countAchievementsByPlayerID($this->getPlayerID());
+    }
+
 }

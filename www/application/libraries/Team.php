@@ -29,7 +29,7 @@ class Team{
             //still in a team
             throw new PlayerMemberOfTeamException('Cannot join a team in this game while still a member of another team.');
         } catch (PlayerNotMemberOfAnyTeamException $e){
-    
+
         }
         $this->ci->load->model('Player_team_model');
         $this->ci->Player_team_model->addPlayerToTeam($this->teamid, $player->getPlayerID());
@@ -45,7 +45,36 @@ class Team{
         $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->teamid);
         $playerArray = array();
         for($i = 0; $i<count($playeridarray); $i++){
-            $playerArray[] = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            $potential_player = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            if($potential_player->canParticipate()){
+                $playerArray[] = $potential_player;
+            }
+        }
+
+        return $playerArray;
+    }
+
+    public function getTeamMemberUserIDs(){
+        $this->ci->load->model('Player_model', '', true);
+        $playeridarray = $this->ci->Player_team_model->getListOfPlayerIDByTeamID($this->teamid);
+        $userArray = array();
+        for($i = 0; $i<count($playeridarray); $i++){
+            $userArray[] = $this->ci->Player_model->getUserIDByPlayerID($playeridarray[$i]);   
+        }
+        return $userArray;
+    }
+
+
+    public function getArrayOfPlayersZombifiedOnTeam(){
+        $this->ci->load->library('PlayerCreator');
+        $playeridarray = $this->ci->Player_team_model->getListOfFormerPlayerIDByTeamID($this->teamid);
+        $playerArray = array();
+        for($i = 0; $i<count($playeridarray); $i++){
+            $potential_player = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
+            // ensure these are zombies, and not players that left their last team
+            if(is_a($potential_player, 'Zombie')){
+                $playerArray[] = $potential_player;
+            }
         }
 
         return $playerArray;
@@ -53,6 +82,10 @@ class Team{
 
     public function getTeamID(){
         return $this->teamid;
+    }
+
+    public function getGameID(){
+        return $this->ci->Team_model->getGameIDByTeamID($this->teamid);
     }
 
     public function getData($key){
@@ -72,4 +105,10 @@ class Team{
         */
         return $player->isMemberOfTeam($this->teamid);
     }
+
+     public function getGravatarHTML($size=50){
+         $this->ci->load->helper('gravatar_helper');
+
+         return getGravatarHTML($this->getData('gravatar_email'), $this->getData('name'), $size, array('class' => 'twtr-pic'));
+     }
 }

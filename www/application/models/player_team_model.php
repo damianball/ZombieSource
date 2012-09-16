@@ -75,6 +75,23 @@ class Player_team_model extends CI_Model{
         return $playeridArray;
     }
 
+    public function getListOfFormerPlayerIDByTeamID($teamid){
+        if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
+        $this->db->select('playerid');
+        $this->db->select_max('datecreated', 'max_date');
+        $this->db->from($this->table_name);
+        $this->db->where('teamid', $teamid);
+        $this->db->where('dateremoved is not NULL', NULL);
+        $this->db->group_by('playerid');
+
+        $query = $this->db->get();
+        $playeridArray = array();
+        foreach($query->result() as $row){
+            $playeridArray[] = $row->playerid;
+        }
+        return $playeridArray;
+    }
+
     public function getCountOfPlayersByTeamID($teamid){
         if(!$teamid) throw new UnexpectedValueException('teamid cannot be null');
 
@@ -104,5 +121,21 @@ class Player_team_model extends CI_Model{
         }
         return $query->row()->teamid;
     }
+
+    public function getLastTeam($playerid){
+        if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
+
+        $this->db->select('teamid');
+        $this->db->from($this->table_name);
+        $this->db->where('playerid',$playerid);
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() != 1){
+            throw new PlayerNotMemberOfAnyTeamException('Too many (or few) results for playerid '.$playerid);
+        }
+        return $query->row()->teamid;
+    }
+
 }
 ?>

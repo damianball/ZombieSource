@@ -18,7 +18,6 @@ class PlayerCreator{
         $this->ci->load->model('Tag_model','',true);
     }
 
-    // MOVE TO PLAYER CREATOR
     // was getNewPlayerByJoiningGame
     public  function createPlayerByJoiningGame($userid, $gameid, $params){
         if(!$userid || !$gameid){
@@ -27,13 +26,15 @@ class PlayerCreator{
         $this->ci->load->model('Player_model','',TRUE);
         $playerid = $this->ci->Player_model->createPlayerInGame($userid, $gameid);
         $newPlayer = $this->getPlayerByPlayerID($playerid);
-        foreach($params as $key => $value){
-            $newPlayer->saveData($key, $value);
+        if($params != NULL){
+            foreach($params as $key => $value){
+                $newPlayer->saveData($key, $value);
+            }
         }
+        $this->ci->Player_model->makePlayerActive($newPlayer->getPlayerID());
         return $newPlayer;
     }
 
-    // MOVE TO PLAYER CREATOR
     // NEED TO CHECK IF THAT PLAYER EXISTS
     public function getPlayerByPlayerID($playerid){
         if(!$playerid){
@@ -45,10 +46,9 @@ class PlayerCreator{
         return $this->buildPlayerByStatusInGame($playerid);
     }
 
-    // MOVE TO PLAYER CREATOR
     public function getPlayerByUserIDGameID($userid, $gameid){
         if(!$userid || !$gameid){
-            throw new Exception("Userid nor Gameid can be null.");
+            throw new InvalidParametersException("Userid nor Gameid can be null.");
         }
 
         $this->ci->load->library('PlayerCreator');
