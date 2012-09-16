@@ -169,4 +169,5 @@ class Player_team_model extends CI_Model{
         }
         return $query->row()->teamid;
     }
+}
 ?>
