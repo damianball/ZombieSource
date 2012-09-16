@@ -62,6 +62,11 @@ class game_controller extends CI_Controller {
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
 
+        foreach($this->game->getMostStarvingZombies(5) as $zombie){
+            echo $zombie->getUser()->getUsername();
+            echo "<br>";
+        }
+
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
 
@@ -244,18 +249,18 @@ class game_controller extends CI_Controller {
 
                 // feed friends
                 $this->load->helper('user_helper');
-                $friendUserIDs= array();
+                $friends_to_feed = array();
                 for($i = 1; $i <= $max_feeds; $i++){
                     if(!$this->input->post('zombie_friend_'.$i) == ''){
                         $friendUserID = getUserIDByUsername($this->input->post('zombie_friend_'.$i));
                         if($friendUserID && $friendUserID != $zombie->getUser()->getUserID()){
-                            $friendUserIDs[] = $friendUserID;
+                            $friends_to_feed[] = $this->playercreator->getPlayerByUserIDGameID($friendUserID, $this->game->getGameID());
                         }
                     }
                 }
 
                 try{
-                    $response = $this->game->register_kill($zombie, $human_code, $claimed_tag_time_offset, $friendUserIDs);
+                    $response = $this->game->register_kill($zombie, $human_code, $claimed_tag_time_offset, $friends_to_feed);
                 } catch (DatastoreException $e){
                     $form_error = $e->getMessage();
                 }

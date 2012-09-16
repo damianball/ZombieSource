@@ -23,7 +23,7 @@ class Game{
         }
     }
 
-    public function register_kill($zombie, $human_code, $claimed_tag_time_offset = null, $friends_to_feed = null) {
+    public function register_kill($zombie, $human_code, $claimed_tag_time_offset = null, $players_to_feed = null) {
         $error = null;
         $human_code = strtoupper($human_code);
         if(playerExistsWithHumanCodeByGameID($human_code, $this->getGameID())){
@@ -47,7 +47,6 @@ class Game{
                     $tag = $this->ci->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
                     $this->ci->actionhandler->tagAction($tag,$this->getGameID());
 
-                    tweet_tag($tag);
                     $this->ci->load->helper('tree_helper');
                     if($tag){
                         // remove human from any teams
@@ -65,11 +64,14 @@ class Game{
                         // feed the tagger
                         $feed = $this->ci->feedcreator->getNewFeed($zombie, $tag, $dateclaimed, null);
                         
-                        if($friends_to_feed){
-                            $this->feed_friends($friends_to_feed, $tag, $dateclaimed);
+                        if($players_to_feed){
+                            $this->feed_friends($players_to_feed, $tag, $dateclaimed);
+                        }
+                        else{
+                            $this->feed_friends($this->getMostStarvingZombies(2), $tag, $dateclaimed);
                         }
                     }
-                    $error = "The kill and corresponding feast was successfully recorded.";
+                    $error = "The kill was successfully recorded";
 
             } else {
                 // PLAYER IS NOT A HUMAN OR ACTIVE
@@ -82,14 +84,10 @@ class Game{
         return $error;
     } 
 
-    public function feed_friends($userids, $tag, $dateclaimed){
-        // feed friends
-        foreach($userids as $userid){
-            if($userid){
-                $friend = $this->playercreator->getPlayerByUserIDGameID($userid, $this->getGameID());
-                if(is_a($friend, 'Zombie') && $friend->canParticipate()){
-                    $feed = $this->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
-                }
+    public function feed_friends($players, $tag, $dateclaimed =  null){
+        foreach($players as $friend){
+            if(is_a($friend, 'Zombie') && $friend->canParticipate()){
+                $this->ci->feedcreator->getNewFeed($friend, $tag, $dateclaimed, null);
             }
         }
     }
@@ -180,47 +178,68 @@ class Game{
         return $this->ci->Game_model->getEndTime($this->gameid);
     }
 
-   public function getZombieUserIDs(){
-    $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
-    $userids = array();
-    foreach($playerids as $playerid){
-        $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
-        if($player->isActiveZombie()){
-            $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+    public function getZombieUserIDs(){
+        $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+        $userids = array();
+        foreach($playerids as $playerid){
+            $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+            if($player->isActiveZombie()){
+                $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+            }
         }
+        return $userids;
     }
-    return $userids;
-   }
 
-   public function getHumanUserIDs(){
-    $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
-    $userids = array();
-    foreach($playerids as $playerid){
-        $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
-        if($player->isActiveHuman()){
-            $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+    public function getZombies(){
+        $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+        $zombies = array();
+        foreach($playerids as $playerid){
+            $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+            if($player->isActiveZombie()){
+                $zombies[]= $player;
+            }
         }
+        return $zombies;
     }
-    return $userids;
-   }
 
-   public function getHumanEmails(){
-    $userids = $this->getHumanUserIDs();
-    $emails = array();
-    foreach($userids as $userid){
-        $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+    public function getMostStarvingZombies($limit){
+        $zombies = $this->getZombies();
+        @usort($zombies, function($a, $b)
+        {
+            return $a->secondsSinceLastFeed() <$b->secondsSinceLastFeed();
+        });
+        return array_slice($zombies, 0, $limit);
     }
-    return $emails;
-   }
-
-
-   public function getZombieEmails(){
-    $userids = $this->getZombieUserIDs();
-    $emails = array();
-    foreach($userids as $userid){
-        $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+    
+    public function getHumanUserIDs(){
+        $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+        $userids = array();
+        foreach($playerids as $playerid){
+            $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+            if($player->isActiveHuman()){
+                $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+            }
+        }
+        return $userids;
     }
-    return $emails;
-   }
+
+    public function getHumanEmails(){
+        $userids = $this->getHumanUserIDs();
+        $emails = array();
+        foreach($userids as $userid){
+            $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+        }
+        return $emails;
+    }
+
+
+    public function getZombieEmails(){
+        $userids = $this->getZombieUserIDs();
+        $emails = array();
+        foreach($userids as $userid){
+            $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+        }
+        return $emails;
+    }
 
 }
