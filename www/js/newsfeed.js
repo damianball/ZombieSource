@@ -17,9 +17,9 @@ function display_tweets($) {
                 var tweet = $("<tr></tr>").addClass('tweet').html(text);
 
                 // analyse our tweet text and turn urls into working links, hash tags into search links, and @replies into profile links.
-                // tweet.html('<td>' + '<a href="http://www.twitter.com/' + this.from_user + '" target="_blank"><img class="twtr-pic span1" src="' 
+                // tweet.html('<td>' + '<a href="http://www.twitter.com/' + this.from_user + '" target="_blank"><img class="twtr-pic span1" src="'
                   // + this.profile_image_url + '" width="48" height="48" /></a>' + '<div class="twtr-text span2">' + this.from_user + '</div>' + '<div class="twtr-text span8">' +
-                  tweet.html('<td><div class="twtr-text span12">' + 
+                  tweet.html('<td><div class="twtr-text span12">' +
                   unescape(tweet.html()
 
                     // .replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi,'<a href="$1">$1</a>')
@@ -28,7 +28,7 @@ function display_tweets($) {
 
                     .replace(/(^|\s)@(\w+)/g,'$1<a href="http://twitter.com/$2">@$2</a>'))
 
-                  // + '<br /><a href="http://www.twitter.com/' + this.from_user + '/status/' + this.id_str 
+                  // + '<br /><a href="http://www.twitter.com/' + this.from_user + '/status/' + this.id_str
                   // + '" class="view" target="_blank">' + $.timeSinceTweet(this.date_created) + '</a>
                   + '<br>' + $.timeSinceTweet(this.date_created)
 
@@ -36,7 +36,7 @@ function display_tweets($) {
 
                  )
 
-                
+
                 .appendTo('#newsfeed')
 
                 .fadeIn()
@@ -44,6 +44,7 @@ function display_tweets($) {
 
                 }
 
+            $('.achievement').tooltip();
               });
             }
           });
@@ -56,12 +57,12 @@ function display_tweets($) {
     var date = new Date(time);
     var diff = ((new Date()).getTime() - date.getTime()) / 1000;
     var day_diff = Math.floor(diff / 86400);
-    
+
     if (day_diff < 0 || day_diff >= 31 || isNaN(day_diff)) {
-      
+
       return "a long time ago";
     }
-    
+
     if(day_diff == 0) {
       if(diff < 60) {
         return Math.ceil(diff) + " seconds ago";
@@ -79,7 +80,7 @@ function display_tweets($) {
         return Math.floor( diff / 3600 ) + " hours ago";
       }
     }
-    
+
     if(day_diff == 1) {
       return "Yesterday";
     }
@@ -91,7 +92,7 @@ function display_tweets($) {
     }
     else {
       return Math.ceil(day_diff / 30) + " months ago";
-    } 
+    }
   }
 })(jQuery);
           // table_head = document.createElement('thead');
@@ -129,7 +130,7 @@ function display_tweets($) {
           //     table_body.appendChild(row[i]);
           //   }
           //   document.getElementById('newsfeed').appendChild(table_body);
-          
+
         // }
       // })
 // new TWTR.Widget({
@@ -158,3 +159,5 @@ function display_tweets($) {
 //     behavior: 'all'
 //   },
 // }).render().start();
+//
+

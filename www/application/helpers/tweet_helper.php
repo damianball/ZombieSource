@@ -3,7 +3,8 @@
 function tweet_text($subject){
     $tweets = array(
         'tag' => '%TAGGER% spread the zombie infection to %TAGGEE%!',
-        'team_destroyed' => '%TEAM% has been wholly assimilated by the zombies!'
+        'team_destroyed' => '%TEAM% has been wholly assimilated by the zombies!',
+        'achievement_earned' => '%PLAYER% earned %ACHIEVEMENT_NAME%!'
     );
     return $tweets[$subject];
 }
@@ -73,6 +74,33 @@ function tweet_team_destroyed($team){
                      'html' => $html,
                      'text' => $text);
     tweet($text, 2, $payload, $team->getGameID(), FALSE);
+}
+
+function achievement_earned($achievementid, $playerid){
+    $CI =& get_instance();
+    $CI->load->library('PlayerCreator');
+    $player = $CI->playercreator->getPlayerByPlayerID($playerid);
+    $user = $player->getUser();
+    $username = $user->getUsername();
+    $gravatar = $user->getGravatarHTML();
+    $CI->load->model('Achievement_model');
+    $typeinfo = $CI->Achievement_model->getAchievementType($achievementid);
+    $typename = $typeinfo->name;
+    $imageurl = $typeinfo->image_url;
+    $desc = $typeinfo->description;
+    $open = '<a href="/user/' . $user->getUserID() . '">';
+    $close = '</a>';
+    $text = tweet_text('achievement_earned');
+    $text = str_replace('%PLAYER%', $username, $text);
+    $text = str_replace('%ACHIEVEMENT_NAME%', $typename, $text);
+    $html = tweet_text('achievement_earned');
+    $html = str_replace('%PLAYER%', $open . $gravatar . " " . $username . $close, $html, $html);
+    $html = str_replace('%ACHIEVEMENT_NAME%', '<div class="achievement" style="display: inline;" rel="tooltip" title="' . $desc . '"><img class="twtr-pic" height="50px" width="50px" src="' . $imageurl . '"> <b>' . $typename . '</b></div>', $html);
+    $payload = array('player' => $playerid,
+                     'achievementid' => $achievementid,
+                     'html' => $html,
+                     'text' => $text);
+    tweet($text, 5, $payload, $player->getGameID(), FALSE);
 }
 
 ?>

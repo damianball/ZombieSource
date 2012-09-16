@@ -266,10 +266,9 @@ class game_controller extends CI_Controller {
 
                             $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
                             $this->actionhandler->tagAction($tag->getTagID(),$this->game->getGameID());
-
                             tweet_tag($tag);
                             $ach = $this->achievementcreator->getAchievement();
-                            $ach->registerKillAchievements($tag);
+                            $ach->registerKillAchievements($tag->getTagID());
                             $this->load->helper('tree_helper');
                             writeZombieTreeJSONByGameID($this->game->getGameID());
                             if($tag){

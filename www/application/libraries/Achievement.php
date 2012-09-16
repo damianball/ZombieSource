@@ -18,12 +18,14 @@ class Achievement{
     public function backgenerate(){
         $tags_raw = $this->ci->Tag_model->getTagsInOrder();
         foreach($tags_raw as $tag){
-            $this->registerKillAchievements($this->ci->tagcreator->getTagByTagID($tag['id']), FALSE);
+            $this->registerKillAchievements($tag['id'], FALSE);
         }
     }
 
-    public function registerKillAchievements($tag, $break_early=TRUE){
+    public function registerKillAchievements($tagid, $break_early=TRUE){
+        $tag = $this->ci->tagcreator->getTagByTagID($tagid);
         $taggerid = $tag->getTaggerID();
+        $new_ach = array();
         // test for killstreak achievements
         $kill_info = $this->ci->Achievement_model->getLargestKillStreakInXHours($tag, 3);
         $levels = array( // num_kills => achievement_id
@@ -35,7 +37,10 @@ class Achievement{
         );
         foreach($levels as $kills => $achievementid){
             if($kill_info->count >= $kills){
-                $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
+                $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
+                if($success){
+                    $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                }
                 if($break_early) break; // presumably the other cases have already happened
             }
         }
@@ -52,7 +57,10 @@ class Achievement{
         );
         foreach($levels as $kills => $achievementid){
             if($kill_info->count >= $kills){
-                $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
+                $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
+                if($success){
+                    $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                }
                 if($break_early) break; // presumably the other cases have already happened
             }
         }
@@ -64,20 +72,24 @@ class Achievement{
                 $taggee_team = $this->ci->Player_team_model->getLastTeam($tag->getTaggeeID());
                 if($tagger_team == $taggee_team){ // former teammates
                     // this totally ignores corner cases, like if the tagger quit the team and didn't join another
-                    $this->addAchievement($taggerid, 8, $kill_info->latest);
+                    $success = $this->addAchievement($taggerid, 8, $kill_info->latest);
+                    if($success){
+                        $new_ach[$achievementid] = array('taggerid' => $taggerid, 'date' => $kill_info->latest);
+                    }
                 }
             } catch (PlayerNotMemberOfAnyTeamException $e){
                 // no fear, and no achievement
             }
         }
-
+        return $new_ach; // array of new achievements
     }
 
     private function addAchievement($playerid, $achievementid, $date){
         if(!$this->ci->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid)){
             // achievements can only be earned once per game
-            $this->ci->Achievement_model->addAchievement($playerid, $achievementid, $date);
+            return $this->ci->Achievement_model->addAchievement($playerid, $achievementid, $date);
         }
+        return false;
     }
 
 }

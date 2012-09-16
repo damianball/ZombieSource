@@ -137,7 +137,7 @@ class admin_controller extends CI_Controller {
                 $this->loadGenericMessageWithoutLayout("Success! Tag invalidated");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_unto_tag','succeeded');
-                $analyticslogger->addToPayload('admin_id',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('admin_id',$this->logged_in_user->getUserID());
                 $analyticslogger->addToPayload('tagged_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             }else{
