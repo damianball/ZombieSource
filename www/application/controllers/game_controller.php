@@ -239,7 +239,7 @@ class game_controller extends CI_Controller {
             // on success, try to log the tag
             $form_error = '';
             if ($this->form_validation->run()) {
-                $human_code = $this->input->post('human_code');
+                $human_code = strtoupper($this->input->post('human_code'));
                 $claimed_tag_time_offset = $this->input->post('claimed_tag_time_offset');
                 if(playerExistsWithHumanCodeByGameID($human_code, $this->game->getGameID())){
                     $playerid = getPlayerIDByHumanCodeGameID($human_code, $this->game->getGameID());
@@ -491,7 +491,7 @@ class game_controller extends CI_Controller {
         $newsitems = $this->Newsfeed_model->getNewsItemsByGameID($gameid);
         $json_newsitems = json_encode($newsitems);
         //load the content variables
-        
+
         print_r($json_newsitems);
     }
 

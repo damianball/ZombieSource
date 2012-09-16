@@ -29,8 +29,10 @@
               <div id="player_panel<?php echo $gameid?>">
                 <label class="control-label">Search for a player</label>
                 <div class="controls">
-                  <input id ="player_chooser<?php echo $gameid?>" type="text" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'>
+                  <input id ="player_chooser<?php echo $gameid?>" type="text" placeholder="Username" data-provide="typeahead" data-items="4" data-source='<?php echo $player_list?>'>
+                    OR<br>
                   <input id="gameid<?php echo $gameid?>" type="hidden" value="<? echo $gameid ?>">
+                <input id="humancode_chooser<?php echo $gameid?>" type="text" placeholder="Human Code" />
                   <span class="help-inline">
                     <button id="manage_player<?php echo $gameid?>" class="btn">Manage Player</button>
                   </span>
@@ -51,6 +53,7 @@
         $("#manage_player<?php echo $gameid?>").click(function(){
             $("#player_controls<?php echo $gameid?>").load('admin/player_controls',
                 {player:$('#player_chooser<?php echo $gameid?>').val(),
+                 human_code:$('#humancode_chooser<?php echo $gameid?>').val(),
                  gameid:$('#gameid<?php echo $gameid?>').val()});
         });
         $("#regenerate_zombie_tree<?php echo $gameid; ?>").click(function(){
