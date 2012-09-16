@@ -17,6 +17,7 @@ class game_controller extends CI_Controller {
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
         $this->load->library('GameCreator', null);
+        $this->load->library('AchievementCreator', NULL);
         $this->load->helper('game_helper');
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
@@ -53,7 +54,7 @@ class game_controller extends CI_Controller {
 
     public function index(){
         $gameid = $this->game->getGameID();
-        $is_player_in_game = $this->user->isActiveInGame($gameid);
+        $is_player_in_game = $this->user->isActiveInGame($gameid) || $this->user->isActiveInCurrentGame();
         $data['is_player_in_game'] = $is_player_in_game;
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
@@ -77,7 +78,7 @@ class game_controller extends CI_Controller {
 
     public function players()
     {
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
         //load the content variables
         $this->table->set_heading(
         array('data' => 'Avatar'),
@@ -85,6 +86,7 @@ class game_controller extends CI_Controller {
         array('data' => 'Team'),
         array('data' => 'Status'),
         array('data' => 'Kills'),
+        array('data' => 'Achievements'),
         array('data' => 'Last Feed'));
 
         # make the table bootstrap pretty! #
@@ -99,7 +101,9 @@ class game_controller extends CI_Controller {
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
+                // @TODO: this is not the right way to check for zombiehood
                 (is_a($player, 'Zombie') ? $player->getKills() : null),
+                (is_a($player, 'Zombie') ? $player->countAchievements() : null),
                 (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
           $this->table->add_row($row);
@@ -125,7 +129,7 @@ class game_controller extends CI_Controller {
     }
 
     public function teams(){
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
         $this->table->set_template(array('table_open' => '<table id="teams_table" class="table table-striped" border="0" cellpadding="4" cellspacing="0">'));
 
@@ -165,7 +169,7 @@ class game_controller extends CI_Controller {
     }
 
     public function stats() {
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
         # make the table bootstrap pretty! #
         $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
@@ -262,8 +266,9 @@ class game_controller extends CI_Controller {
 
                             $tag = $this->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);
                             $this->actionhandler->tagAction($tag->getTagID(),$this->game->getGameID());
-
                             tweet_tag($tag);
+                            $ach = $this->achievementcreator->getAchievement();
+                            $ach->registerKillAchievements($tag->getTagID());
                             $this->load->helper('tree_helper');
                             writeZombieTreeJSONByGameID($this->game->getGameID());
                             if($tag){

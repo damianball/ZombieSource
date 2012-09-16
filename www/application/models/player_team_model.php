@@ -121,5 +121,21 @@ class Player_team_model extends CI_Model{
         }
         return $query->row()->teamid;
     }
+
+    public function getLastTeam($playerid){
+        if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
+
+        $this->db->select('teamid');
+        $this->db->from($this->table_name);
+        $this->db->where('playerid',$playerid);
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() != 1){
+            throw new PlayerNotMemberOfAnyTeamException('Too many (or few) results for playerid '.$playerid);
+        }
+        return $query->row()->teamid;
+    }
+
 }
 ?>

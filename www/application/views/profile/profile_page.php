@@ -24,7 +24,7 @@
                 if($phone){
                   echo'
                     <a href="';
-                    echo site_url("profile/sms_settings"); 
+                    echo site_url("profile/sms_settings");
                     echo '" id = "sms_settings">
                 <div class="btn btn-light-blue btn-margin btn-mid">
                    Edit SMS Settings
@@ -35,7 +35,7 @@
                 ?>
 
 
-            
+
         </div>
         <div class="span9">
           <div class="font-profile">
@@ -90,6 +90,23 @@
         </div>
       </div>
     </div>
+        <?php
+                if(count($achievements) > 0){
+                    echo "<div class=\"well\">";
+                    echo '<h3>Achievements</h3>';
+                    foreach($achievements as $ach){
+                        $img = $ach['image_url'];
+                        $desc = $ach['description'];
+                        $name = $ach['name'];
+                        echo "<div class=\"achievement team_member\" rel=\"tooltip\" title=\"$desc\">";
+                        echo "<img src=\"$img\" class=\"twtr-pic\">";
+                        echo "<p>$name</p>";
+                        echo "</div>";
+                    }
+                    echo "</div>";
+                }
+        ?>
+
   </div>
 
     <div class="span4">
@@ -103,7 +120,7 @@
 
               <?php
                 if(!$phone){
-                  echo' 
+                  echo'
                     <div class="row-fluid sms_settings_box well">
                     <h3>Do you have Texting?</h3>
                     <dd> Setup an <strong>SMS Number</strong> to: </dd>
@@ -111,7 +128,7 @@
                     <li> Recieve optional game updates </li>
                     <li> More! </li>';
                     echo '<a href="';
-                    echo site_url("profile/sms_settings"); 
+                    echo site_url("profile/sms_settings");
                     echo' " id = "sms_settings">
                 <div class="btn btn-light-blue btn-margin">
                     SMS Setup/FAQ
@@ -119,5 +136,9 @@
               </a>';
                 }
                 ?>
-                </div> 
-          </div> 
+                </div>
+          </div>
+
+<script>
+    $('.achievement').tooltip();
+</script>

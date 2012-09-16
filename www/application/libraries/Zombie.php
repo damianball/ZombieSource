@@ -10,6 +10,7 @@ class Zombie extends Player implements IPlayer{
         parent::__construct($playerid);
         $this->ci =& get_instance();
         $this->ci->load->helper('date_helper');
+        $this->ci->load->model('Achievement_model', '', NULL);
     }
 
     // @Implements getStatus()
@@ -117,4 +118,9 @@ class Zombie extends Player implements IPlayer{
     public function hasTaggedSomeone(){
         return $this->ci->Tag_model->checkForTagByPlayerID($this->getPlayerID());
     }
+
+    public function countAchievements(){
+        return $this->ci->Achievement_model->countAchievementsByPlayerID($this->getPlayerID());
+    }
+
 }

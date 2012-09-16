@@ -7,6 +7,8 @@ class ActionHandler{
 
     public function __construct(){
         $this->ci =& get_instance();
+        $this->ci->load->library('AchievementCreator');
+        $this->ci->load->helper('tweet_helper');
     }
 
     public function tagAction($tag_id, $gameid){
@@ -15,5 +17,11 @@ class ActionHandler{
       $data_obj->tag_id = $tag_id;
       $notification = new Notification($gameid, $data_obj);
       $notification->send();
+
+      $ach = $this->ci->achievementcreator->getAchievement();
+      $new_ach = $ach->registerKillAchievements($tag_id);
+      foreach($new_ach as $id -> $info){
+          achievement_earned($id, $info['playerid']);
+      }
     }
 }

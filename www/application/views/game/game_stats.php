@@ -108,7 +108,6 @@
   </script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url()?>js/bootstrap-tooltip.js"></script>
       <script>json_path = "<?php echo base_url()?>json/<?php echo $url_slug;?>.json";</script>
 <script type="text/javascript" src="<?php echo base_url()?>js/zombietree.js"></script>
 <style>

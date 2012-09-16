@@ -178,6 +178,7 @@ class Player{
     }
 
     public function isHiddenOriginalZombie(){
+        return ($this->isActiveZombie() && is_a($this, 'OriginalZombie') && !$this->isExposed());
     }
 
 
