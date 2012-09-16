@@ -9,6 +9,7 @@ class Player{
     public function __construct($playerid){
         $this->ci =& get_instance();
         $this->ci->load->model('Player_model','',TRUE);
+        $this->ci->load->model('Player_team_model','',TRUE);
         $this->ci->load->library('TeamCreator');
         $this->ci->load->library('GameCreator');
 
@@ -80,7 +81,7 @@ class Player{
         }
     }
 
-    public function canParticipate(){
+  public function canParticipate(){
         if($this->isActive()){
             return true;
         } else {
@@ -167,6 +168,11 @@ class Player{
         $this->ci->load->model('Player_team_model');
         return $this->ci->Player_team_model->getTeamIDByPlayerID($this->playerid);
     }
+
+    public function getFormerTeam(){
+        return $this->ci->Player_team_model->getFormerTeamIDByPlayerID($this->playerid);
+    }
+
 
     public function leaveCurrentTeam(){
         $this->ci->load->model('Player_team_model');

@@ -35,6 +35,9 @@ class Team{
         $this->ci->Player_team_model->addPlayerToTeam($this->teamid, $player->getPlayerID());
     }
 
+    public function unRemovePlayer($player){
+        $this->ci->Player_team_model->undoDateRemoved($this->teamid, $player->getPlayerID());
+    }
 
     public function getTeamSize(){
         return $this->ci->Player_team_model->getCountOfPlayersByTeamID($this->teamid);
@@ -72,7 +75,7 @@ class Team{
         for($i = 0; $i<count($playeridarray); $i++){
             $potential_player = $this->ci->playercreator->getPlayerByPlayerID($playeridarray[$i]);
             // ensure these are zombies, and not players that left their last team
-            if(is_a($potential_player, 'Zombie')){
+            if($potential_player->getStatus() == 'zombie'){
                 $playerArray[] = $potential_player;
             }
         }
@@ -94,6 +97,10 @@ class Team{
 
     public function setData($key, $value){
         $this->ci->Team_model->setTeamData($this->teamid, $key, $value);
+    }
+
+    public function leaveTime(){
+        return $this->ci->Player_team_model->getDateRemovedByTeamID($this->teamid);
     }
 
     // Change to canPlayerEditTeam

@@ -12,6 +12,19 @@ class Player_team_model extends CI_Model{
         parent::__construct();
     }
 
+    public function undoDateRemoved($teamid, $playerid){
+        $data = array(
+            'dateremoved' => null
+        );
+
+        $this->db->where('playerid',$playerid);
+        $this->db->where('teamid',$teamid);
+        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1); 
+        $this->db->update($this->table_name,$data); 
+    }
+
     public function addPlayerToTeam($teamid, $playerid){
         if(!$teamid){
             throw new UnexpectedValueException('teamid name cannot be null or empty');
@@ -122,7 +135,10 @@ class Player_team_model extends CI_Model{
         return $query->row()->teamid;
     }
 
-    public function getLastTeam($playerid){
+
+
+
+  public function getLastTeam($playerid){
         if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
 
         $this->db->select('teamid');
@@ -137,5 +153,20 @@ class Player_team_model extends CI_Model{
         return $query->row()->teamid;
     }
 
-}
+
+   public function getFormerTeamIDByPlayerID($playerid){
+        if(!$playerid) throw new UnexpectedValueException('playerid cannot be null');
+
+        $this->db->select('teamid');
+        $this->db->from($this->table_name);
+        $this->db->where('playerid',$playerid);
+        $this->db->where('dateremoved IS NOT NULL');
+        $this->db->order_by('datecreated','desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() != 1){
+            return false;
+        }
+        return $query->row()->teamid;
+    }
 ?>
