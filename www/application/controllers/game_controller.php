@@ -54,7 +54,7 @@ class game_controller extends CI_Controller {
 
     public function index(){
         $gameid = $this->game->getGameID();
-        $is_player_in_game = $this->user->isActiveInGame($gameid);
+        $is_player_in_game = $this->user->isActiveInGame($gameid) || $this->user->isActiveInCurrentGame();
         $data['is_player_in_game'] = $is_player_in_game;
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
@@ -78,7 +78,7 @@ class game_controller extends CI_Controller {
 
     public function players()
     {
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
         //load the content variables
         $this->table->set_heading(
         array('data' => 'Avatar'),
@@ -129,7 +129,7 @@ class game_controller extends CI_Controller {
     }
 
     public function teams(){
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
         $this->table->set_template(array('table_open' => '<table id="teams_table" class="table table-striped" border="0" cellpadding="4" cellspacing="0">'));
 
@@ -169,7 +169,7 @@ class game_controller extends CI_Controller {
     }
 
     public function stats() {
-        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID());
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
         # make the table bootstrap pretty! #
         $this->table->set_template(array('table_open' => '<table class="table table-striped" border="0" cellpadding="4" cellspacing="0" id="fd-table-1">'));
