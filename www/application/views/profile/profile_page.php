@@ -138,3 +138,7 @@
                 ?>
                 </div>
           </div>
+
+<script>
+    $('.achievement').tooltip();
+</script>
