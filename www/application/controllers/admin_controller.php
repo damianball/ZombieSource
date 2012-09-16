@@ -14,6 +14,7 @@ class admin_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Team_model','',TRUE);
         $this->load->model('Game_model', '', TRUE);
+        $this->load->model('User_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('GameCreator', null);
@@ -80,7 +81,6 @@ class admin_controller extends CI_Controller {
                     $tagger_name = $tag->getTagger()->getUser()->getUsername();
                     $taggee_name = $player->getUser()->getUsername();
 
-                    //spent 30 min trying to convert utc datetime to current 12 hour PST time to show the tag time and gave up due to time constraints.
                     //probably need a time helper.
                     $message = "TAG: <h3> $tagger_name </h3> tagged <h3> $taggee_name </h3>";
 
@@ -198,17 +198,17 @@ class admin_controller extends CI_Controller {
         $type = $this->security->xss_clean($type);
         $game = $this->gamecreator->getGameByGameID('0b84d632-da0e-11e1-a3a8-5d69f9a5509e');
 
-        // if ($type == 'all') {
-        //     $players = getViewablePlayers($game->getGameID());
-        // } else if ($type == 'human') {
-        //     $players = getCanParticipateHumans($game->getGameID());
-        // } else if ($type == 'zombie') {
-        //     $players = getCanParticipateZombies($game->getGameID());
-        // } else {
-        //     // @TODO: Should be an error
-        //     return null;
-        // }
-        $list = $this->Game_model->emailListFall2012();
+        if ($type == 'all') {
+            $list = $this->Game_model->emailListFall2012();
+        } else if ($type == 'humans') {
+            $list = $game->getHumanEmails();
+        } else if ($type == 'zombies') {
+            $list = $game->getZombieEmails();
+        } else {
+            // @TODO: Should be an error
+            return null;
+        }
+
         $output = '';
         foreach($list as $email){
             $output .= $email . ", ";

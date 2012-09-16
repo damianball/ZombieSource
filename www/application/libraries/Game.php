@@ -9,6 +9,9 @@ class Game{
         $this->ci =& get_instance();
         $this->ci->load->model('Game_model', '', true);
         $this->ci->load->model('Tag_model', '', true);
+        $this->ci->load->model('User_model', '', true);
+        $this->ci->load->model('Player_model','',TRUE);
+        $this->ci->load->library('PlayerCreator');
         $this->ci->load->helper('game_helper');
 
         if($gameid){
@@ -102,4 +105,48 @@ class Game{
     public function getEndTime(){
         return $this->ci->Game_model->getEndTime($this->gameid);
     }
+
+   public function getZombieUserIDs(){
+    $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+    $userids = array();
+    foreach($playerids as $playerid){
+        $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+        if($player->isActiveZombie()){
+            $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+        }
+    }
+    return $userids;
+   }
+
+   public function getHumanUserIDs(){
+    $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+    $userids = array();
+    foreach($playerids as $playerid){
+        $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
+        if($player->isActiveHuman()){
+            $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+        }
+    }
+    return $userids;
+   }
+
+   public function getHumanEmails(){
+    $userids = $this->getHumanUserIDs();
+    $emails = array();
+    foreach($userids as $userid){
+        $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+    }
+    return $emails;
+   }
+
+
+   public function getZombieEmails(){
+    $userids = $this->getZombieUserIDs();
+    $emails = array();
+    foreach($userids as $userid){
+        $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+    }
+    return $emails;
+   }
+
 }

@@ -168,5 +168,4 @@ class User{
 
          return getGravatarHTML($this->getData('gravatar_email'), $this->getEmail(), $size, array('class' => 'twtr-pic'));
      }
-
 }
