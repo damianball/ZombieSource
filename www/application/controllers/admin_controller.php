@@ -53,24 +53,36 @@ class admin_controller extends CI_Controller {
 
     public function player_controls(){
         $username = $this->input->post('player');
+        $human_code = $this->input->post('human_code');
         $gameid = $this->input->post('gameid');
         try{
             try{
                 $userid = getUserIDByUsername($username);
             } catch(UnexpectedValueException $e){
-                throw new PlayerDoesNotExistException('Username was empty');
+                try{
+                    $playerid = getPlayerIDByHumanCode($human_code);
+                } catch(UnexpectedValueException $e){
+                    throw new PlayerDoesNotExistException('Username and human code were empty');
+                }
             }
             try{
-                $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+                if(isset($userid)){
+                    $player = $this->playercreator->getPlayerByUserIDGameID($userid, $gameid);
+                } else if(isset($playerid)){
+                    $player = $this->playercreator->getPlayerByPlayerID($playerid);
+                }
             } catch(InvalidParametersException $e){
-                throw new PlayerDoesNotExistException('Username was invalid');
+                throw new PlayerDoesNotExistException('Player does not exist');
             }
             $data = getPrivatePlayerProfileDataArray($player);
 
             $is_mod = ($player->getData('moderator') == "1");
             $data['toggle_mod_to'] = $is_mod ? "0" : "1";
             $data['moderator_button_text'] = $is_mod ? "Remove Moderator" : "Make Moderator";
-            if(is_a($player, 'zombie')){
+            $data['status'] = $player->getStatus();
+            $is_active = $player->isActiveState();
+            $data['active_button_text'] = $is_active ? "Deactivate Player" : "Activate Player";
+            if($player->isActiveZombie()){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
 
@@ -82,7 +94,7 @@ class admin_controller extends CI_Controller {
                     $taggee_name = $player->getUser()->getUsername();
 
                     //probably need a time helper.
-                    $message = "TAG: <h3> $tagger_name </h3> tagged <h3> $taggee_name </h3>";
+                    $message = "<b> $tagger_name </b> tagged <b> $taggee_name </b>";
 
                     $data['undo_tag_disabled'] = "";
                     $data['undo_tag_message'] = $message;
@@ -91,10 +103,13 @@ class admin_controller extends CI_Controller {
                     $data['undo_tag_message'] = "Zombie not elligble to be untagged";
                 }
             }else{ //is not a zombie, can't be feed or untagged
+                if($player->isActiveHuman()){
+                    $data['human_code'] = $player->getHumanCode();
+                }
                 $data['feed_disabled'] = "disabled";
-                $data['feed_message'] = "Not a zombie";
+                $data['feed_message'] = "Not an active zombie";
                 $data['undo_tag_disabled'] = "disabled";
-                $data['undo_tag_message'] = "Not a zombie";
+                $data['undo_tag_message'] = "Not an active zombie";
             }
 
             $this->load->view('admin/player_controls.php', $data);
@@ -175,7 +190,6 @@ class admin_controller extends CI_Controller {
     public function make_mod(){
         //mod
         $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
-        $username = $player->getUser()->getUsername();
         $was_moderator = $player->isModerator();
 
         $player->toggleModerator();
@@ -185,6 +199,24 @@ class admin_controller extends CI_Controller {
                 echo 'Make Moderator';
             } else {
                 echo 'Remove Moderator';
+            }
+        } else {
+            echo 'Error';
+        }
+    }
+
+    public function change_active(){
+        //mod
+        $player = $this->playercreator->getPlayerByPlayerID($this->input->post('player'));
+        $was_active = $player->isActive();
+
+        $player->toggleActive();
+        if($was_active !== $player->isActiveState()){
+            // echo the button text to be applied via AJAX
+            if($was_active){
+                echo 'Activate Player';
+            } else {
+                echo 'Deactivate Player';
             }
         } else {
             echo 'Error';
