@@ -66,10 +66,9 @@ class game_controller extends CI_Controller {
         $url = base_url();
 
         $this->load->library('TagCreator', NULL);
-        $tag = $this->tagcreator->getTagByTagID('f5e3a57e-f715-11e1-9cbc-0800275a77e9');
         $this->load->Library('AchievementCreator', NULL);
         $ach = $this->achievementcreator->getAchievement();
-        $ach->register_kill_achievements($tag);
+        $ach->backgenerate();
 
 
         $layout_data = array();

@@ -131,13 +131,22 @@ class Tag_model extends CI_Model{
         return false;
     }
 
+    public function getTagsInOrder(){
+        $this->db->select('id');
+        $this->db->from($this->table_name);
+        $this->db->where('invalid',0);
+        $this->db->order_by('datetimeclaimed', 'asc');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     public function getData($tagid, $name){
         if(array_key_exists($name, $this->tagFields)){
             $this->db->select($name);
             $this->db->from($this->table_name);
             $this->db->where('id',$tagid);
             $query = $this->db->get();
-            if ($query->num_rows() != 1){
+            if (!$query || $query->num_rows() != 1){
                 throw new DatastoreException('Too many (or few) records for tagid: '.$tagid.' name: '.$name);
             }
             return $query->row()->$name;
