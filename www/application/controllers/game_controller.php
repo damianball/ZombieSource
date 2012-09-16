@@ -92,6 +92,7 @@ class game_controller extends CI_Controller {
         array('data' => 'Team'),
         array('data' => 'Status'),
         array('data' => 'Kills'),
+        array('data' => 'Achievements'),
         array('data' => 'Last Feed'));
 
         # make the table bootstrap pretty! #
@@ -106,7 +107,9 @@ class game_controller extends CI_Controller {
                 getHTMLLinkToProfile($player),
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
+                // @TODO: this is not the right way to check for zombiehood
                 (is_a($player, 'Zombie') ? $player->getKills() : null),
+                (is_a($player, 'Zombie') ? $player->countAchievements() : null),
                 (is_a($player, 'Zombie') ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
           $this->table->add_row($row);

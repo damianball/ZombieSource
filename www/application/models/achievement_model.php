@@ -16,6 +16,14 @@ class Achievement_model extends CI_Model{
         return $query->result_array();
     }
 
+    public function countAchievementsByPlayerID($playerid){
+        $this->db->select('COUNT(id) as count');
+        $this->db->from($this->table_name);
+        $this->db->where('playerid', $playerid);
+        $query = $this->db->get();
+        return $query->row()->count;
+    }
+
     public function checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid){
         $this->db->select('COUNT(id) as count');
         $this->db->from($this->table_name);
