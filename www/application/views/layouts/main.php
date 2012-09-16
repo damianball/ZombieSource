@@ -15,7 +15,7 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo base_url('js/highcharts/highcharts.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo base_url('js/fix_placeholder.js'); ?>"></script>
-
+  <script type="text/javascript" src="<?php echo base_url()?>js/bootstrap-tooltip.js"></script>
   <script type="text/javascript" src="<?php echo base_url();?>js/jquery.tablesorter.js"></script>
 
  </head>

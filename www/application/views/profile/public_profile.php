@@ -49,6 +49,22 @@
         </div>
       </div>
     </div>
+        <?php
+                if(count($achievements) > 0){
+                    echo "<div class=\"well\">";
+                    echo '<h3>Achievements</h3>';
+                    foreach($achievements as $ach){
+                        $img = $ach['image_url'];
+                        $desc = $ach['description'];
+                        $name = $ach['name'];
+                        echo "<div class=\"achievement team_member\" rel=\"tooltip\" title=\"$desc\">";
+                        echo "<img src=\"$img\" class=\"twtr-pic\">";
+                        echo "<p>$name</p>";
+                        echo "</div>";
+                    }
+                    echo "</div>";
+                }
+        ?>
   </div>
 
     <div class="span4">
@@ -60,3 +76,6 @@
 
 </div>
 
+<script>
+    $('.achievement').tooltip();
+</script>

@@ -11,6 +11,7 @@ class profile_controller extends CI_Controller {
         }
 
         $this->load->model('Player_model','',TRUE);
+        $this->load->model('Achievement_model', '', TRUE);
         $this->load->library('PlayerCreator');
         $this->load->library('UserCreator');
         $this->load->library('TeamCreator');
@@ -40,6 +41,7 @@ class profile_controller extends CI_Controller {
                 $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
                 $data += getPrivatePlayerProfileDataArray($player);
                 $data['human_code'] = (!is_null($player) && $player->isActiveHuman()) ? $player->getHumanCode() : NULL;
+                $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
             } else {
                 // fill in defaults if user not in game
                 $data['game_name'] = 'none';
@@ -103,7 +105,7 @@ class profile_controller extends CI_Controller {
         $daily_updates   = $this->input->post('daily_updates');
         $team_updates    = $this->input->post('team_updates');
         $mission_updates = $this->input->post('mission_updates');
-        
+
         $formatted_phone = validate_phone($phone);
         if($formatted_phone){
             $response = array("phone_success" => "true");
@@ -167,6 +169,12 @@ class profile_controller extends CI_Controller {
         if($current_gameid){
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
+            // @TODO: allow achievments for humans
+            if($player->isActiveHuman() || $player->isHiddenOriginalZombie()){
+                $data['achievements'] = array();
+            } else {
+                $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
+            }
         } else {
             // fill in defaults if user not in game
             $data['game_name'] = 'none';
@@ -238,7 +246,7 @@ class profile_controller extends CI_Controller {
 
 
     public function edit_team_profile()
-    {            
+    {
 
         $default = array('edit');
         $get = $this->uri->uri_to_assoc(2, $default);
