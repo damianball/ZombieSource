@@ -44,7 +44,7 @@ class Achievement{
             if($kill_info->count >= $kills){
                 $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                 if($success){
-                    $new_ach = array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest);
+                    array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest));
                 }
                 if($break_early) break; // presumably the other cases have already happened
             }
@@ -64,7 +64,7 @@ class Achievement{
             if($kill_info->count >= $kills){
                 $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                 if($success){
-                    $new_ach[] = array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest);
+                    array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest));
                 }
                 if($break_early) break; // presumably the other cases have already happened
             }
@@ -80,7 +80,7 @@ class Achievement{
                     $achievementid = 16; // True Friend
                     $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                     if($success){
-                        $new_ach[] = array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest);
+                        array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest));
                     }
                 }
             } catch (PlayerNotMemberOfAnyTeamException $e){
@@ -95,7 +95,7 @@ class Achievement{
             $achievementid = 17; // Brains are Better
             $success = $this->addAchievement($taggeeid, $achievementid, $kill_info->latest);
             if($success){
-                $new_ach[] = array('achievementid' => $achievementid, 'playerid' => $taggeeid, 'date' => $kill_info->latest);
+                array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggeeid, 'date' => $kill_info->latest));
             }
         }
         return $new_ach; // array of new achievements

@@ -20,16 +20,15 @@ class ActionHandler{
       $notification = new Notification($gameid, $data_obj);
       $notification->send();
 
+      //Tweet
+      tweet_tag($tag);
+
       //achievements
       $ach = $this->ci->achievementcreator->getAchievement();
       $new_ach = $ach->registerKillAchievements($tag->getTagID());
       foreach($new_ach as $info){
-          print_r($info);
           achievement_earned($info['achievementid'], $info['playerid']);
       }
-
-      //Tweet
-      tweet_tag($tag);
 
       //rewrite tree
       writeZombieTreeJSONByGameID($gameid);
