@@ -33,8 +33,9 @@ class sms_controller extends CI_Controller {
         $response = "";
         $split_value = explode(" ", strToLower(trim($value)), 2);
         $command = $split_value[0];
-        $message = $split_value[1];
-
+        if(count($split_value) >= 2){
+            $message = $split_value[1];
+        }
         if($user==null || $user->currentGameID() == null){
             $game = $this->gamecreator->getGameByGameID("0b84d632-da0e-11e1-a3a8-5d69f9a5509e");
         }else{
