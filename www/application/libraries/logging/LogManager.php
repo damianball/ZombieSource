@@ -14,8 +14,7 @@ class LogManager{
     private static $logStores = array();
 
     private static function openLogStores() {
-        self::$logStores['general'] = new GeneralLogFile();
-        self::$logStores['cli'] = new CliLogFile();
+
     }
 
     private static function closeLogStores() {
@@ -90,6 +89,13 @@ class LogManager{
                     'logger' => $ilogger->getLoggerName(),
                     'payload' => $ilogger->toArray()
             );
+        }
+
+        // @TODO: damian - this is a hack to deal with file permissions in /tmp
+        if ($logStore == 'general' && !array_key_exists('general', self::$logStores)) {
+            self::$logStores['general'] = new GeneralLogFile();
+        } else if ($logStore == 'cli' && !array_key_exists('cli', self::$logStores)) {
+            self::$logStores['cli'] = new CliLogFile();
         }
 
         // @TODO: damian - check if logstore exists and is a instance of iLogStore
