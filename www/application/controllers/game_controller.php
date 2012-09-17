@@ -246,7 +246,7 @@ class game_controller extends CI_Controller {
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['game_name'] = $this->game->name();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
 
         $layout_data = array();
         $data['active_sidebar'] = 'achievements';
@@ -264,7 +264,7 @@ class game_controller extends CI_Controller {
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['game_name'] = $this->game->name();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
 
         $layout_data = array();
         $data['active_sidebar'] = 'zombiefamily';
