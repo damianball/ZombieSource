@@ -13,6 +13,7 @@ class game_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Game_model','',TRUE);
         $this->load->model('Newsfeed_model', '', TRUE);
+        $this->load->model('Achievement_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
