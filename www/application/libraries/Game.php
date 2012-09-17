@@ -102,7 +102,7 @@ class Game{
 
         $players = getViewablePlayers($this->gameid);
         foreach($players as $player){
-                if(is_a($player, 'Zombie')){
+                if(strpos($player->getPublicStatus(),'zombie') !== FALSE){
                     if($player->isStarved()){
                       $starved_zombie_count += 1;;
                     }else{
