@@ -60,10 +60,14 @@
               $date = $user['date'];
               $gravatar = $user['gravatar'];
               echo "<div class=\"team_member\" rel=\"tooltip\" title=\"Achieved: " . date('g:i A \o\n l F n, Y', strtotime($date . ' UTC')) . "\">";
-              echo "<a href=" . base_url("/user/$userid") . ">";
+              if($userid){
+                  echo "<a href=" . base_url("/user/$userid") . ">";
+              }
               echo $gravatar;
               echo "<div class=\"team_member_attribute\">$username</div>";
-              echo "</a>";
+              if($userid){
+                  echo "</a>";
+              }
               echo '</div>';
           }
           echo '</div></div>';
