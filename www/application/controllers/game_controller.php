@@ -232,9 +232,17 @@ class game_controller extends CI_Controller {
             foreach($users as $user){
                 $user_dat = array();
                 $user_obj = $this->usercreator->getUserByUserID($user->userid);
-                $user_dat['gravatar'] = $user_obj->getGravatarHTML();
-                $user_dat['userid'] = $user->userid;
-                $user_dat['username'] = $user->username;
+                $player = $this->playercreator->getPlayerByUserIDGameID($user->userid, $this->game->getGameID());
+                if($player->getStatus() == 'zombie' && $player->getPublicStatus() == 'human'){
+                    // cloaked zombie
+                    $user_dat['username'] = "Original Zombie";
+                    $user_dat['gravatar'] = '<img src="http://i.imgur.com/JdSwQ.png" class="twtr-pic">';
+                    $user_dat['userid'] = false;
+                } else {
+                    $user_dat['username'] = $user->username;
+                    $user_dat['gravatar'] = $user_obj->getGravatarHTML();
+                    $user_dat['userid'] = $user->userid;
+                }
                 $user_dat['date'] = $user->date;
                 $dat[] = $user_dat;
             }
