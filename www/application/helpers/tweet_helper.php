@@ -32,7 +32,7 @@ function tweet($text, $message_type, $message_payload, $gameid, $external){
 
 function tweet_tag($tag){
     $tagger = $tag->getTagger();
-    if(is_a($tagger, 'OriginalZombie') && !$tagger->isExposed()){
+    if($tagger->getStatus() == 'zombie' && $tagger->getPublicStatus() == 'human'){
         $tagger_username = "A deadly creature";
         $tagger_open = '';
         $tagger_close = '';
@@ -80,16 +80,24 @@ function achievement_earned($achievementid, $playerid){
     $CI =& get_instance();
     $CI->load->library('PlayerCreator');
     $player = $CI->playercreator->getPlayerByPlayerID($playerid);
-    $user = $player->getUser();
-    $username = $user->getUsername();
-    $gravatar = $user->getGravatarHTML();
+    if($player->getStatus() == 'zombie' && $player->getPublicStatus() == 'human'){
+        // cloaked OZ
+        $username = 'A deadly creature';
+        $gravatar = '<img src="http://i.imgur.com/YidMp.png" class="twtr-pic">';
+        $open = '';
+        $close = '';
+    } else {
+        $user = $player->getUser();
+        $username = $user->getUsername();
+        $gravatar = $user->getGravatarHTML();
+        $open = '<a href="/user/' . $user->getUserID() . '">';
+        $close = '</a>';
+    }
     $CI->load->model('Achievement_model');
     $typeinfo = $CI->Achievement_model->getAchievementType($achievementid);
     $typename = $typeinfo->name;
     $imageurl = $typeinfo->image_url;
     $desc = $typeinfo->description;
-    $open = '<a href="/user/' . $user->getUserID() . '">';
-    $close = '</a>';
     $text = tweet_text('achievement_earned');
     $text = str_replace('%PLAYER%', $username, $text);
     $text = str_replace('%ACHIEVEMENT_NAME%', $typename, $text);
