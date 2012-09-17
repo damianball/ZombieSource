@@ -40,7 +40,7 @@ class profile_controller extends CI_Controller {
                 $userid = $this->logged_in_user->getUserID();
                 $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
                 $data += getPrivatePlayerProfileDataArray($player);
-                $data['human_code'] = (!is_null($player) && $player->isActiveHuman()) ? $player->getHumanCode() : NULL;
+                $data['human_code'] = (!is_null($player) && $player->getStatus() == 'human') ? $player->getHumanCode() : NULL;
                 $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
             } else {
                 // fill in defaults if user not in game
@@ -170,7 +170,7 @@ class profile_controller extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
             // @TODO: allow achievments for humans
-            if($player->isActiveHuman() || $player->isHiddenOriginalZombie()){
+            if($player->isActive() && $player->getPublicStatus() == 'human'){
                 $data['achievements'] = array();
             } else {
                 $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
@@ -224,7 +224,7 @@ class profile_controller extends CI_Controller {
         $data['members_list'] = $team->getArrayOfPlayersOnTeam();
         $data['zombies_list'] = $team->getArrayOfPlayersZombifiedOnTeam();
         $data['slug'] = $this->Game_model->getGameSlugByGameID($gameid);
-        $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+        $data['is_zombie'] = !is_null($player) && $player->isActive() && $player->getStatus() == 'zombie';
 
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('profile/team_public_profile', $data, true);
@@ -276,7 +276,7 @@ class profile_controller extends CI_Controller {
                 redirect("team/".$team->getTeamID());
             }
             $data = getTeamProfileDataArray($team);
-            $data['is_zombie'] = !is_null($player) && $player->isActiveZombie();
+            $data['is_zombie'] = !is_null($player) && $player->isActive() && $player->getStatus() == 'zombie';
 
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('profile/edit_team_profile', $data, true);
