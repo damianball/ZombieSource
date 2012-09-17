@@ -223,7 +223,25 @@ class game_controller extends CI_Controller {
     public function achievements() {
         $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
-        $data['achievement_types'] = $this->Achievement_model->getAchievementTypes();
+        $ach_types = $this->Achievement_model->getAchievementTypes();
+        $achievers = array();
+        foreach($ach_types as $data){
+            $users = $this->Achievement_model->getUserInfoByAchievementType($data->id, $this->game->getGameID());
+            $dat = array();
+            foreach($users as $user){
+                $user_dat = array();
+                $user_obj = $this->usercreator->getUserByUserID($user->userid);
+                $user_dat['gravatar'] = $user_obj->getGravatarHTML();
+                $user_dat['userid'] = $user->userid;
+                $user_dat['username'] = $user->username;
+                $user_dat['date'] = $user->date;
+                $dat[] = $user_dat;
+            }
+            $achievers[$data->id] = $dat;
+        }
+        $data = array();
+        $data['achievement_types'] = $ach_types;
+        $data['achievers'] = $achievers;
         $data['is_player_in_game'] = $is_player_in_game;
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
@@ -242,7 +260,6 @@ class game_controller extends CI_Controller {
     public function zombiefamily() {
         $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
 
-        $data['achievement_types'] = $this->Achievement_model->getAchievementTypes();
         $data['is_player_in_game'] = $is_player_in_game;
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();

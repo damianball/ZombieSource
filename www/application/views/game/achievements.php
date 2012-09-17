@@ -25,9 +25,47 @@
       $this->load->view("layouts/game_sidebar", $data);
     ?>
 
-  <div class="row">
-  </div>
+    <div class="span10">
+  <?php
+      foreach($achievement_types as $ach_info){
+          $img_url = $ach_info->image_url;
+          $description = $ach_info->description;
+          $name = $ach_info->name;
+
+          $users = @$achievers[$ach_info->id];
+          if(!$users) $users = array();
+          $achieved_by = count($users);
+          echo '<div class="row"><div class="span9 well">';
+          echo '<div style="margin-left: 30px;">';
+          echo "<h2>$name <small>Achieved by $achieved_by</small></h2>";
+          echo "<img class=\"twtr-pic\" src=\"$img_url\">";
+          echo "$description";
+          echo '</div>';
+          echo '<br>';
+
+          foreach($users as $user){
+              $userid = $user['userid'];
+              $username = $user['username'];
+              $date = $user['date'];
+              $gravatar = $user['gravatar'];
+              echo "<div class=\"team_member\" rel=\"tooltip\" title=\"Achieved: " . date('g:i A \o\n l F n, Y', strtotime($date . ' UTC')) . "\">";
+              echo "<a href=" . base_url("/user/$userid") . ">";
+              echo $gravatar;
+              echo "<div class=\"team_member_attribute\">$username</div>";
+              echo "</a>";
+              echo '</div>';
+          }
+          echo '</div></div>';
+      }
+
+?>
+
+</div>
 </div>
 
 
-
+      <script>
+        $(document).ready(function(){
+        $('.team_member').tooltip();
+        });
+      </script>
