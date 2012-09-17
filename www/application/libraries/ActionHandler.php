@@ -24,6 +24,7 @@ class ActionHandler{
       $ach = $this->ci->achievementcreator->getAchievement();
       $new_ach = $ach->registerKillAchievements($tag->getTagID());
       foreach($new_ach as $info){
+          print_r($info);
           achievement_earned($info['achievementid'], $info['playerid']);
       }
 

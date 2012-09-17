@@ -44,7 +44,7 @@ class Achievement{
             if($kill_info->count >= $kills){
                 $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                 if($success){
-                    $new_ach[$achievementid] = array('playerid' => $taggerid, 'date' => $kill_info->latest);
+                    $new_ach = array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest);
                 }
                 if($break_early) break; // presumably the other cases have already happened
             }
@@ -77,7 +77,8 @@ class Achievement{
                 $taggee_team = $this->ci->Player_team_model->getLastTeam($tag->getTaggeeID());
                 if($tagger_team == $taggee_team){ // former teammates
                     // this totally ignores corner cases, like if the tagger quit the team and didn't join another
-                    $success = $this->addAchievement($taggerid, 16, $kill_info->latest);
+                    $achievementid = 16; // True Friend
+                    $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                     if($success){
                         $new_ach[] = array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest);
                     }
@@ -91,7 +92,8 @@ class Achievement{
         $gameid = $this->ci->playercreator->getPlayerByPlayerID($taggerid)->getGameID();
         if($this->ci->Tag_model->countTagsByGameID($gameid) == 1){
             $taggeeid = $tag->getTaggeeID();
-            $success = $this->addAchievement($taggeeid, 17, $kill_info->latest);
+            $achievementid = 17; // Brains are Better
+            $success = $this->addAchievement($taggeeid, $achievementid, $kill_info->latest);
             if($success){
                 $new_ach[] = array('achievementid' => $achievementid, 'playerid' => $taggeeid, 'date' => $kill_info->latest);
             }
