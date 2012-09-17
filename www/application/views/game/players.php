@@ -7,14 +7,11 @@
     </div>
     <?php } ?>
 
-<h1> <?php echo $game_name; ?></h1>
+<h1> <?php echo $game_name; ?>
  <!-- Check if game is closed and style accordingly  -->
 <?php
   if($is_closed){
     echo "<small> (Closed)</small></h1>";
-    echo "<script type=\"text/javascript\">";
-    echo "$(\".container\")[1].style.opacity = 0.5;";
-    echo "</script>";
   }else{
     echo "</h1>";
   }

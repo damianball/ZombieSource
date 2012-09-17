@@ -12,9 +12,6 @@
 <?php
   if($is_closed){
     echo "<small> (Closed)</small></h1>";
-    echo "<script type=\"text/javascript\">";
-    echo "$(\".container\")[1].style.opacity = 0.5;";
-    echo "</script>";
   }else{
     echo "</h1>";
   }
@@ -47,7 +44,6 @@
   </div>
 </div>
 <div id="chart1"></div>
-<div id="chart"></div>
 
 
 
@@ -106,19 +102,4 @@
    });
 
   </script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
-      <script>json_path = "<?php echo base_url()?>json/<?php echo $url_slug;?>.json";</script>
-<script type="text/javascript" src="<?php echo base_url()?>js/zombietree.js"></script>
-<style>
-.tooltip {
-    margin-left: 15px;
-}
-
-path.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-</style>
 
