@@ -42,6 +42,17 @@
           echo "$description";
           echo '</div>';
           echo '<br>';
+          if($achieved_by > 0){
+            echo "<div class=\"accordian\" id=\"accordian2\">";
+            echo "<div class=\"accordion-group\">";
+            echo "<div class=\"accordion-heading\">";
+            echo "<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse" . $ach_info->id . "\">";
+            echo "<i class=\"icon-chevron-down\"></i> Achieved by...";
+            echo '</a>';
+            echo '</div>';
+            echo "<div id=\"collapse" . $ach_info->id . "\" class=\"accordian-body collapse\">";
+            echo "<div class=\"accordian-inner\">";
+          }
 
           foreach($users as $user){
               $userid = $user['userid'];
@@ -56,6 +67,9 @@
               echo '</div>';
           }
           echo '</div></div>';
+          if($achieved_by > 0){
+            echo '</div></div></div></div>';
+          }
       }
 
 ?>
@@ -69,3 +83,4 @@
         $('.team_member').tooltip();
         });
       </script>
+<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-collapse.js"/>
