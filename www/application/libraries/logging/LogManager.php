@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once(APPPATH . 'config/logger.php');
-require_once(APPPATH . 'libraries/logging/GeneralLogFile.php');
+require_once(APPPATH . 'libraries/logging/AnalyticsLogFile.php');
 require_once(APPPATH . 'libraries/logging/CliLogFile.php');
 require_once(APPPATH . 'libraries/logging/AnalyticsLogger.php');
 require_once(APPPATH . 'libraries/logging/ExceptionLogger.php');
@@ -56,7 +56,7 @@ class LogManager{
             throw new LogManagerException('Store log object does not implement ILogger.');
         }
 
-        $logStore = 'general';
+        $logStore = 'analytics';
 
         // assumes access to REMOTE_ADDR etc... so a call through apache
         if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
@@ -92,8 +92,8 @@ class LogManager{
         }
 
         // @TODO: damian - this is a hack to deal with file permissions in /tmp
-        if ($logStore == 'general' && !array_key_exists('general', self::$logStores)) {
-            self::$logStores['general'] = new GeneralLogFile();
+        if ($logStore == 'analytics' && !array_key_exists('analytics', self::$logStores)) {
+            self::$logStores['analytics'] = new AnalyticsLogFile();
         } else if ($logStore == 'cli' && !array_key_exists('cli', self::$logStores)) {
             self::$logStores['cli'] = new CliLogFile();
         }

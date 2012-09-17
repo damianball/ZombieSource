@@ -120,11 +120,13 @@ class Notification{
 
     public function send(){
       if($this->message && $this->user_id_list){
+        $message = $this->message;
+        $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters. 
+        info('sms_message: send called - ' . " message: " . $message);
         foreach($this->user_id_list as $recipient_user_id){
           $recipient_number = $this->ci->User_model->getUserData($recipient_user_id, "phone");
-          $message = $this->message;
-          $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters. 
           //09-04-2012 Leaving this commented out until the final game deploy. Just for safety.
+          debug('sms_message: created - recipient_number: ' . $recipient_number . " message: " . $message);
           $this->client->account->sms_messages->create(
             $this->TwilioNumber,
             $recipient_number,
