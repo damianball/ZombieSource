@@ -103,9 +103,9 @@ class game_controller extends CI_Controller {
                 getHTMLLinkToPlayerTeam($player),
                 $player->getPublicStatus(),
 
-                ($player->getPublicStatus() == "zombie" ? $player->getKills() : null),
-                ($player->getPublicStatus() == "zombie" ? $player->countAchievements() : null),
-                ($player->getPublicStatus() == "zombie" ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
+                (strpos($player->getPublicStatus(),'zombie') !== FALSE ? $player->getKills() : null),
+                (strpos($player->getPublicStatus(),'zombie') !== FALSE ? $player->countAchievements() : null),
+                (strpos($player->getPublicStatus(),'zombie') !== FALSE ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
           $this->table->add_row($row);$this->player->isActive() && $this->player->getStatus() == 'zombie';
         }
