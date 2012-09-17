@@ -48,7 +48,13 @@ class Notification{
         $team         = $this->ci->teamcreator->getTeamByTeamID($tag->getTaggee()->getTeamID());
 
         $user_id_list = $this->purgeUnsubscribedUsers($team->getTeamMemberUserIDs());
-        $tagger_name  = $tag->getTagger()->getUser()->getUsername();
+        
+        $tagger_player = $tag->getTagger();
+        if($tagger_player->getPublicStatus() == "human") {
+          $tagger_name = "OriginalZombie";
+        }else{
+          $tagger_name = $tagger_player->getUser()->getUsername();
+        }
         $taggee_name  = $tag->getTaggee()->getUser()->getUsername();
         $teamname     = $team->getData("name");
 
