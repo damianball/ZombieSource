@@ -14,6 +14,7 @@ class sms_controller extends CI_Controller {
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
         $this->load->helper('user_helper');
+        $this->load->config('notifications');
     }
 
     public function receive_message(){
@@ -83,7 +84,7 @@ class sms_controller extends CI_Controller {
     }
 
     private function isOnAdminWhiteList($number){
-        $whitelist = array("12089912446");
+        $whitelist = $this->config->item('sms_white_list');
         return in_array($number,$whitelist);
     }
 
