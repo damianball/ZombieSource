@@ -63,7 +63,7 @@ $autoload['libraries'] = array('form_validation', 'security', 'tank_auth', 'tabl
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('html', 'url', 'form');
+$autoload['helper'] = array('html', 'url', 'form', 'app_log_helper');
 
 /*
 | -------------------------------------------------------------------
