@@ -78,6 +78,7 @@ class Achievement_model extends CI_Model{
         $this->db->select('COUNT(id) as count, MAX(datetimeclaimed) as latest');
         $this->db->from('tag');
         $this->db->where('taggerid', $playerid);
+        $this->db->where('invalid', 0);
         $query = $this->db->get();
         return $query->row();
     }
@@ -89,6 +90,7 @@ class Achievement_model extends CI_Model{
         $this->db->select('COUNT(id) as count, MAX(datetimeclaimed) as latest');
         $this->db->from('tag');
         $this->db->where('taggerid', $taggerid);
+        $this->db->where('invalid', 0);
         $this->db->where("datetimeclaimed BETWEEN '" . $start_time . "' AND '" . $end_time . "'");
         $query = $this->db->get();
         return $query->row();
