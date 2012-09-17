@@ -46,7 +46,7 @@ class sms_controller extends CI_Controller {
             $message = $split_value[1];
         }
 
-        if($message &&($command == "all" || $command == "humans" || $command == "zombies")){
+        if(($command == "all" || $command == "humans" || $command == "zombies")){
             if(!(strlen($message) > 0)){
                 return;
             }
