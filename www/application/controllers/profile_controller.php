@@ -40,7 +40,7 @@ class profile_controller extends CI_Controller {
                 $userid = $this->logged_in_user->getUserID();
                 $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
                 $data += getPrivatePlayerProfileDataArray($player);
-                $data['human_code'] = (!is_null($player) && is_a($player, 'Human')) ? $player->getHumanCode() : NULL;
+                $data['human_code'] = (!is_null($player) && $player->getStatus() == 'human') ? $player->getHumanCode() : NULL;
                 $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
             } else {
                 // fill in defaults if user not in game
@@ -170,7 +170,7 @@ class profile_controller extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
             // @TODO: allow achievments for humans
-            if($player->getPublicStatus() == 'human'){
+            if($player->isActive() && $player->getPublicStatus() == 'human'){
                 $data['achievements'] = array();
             } else {
                 $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
