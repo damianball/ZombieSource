@@ -170,10 +170,11 @@ class profile_controller extends CI_Controller {
             $player = $this->playercreator->getPlayerByUserIDGameID($userid, $current_gameid);
             $data += getPublicPlayerProfileDataArray($player);
             // @TODO: allow achievments for humans
-            if($player->isActive() && $player->getPublicStatus() == 'human'){
-                $data['achievements'] = array();
-            } else {
+            // if the player is publically a zombie, give them achievements
+            if ($player->isActive() && strpos($player->getPublicStatus(),'zombie') !== FALSE) {
                 $data['achievements'] = $this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID());
+            } else {
+                $data['achievements'] = array();
             }
         } else {
             // fill in defaults if user not in game
