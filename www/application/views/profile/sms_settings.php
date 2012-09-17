@@ -75,7 +75,7 @@
 
 <tr>
   <div class = "command_item">
-<td><strong>tag &#60human_code&#62</strong></td>
+<td><strong>tag human_code</strong></td>
 <td>    Tag a user by sending the word tag and then their human code.</td>
 </div>
 </tr>
