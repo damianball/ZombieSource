@@ -42,7 +42,11 @@ class sms_controller extends CI_Controller {
             $game = $this->gamecreator->getGameByGameID($user->currentGameID());
         }
 
-        if($command == "all" || $command == "humans" || $command == "zombies"){
+        if(count($split_value) >= 2){
+            $message = $split_value[1];
+        }
+
+        if($message &&($command == "all" || $command == "humans" || $command == "zombies")){
             if(!(strlen($message) > 0)){
                 return;
             }
