@@ -84,7 +84,7 @@ class admin_controller extends CI_Controller {
             $data['status'] = $player->getStatus();
             $is_active = $player->isActiveState();
             $data['active_button_text'] = $is_active ? "Deactivate Player" : "Activate Player";
-            if($player->isActiveZombie()){
+            if($player->isActive() && $player->getStatus() == 'zombie'){
                 $data['feed_disabled'] = "";
                 $data['feed_message'] = "";
 
@@ -105,7 +105,7 @@ class admin_controller extends CI_Controller {
                     $data['undo_tag_message'] = "Zombie not elligble to be untagged";
                 }
             }else{ //is not a zombie, can't be feed or untagged
-                if($player->isActiveHuman()){
+                if($player->isActive() && $player->getPublicStatus() == 'human'){
                     $data['human_code'] = $player->getHumanCode();
                 }
                 $data['feed_disabled'] = "disabled";

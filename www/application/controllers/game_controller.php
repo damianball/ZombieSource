@@ -117,7 +117,7 @@ class game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) &&
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
 
         $layout_data = array();
         $data['active_sidebar'] = 'playerlist';
@@ -156,8 +156,8 @@ class game_controller extends CI_Controller {
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
-        $data['is_human'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'human';
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getPublicStatus() == 'zombie';
+        $data['is_human'] = !is_null($this->player) && $this->player->isActive() && $this->player->getPublicStatus() == 'human';
 
         $layout_data = array();
         $data['active_sidebar'] = 'teamlist';
@@ -209,7 +209,7 @@ class game_controller extends CI_Controller {
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
         $data['game_name'] = $this->game->name();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
 
         $layout_data = array();
         $data['active_sidebar'] = 'stats';
@@ -325,7 +325,7 @@ class game_controller extends CI_Controller {
                 $data['zombie_list'] = getActiveZombiesString($this->game->getGameID());
                 $data['max_feeds'] = $max_feeds;
                 $data['url_slug'] = $this->game->slug();
-                $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+                $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
 
                 //display the regular page, with errors
                 $data['active_sidebar'] = 'logkill';
@@ -342,7 +342,7 @@ class game_controller extends CI_Controller {
         $data = array("message" => $message);
         $data['url_slug'] = $this->game->slug();
         $data['game_name'] = $this->game->name();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
         $data['active_sidebar'] = '';
         $data['error'] = $error;
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
