@@ -33,19 +33,6 @@ function tweet($text, $message_type, $message_payload, $gameid, $external){
 function tweet_tag($tag){
     $tagger = $tag->getTagger();
     if($tagger->getStatus() == 'zombie' && $tagger->getPublicStatus() == 'human'){
-        // cloaked OZ
-        $username = 'OriginalZombie';
-        $gravatar = '<img src="http://i.imgur.com/YidMp.png" class="twtr-pic">';
-        $open = '';
-        $close = '';
-    } else {
-        $user = $player->getUser();
-        $username = $user->getUsername();
-        $gravatar = $user->getGravatarHTML();
-        $open = '<a href="/user/' . $user->getUserID() . '">';
-        $close = '</a>';
-    }
-    if(is_a($tagger, 'OriginalZombie') && !$tagger->isExposed()){
         $tagger_username = "A deadly creature";
         $tagger_open = '';
         $tagger_close = '';
