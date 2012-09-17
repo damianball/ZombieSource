@@ -13,6 +13,7 @@ class game_controller extends CI_Controller {
         $this->load->model('Player_model','',TRUE);
         $this->load->model('Game_model','',TRUE);
         $this->load->model('Newsfeed_model', '', TRUE);
+        $this->load->model('Achievement_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('TeamCreator', null);
@@ -62,7 +63,7 @@ class game_controller extends CI_Controller {
         $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
-        
+
         $game_slug = $this->Game_model->getGameSlugByGameID($gameid);
         $url = base_url();
 
@@ -106,7 +107,7 @@ class game_controller extends CI_Controller {
                 ($player->getPublicStatus() == "zombie" ? $player->countAchievements() : null),
                 ($player->getPublicStatus() == "zombie" ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
-          $this->table->add_row($row);
+          $this->table->add_row($row);$this->player->isActive() && $this->player->getStatus() == 'zombie';
         }
 
         //-- Display Table
@@ -215,6 +216,61 @@ class game_controller extends CI_Controller {
         $data['active_sidebar'] = 'stats';
         $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
         $layout_data['content_body'] = $this->load->view('game/game_stats',$data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
+    public function achievements() {
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
+
+        $ach_types = $this->Achievement_model->getAchievementTypes();
+        $achievers = array();
+        foreach($ach_types as $data){
+            $users = $this->Achievement_model->getUserInfoByAchievementType($data->id, $this->game->getGameID());
+            $dat = array();
+            foreach($users as $user){
+                $user_dat = array();
+                $user_obj = $this->usercreator->getUserByUserID($user->userid);
+                $user_dat['gravatar'] = $user_obj->getGravatarHTML();
+                $user_dat['userid'] = $user->userid;
+                $user_dat['username'] = $user->username;
+                $user_dat['date'] = $user->date;
+                $dat[] = $user_dat;
+            }
+            $achievers[$data->id] = $dat;
+        }
+        $data = array();
+        $data['achievement_types'] = $ach_types;
+        $data['achievers'] = $achievers;
+        $data['is_player_in_game'] = $is_player_in_game;
+        $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
+        $data['game_name'] = $this->game->name();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
+
+        $layout_data = array();
+        $data['active_sidebar'] = 'achievements';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/achievements',$data, true);
+        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+        #$this->load->view('layouts/game_layout', $layout_data);
+        $this->load->view('layouts/main', $layout_data);
+    }
+
+    public function zombiefamily() {
+        $is_player_in_game = $this->user->isActiveInGame($this->game->getGameID()) || $this->user->isActiveInCurrentGame();
+
+        $data['is_player_in_game'] = $is_player_in_game;
+        $data['url_slug'] = $this->game->slug();
+        $data['is_closed'] = $this->game->isClosedGame();
+        $data['game_name'] = $this->game->name();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
+
+        $layout_data = array();
+        $data['active_sidebar'] = 'zombiefamily';
+        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+        $layout_data['content_body'] = $this->load->view('game/zombiefamily',$data, true);
         $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
         #$this->load->view('layouts/game_layout', $layout_data);
         $this->load->view('layouts/main', $layout_data);

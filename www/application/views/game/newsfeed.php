@@ -12,9 +12,6 @@
 <?php
   if($is_closed){
     echo "<small> (Closed)</small></h1>";
-    echo "<script type=\"text/javascript\">";
-    echo "$(\".container\")[1].style.opacity = 0.5;";
-    echo "</script>";
   }else{
     echo "</h1>";
   }
