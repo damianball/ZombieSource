@@ -89,13 +89,17 @@ class Player{
         }
     }
 
-    public function isActiveHuman(){
-        return $this->canParticipate() && is_a($this, 'Human');
-    }
+    // public function isActiveHuman(){
+    //     return $this->canParticipate() && is_a($this, 'Human');
+    // }
+    
+    // public function isActiveZombie(){
+    //     return $this->canParticipate() && (is_a($this, 'Zombie') || is_a($this, 'OriginalZombie'));
+    // }
 
-    public function isActiveZombie(){
-        return $this->canParticipate() && (is_a($this, 'Zombie') || is_a($this, 'OriginalZombie'));
-    }
+    // public function isHiddenOriginalZombie(){
+    //     return ($this->isActiveZombie() && is_a($this, 'OriginalZombie') && !$this->isExposed());
+    // }
 
     public function isGameClosed(){
         $gameid = $this->getCurrentGameId();
@@ -182,11 +186,6 @@ class Player{
     public function leaveGame(){
         $this->ci->Player_model->makePlayerInactive($this->playerid);
     }
-
-    public function isHiddenOriginalZombie(){
-        return ($this->isActiveZombie() && is_a($this, 'OriginalZombie') && !$this->isExposed());
-    }
-
 
     public function isElligibleForTagUndo(){
         return false;

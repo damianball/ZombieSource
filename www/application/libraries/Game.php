@@ -183,7 +183,7 @@ class Game{
         $userids = array();
         foreach($playerids as $playerid){
             $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
-            if($player->isActiveZombie()){
+            if($player->isActive() && $player->getStatus() == 'zombie'){
                 $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
             }
         }
@@ -195,7 +195,7 @@ class Game{
         $zombies = array();
         foreach($playerids as $playerid){
             $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
-            if($player->isActiveZombie()){
+            if($player->isActive() && $player->getStatus() == 'zombie'){
                 $zombies[]= $player;
             }
         }
@@ -216,7 +216,7 @@ class Game{
         $userids = array();
         foreach($playerids as $playerid){
             $player = $this->ci->playercreator->getPlayerByPlayerID($playerid);
-            if($player->isActiveHuman()){
+            if($player->getPublicStatus() == 'human'){
                 $userids[]= $this->ci->Player_model->getUserIDbyPlayerID($playerid);
             }
         }
