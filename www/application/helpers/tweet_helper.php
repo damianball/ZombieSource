@@ -36,7 +36,7 @@ function tweet_tag($tag){
         $tagger_username = "A deadly creature";
         $tagger_open = '';
         $tagger_close = '';
-        $tagger_gravatar = '';
+        $tagger_gravatar = '<img src="http://i.imgur.com/YidMp.png" class="twtr-pic">';
     } else {
         $user = $tagger->getUser();
         $tagger_username = $user->getUsername();
