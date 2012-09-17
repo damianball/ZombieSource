@@ -22,6 +22,8 @@ class sms_controller extends CI_Controller {
         $user= $this->usercreator->getUserByPhone($number);
         $response = $this->generate_response($user, $value, $number);
 
+        debug('sms_response: recipient_number: ' . $number . " message: " . $response);
+        
         header("Content-type: text/xml");
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         echo "<Response>";
