@@ -28,6 +28,7 @@ class job_controller extends CI_Controller {
                 $data_obj->game_date_id = $today;
                 $notification = new Notification($game_id, $data_obj);
                 $notification->send();
+                $this->Job_model->updateLastRunTime($notification_id, $game_id);
             }
         }
     }
@@ -45,14 +46,15 @@ class job_controller extends CI_Controller {
         $last_run_day = strtotime($last_run_datetime->format('Y-m-d'));
         $current_day = strtotime(date('Y-m-d', $now));
 
-        //hour of the day
+        //hour of the d
         $start_hour = $start_datetime->format('H');
         $current_hour = date('H', $now);
 
         //if we're past or at the start time
         //AND in the right hour of the day
         //AND the job didn't run today.
-        if($start_epoch <= $now && $start_hour == $current_hour && $last_run_day != $current_day){
+        //start_hour == current_hour
+        if($start_epoch <= $now && $start_hour == $current_hour &&  $last_run_day != $current_day){
             return true;
         }else{
             return false;

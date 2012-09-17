@@ -17,5 +17,17 @@ class Job_model extends CI_Model{
     }
     return $query->row();
   }
+
+
+  public function updateLastRunTime($notification_id,$game_id){
+
+    $data = array(
+            "last_run_date" => date('Y-m-d H:i:s', time())
+    );
+    $this->db->where('notification_id', $notification_id);
+    $this->db->where('game_id', $game_id);
+    $this->db->update($this->table_name, $data);
+
+  }
 }
 ?>
