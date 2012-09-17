@@ -157,8 +157,8 @@ class game_controller extends CI_Controller {
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getPublicStatus() == 'zombie';
-        $data['is_human'] = !is_null($this->player) && $this->player->isActive() && $this->player->getPublicStatus() == 'human';
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
+        $data['is_human'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'human';
 
         $layout_data = array();
         $data['active_sidebar'] = 'teamlist';
