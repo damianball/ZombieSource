@@ -20,11 +20,11 @@ class ActionHandler{
       $notification = new Notification($gameid, $data_obj);
       $notification->send();
 
-      //achievments
+      //achievements
       $ach = $this->ci->achievementcreator->getAchievement();
       $new_ach = $ach->registerKillAchievements($tag->getTagID());
-      foreach($new_ach as $id => $info){
-          achievement_earned($id, $info['playerid']);
+      foreach($new_ach as $info){
+          achievement_earned($info['achievementid'], $info['playerid']);
       }
 
       //Tweet
