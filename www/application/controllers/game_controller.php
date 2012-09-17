@@ -59,7 +59,7 @@ class game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
         $data['twitter_search'] = $this->config->item('twitter_search');
         $data['twitter_hashtag'] = $this->config->item('twitter_hashtag');
 
@@ -106,7 +106,7 @@ class game_controller extends CI_Controller {
                 ($player->getPublicStatus() == "zombie" ? $player->countAchievements() : null),
                 ($player->getPublicStatus() == "zombie" ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
-          $this->table->add_row($row);
+          $this->table->add_row($row);$this->player->isActive() && $this->player->getStatus() == 'zombie';
         }
 
         //-- Display Table
@@ -117,7 +117,7 @@ class game_controller extends CI_Controller {
         $data['game_name'] = $this->game->name();
         $data['url_slug'] = $this->game->slug();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
+        $data['is_zombie'] = !is_null($this->player) &&
 
         $layout_data = array();
         $data['active_sidebar'] = 'playerlist';
@@ -156,8 +156,8 @@ class game_controller extends CI_Controller {
         $data["url_slug"] = $this->game->slug();
         $data["game_name"] = $this->game->name();
         $data['is_closed'] = $this->game->isClosedGame();
-        $data['is_zombie'] = !is_null($this->player) && $this->player->isActiveZombie();
-        $data['is_human'] = !is_null($this->player) && $this->player->isActiveHuman();
+        $data['is_zombie'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'zombie';
+        $data['is_human'] = !is_null($this->player) && $this->player->isActive() && $this->player->getStatus() == 'human';
 
         $layout_data = array();
         $data['active_sidebar'] = 'teamlist';
