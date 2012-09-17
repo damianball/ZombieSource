@@ -106,7 +106,7 @@ class game_controller extends CI_Controller {
                 ($player->getPublicStatus() == "zombie" ? $player->countAchievements() : null),
                 ($player->getPublicStatus() == "zombie" ? getTimeStringFromSeconds($player->secondsSinceLastFeedOrGameEnd()): null)
             );
-          $this->table->add_row($row);
+          $this->table->add_row($row);$this->player->isActive() && $this->player->getStatus() == 'zombie';
         }
 
         //-- Display Table
