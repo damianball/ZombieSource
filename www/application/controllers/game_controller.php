@@ -236,7 +236,7 @@ class game_controller extends CI_Controller {
                 if($player->getStatus() == 'zombie' && $player->getPublicStatus() == 'human'){
                     // cloaked zombie
                     $user_dat['username'] = "Original Zombie";
-                    $user_dat['gravatar'] = '<img src="http://i.imgur.com/JdSwQ.png" class="twtr-pic">';
+                    $user_dat['gravatar'] = '<img src="http://i.imgur.com/YidMp.png" class="twtr-pic">';
                     $user_dat['userid'] = false;
                 } else {
                     $user_dat['username'] = $user->username;
