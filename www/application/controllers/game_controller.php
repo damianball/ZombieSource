@@ -508,9 +508,11 @@ class game_controller extends CI_Controller {
         $gameid = $this->game->getGameID();
         $is_player_in_game = $this->user->isActiveInGame($gameid);
         $newsitems = $this->Newsfeed_model->getNewsItemsByGameID($gameid);
+        for($i=0;$i<count($newsitems);$i++){
+            $newsitems[$i]["date_created"] = gmt_to_timezone($this->game->UTCoffset(), $newsitems[$i]["date_created"]);
+        }
         $json_newsitems = json_encode($newsitems);
         //load the content variables
-
         print_r($json_newsitems);
     }
 

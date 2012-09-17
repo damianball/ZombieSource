@@ -1,5 +1,13 @@
 <?php
 
+function gmt_to_timezone($offset, $date){
+    $offset_seconds = $offset * 8600;
+    $datetime_seconds = strtotime($date);
+    $new_date = date("Y-m-d H:i:s", $datetime_seconds + $offset_seconds);
+    return $new_date;
+}
+
+
 function validate_phone($phone){
     $valid_phone = null;    
     $stripped = preg_replace("/[^0-9]/", "", $phone);
