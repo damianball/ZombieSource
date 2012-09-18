@@ -102,13 +102,13 @@ class Notification{
         $user_id_list = array();
         if($data_obj->type == "all"){
             $user_id_list = $this->ci->Player_model->getActivePlayerUserIDsByGameID($game->getGameID());
-            $prefix = "Message from the moderators:";
+            $prefix = "Humans & Zombies:";
         }elseif($data_obj->type == "humans"){
             $user_id_list = $game->getHumanUserIDs();
-            $prefix = "Message for all humans";
+            $prefix = "Humans:";
         }elseif($data_obj->type == "zombies"){
             $user_id_list = $game->getZombieUserIDs();
-            $prefix = "Message for all zombies:";
+            $prefix = "Zombies:";
         }
 
         $user_id_list = $this->purgeUnsubscribedUsers($user_id_list);
