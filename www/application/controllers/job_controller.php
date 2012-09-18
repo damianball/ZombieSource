@@ -18,7 +18,7 @@ class job_controller extends CI_Controller {
         $notification_id = $this->Notification_model->getNotificationIDByName("daily_update");
         $games = $this->gamecreator->getActiveGames();
         foreach($this->gamecreator->getActiveGames() as $game){
-            $time_zone_offset_seconds = $game->UTCoffset() * 86400;
+            $time_zone_offset_seconds = $game->UTCoffset() * 3600;
             $today = date('Y-m-d', time() + $time_zone_offset_seconds);
             $game_id = $game->getGameID();
             $job_params = $this->Job_model->getJobParamsByNotificationIDGameID($notification_id, $game_id);

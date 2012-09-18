@@ -79,7 +79,7 @@ class Notification{
         $days_remaining = $game->daysRemaining();
         $day_text = $days_remaining == 1 ? "day" : "days";
     
-        return array($user_id_list, "Total zombie count: $zombie_count. kills today: $day_kills. $days_remaining $day_text remain.");
+        return array($user_id_list, "Nightly update -- Zombie casualties today: $zombie_count, Days remaining $days_remaining, Text 'stats' to check the zombie count at any time");
       }catch (Exception $e){
         return array(null, null);
       }
