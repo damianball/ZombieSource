@@ -17,7 +17,7 @@
 </div>
 <div class="row-fluid">
     <div class="span8">
-        <div class="well">
+        <div>
 
             <div class="main">
 

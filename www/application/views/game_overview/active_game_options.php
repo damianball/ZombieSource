@@ -15,7 +15,7 @@
   <div class="modal-header">
  </div>
   <div class="modal-body">
-    <?php 
+    <?php
     if(!$waiver_signed){
     echo $join_game_sign_waiver;
 
@@ -25,7 +25,7 @@
     }else{
       echo '<br>
             <div class="clearfix">
-              <label class="checkbox">   
+              <label class="checkbox">
                   <input type="checkbox" name="originalzombiepool" value="1"> Enter me into the Original Zombie Pool
               </label>
             </div>
@@ -45,7 +45,7 @@
   }elseif($registration_open){
     echo '<a class="btn btn-info join_game_modal" data-toggle="modal" data-gameid=' . $gameid . ' >Join Game</a>';
   }else{
-    echo '<h2> Sorry, Registration is closed. </h2>';
+    echo 'Registration is closed.';
   }
 ?>
 
