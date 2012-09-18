@@ -13,7 +13,9 @@ class sms_controller extends CI_Controller {
         $this->load->library('TeamCreator');
         $this->load->helper('player_helper');
         $this->load->helper('team_helper');
+        $this->load->helper('game_helper');
         $this->load->helper('user_helper');
+        $this->load->config('notifications');
     }
 
     public function receive_message(){
@@ -35,9 +37,7 @@ class sms_controller extends CI_Controller {
         $response = "";
         $split_value = explode(" ", strToLower(trim($value)), 2);
         $command = $split_value[0];
-        if(count($split_value) >= 2){
-            $message = $split_value[1];
-        }
+
         if($user==null || $user->currentGameID() == null){
             $game = $this->gamecreator->getGameByGameID("0b84d632-da0e-11e1-a3a8-5d69f9a5509e");
         }else{
@@ -46,13 +46,17 @@ class sms_controller extends CI_Controller {
 
         if(count($split_value) >= 2){
             $message = $split_value[1];
+        }else{
+            $message = null;
         }
 
         if(($command == "all" || $command == "humans" || $command == "zombies")){
-            if(!(strlen($message) > 0)){
+            if(!$message){
                 return;
             }
-            if($this->isOnAdminWhiteList($number)){
+            if($this->isMiddleOfNight()){
+                $response = "Sorry, it's really late at night. Try again betwween 8am and midnight PST";
+            }else if($this->isOnAdminWhiteList($number)){
               $data_obj = new stdClass();
               $data_obj->notification_name = 'broadcast';
               $data_obj->type = $command;
@@ -84,10 +88,15 @@ class sms_controller extends CI_Controller {
         return $response;
     }
 
+
+    private function isMiddleOfNight(){
+        $current_hour = date('H', time());
+        return ($current_hour < 8 || $current_hour > 16);
+    }
+
     private function isOnAdminWhiteList($number){
-        return false;
-        // $whitelist = $this->config->item('sms_white_list');
-        // return in_array($number,$whitelist);
+        $whitelist = $this->config->item('sms_white_list');
+        return in_array($number,$whitelist);
     }
 
     private function tagViaText($tagger, $message, $game){
