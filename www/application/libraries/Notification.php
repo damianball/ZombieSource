@@ -8,6 +8,8 @@ class Notification{
     private $gameid = null;
     private $message = null;
     private $user_id_list = null;
+    private $seconds_since_last_run = null;
+    private $rate_limit_seconds = 0;
 
     public function __construct($gameid, $data_obj){
         $this->ci =& get_instance();
@@ -33,12 +35,17 @@ class Notification{
       try{
         $this->notification_id = $this->ci->Notification_model->getNotificationIDByName($data_obj->notification_name);
         list($this->user_id_list, $this->message) = $this->{$data_obj->notification_name}($data_obj);
+        $this->seconds_since_last_run = $this->getSecondsSinceLastRun();
       }catch(NoNotificationException $e){
         $this->message = null;
         //Make sure message is null, notification is dead.
       }
     }
 
+    public function getSecondsSinceLastRun(){
+      $last_run = strtotime($this->ci->Notification_model->getLastRunDate($this->notification_id));
+      return time() - $last_run;
+    }
     //Final message creation methods. If there are any exceptions return null;
     //Never use anything out of $data_obj that isn't an id.
     private function teammate_tagged($data_obj){
@@ -65,6 +72,7 @@ class Notification{
     }
 
     private function daily_update($data_obj){
+      $this->rate_limit_seconds = 3600; //a big window, other checks should prevent this anyway.
       try{
         $game = $this->ci->gamecreator->getGameByGameID($this->gameid);
         $user_id_list = $this->ci->Player_model->getActivePlayerUserIDsByGameID($game->getGameID());
@@ -88,6 +96,7 @@ class Notification{
 
     private function broadcast($data_obj){
       try{
+        $this->rate_limit_seconds = 450;
         $game = $this->ci->gamecreator->getGameByGameID($this->gameid);
 
         $user_id_list = array();
@@ -125,6 +134,12 @@ class Notification{
     }
 
     public function send(){
+      echo $this->seconds_since_last_run ." ". $this->rate_limit_seconds;
+      $diff = $this->seconds_since_last_run - $this->rate_limit_seconds;
+      if($diff <= 0){
+        return "Sending messages too quickly, please try again in " . round($diff/-60,2) . " minutes";
+      }
+
       if($this->message && $this->user_id_list){
         $message = $this->message;
         $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters. 
@@ -140,5 +155,7 @@ class Notification{
           );
         }
       }
+      $this->ci->Notification_model->updateLastRunTime($this->notification_id);
+      return "notification sent";
     }
 }
