@@ -91,7 +91,7 @@ class sms_controller extends CI_Controller {
 
     private function isMiddleOfNight(){
         $current_hour = date('H', time());
-        return ($current_hour < 8 || $current_hour > 16);
+        return (($current_hour > 8) && ($current_hour < 16));
     }
 
     private function isOnAdminWhiteList($number){
