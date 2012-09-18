@@ -62,8 +62,7 @@ class sms_controller extends CI_Controller {
               $data_obj->type = $command;
               $data_obj->message = $message;
               $notification = new Notification($game->getGameID(), $data_obj);
-              $notification->send();
-              $response = "Mission message delivered";
+              $response = $notification->send();
             }else{
                 $response = "access denied";
             }
