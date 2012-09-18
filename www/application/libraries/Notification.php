@@ -134,7 +134,6 @@ class Notification{
     }
 
     public function send(){
-      echo $this->seconds_since_last_run ." ". $this->rate_limit_seconds;
       $diff = $this->seconds_since_last_run - $this->rate_limit_seconds;
       if($diff <= 0){
         return "Sending messages too quickly, please try again in " . round($diff/-60,2) . " minutes";
