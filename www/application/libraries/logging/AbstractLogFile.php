@@ -9,12 +9,12 @@ abstract class AbstractLogFile implements ILogStore{
     protected static $logFilename;
 
     public function AbstractLogFile(){
-        self::$date = gmdate("Y-m-d");
+        self::$date = GameTime::gmdate("Y-m-d");
     	self::openFile();
     }
 
     protected static function openFile(){
-        $date = gmdate("Y-m-d");
+        $date = GameTime::gmdate("Y-m-d");
         self::$fileHandle = fopen(LOG_DIR . "/" . $date . "-" . self::$logFilename . ".log","a");
     }
 

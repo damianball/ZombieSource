@@ -8,4 +8,6 @@ interface IPlayer{
  
 	public function getStatus();
 	public function getPublicStatus();
+	public function canParticipate();
+
 }

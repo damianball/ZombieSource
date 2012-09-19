@@ -14,6 +14,7 @@ class home_controller extends CI_Controller {
     {
         // $is_logged_in = false;
         $is_logged_in = $this->tank_auth->is_logged_in();
+        debug('called index for home');
 
         $tumblr_num_posts = $this->config->item('tumblr_num_posts');
         $tumblr_username = $this->config->item('tumblr_username');

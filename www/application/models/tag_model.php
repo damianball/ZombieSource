@@ -24,7 +24,7 @@ class Tag_model extends CI_Model{
         }
 
         //date created
-        $datecreated = gmdate("Y-m-d H:i:s", time());
+        $datecreated = GameTime::gmdate();
 
         if(!$dateclaimed){
             $dateclaimed = $datecreated;

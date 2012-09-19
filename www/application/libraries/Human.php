@@ -33,6 +33,7 @@ class Human extends Player implements IPlayer{
         }
     }
 
+    // @Implements canParticpate()
     public function canParticipate(){
         if(parent::isActive()){
             return true;

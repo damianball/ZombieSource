@@ -41,7 +41,7 @@ class Game{
                     $maxseconds = 14400;
                     $minseconds = 0;
                     if($claimed_tag_time_offset && $claimed_tag_time_offset != '' && $claimed_tag_time_offset >= $minseconds && $claimed_tag_time_offset <= $maxseconds){
-                        $dateclaimed = gmdate("Y-m-d H:i:s", time() - ($claimed_tag_time_offset));
+                        $dateclaimed = GameTime::gmdate("Y-m-d H:i:s", GameTime::time() - ($claimed_tag_time_offset));
                     }
 
                     $tag = $this->ci->tagcreator->getNewTag($human, $zombie, $dateclaimed, null, null);

@@ -18,7 +18,7 @@ class Userdata_model extends CI_Model{
 		$added = false;
 
 		//date created
-		$datecreated = gmdate("Y-m-d H:i:s", time());
+		$datecreated = GameTime::gmdate();
 
 		//insert new user data
 		$data = array(

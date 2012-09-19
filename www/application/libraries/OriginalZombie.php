@@ -57,4 +57,9 @@ class OriginalZombie extends Zombie implements IPlayer{
             return false;
         }
     }
+
+    // @Implements canParticpate()
+    public function canParticipate(){
+        return parent::canParticipate();
+    }
 }

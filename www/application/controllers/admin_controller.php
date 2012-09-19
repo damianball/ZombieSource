@@ -177,7 +177,7 @@ class admin_controller extends CI_Controller {
         $username = $player->getUser()->getUsername();
         if($player->getStatus() == 'zombie'){ //is_a Zombie scares me, I don't know how it works. So I check the status.
             //the important part of this method.
-            $feed = $this->feedcreator->getNewFeed($player, null, gmdate("Y-m-d H:i:s", time()), true);
+            $feed = $this->feedcreator->getNewFeed($player, null, GameTime::gmdate(), true);
             if ($feed) {
                 $this->loadGenericMessageWithoutLayout("Success! $username has been fed");
                 // event logging

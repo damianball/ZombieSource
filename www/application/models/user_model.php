@@ -111,7 +111,7 @@ class User_model extends CI_Model{
 
      private function setUserDataTableData($userid, $name, $value){
          //date created
-         $datecreated = gmdate("Y-m-d H:i:s", time());
+         $datecreated = GameTime::gmdate();
 
          //insert new user data
          $data = array(

@@ -216,7 +216,7 @@ class Player_model extends CI_Model{
 
     private function setPlayerDataTableData($playerid, $name, $value){
         //date created
-        $datecreated = gmdate("Y-m-d H:i:s", time());
+        $datecreated = GameTime::gmdate();
 
         //insert new player data
         $data = array(
@@ -253,7 +253,7 @@ class Player_model extends CI_Model{
         $added = false;
 
         //date created
-        $datecreated = gmdate("Y-m-d H:i:s", time());
+        $datecreated = GameTime::gmdate();
 
         //get new UUID
         $query = $this->db->query('SELECT UUID() as "uuid"');

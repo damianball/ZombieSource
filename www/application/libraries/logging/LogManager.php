@@ -22,7 +22,7 @@ class LogManager{
     }
 
     private static function openFiles() {
-        $date = gmdate("Y-m-d");
+        $date = GameTime::gmdate("Y-m-d");
         self::$fileHandle = fopen(LOG_DIR . "/" . $date . "-" . LOG_FILENAME . ".log","a");
     }
 
@@ -62,7 +62,7 @@ class LogManager{
         if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
             $data = array(
                     'id' => uniqid().'-'.self::getNewID(),
-                    'timestamp' => gmdate("Y-m-d H:i:s"),
+                    'timestamp' => GameTime::gmdate(),
                     'version' => 3,
                     'origin' => 'web',
                     'remote_address' => $_SERVER['REMOTE_ADDR'],
@@ -79,7 +79,7 @@ class LogManager{
 
             $data = array(
                     'id' => uniqid().'-'.self::getNewID(),
-                    'timestamp' => gmdate("Y-m-d H:i:s"),
+                    'timestamp' => GameTime::gmdate(),
                     'version' => 3,
                     'origin' => 'cli',
                     'shell' => $_SERVER['SHELL'],

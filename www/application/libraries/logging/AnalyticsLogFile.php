@@ -10,7 +10,7 @@ class AnalyticsLogFile implements ILogStore{
 
     protected static function openFile(){
         if (self::$date == FALSE) {
-            self::$date = gmdate("Y-m-d");
+            self::$date = GameTime::gmdate("Y-m-d");
         }
 
         self::$fileHandle = fopen(LOG_DIR . "/" . self::$logFilename . "-" . self::$date  . ".log","a");

@@ -23,7 +23,7 @@ class Feed_model extends CI_Model{
 
         //date created
         if(!$datecreated){
-            $datecreated = gmdate("Y-m-d H:i:s", time());
+            $datecreated = GameTime::gmdate();
         }
 
         //get new UUID

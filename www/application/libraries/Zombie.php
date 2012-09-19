@@ -50,7 +50,7 @@ class Zombie extends Player implements IPlayer{
         }
 
         if($utcTime){
-            $seconds = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", time()), $utcTime);
+            $seconds = getUTCTimeDifferenceInSeconds(GameTime::gmdate(), $utcTime);
 
             return $seconds;
         }
@@ -59,8 +59,7 @@ class Zombie extends Player implements IPlayer{
     public function secondsSinceLastFeedOrGameEnd(){
         $lastfeed = $this->secondsSinceLastFeed();
         $gameend = $this->getGame()->getEndTime();
-        $now = time();
-        $pasttime = getUTCTimeDifferenceInSeconds(gmdate("Y-m-d H:i:s", $now), $gameend);
+        $pasttime = getUTCTimeDifferenceInSeconds(GameTime::gmdate(), $gameend);
         if($pasttime > 0){
             $time = $lastfeed - $pasttime;
         } else {
@@ -82,6 +81,7 @@ class Zombie extends Player implements IPlayer{
         }
     }
 
+    // @Implements canParticpate()
     public function canParticipate(){
         if(parent::isActive() && !$this->isStarved()){
             return true;

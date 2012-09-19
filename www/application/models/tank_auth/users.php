@@ -135,7 +135,7 @@ class Users extends CI_Model
 	 */
 	function create_user($data, $activated = TRUE)
 	{
-		$data['created'] = gmdate("Y-m-d H:i:s", time());
+		$data['created'] = GameTime::gmdate();
 		$data['activated'] = $activated ? 1 : 0;
 
 		if ($this->db->insert($this->table_name, $data)) {
@@ -221,7 +221,7 @@ class Users extends CI_Model
 	function set_password_key($user_id, $new_pass_key)
 	{
 		$this->db->set('new_password_key', $new_pass_key);
-		$this->db->set('new_password_requested', gmdate("Y-m-d H:i:s", time()));
+		$this->db->set('new_password_requested', GameTime::gmdate());
 		$this->db->where('id', $user_id);
 
 		$this->db->update($this->table_name);
@@ -340,7 +340,7 @@ class Users extends CI_Model
 		$this->db->set('new_password_requested', NULL);
 
 		if ($record_ip)		$this->db->set('last_ip', $this->input->ip_address());
-		if ($record_time)	$this->db->set('last_login', gmdate("Y-m-d H:i:s", time()));
+		if ($record_time)	$this->db->set('last_login', GameTime::gmdate());
 
 		$this->db->where('id', $user_id);
 		$this->db->update($this->table_name);

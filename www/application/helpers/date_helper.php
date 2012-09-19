@@ -12,7 +12,9 @@ function getUTCTimeDifferenceInSeconds($new, $old){
 function getUTCTimeLessXSeconds($time, $X){
     date_default_timezone_set('UTC');
     $time_seconds = strtotime($time);
-    return gmdate("Y-m-d H:i:s", $time_seconds - $X);
+    
+    return GameTime::gmdate(null, $time_seconds - $X);
+    //return gmdate("Y-m-d H:i:s", $time_seconds - $X);
 }
 
 function getTimeStringFromSeconds($seconds){

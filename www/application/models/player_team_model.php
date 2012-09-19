@@ -34,7 +34,7 @@ class Player_team_model extends CI_Model{
         }
 
         //date created
-        $datecreated = gmdate("Y-m-d H:i:s", time());
+        $datecreated = GameTime::gmdate();
 
         //get new UUID
         $query = $this->db->query('SELECT UUID() as "uuid"');
@@ -60,7 +60,7 @@ class Player_team_model extends CI_Model{
         }
 
         //date removed
-        $dateremoved = gmdate("Y-m-d H:i:s", time());
+        $dateremoved = GameTime::gmdate();
 
         $data = array(
             'dateremoved' => $dateremoved

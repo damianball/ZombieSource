@@ -10,7 +10,7 @@ class Newsfeed_model extends CI_Model{
             'message_text' => $message_text,
             'message_type' => $message_type,
             'message_payload' => $message_payload,
-            'date_created' => gmdate("Y-m-d H:i:s", time()),
+            'date_created' => GameTime::gmdate(),
             'gameid' => $gameid,
             'external' => $external
         );

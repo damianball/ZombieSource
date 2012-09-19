@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set('America/Los_Angeles');
 require_once('application/libraries/Exceptions.php');
+require_once('application/libraries/GameTime.php');
 
 /*
  *---------------------------------------------------------------
