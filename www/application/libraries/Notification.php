@@ -143,6 +143,9 @@ class Notification{
 
       if($this->message && $this->user_id_list){
         $message = $this->message;
+        if(strlen($message)>159){
+          return "message is too long, please try a shorter message";
+        }
         $message = substr($message,0,160); //precaution, don't send anything longer than 160 characters. 
         info('sms_message: send called - ' . " message: " . $message);
         foreach($this->user_id_list as $recipient_user_id){
