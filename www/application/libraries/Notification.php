@@ -86,8 +86,10 @@ class Notification{
         $day_kills = $game->daykills($date->format('Ymd'));
         $days_remaining = $game->daysRemaining();
         $day_text = $days_remaining == 1 ? "day" : "days";
+        //"Nightly update -- Humans left: $human_count, Total zombies: $zombie_count, Check out the Zombie family tree for a breakdown. http://bit.ly/T1K5jY"
+        //"Nightly update -- Zombie casualties today: $zombie_count, Days remaining $days_remaining, Text 'stats' to check the zombie count at any time"//
     
-        return array($user_id_list, "Nightly update -- Zombie casualties today: $zombie_count, Days remaining $days_remaining, Text 'stats' to check the zombie count at any time");
+        return array($user_id_list, "Nightly update -- Humans left: $human_count, Total zombies: $zombie_count, Check out the Zombie family tree for a breakdown. http://bit.ly/T1K5jY");
       }catch (Exception $e){
         return array(null, null);
       }
