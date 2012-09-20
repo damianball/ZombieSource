@@ -182,14 +182,14 @@ class admin_controller extends CI_Controller {
                 $this->loadGenericMessageWithoutLayout("Success! $username has been fed");
                 // event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','succeeded');
-                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('admin_userid',$this->logged_in_user->getUserID());
                 $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
                 LogManager::storeLog($analyticslogger);
             } else {
                 $this->loadGenericMessageWithoutLayout("Something went wrong, $username may not have been fed");
                 //event logging
                 $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
-                $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+                $analyticslogger->addToPayload('admin_userid',$this->logged_in_user->getUserID());
                 $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
                 $analyticslogger->addToPayload('message', 'feed not generated');
                 LogManager::storeLog($analyticslogger);
@@ -199,7 +199,7 @@ class admin_controller extends CI_Controller {
         }
         // event logging
         $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('admin_free_feed','failed');
-        $analyticslogger->addToPayload('admin_playerid',$this->logged_in_user->getPlayerID());
+        $analyticslogger->addToPayload('admin_userid',$this->logged_in_user->getUserID());
         $analyticslogger->addToPayload('feed_playerid', $player->getPlayerID());
         $analyticslogger->addToPayload('message', 'not a zombie');
         LogManager::storeLog($analyticslogger);
