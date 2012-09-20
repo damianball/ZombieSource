@@ -67,9 +67,9 @@ class Game{
                         if($players_to_feed){
                             $this->feed_friends($players_to_feed, $tag, $dateclaimed);
                         }
-                        else{
-                            $this->feed_friends($this->getMostStarvingZombies(1), $tag, $dateclaimed);
-                        }
+                        // else{
+                        //     $this->feed_friends($this->getMostStarvingZombies(1), $tag, $dateclaimed);
+                        // }
                     }
                     $error = "The kill was successfully recorded";
 
@@ -202,13 +202,13 @@ class Game{
         return $zombies;
     }
 
-    public function getMostStarvingZombies($limit){
-        $zombies = $this->getZombies();
-        @usort($zombies, function($a, $b) {
-            return $a->secondsSinceLastFeed() <$b->secondsSinceLastFeed();
-        });
-        return array_slice($zombies, 0, $limit);
-    }
+    // public function getMostStarvingZombies($limit){
+    //     $zombies = $this->getZombies();
+    //     @usort($zombies, function($a, $b) {
+    //         return $a->secondsSinceLastFeed() <$b->secondsSinceLastFeed();
+    //     });
+    //     return array_slice($zombies, 0, $limit);
+    // }
     
     public function getHumanUserIDs(){
         $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
