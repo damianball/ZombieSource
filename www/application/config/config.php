@@ -15,7 +15,7 @@
 |
 */
 
-$config['base_url']  = 'http://vandals.zombiesource.org/';
+$config['base_url']  = 'http://localhost/zombies';
 
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -192,7 +192,7 @@ $config['log_threshold'] = 3;
 | application/logs/ folder. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '';
+$config['log_path'] = '/tmp';
 
 /*
 |--------------------------------------------------------------------------
