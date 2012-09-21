@@ -263,6 +263,8 @@ class admin_controller extends CI_Controller {
         // echo the button text to be applied via AJAX
         $worked = $this->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid) == $set_to;
         if($worked && $set_to){
+            $this->load->helper('tweet_helper');
+            achievement_earned($achievementid, $playerid);
             echo 'Invalidate';
         } else if ($worked && !$set_to){
             echo 'Reward';
