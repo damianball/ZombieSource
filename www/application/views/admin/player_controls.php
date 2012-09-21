@@ -101,6 +101,17 @@
                 </div>
               <?php } ?>
             </div>
+              <?php
+
+              foreach($achievements as $a){
+                  echo '<div class="tt" rel="tooltip" title="' . $a['description'] . '">';
+                  echo '<img src="' . $a['image_url'] . '" class="twtr-pic"/>';
+                  echo $a['name'];
+                  echo ' ';
+                  echo '<div id="achievement' . $a['id'] . '" class="btn" value="' . $playerid . '">' . ($a['achieved'] ? 'Invalidate' : 'Reward') . "</div>";
+                  echo '</div>';
+              }
+              ?>
           </div>
 
       </div>
@@ -138,5 +149,23 @@ $(document).ready(function(){
   });
 });
 </script>
-
-<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-alert.js"></script>
+<script>
+                <?php
+                foreach($achievements as $a){ ?>
+                $(document).ready(function(){
+                  $("#achievement<?php echo $a['id']; ?>").click(function(){
+                      $("#achievement<?php echo $a['id']; ?>").load('admin/set_achievement',
+                            {player: "<?php echo $playerid; ?>",
+                            set_to: $("#achievement<?php echo $a['id']; ?>").html() === 'Invalidate' ? false : true,
+                            achievement_id: <?php echo $a['id']; ?>
+                            })
+                  });
+                });
+                    <?php
+                }
+                    ?>
+</script>
+    <script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-alert.js"></script>
+<script>
+$('.tt').tooltip();
+</script>

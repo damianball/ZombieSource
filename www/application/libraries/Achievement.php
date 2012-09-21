@@ -3,6 +3,27 @@ date_default_timezone_set('UTC');
 
 class Achievement{
     private $ci = null;
+    private $achievements = array(
+        'Double Kill' => 1,
+        'MultiKill' => 2,
+        'Flesh Feast' => 3,
+        'Rampage' => 4,
+        'Zombocalypse' => 5,
+        'BrainLust' => 8,
+        'Disease Vector' => 9,
+        'PlagueBearer' => 10,
+        'Harbinger of Undeath' => 11,
+        'Überzombie' => 12,
+        'A Striking Original' => 15,
+        'True Friend' => 16,
+        'Brains are Better' => 17,
+        'Team Survivor' => 18,
+        'Last One Standing' => 19,
+        'Survivor' => 20,
+        'Girl Badass' => 21,
+        'Most Kills' => 22,
+        'MVP' => 23
+    );
 
     public function __construct(){
         $this->ci =& get_instance();
@@ -17,7 +38,7 @@ class Achievement{
 
     // recalculate achievements (does not delete, only adds)
     public function backgenerate(){
-        // this cannot work for Brains are Better!
+        // this doesn't work for Brains are Better!
         $tags_raw = $this->ci->Tag_model->getTagsInOrder();
         $count = 0;
         foreach($tags_raw as $tag){
@@ -34,11 +55,11 @@ class Achievement{
         // test for killstreak achievements
         $kill_info = $this->ci->Achievement_model->getLargestKillStreakInXHours($tag, 3);
         $levels = array( // num_kills => achievement_id
-            6 => 5,
-            5 => 4,
-            4 => 3,
-            3 => 2,
-            2 => 1
+            6 => $this->achievements['Zombocalypse'],
+            5 => $this->achievements['Rampage'],
+            4 => $this->achievements['Flesh Feast'],
+            3 => $this->achievements['MultiKill'],
+            2 => $this->achievements['Double Kill'],
         );
         foreach($levels as $kills => $achievementid){
             if($kill_info->count >= $kills){
@@ -54,11 +75,11 @@ class Achievement{
 
         // test for time independent kill achievements
         $levels = array( // num_kills => achievement_id
-            20 => 12,
-            15 => 11,
-            10 => 10,
-            5  => 9,
-            1  => 8
+            20 => $this->achievements['Überzombie'],
+            15 => $this->achievements['Harbinger of Undeath'],
+            10 => $this->achievements['PlagueBearer'],
+            5  => $this->achievements['Disease Vector'],
+            1  => $this->achievements['BrainLust'],
         );
         foreach($levels as $kills => $achievementid){
             if($kill_info->count >= $kills){
@@ -77,7 +98,7 @@ class Achievement{
                 $taggee_team = $this->ci->Player_team_model->getLastTeam($tag->getTaggeeID());
                 if($tagger_team == $taggee_team){ // former teammates
                     // this totally ignores corner cases, like if the tagger quit the team and didn't join another
-                    $achievementid = 16; // True Friend
+                    $achievementid = $this->achievements['True Friend']; // True Friend
                     $success = $this->addAchievement($taggerid, $achievementid, $kill_info->latest);
                     if($success){
                         array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggerid, 'date' => $kill_info->latest));
@@ -92,7 +113,7 @@ class Achievement{
         $gameid = $this->ci->playercreator->getPlayerByPlayerID($taggerid)->getGameID();
         if($this->ci->Tag_model->countTagsByGameID($gameid) == 1){
             $taggeeid = $tag->getTaggeeID();
-            $achievementid = 17; // Brains are Better
+            $achievementid = $this->achievements['Brains are Better']; // Brains are Better
             $success = $this->addAchievement($taggeeid, $achievementid, $kill_info->latest);
             if($success){
                 array_push($new_ach, array('achievementid' => $achievementid, 'playerid' => $taggeeid, 'date' => $kill_info->latest));
@@ -101,7 +122,7 @@ class Achievement{
         return $new_ach; // array of new achievements
     }
 
-    private function addAchievement($playerid, $achievementid, $date){
+    public function addAchievement($playerid, $achievementid, $date){
         if(!$this->ci->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid)){
             // achievements can only be earned once per game
             return $this->ci->Achievement_model->addAchievement($playerid, $achievementid, $date);
@@ -109,4 +130,11 @@ class Achievement{
         return false;
     }
 
+    public function invalidateAchievement($playerid, $achievementid){
+        if($this->ci->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid)){
+            // must exist to invalidate
+            return $this->ci->Achievement_model->invalidateAchievement($playerid, $achievementid);
+        }
+        return false;
+    }
 }

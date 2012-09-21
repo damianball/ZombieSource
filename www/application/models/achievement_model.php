@@ -8,11 +8,15 @@ class Achievement_model extends CI_Model{
     }
 
     public function getAchievementsByPlayerID($playerid){
-        $this->db->select('name, description, image_url');
+        $this->db->select('name, description, image_url, achievement.achievement as id');
         $this->db->from($this->table_name);
         $this->db->join('achievement_type', 'achievement.achievement = achievement_type.id');
         $this->db->where('playerid', $playerid);
+        $this->db->where('achievement.invalid', 0);
         $query = $this->db->get();
+        if(!$query){
+            return array();
+        }
         return $query->result_array();
     }
 
@@ -20,6 +24,7 @@ class Achievement_model extends CI_Model{
         $this->db->select('COUNT(id) as count');
         $this->db->from($this->table_name);
         $this->db->where('playerid', $playerid);
+        $this->db->where('invalid', 0);
         $query = $this->db->get();
         return $query->row()->count;
     }
@@ -29,6 +34,7 @@ class Achievement_model extends CI_Model{
         $this->db->from($this->table_name);
         $this->db->where('playerid', $playerid);
         $this->db->where('achievement', $achievementid);
+        $this->db->where('invalid', 0);
         $query = $this->db->get();
         return ($query->row()->count > 0);
     }
@@ -38,6 +44,7 @@ class Achievement_model extends CI_Model{
         $this->db->from($this->table_name);
         $this->db->where('playerid', $playerid);
         $this->db->where('achievement_type', $achievementtype);
+        $this->db->where('invalid', 0);
         $query = $this->db->get();
         if($query->num_rows() == 0){
             return false;
@@ -62,6 +69,7 @@ class Achievement_model extends CI_Model{
         $this->db->join('users', 'player.userid = users.id');
         $this->db->where('achievement.achievement', $typeid);
         $this->db->where('player.gameid', $gameid);
+        $this->db->where('invalid', 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -101,10 +109,17 @@ class Achievement_model extends CI_Model{
             'id' => NULL,
             'playerid' => $playerid,
             'achievement' => $achievementid,
-            'dateachieved' => $date
+            'dateachieved' => $date,
+            'invalid' => 0
         );
         return $this->db->insert($this->table_name, $data);
     }
 
+    public function invalidateAchievement($playerid, $achievementid){
+        $this->db->where('playerid', $playerid);
+        $this->db->where('achievement', $achievementid);
+        $this->db->where('invalid', 0);
+        return $this->db->update($this->table_name, array('invalid' => 1));
+    }
 }
 ?>

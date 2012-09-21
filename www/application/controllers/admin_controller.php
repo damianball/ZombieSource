@@ -15,10 +15,12 @@ class admin_controller extends CI_Controller {
         $this->load->model('Team_model','',TRUE);
         $this->load->model('Game_model', '', TRUE);
         $this->load->model('User_model', '', TRUE);
+        $this->load->model('Achievement_model', '', TRUE);
         $this->load->library('PlayerCreator', null);
         $this->load->library('UserCreator', null);
         $this->load->library('GameCreator', null);
         $this->load->library('TeamCreator', null);
+        $this->load->library('AchievementCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
 
@@ -113,6 +115,26 @@ class admin_controller extends CI_Controller {
                 $data['undo_tag_disabled'] = "disabled";
                 $data['undo_tag_message'] = "Not an active zombie";
             }
+
+            // Achievements
+            $this->load->model('Achievement_model');
+            $types = $this->Achievement_model->getAchievementTypes();
+            $achieved = array();
+            $achieved_page = array();
+            foreach($this->Achievement_model->getAchievementsByPlayerID($player->getPlayerID()) as $a){
+                $achieved[$a['id']] = true;
+            }
+            foreach($types as $a){
+                array_push($achieved_page, array(
+                    'id' => $a->id,
+                    'name' => $a->name,
+                    'description' => $a->description,
+                    'image_url' => $a->image_url,
+                    'achieved' => array_key_exists($a->id, $achieved)
+                ));
+            }
+            $data['achievements'] = $achieved_page;
+
 
             $this->load->view('admin/player_controls.php', $data);
         }catch (PlayerDoesNotExistException $e){
@@ -218,6 +240,32 @@ class admin_controller extends CI_Controller {
             } else {
                 echo 'Remove Moderator';
             }
+        } else {
+            echo 'Error';
+        }
+    }
+
+    public function set_achievement(){
+        $playerid = $this->input->post('player');
+        $player = $this->playercreator->getPlayerByPlayerID($playerid);
+        $achievementid = $this->input->post('achievement_id');
+        $set_to = $this->input->post('set_to') == 'true';
+        $this->load->library('AchievementCreator');
+        $ach = $this->achievementcreator->getAchievement();
+        $had_achieved = $this->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid);
+
+        if($set_to){
+            $ach->addAchievement($playerid, $achievementid, gmdate("Y-m-d H:i:s", time()));
+        } else {
+            $ach->invalidateAchievement($playerid, $achievementid);
+        }
+
+        // echo the button text to be applied via AJAX
+        $worked = $this->Achievement_model->checkAchievementExistsByPlayerIDAchievementID($playerid, $achievementid) == $set_to;
+        if($worked && $set_to){
+            echo 'Invalidate';
+        } else if ($worked && !$set_to){
+            echo 'Reward';
         } else {
             echo 'Error';
         }
