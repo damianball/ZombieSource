@@ -69,7 +69,7 @@ class sms_controller extends CI_Controller {
         }
         else if($command == "stats"){
             list($human_count, $zombie_count, $starved_zombies) = $game->playerStatusCounts();
-            $response = "humans: $human_count active_zombies: $zombie_count starved_zombies: $starved_zombies"; 
+            $response = "humans: $human_count total_zombies: $zombie_count starved_zombies: $starved_zombies"; 
         }else if($user){ //All commands except stats/all/humans/zombies required a registered user.
             if($command == "start"){
                 $user->updateSubscription("pause_updates", false);
