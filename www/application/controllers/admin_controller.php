@@ -296,7 +296,7 @@ class admin_controller extends CI_Controller {
         // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
         $type = $get['email_list'];
         $type = $this->security->xss_clean($type);
-        $game = $this->gamecreator->getGameByGameID('4c54660c-1a3f-431d-96b9-02ae162548aa');
+        $game = $this->gamecreator->getGameByGameID('40471fc8-5be8-4404-aeb0-8fee9b2b298e');
 
         if ($type == 'all') {
             $list = $this->Game_model->emailListFall2012();

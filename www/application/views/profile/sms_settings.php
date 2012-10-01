@@ -58,7 +58,7 @@
 
 
 <div class = "row-fluid sms_faq well span3">
- <h2> Commands  </h2> <h3> Text us at: +1 208-402-4500 </h3>
+ <h2> Commands  </h2> <h3> Text us at: +1 503-766-4978  </h3>
 <table cellspacing="20px">
 <tr>
 <div class = "command_item">

@@ -21,10 +21,11 @@ class sms_controller extends CI_Controller {
     public function receive_message(){
         $value = $this->input->post('Body');
         $number = trim($this->input->post('From'), ' +');
-        $user= $this->usercreator->getUserByPhone($number);
-        $response = $this->generate_response($user, $value, $number);
+        $user = $this->usercreator->getUserByPhone($number);
 
-        debug('sms_response: value: ' . $value . ' userid: ' . $user->getUserID() . ' recipient_number: ' . $number . " message: " . $response);
+        $response = $this->generate_response($user, $value, $number);
+        $userid = $user == NULL ? "N/A" : $user->getUserID();
+        debug('sms_response: value: ' . $value . ' userid: ' . $userid . ' recipient_number: ' . $number . " message: " . $response);
         
         header("Content-type: text/xml");
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -39,7 +40,7 @@ class sms_controller extends CI_Controller {
         $command = $split_value[0];
 
         if($user==null || $user->currentGameID() == null){
-            $game = $this->gamecreator->getGameByGameID("4c54660c-1a3f-431d-96b9-02ae162548aa");
+            $game = $this->gamecreator->getGameByGameID("40471fc8-5be8-4404-aeb0-8fee9b2b298e");
         }else{
             $game = $this->gamecreator->getGameByGameID($user->currentGameID());
         }
