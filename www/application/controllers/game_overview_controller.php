@@ -63,7 +63,7 @@ class game_overview_controller extends CI_Controller {
         $data["registration_open"] = $game->registrationIsOpen();
 
 
-        $data['join_game_sign_waiver'] = $this->load->view('profile/join_game_sign_waiver', '', true);
+        // $data['join_game_sign_waiver'] = $this->load->view('profile/join_game_sign_waiver', '', true);
         $data['join_game_edit_profile'] = $this->load->view('profile/join_game_edit_profile', getPrivateUserProfileDataArray($this->user), true);
 
         

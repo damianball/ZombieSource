@@ -16,10 +16,10 @@
  </div>
   <div class="modal-body">
     <?php
-    if(!$waiver_signed){
-    echo $join_game_sign_waiver;
+    // if(!$waiver_signed){
+    // echo $join_game_sign_waiver;
 
-    }
+    // }
     if($profile_is_empty){
       echo $join_game_edit_profile;
     }else{

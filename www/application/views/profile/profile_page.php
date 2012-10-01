@@ -91,9 +91,11 @@
       </div>
     </div>
         <?php
-                if(count($achievements) > 0){
+                if(isset($achievements) && count($achievements) > 0){
                     echo "<div class=\"well\">";
                     echo '<h3>Achievements</h3>';
+                    echo count($achievements);
+                    echo "hey";
                     foreach($achievements as $ach){
                         $img = $ach['image_url'];
                         $desc = $ach['description'];
