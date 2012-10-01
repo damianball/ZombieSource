@@ -1,7 +1,7 @@
 <div class="well">
    <div class="row">
       <div class="span8">
-      <h1>Humans vs Zombies <small><?php echo $game_name ?></small></h1>
+      <h1> WSU Zombies <small><?php echo $game_name ?></small></h1>
 
          <div id = "title">
             <?php echo $home_banner ?>

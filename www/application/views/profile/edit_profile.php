@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>Humans vs Zombies</h1>
+  <h1>WSU Zombies</h1>
 </div>
 <div class="row">
     <div class="span10">
