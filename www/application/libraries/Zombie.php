@@ -92,7 +92,7 @@ class Zombie extends Player implements IPlayer{
 
     public function isStarved(){
         $secondsSinceFeed = $this->secondsSinceLastFeedOrGameEnd();
-        if($secondsSinceFeed > 60*60*24*2 ){
+        if($secondsSinceFeed > 60*60*24*3 ){
             return true;
         }
         return false;
