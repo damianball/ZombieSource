@@ -40,7 +40,7 @@ class sms_controller extends CI_Controller {
         $command = $split_value[0];
 
         if($user==null || $user->currentGameID() == null){
-            $game = $this->gamecreator->getGameByGameID("40471fc8-5be8-4404-aeb0-8fee9b2b298e");
+            $game = $this->gamecreator->getGameByGameID("74c709c2-8dc5-40ee-acc9-5dc34968c693");
         }else{
             $game = $this->gamecreator->getGameByGameID($user->currentGameID());
         }
