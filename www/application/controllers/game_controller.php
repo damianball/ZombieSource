@@ -297,7 +297,7 @@ class game_controller extends CI_Controller {
         } else {
             $zombie = $player;
 
-            $max_feeds = 3; // @TODO: hard coded for now
+            $max_feeds = 2; // @TODO: hard coded for now
             for($i = 1; $i <= $max_feeds; $i++){
                 $this->form_validation->set_rules('zombie_friend_'.$i, 'Zombie Friend '.$i, 'trim|xss_clean|min_length[4]|callback_validate_username');
             }
