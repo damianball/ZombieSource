@@ -11,11 +11,11 @@
 	    	<div class="row-fluid">
 
 		    	<div class="span3">
-            <h3><a href="<?php echo base_url() . 'game/' . $game["game_slug"]?>"><?php echo $game["game_name"]?> </a></h3>
-		    		<a href="<?php echo base_url() . 'game/' . $game["game_slug"]?>">
+            <h3><a href="<?php echo site_url('game/' . $game["game_slug"]); ?>"><?php echo $game["game_name"]?> </a></h3>
+		    		<a href="<?php echo site_url('game/' . $game["game_slug"]); ?>">
 		    			<img class="thumbnail" src="<?php echo $game["game_photo_url"]?>">
 		    		</a>
-            <button class="view_game btn btn-primary btn-margin" data-url="<?php echo base_url() . 'game/' . $game["game_slug"]?>">View Game</button>
+            <button class="view_game btn btn-primary btn-margin" data-url="<?php echo site_url('game/' . $game["game_slug"]); ?>">View Game</button>
           </div>
 
         
