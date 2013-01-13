@@ -117,9 +117,11 @@ class Game_model extends CI_Model{
 	}
 
     public function getCurrentGame(){
-        $this->db->select('id');
+        $this->db->select('id, end_date');
         $this->db->from($this->table_name);
         $this->db->where('game_stateid', 2);
+        $this->db->order_by('end_date', "desc");
+        $this->db->limit(1);
         $query = $this->db->get();
         if($query->num_rows() == 1){
             return $query->row()->id;
