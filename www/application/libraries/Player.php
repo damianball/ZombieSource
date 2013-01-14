@@ -69,6 +69,8 @@ class Player{
         $this->ci->Player_model->setPlayerData($this->playerid, 'moderator', $value);
     }
 
+
+    // is this broken?
     public function toggleModerator(){
         return $this->setModerator(!$this->isModerator());
     }

@@ -245,6 +245,138 @@ class admin_controller extends CI_Controller {
         }
     }
 
+    /*
+        @JSONInterface
+    */
+    public function toggle_registration() {
+        $game_id = $this->input->post('game_id');
+
+        $status = 'failed';
+        $error = '';
+
+        if ($game_id != null && $game_id != '') {
+
+        } else {
+            $error = 'game_id must be set';
+        }
+
+        $response['result'] = $status;
+        if ($error != '') $response['error'] = $error;
+
+        echo json_encode($response);
+    }
+
+    /*
+        @JSONInterface
+    */
+    public function toggle_game_play() {
+        $game_id = $this->input->post('game_id');
+
+        $status = 'failed';
+        $error = '';
+
+        if ($game_id != null && $game_id != '') {
+
+        } else {
+            $error = 'game_id must be set';
+        }
+
+        $response['result'] = $status;
+        if ($error != '') $response['error'] = $error;
+
+        echo json_encode($response);
+    }
+
+    /*
+        @JSONInterface
+    */
+    public function toggle_oz_visibility() {
+        $game_id = $this->input->post('game_id');
+
+        $status = 'failed';
+        $error = '';
+
+        if ($game_id != null && $game_id != '') {
+
+        } else {
+            $error = 'game_id must be set';
+        }
+
+        $response['result'] = $status;
+        if ($error != '') $response['error'] = $error;
+
+        echo json_encode($response);
+    }
+
+    /*
+        @JSONInterface
+    */
+    public function create_oz() {
+        $player_id = $this->input->post('player_id');
+
+        $status = 'failed';
+        $error = '';
+
+        if ($player_id != null && $player_id != '') {
+            try {
+                $player = $this->playercreator->getPlayerByPlayerID($player_id);
+                $oz_state = $player->getData('original_zombie');
+                if($oz_state == null || $oz_state == 0) {
+                    $player->saveData('original_zombie', 1);
+                    $status = 'succeeded';
+                } else {
+                    $error = 'player already an original zombie';
+                }
+            } catch (Exception $e) {
+                $error = 'unable to locate player by player_id: ' + $player_id;
+            }
+        } else {
+            $error = 'player_id must be set';
+        }
+
+        $response['result'] = $status;
+        if ($error != '') $response['error'] = $error;
+
+        echo json_encode($response);
+    }
+
+    /*
+        @JSONInterface
+    */
+    public function remove_oz() {
+        $player_id = $this->input->post('player_id');
+
+        $status = 'failed';
+        $error = '';
+
+        if ($player_id != null && $player_id != '') {
+            try {
+                $player = $this->playercreator->getPlayerByPlayerID($player_id);
+                $oz_state = $player->getData('original_zombie');
+                if($oz_state == 1) {
+                    // check to see if the player has already tagged someone, if not, switch to 0, otherwise error
+                    if ($player->getKills() == null) {
+                        $player->saveData('original_zombie', null);
+                        $status = 'succeeded';
+                    } else {
+                        $error = 'unable to remove original zombie status because player has already tagged someone';
+                    }
+                } else {
+                    $error = 'player is not an original zombie';
+                }
+            } catch (Exception $e) {
+                $error = 'unable to locate player by player_id: ' + $player_id;
+            }
+        } else {
+            $error = 'player_id must be set';
+        }
+
+        $response['result'] = $status;
+        if ($error != '') $response['error'] = $error;
+
+        echo json_encode($response);
+    }
+
     public function set_achievement(){
         $playerid = $this->input->post('player');
         $player = $this->playercreator->getPlayerByPlayerID($playerid);
