@@ -406,6 +406,7 @@ class admin_controller extends CI_Controller {
           $this->output->set_status_header('400');
         }
         
+        $this->output->set_content_type('application/json');
         $this->output->append_output(json_encode($response));
     }
 
@@ -445,6 +446,7 @@ class admin_controller extends CI_Controller {
           $this->output->set_status_header('400');
         }
         
+        $this->output->set_content_type('application/json');
         $this->output->append_output(json_encode($response));
     }
 
