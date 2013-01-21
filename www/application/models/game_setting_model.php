@@ -27,7 +27,7 @@ class Game_setting_model extends CI_Model{
 
     	$game_setting = $this->getSetting($gameid, $name);
 
-    	if (!$game_setting) {
+    	if ($game_setting == null) {
 	        //insert new data
 	        $data = array(
 	            'gameid' => $gameid,
