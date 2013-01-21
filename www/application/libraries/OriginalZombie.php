@@ -51,7 +51,7 @@ class OriginalZombie extends Zombie implements IPlayer{
     }
 
     public function isExposed(){
-        if($this->getData('exposed') == 1){
+        if($this->getGame()->getSetting('original_zombies_exposed') == 1 || $this->getData('exposed') == 1){
             return true;
         } else {
             return false;

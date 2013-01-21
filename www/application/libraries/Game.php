@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Game{
-    private $teamid = null;
+    private $gameid = null;
     private $ci = null;
 
     public function __construct($gameid)
@@ -11,6 +11,7 @@ class Game{
         $this->ci->load->model('Tag_model', '', true);
         $this->ci->load->model('User_model', '', true);
         $this->ci->load->model('Player_model','',TRUE);
+        $this->ci->load->model('Game_setting_model', '', true);
         $this->ci->load->library('PlayerCreator');
         $this->ci->load->helper('game_helper');
         $this->ci->load->helper('tweet_helper');
@@ -248,6 +249,14 @@ class Game{
             $emails[] = $this->ci->User_model->getEmailByUserID($userid);
         }
         return $emails;
+    }
+
+    public function getSetting($name) {
+        return $this->ci->Game_setting_model->getSetting($this->getGameID(), $name);
+    }
+
+    public function setSetting($name, $value) {
+        return $this->ci->Game_setting_model->storeSetting($this->getGameID(), $name, $value);
     }
 
 }

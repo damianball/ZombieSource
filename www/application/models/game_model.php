@@ -7,8 +7,7 @@ class Game_model extends CI_Model{
 	}
 
 	// implement later
-	public function createGame($name, $timezoneid){
-	}
+	public function createGame($name, $timezoneid){}
 
 	public function setGameTimezone($gameid, $timezoneid){}
 	public function setGameName($gameid, $name){}

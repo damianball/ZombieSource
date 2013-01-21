@@ -332,15 +332,39 @@ class admin_controller extends CI_Controller {
         $error = '';
 
         if ($game_id != null && $game_id != '') {
+            $game = $this->gamecreator->getGameByGameID($game_id);
+            // if game is valid
+            if (true) {
+                // if game is active
+                if ($game->getStateID() == 2) {
+                    // get current game setting for 'original_zombies_exposed'
+                    $original_zombies_exposed = $game->getSetting('original_zombies_exposed');
 
+                    // switch it (if 1 => 0, if 0 or null => 1)
+                    if ($original_zombies_exposed == null || $original_zombies_exposed == 0) {
+                        $game->setSetting('original_zombies_exposed', 1);
+                    } else {
+                        $game->setSetting('original_zombies_exposed', 0);
+                    }
+
+                    $status = 'succeeded';
+                } else {
+                    $error = 'game is not active';
+                }
+            } else {
+                $error = 'game_id is not valid';
+            }
         } else {
             $error = 'game_id must be set';
         }
 
         $response['result'] = $status;
-        if ($error != '') $response['error'] = $error;
-
-        echo json_encode($response);
+        if ($error != '') {
+          $response['error'] = $error;
+          $this->output->set_status_header('400');
+        }
+        
+        $this->output->append_output(json_encode($response));
     }
 
     /*
