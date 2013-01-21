@@ -44,7 +44,7 @@ class home_controller extends CI_Controller {
             }
         }
         else{
-            $home_content = $this->load->view('home/logged_out_home','', true);
+            $home_content = $game->registrationIsOpen() == 1 ? $this->load->view('home/logged_out_home','', true) : '';
             $top_bar = $this->load->view('layouts/logged_out_topbar','', true);
             $home_banner = $this->load->view('home/beta_banner','', true);
         }

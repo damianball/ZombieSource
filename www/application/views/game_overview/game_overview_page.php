@@ -1,7 +1,8 @@
 <h2> All Games </h2>
 <hr>
 <!-- START GAMES LOOP -->
-<?php foreach($game_data as $game){?>
+<?php
+  foreach($game_data as $game){?>
 	<div class="row-fluid">
 	  <div class="span12">
 	    <div class="well">
@@ -68,6 +69,9 @@
       document.location.href = $(event.target).data("url");
     });
 
+    if('<?php echo $show_join_game_modal ?>' === "true") {
+      $('#' + '4d4f2a8c-63bf-11e2-8468-529c18a1e183').find('#join').modal('show');
+    }
 
 
     //choose the right modal by game id

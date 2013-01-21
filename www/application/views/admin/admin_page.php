@@ -56,17 +56,19 @@
             <div class="game-state-controls">
               <div class="admin-button-group">
                 <div class="control-title"> <h3> Gameplay </h3></div>
+                <div class="alert alert-danger settings-alert hide <?php echo $gameid?>"> </div>
                 <div class="btn-group" data-toggle="buttons-radio">
-                  <button class="btn btn-danger active">Stopped</button>
-                  <button class="btn btn-danger">Started</button>
+                  <button id="game-stopped" class="game_toggle<?php echo $gameid?> btn btn-danger <?php echo $game_is_playable[$gameid] == false ? 'active' : '';?> ">Stopped</button>
+                  <button id="game-started" class="game_toggle<?php echo $gameid?> btn btn-danger <?php echo $game_is_playable[$gameid] == true ? 'active' : '';?>">Started</button>
                 </div>
               </div>
 
               <div class="admin-button-group">
                 <div class="control-title"> <h3> Registration </h3></div>
                 <div class="btn-group" data-toggle="buttons-radio">
-                  <button class="btn btn-warning active">Open</button>
-                  <button class="btn btn-warning">Closed</button>
+
+                  <button id="reg-opened" class="reg_toggle<?php echo $gameid?> btn btn-primary <?php echo $registration_is_open[$gameid] == true ? 'active' : '';?>"> Open   </button>
+                  <button id="reg-closed" class="reg_toggle<?php echo $gameid?> btn btn-primary <?php echo $registration_is_open[$gameid] == false ? 'active' : '';?>"> Closed</button>
                 </div>
               </div>
             </div>
@@ -86,8 +88,8 @@
                 </div>
                 <div class="alert alert-danger oz-alert hide <?php echo $gameid?>"> </div>
                 <div class="btn-group" data-toggle="buttons-radio">
-                  <button class="btn btn-primary active">Hidden   </button>
-                  <button class="btn btn-primary">Revealed</button>
+                  <button id="oz-hidden" class="oz_toggle<?php echo $gameid?> btn btn-primary <?php echo $original_zombies_exposed[$gameid] == false ? 'active' : '' ?>"> Hidden   </button>
+                  <button id="oz-revealed" class="oz_toggle<?php echo $gameid?> btn btn-primary <?php echo $original_zombies_exposed[$gameid] == true ? 'active' : '';?>"> Revealed</button>
                 </div>
               </div>
             </div>
@@ -118,6 +120,7 @@
     <script type="text/javascript">
     $(document).ready(function(){
         $(".oz-alert").fadeOut();
+        $(".settings-alert").fadeOut();
 
         function load_ozs() {
           $(".oz-table<?php echo $gameid?>").load("admin/original_zombies",
@@ -128,6 +131,91 @@
         }
 
         load_ozs();
+
+        $(document).on("click", ".reg_toggle<?php echo $gameid?>", function(e){
+          $.post('admin/toggle_registration',
+          {
+            game_id: "<?php echo $gameid?>"
+          }
+          )
+          .success(function(data){
+            $(".settings-alert").fadeOut();
+
+            if(data.hasOwnProperty('registration_status')) {
+              if(data.registration_status == "open") {
+                $("#reg-closed").removeClass("active");
+                $("#reg-opened").addClass("active");
+              }else if(data.registration_status == "closed") {
+                $("#reg-open").removeClass("active");
+                $("#oz-closed").addClass("active");
+              }
+
+            }
+          })
+          .fail(function(data){
+            var $alert = $(".settings-alert.<?php echo $gameid?>");
+            $alert.html(JSON.parse(data.responseText).error);
+            $alert.fadeIn();
+          })
+        });
+
+        $(document).on("click", ".game_toggle<?php echo $gameid?>", function(e){
+          $.post('admin/toggle_game_play',
+          {
+            game_id: "<?php echo $gameid?>"
+          }
+          )
+          .success(function(data){
+            $(".oz-alert").fadeOut();
+
+            if(data.hasOwnProperty('playable_status')) {
+              if(data.playable_status == "playable") {
+                $("#game-stopped").removeClass("active");
+                $("#game-started").addClass("active");
+              }else if(data.playable_status == "unplayable") {
+                $("#game-started").removeClass("active");
+                $("#game-stopped").addClass("active");
+              }
+
+            }
+          })
+          .fail(function(data){
+            var $alert = $(".oz-alert.<?php echo $gameid?>");
+            $alert.html(JSON.parse(data.responseText).error);
+            $alert.fadeIn();
+          })
+        });
+
+
+
+
+
+        $(document).on("click", ".oz_toggle<?php echo $gameid?>", function(e){
+          $.post('admin/toggle_oz_visibility',
+          {
+            game_id: "<?php echo $gameid?>"
+          }
+          )
+          .success(function(data){
+            $(".oz-alert").fadeOut();
+
+            if(data.hasOwnProperty('visibility')) {
+              if(data.visibility == "hidden") {
+                $("#oz-revealed").removeClass("active");
+                $("#oz-hidden").addClass("active");
+              }else if(data.visibility == "exposed") {
+                $("#oz-hidden").removeClass("active");
+                $("#oz-revealed").addClass("active");
+              }
+
+            }
+          })
+          .fail(function(data){
+            var $alert = $(".oz-alert.<?php echo $gameid?>");
+            $alert.html(JSON.parse(data.responseText).error);
+            $alert.fadeIn();
+          })
+        });
 
         $(document).on("click", ".remove_oz<?php echo $gameid?>", function(e){
           var $el = $(e.target);
