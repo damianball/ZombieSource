@@ -146,6 +146,7 @@ class Game_model extends CI_Model{
 
 	public function getGameIDs(){
 		$this->db->select('id');
+    $this->db->order_by('end_date','desc');
 		$this->db->from($this->table_name);
 		$query=$this->db->get();
 

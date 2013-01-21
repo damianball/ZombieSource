@@ -287,7 +287,15 @@ class game_controller extends CI_Controller {
     public function register_kill() {
         $userid = $this->tank_auth->get_user_id();
         $player = $this->playercreator->getPlayerByUserIDGameID($userid, $this->game->getGameID());
-        if((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
+        if(!$this->game->isPlayable()){
+            $data['active_sidebar'] = 'logkill';
+            $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+            $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',
+                                                            array("message"=>"Gameplay stopped"), true);
+            $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+            $this->load->view('layouts/main', $layout_data);
+        }
+        elseif((is_a($player, 'Zombie') && !$player->canParticipate()) || !is_a($player, 'Zombie')) {
             $data['active_sidebar'] = 'logkill';
             $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
             $layout_data['content_body'] = $this->load->view('helpers/display_generic_message',

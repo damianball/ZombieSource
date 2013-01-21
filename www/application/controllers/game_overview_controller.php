@@ -26,6 +26,9 @@ class game_overview_controller extends CI_Controller {
     {
         $game_data = array();
         $gameids = $this->Game_model->getGameIDs();
+
+        $data["show_join_game_modal"] = $this->user->getCountOfRegisteredGames() > 0 ? "false" : "true";
+
         foreach($gameids as $gameid){
             $game = $this->gamecreator->getGameByGameID($gameid);
             list($human_count, $zombie_count, $starved_zombie_count) = $game->playerStatusCounts();

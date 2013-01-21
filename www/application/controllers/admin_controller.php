@@ -44,6 +44,10 @@ class admin_controller extends CI_Controller {
               $data['player_in_game'][$gameid] = getPlayerString($gameid);
               $data['game_names'][$gameid] = $game_name;
               $data['url_slug'][$gameid] = $game->slug();;
+              $data['registration_is_open'][$gameid] = $game->registrationIsOpen();
+              $data['original_zombies_exposed'][$gameid] = $game->originalZombiesExposed();
+              $data['game_is_playable'][$gameid] = $game->isPlayable();
+
           }
 
           $layout_data = array();
@@ -391,7 +395,7 @@ class admin_controller extends CI_Controller {
         $visibility = '';
         $status = 'failed';
         $error = '';
-
+ 
         if ($game_id != null && $game_id != '') {
             $game = $this->gamecreator->getGameByGameID($game_id);
             // if game is valid

@@ -164,6 +164,15 @@ class Game{
         }
     }
 
+    public function originalZombiesExposed() {
+      $oz_exposed = $this->getSetting('original_zombies_exposed');
+        if ($oz_exposed == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function slug(){
         return $this->ci->Game_model->getGameSlugByGameID($this->gameid);
     }
