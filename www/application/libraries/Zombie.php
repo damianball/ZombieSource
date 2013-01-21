@@ -46,6 +46,9 @@ class Zombie extends Player implements IPlayer{
                 $this->ci->load->library('TagCreator');
                 $tag = $this->ci->tagcreator->getTagByTagID($tagid);
                 $utcTime = $tag->getTagDateTimeClaimed();
+            } else {
+                // this would most likely be original zombies (if an oz had never tagged anyone)
+                // they would live forever!!!
             }
         }
 
