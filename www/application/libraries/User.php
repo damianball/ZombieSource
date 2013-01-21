@@ -77,7 +77,7 @@ class User{
     public function canJoinGame($gameid){
         if(validGameID($gameid)){
             $game = $this->ci->gamecreator->getGameByGameID($gameid);
-            if($game->registrationOpen() && !$this->isInGame($gameid)){
+            if($game->registrationIsOpen() && !$this->isInGame($gameid)){
                 return true;
             }
         }

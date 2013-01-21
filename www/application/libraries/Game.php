@@ -172,11 +172,6 @@ class Game{
         return $this->ci->Game_model->getGameName($this->gameid);
     }
 
-    //TODO actually check.
-    public function registrationOpen(){
-        return true;
-    }
-
     public function isClosedGame(){
         return ($this->getStateID() == 3);
     }
