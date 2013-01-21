@@ -286,19 +286,49 @@ class admin_controller extends CI_Controller {
     public function toggle_registration() {
         $game_id = $this->input->post('game_id');
 
+        $registration_status = '';
         $status = 'failed';
         $error = '';
 
         if ($game_id != null && $game_id != '') {
+            $game = $this->gamecreator->getGameByGameID($game_id);
+            // if game is valid
+            if (true) {
+                // if game is active
+                if ($game->getStateID() == 2) {
+                    // get current game setting for 'registration_is_open'
+                    $registration_is_open = $game->getSetting('registration_is_open');
 
+                    // switch it (if 1 => 0, if 0 or null => 1)
+                    if ($registration_is_open == null || $registration_is_open == 0) {
+                        $game->setSetting('registration_is_open', 1);
+                        $registration_status = 'open';
+                    } else {
+                        $game->setSetting('registration_is_open', 0);
+                        $registration_status = 'closed';
+                    }
+
+                    $status = 'succeeded';
+                } else {
+                    $error = 'game is not active';
+                }
+            } else {
+                $error = 'game_id is not valid';
+            }
         } else {
             $error = 'game_id must be set';
         }
 
         $response['result'] = $status;
-        if ($error != '') $response['error'] = $error;
-
-        echo json_encode($response);
+        if ($error != '') {
+            $response['error'] = $error;
+            $this->output->set_status_header('400');
+        } else {
+            $response['registration_status'] = $registration_status;
+        }
+        
+        $this->output->set_content_type('application/json');
+        $this->output->append_output(json_encode($response));
     }
 
     /*

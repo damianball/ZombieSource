@@ -147,7 +147,13 @@ class Game{
     }
 
     public function registrationIsOpen(){
-        return $this->ci->Game_model->getRegistrationState($this->gameid);
+        $reg_setting = $this->getSetting('registration_is_open');
+        if ($reg_setting == 1) {
+            return true;
+        } else {
+            return false;
+        }
+        //return $this->ci->Game_model->getRegistrationState($this->gameid);
     }
 
     public function slug(){
