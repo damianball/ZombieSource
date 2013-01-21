@@ -328,6 +328,7 @@ class admin_controller extends CI_Controller {
     public function toggle_oz_visibility() {
         $game_id = $this->input->post('game_id');
 
+        $visibility = '';
         $status = 'failed';
         $error = '';
 
@@ -343,8 +344,10 @@ class admin_controller extends CI_Controller {
                     // switch it (if 1 => 0, if 0 or null => 1)
                     if ($original_zombies_exposed == null || $original_zombies_exposed == 0) {
                         $game->setSetting('original_zombies_exposed', 1);
+                        $visibility = 'exposed';
                     } else {
                         $game->setSetting('original_zombies_exposed', 0);
+                        $visibility = 'hidden';
                     }
 
                     $status = 'succeeded';
@@ -360,8 +363,10 @@ class admin_controller extends CI_Controller {
 
         $response['result'] = $status;
         if ($error != '') {
-          $response['error'] = $error;
-          $this->output->set_status_header('400');
+            $response['error'] = $error;
+            $this->output->set_status_header('400');
+        } else {
+            $response['visibility'] = $visibility;
         }
         
         $this->output->append_output(json_encode($response));
