@@ -337,19 +337,49 @@ class admin_controller extends CI_Controller {
     public function toggle_game_play() {
         $game_id = $this->input->post('game_id');
 
+        $playable_status = '';
         $status = 'failed';
         $error = '';
 
         if ($game_id != null && $game_id != '') {
+            $game = $this->gamecreator->getGameByGameID($game_id);
+            // if game is valid
+            if (true) {
+                // if game is active
+                if ($game->getStateID() == 2) {
+                    // get current game setting for 'game_is_playable'
+                    $game_is_playable = $game->getSetting('game_is_playable');
 
+                    // switch it (if 1 => 0, if 0 or null => 1)
+                    if ($game_is_playable == null || $game_is_playable == 0) {
+                        $game->setSetting('game_is_playable', 1);
+                        $playable_status = 'playable';
+                    } else {
+                        $game->setSetting('game_is_playable', 0);
+                        $playable_status = 'unplayable';
+                    }
+
+                    $status = 'succeeded';
+                } else {
+                    $error = 'game is not active';
+                }
+            } else {
+                $error = 'game_id is not valid';
+            }
         } else {
             $error = 'game_id must be set';
         }
 
         $response['result'] = $status;
-        if ($error != '') $response['error'] = $error;
-
-        echo json_encode($response);
+        if ($error != '') {
+            $response['error'] = $error;
+            $this->output->set_status_header('400');
+        } else {
+            $response['playable_status'] = $playable_status;
+        }
+        
+        $this->output->set_content_type('application/json');
+        $this->output->append_output(json_encode($response));
     }
 
     /*

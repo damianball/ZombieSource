@@ -64,6 +64,20 @@ class Player_model extends CI_Model{
         }
     }
 
+    public function getCountPlayerByUser($userid){
+        if($userid != NULL){
+            $this->db->select('COUNT(*) as count');
+            $this->db->from($this->table_name);
+            $this->db->where('userid', $userid);
+            $this->db->limit(1);
+            $query = $this->db->get();
+            
+            return $query->row()->count;
+        } else {
+            throw new UnexpectedValueException('human code cannot be null');
+        }
+    }
+
     public function getPlayerIDsByUserID($userid){
         $this->db->select('id');
         $this->db->from($this->table_name);

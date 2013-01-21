@@ -135,6 +135,9 @@ class User{
         return $this->ci->Player_model->getGameIDByUserID($this->userid);
     }
 
+    public function getCountOfRegisteredGames(){
+        return $this->ci->Player_model->getCountPlayerByUser($this->userid);
+    }
 
     public function getModeratorPlayers(){
         try{

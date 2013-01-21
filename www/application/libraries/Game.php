@@ -153,7 +153,15 @@ class Game{
         } else {
             return false;
         }
-        //return $this->ci->Game_model->getRegistrationState($this->gameid);
+    }
+
+    public function isPlayable() {
+        $reg_setting = $this->getSetting('game_is_playable');
+        if ($reg_setting == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function slug(){
