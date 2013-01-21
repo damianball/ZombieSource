@@ -94,10 +94,12 @@ class game_overview_controller extends CI_Controller {
         }
         //profile info handling
         $gameid = $this->input->post('gameid');
+        $real_name = $this->input->post('real_name');
         $age = $this->input->post('age');
         $major = $this->input->post('major');
         $gender = $this->input->post('gender');
 
+        if($real_name != ""){ $this->user->saveData("real_name", $real_name);}
         if($age != ""){ $this->user->saveData("age", $age);}
         if($major != ""){ $this->user->saveData("major", $major);}
         if($gender != ""){ $this->user->saveData("gender", $gender);}

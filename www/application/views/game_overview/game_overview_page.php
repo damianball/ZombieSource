@@ -120,9 +120,10 @@
       }
 
       if( $('#' + gameid).find('.join_game_edit_profile') ){
-        age    = $('#' + gameid).find('[name="age"]').val()
-        major  = $('#' + gameid).find('[name="major"]').val()
-        gender = $('#' + gameid).find('[name="gender"]').val()
+        real_name   = $('#' + gameid).find('[name="real_name"]').val()
+        age         = $('#' + gameid).find('[name="age"]').val()
+        major       = $('#' + gameid).find('[name="major"]').val()
+        gender      = $('#' + gameid).find('[name="gender"]').val()
       }
 
       original_zombie = $('#' + gameid).find('[name="originalzombiepool"]').is(':checked') ?  1 : 0
@@ -139,6 +140,7 @@
 
 
         if(waiversigned && waiversigned != "skip") params["waiver_is_signed"] = "TRUE";
+        if(real_name){ params["real_name"] = real_name };
         if(age){ params["age"] = age };
         if(major){ params["major"] = major };
         if(gender){ params["gender"] = gender };

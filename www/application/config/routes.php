@@ -67,6 +67,7 @@ $route['profile'] = "profile_controller";
 $route['profile/(:any)'] = "profile_controller/$1";
 
 $route['admin'] = "admin_controller";
+$route['admin/(:any)/email_list'] = "admin_controller/email_list";
 $route['admin/(:any)'] = "admin_controller/$1";
 
 $route['sms'] = "sms_controller";

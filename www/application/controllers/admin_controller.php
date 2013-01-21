@@ -23,6 +23,7 @@ class admin_controller extends CI_Controller {
         $this->load->library('AchievementCreator', null);
         $this->load->helper('game_helper');
         $this->load->helper('tag_helper');
+        $this->load->helper('tree_helper');
 
         $this->current_gameid = $this->Game_model->getCurrentGame();
         $userid = $this->tank_auth->get_user_id();
@@ -34,24 +35,31 @@ class admin_controller extends CI_Controller {
     }
 
 
-	public function index(){
-       //is mod check
-        $data['player_in_game'] = array();
-        foreach($this->players as $player){
-            $gameid = $player->getGameID();
-            $game = $this->gamecreator->getGameByGameID($gameid);
-            $game_name = $game->name();
-            $data['player_in_game'][$gameid] = getPlayerString($gameid);
-            $data['game_names'][$gameid] = $game_name;
-        }
+  	public function index(){
+          $data['player_in_game'] = array();
+          foreach($this->players as $player){
+              $gameid = $player->getGameID();
+              $game = $this->gamecreator->getGameByGameID($gameid);
+              $game_name = $game->name();
+              $data['player_in_game'][$gameid] = getPlayerString($gameid);
+              $data['game_names'][$gameid] = $game_name;
+              $data['url_slug'][$gameid] = $game->slug();;
+          }
 
-        $layout_data = array();
-        $layout_data['active_sidebar'] = 'playerlist';
-        $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
-        $layout_data['content_body'] = $this->load->view('admin/admin_page', $data, true);
-        $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
-        $this->load->view('layouts/main', $layout_data);
-	}
+          $layout_data = array();
+          $layout_data['active_sidebar'] = 'playerlist';
+          $layout_data['top_bar'] = $this->load->view('layouts/logged_in_topbar','', true);
+          $layout_data['content_body'] = $this->load->view('admin/admin_page', $data, true);
+          $layout_data['footer'] = $this->load->view('layouts/footer', '', true);
+          $this->load->view('layouts/main', $layout_data);
+  	}
+
+    public function original_zombies() {
+      $gameid = $this->input->post('gameid');
+      $data["gameid"] = $gameid;
+      $data["original_zombies"] = getOriginalZombiePlayersByGameID($gameid);
+      $this->load->view('admin/original_zombies.php', $data);
+    }
 
     public function player_controls(){
         $username = $this->input->post('player');
@@ -245,6 +253,33 @@ class admin_controller extends CI_Controller {
         }
     }
 
+    public function create_random_oz() {
+      $gameid = $this->input->post('gameid');
+      $status = 'failed';
+      $error = "No elligble zombies in the pool, please set an oz manually";
+
+      $oz_candidate_players = getOZCandidatePlayers($gameid);
+      $count = count($oz_candidate_players);
+      for($i = 0; $i < $count; $i++) {
+        $rand_index = array_rand($oz_candidate_players, 1);
+        $player = $oz_candidate_players[$rand_index];
+        $oz_state = $player->getData('original_zombie');
+        if($oz_state == null || $oz_state == 0) {
+          $player->saveData('original_zombie', 1);
+          $status = "succeeded";
+          $error = '';
+          break;
+        }
+      }
+
+      $response['result'] = $status;
+      if ($error != '') $response['error'] = $error;
+
+      echo json_encode($response);
+
+    }
+
+
     /*
         @JSONInterface
     */
@@ -312,14 +347,15 @@ class admin_controller extends CI_Controller {
         @JSONInterface
     */
     public function create_oz() {
-        $player_id = $this->input->post('player_id');
+        $username = $this->input->post('username');
+        $gameid = $this->input->post('gameid');
 
         $status = 'failed';
         $error = '';
 
-        if ($player_id != null && $player_id != '') {
+        if ($username != null && $username != '') {
             try {
-                $player = $this->playercreator->getPlayerByPlayerID($player_id);
+                $player = $this->playercreator->getPlayerByUsernameGameID($username, $gameid);
                 $oz_state = $player->getData('original_zombie');
                 if($oz_state == null || $oz_state == 0) {
                     $player->saveData('original_zombie', 1);
@@ -328,16 +364,19 @@ class admin_controller extends CI_Controller {
                     $error = 'player already an original zombie';
                 }
             } catch (Exception $e) {
-                $error = 'unable to locate player by player_id: ' + $player_id;
+                $error = 'unable to locate player by username: ' + $username + ' and gameid: ' + $gameid;
             }
         } else {
-            $error = 'player_id must be set';
+            $error = 'username must be set';
         }
 
         $response['result'] = $status;
-        if ($error != '') $response['error'] = $error;
-
-        echo json_encode($response);
+        if ($error != '') {
+          $response['error'] = $error;
+          $this->output->set_status_header('400');
+        }
+        
+        $this->output->append_output(json_encode($response));
     }
 
     /*
@@ -371,10 +410,12 @@ class admin_controller extends CI_Controller {
             $error = 'player_id must be set';
         }
 
-        $response['result'] = $status;
-        if ($error != '') $response['error'] = $error;
-
-        echo json_encode($response);
+        if ($error != '') {
+          $response['error'] = $error;
+          $this->output->set_status_header('400');
+        }
+        
+        $this->output->append_output(json_encode($response));
     }
 
     public function set_achievement(){
@@ -424,21 +465,21 @@ class admin_controller extends CI_Controller {
     }
 
     public function email_list(){
-        $get = $this->uri->uri_to_assoc(2);
+        $get = $this->uri->uri_to_assoc(1);
         // @TODO: THIS IS PROBABLY A TERRIBLE IDEA
-        $type = $get['email_list'];
+        $game_slug = $get['admin'];
+        $type = $this->input->get('type', TRUE);
         $type = $this->security->xss_clean($type);
-        $game = $this->gamecreator->getGameByGameID('0b84d632-da0e-11e1-a3a8-5d69f9a5509e');
+        $game_slug = $this->security->xss_clean($game_slug);
 
-        if ($type == 'all') {
-            $list = $this->Game_model->emailListFall2012();
-        } else if ($type == 'humans') {
+        $game = $this->gamecreator->getGameByGameID($this->Game_model->getGameIDBySlug($game_slug));
+
+        if ($type == 'humans') {
             $list = $game->getHumanEmails();
         } else if ($type == 'zombies') {
             $list = $game->getZombieEmails();
         } else {
-            // @TODO: Should be an error
-            return null;
+            $list = $game->getPlayerEmails();
         }
 
         $output = '';

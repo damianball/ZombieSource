@@ -46,6 +46,14 @@ class PlayerCreator{
         return $this->buildPlayerByStatusInGame($playerid);
     }
 
+
+    public function getPlayerByUsernameGameID($username, $gameid){
+        if(!$username || !$gameid){
+            throw new InvalidParametersException("Userid nor Gameid can be null.");
+        }
+        return $this->getPlayerByUserIDGameID(getUserIDByUsername($username), $gameid);
+    }
+
     public function getPlayerByUserIDGameID($userid, $gameid){
         if(!$userid || !$gameid){
             throw new InvalidParametersException("Userid nor Gameid can be null.");

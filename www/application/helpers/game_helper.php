@@ -48,6 +48,27 @@ function validGameName($gamename){
 }
 
 
+function getOZCandidatePlayers($gameid){
+    if(!$gameid){
+        throw new UnexpectedValueException('Gameid not set.');
+    }
+    $CI =& get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    $playerids = $CI->Player_model->getActivePlayerIDsByGameID($gameid);
+
+    $CI->load->library('PlayerCreator');
+    $playerArray = array();
+    foreach($playerids as $i){
+        $player = $CI->playercreator->getPlayerByPlayerID($i);
+        if($player->isActive() && ($player->getData('OriginalZombiePool') == 1)) {
+            $playerArray[] = $player;
+        }
+    }
+
+    return $playerArray;
+}
+
+
 function getActivePlayers($gameid){
     if(!$gameid){
         throw new UnexpectedValueException('Gameid not set.');
@@ -217,8 +238,15 @@ function getPlayerString($gameid){
     $players = getActivePlayers($gameid);
     $my_string = "[";
     foreach($players as $player){
-        $username = $player->getUser()->getUsername();
-        $my_string .= "\"$username\",";
+        $user = $player ->getUser();
+        $username = $user->getUsername();
+        $real_name = $user->getData('real_name');
+        if($real_name) {
+          $substring = $username . ' - ' . $real_name;
+        }else{
+          $substring = $username;
+        }
+        $my_string .= "\"$substring\",";
     }
     $my_string .= "\"\"]";
     return $my_string;

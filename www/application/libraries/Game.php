@@ -231,6 +231,15 @@ class Game{
         return $emails;
     }
 
+    public function getPlayerEmails(){
+        $playerids = $this->ci->Player_model->getActivePlayerIDsByGameID($this->getGameID());
+        $emails = array();
+        foreach($playerids as $playerid){
+          $userid = $this->ci->Player_model->getUserIDbyPlayerID($playerid);
+          $emails[] = $this->ci->User_model->getEmailByUserID($userid);
+        }
+        return $emails;
+    }
 
     public function getZombieEmails(){
         $userids = $this->getZombieUserIDs();

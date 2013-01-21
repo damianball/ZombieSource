@@ -3,6 +3,13 @@
     <div class="row-fluid join_game_edit_profile">
       <div class ="span4">
         <div class="clearfix">
+          <label>Real Name</label>
+          <div class="input">
+              <div class="error-text"><?php echo form_error('real_name'); ?></div>
+              <input type="text" name = "real_name" value="<?php echo set_value('real_name'); ?>"/>
+          </div>
+        </div>
+        <div class="clearfix">
           <label>Age</label>
           <div class="input">
              <div class="error-text"><?php echo form_error('age'); ?></div>

@@ -1,3 +1,66 @@
+.admin-button-group{
+  margin-top: 10px;
+  float: right;
+  margin-right: 10px;
+}
+
+.game-state-controls{
+  float: left;
+}
+
+
+.oz-creator{
+  margin-top: 15px;
+  float: left;
+  height: auto;
+}
+
+
+.oz-picker{
+  height: 100px;
+  float: left;
+}
+
+.oz-seperator{
+  width: 50px;
+  height: 100px;
+  float: left;
+}
+
+.oz-list{
+  width: auto;
+}
+
+.list-options{
+  width: auto;
+ }
+
+.oz-alert{
+  background-color: #000;
+}
+
+.email-links{
+  float: right;
+  position: relative;
+}
+
+/*
+table .btn{
+  padding: 1px 5px 1px;
+  font-size: 7px;
+  margin-right: -3px;
+}
+*/
+.list-remove{
+/*  background-image:url('../images/black-x.png');
+  background-repeat: no-repeat;
+  width: 18px;*/
+}
+
+
+
+
+
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);color:#000;/*!
  * Bootstrap v2.0.4
  *
