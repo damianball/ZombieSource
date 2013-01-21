@@ -70,7 +70,25 @@
     });
 
     if('<?php echo $show_join_game_modal ?>' === "true") {
-      $('#' + '4d4f2a8c-63bf-11e2-8468-529c18a1e183').find('#join').modal('show');
+      var gameid = '4d4f2a8c-63bf-11e2-8468-529c18a1e183';
+
+      //see if waiver box is checked
+      if( $('#' + gameid).find('.join_game_sign_waiver').length > 0 ){
+        waiver_box = $('#' + gameid).find('[name="waiversigned"]')
+        if(!waiver_box || !waiver_box.is(':checked')){
+          $('#' + gameid).find('.join_game').attr("disabled", true);
+        }
+        $('input[name="waiversigned"]').change(function(event){
+          waiver_box = $(event.target);
+          if(waiver_box.is(':checked')){
+            $('#' + gameid).find('.join_game').attr("disabled", false);
+          }else{
+            $('#' + gameid).find('.join_game').attr("disabled", true);
+          }
+        })
+      }
+
+      $('#' + gameid).find('#join').modal('show');
     }
 
 
@@ -80,13 +98,11 @@
 
 
     $(document).on("click", ".leave_game_modal", function(event){
-      gameid = $(event.target).data("gameid");
+      var gameid = $(event.target).data("gameid");
       $('#' + gameid).find('#leave').modal('show');
     });
     $(document).on("click", ".join_game_modal", function(event){
-      gameid = $(event.target).data("gameid");
-
-
+      var gameid = $(event.target).data("gameid");
 
       //see if waiver box is checked
       if( $('#' + gameid).find('.join_game_sign_waiver').length > 0 ){
