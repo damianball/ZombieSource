@@ -369,6 +369,7 @@ class admin_controller extends CI_Controller {
             $response['visibility'] = $visibility;
         }
         
+        $this->output->set_content_type('application/json');
         $this->output->append_output(json_encode($response));
     }
 
