@@ -1,0 +1,279 @@
+// Bootswatch.less
+// Swatch: United
+// Version: 2.0.4
+// -----------------------------------------------------
+
+// TYPOGRAPHY
+// -----------------------------------------------------
+
+@import url(https://fonts.googleapis.com/css?family=Ubuntu);
+@import "bootstrap_zombies/less/variables.less";
+@import "bootstrap_zombies/less/bootstrap.less";
+
+// NAVBAR
+// -----------------------------------------------------
+body {
+    padding-top: 90px;
+    background-image: url("/css/bootstrap_zombies/img/blizzard.png");
+}
+
+.navbar {
+
+	.nav > li > a {
+		border-right: 1px solid #C03D14;
+		border-left: 1px solid #E6633A;
+
+		&:hover {
+			background-color: @linkColorHover;
+		}
+	}
+		
+	.btn {
+	    margin-bottom: 0;
+	 }
+
+	    
+	.basic_link > a{
+        margin-top: 10px;
+        margin-left: 5px;
+        float: right;
+        height: 10px;
+        color: @white;
+        &:hover {
+            color: @linkColorHover;
+		}
+    }
+
+	.nav .active > a,
+	.nav .active > a:hover {
+	  background-color: rgba(0,0,0,.2);
+	}
+
+	.divider-vertical {
+		background-color: inherit;
+		border-right: 0px solid #CE4213;
+	}
+
+	.navbar-text {
+		padding: 9px 10px 11px;
+		line-height: 19px;
+		color: @white;
+	}
+
+	.navbar-search .search-query {
+		margin-bottom: 3px;
+		border: 1px solid darken(@navbarBackground, 15%);
+	}
+
+	.nav-collapse.in > .nav li > a {
+		color: @white;
+		border-left: 0px solid @orange;
+		border-right: 0px solid @orange;
+
+		&:hover {
+			background-color: @linkColorHover;
+		}
+	}
+
+	.nav-collapse.in .navbar-form,
+	.nav-collapse.in .navbar-search {
+		border-top: 0px solid @orange;
+		border-bottom: 0px solid @orange;
+		.box-shadow(none);
+	}
+}
+
+// BUTTONS
+// -----------------------------------------------------
+
+.btn-primary {
+  .buttonBackground(lighten(@btnPrimaryBackground, 15%), @btnPrimaryBackground);
+}
+
+.btn-warning {
+  .buttonBackground(lighten(@orange, 15%), @orange);
+}
+.btn-light-blue{
+    .buttonBackground(#4ac6ec,#1cb8e7);
+}
+
+
+// FORMS
+// -----------------------------------------------------
+
+ .join_game_setup_sms{
+  margin-top: -20x;
+  position: relative;
+  margin-left: 235px;
+  width: 250px;
+  height: 216px;
+
+}
+
+.small_subscription_option{
+  margin: 2px;
+  padding: 5px;
+  width: 240px;
+  height: 45px;
+  background-color: #E6977F;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+}
+
+.view_game{
+  width: 169px;
+}
+
+// MISC
+// -----------------------------------------------------
+
+.alert {
+	text-shadow: none;
+}
+
+.hero-unit {
+    border: 1px solid rgba(0,0,0,.05);
+    .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+
+	h1 {
+		line-height: 1.6em;
+	}
+}
+
+// User-defined styles
+
+#graph1 {
+    height: 400px;
+}
+
+ul.tumblr {
+    list-style-type: none;
+    li {
+        .well;
+    }
+}
+
+.zombie_member_text {
+    text-decoration: line-through;
+}
+
+.team_member {
+    text-align: center;
+    width: 135px;
+    height: 100px;
+    float: center;
+    display: inline-block;
+}
+//IMAGES
+.image-overlay {
+  padding:0px;
+  position: relative;
+}
+img.overlay-image{
+  position: absolute;
+  left: 43px;
+  top: 0px;
+  z-index:10;
+}
+
+.placeholder {
+    color: #000;
+}
+.form ul {
+    list-style: none;
+}
+.form label {
+    display: block;
+    font-weight: bold;
+}
+.form input[type=text] {
+    width: 500px;
+}
+.form textarea {
+    width: 500px;
+    height: 100px;
+}
+
+.container .twtr-widget {
+    .twtr-avatar {
+        width: 50px;
+        height: 50px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+    }
+    .twtr-img {
+        width: 50px;
+        height: 50px;
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+}
+
+.twtr-pic {
+  padding: 4px;
+  line-height: 1;
+  border: 1px solid #ddd;
+  .border-radius(4px);
+  .box-shadow(0 1px 1px rgba(0,0,0,.075));
+  margin: 5px;
+}
+.twtr-text{
+    margin-top: 5px;
+    
+}
+
+
+
+.sms_settings_box{
+  margin-bottom: -5px;
+  width: 200px;
+}
+
+.sms_text{
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.subscription_option{
+background-color: #E6977F;
+  padding: 5px;
+  margin: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.subscription_option-orange{
+background-color: #ED7450;
+  padding: 5px;
+  margin: 7px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.subscription_option-gray{
+background-color: #f5f5f5;
+  padding: 5px;
+  margin: 7px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.subscription_description{
+  margin-left: 30px;
+}
+
+.well-profile {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 5px;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  border: 1px solid rgba(0,0,0,.05);
+  .border-radius(4px);
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+  blockquote {
+    border-color: #ddd;
+    border-color: rgba(0,0,0,.15);
+  }
+}

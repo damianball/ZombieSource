@@ -39,7 +39,6 @@
 
 $autoload['packages'] = array();
 
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Libraries
@@ -52,7 +51,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('form_validation', 'security', 'tank_auth', 'table');
+$autoload['libraries'] = array('form_validation', 'security', 'tank_auth', 'table', 'tweet');
 
 
 /*
@@ -64,7 +63,7 @@ $autoload['libraries'] = array('form_validation', 'security', 'tank_auth', 'tabl
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('html', 'url', 'form');
+$autoload['helper'] = array('html', 'url', 'form', 'app_log_helper');
 
 /*
 | -------------------------------------------------------------------
@@ -79,7 +78,7 @@ $autoload['helper'] = array('html', 'url', 'form');
 |
 */
 
-$autoload['config'] = array('');
+$autoload['config'] = array('organization');
 
 
 /*

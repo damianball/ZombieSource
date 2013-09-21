@@ -8,6 +8,7 @@ class TimeLogger extends AbstractLogger  implements ILogger{
     private $end_time;
     private $logger_name = 'timelogger';
     private $name;
+    private $version = 1;
 
     public function __construct(){
         $this->start_time = null;
@@ -35,7 +36,7 @@ class TimeLogger extends AbstractLogger  implements ILogger{
 
     public function toArray(){
         $data = array(
-            'version' => 1,
+            'version' => $this->version,
             'payload' => array(
                 'timer_name' => $this->name,
                 'duration' => $this->end_time - $this->start_time

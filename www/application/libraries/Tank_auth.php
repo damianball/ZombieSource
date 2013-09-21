@@ -30,6 +30,8 @@ class Tank_auth
 		$this->ci->load->database();
 		$this->ci->load->model('tank_auth/users');
 
+		$this->ci->load->library('UserCreator');
+
 		// Try to autologin
 		$this->autologin();
 	}
@@ -68,10 +70,17 @@ class Tank_auth
 						$this->error = array('banned' => $user->ban_reason);
 
 					} else {
+						$zombies_user = $this->ci->usercreator->getUserByUserID($user->id); 
+						if($zombies_user->getModeratorPlayers()){ // made by ZombieSource, not Tank Auth
+							$is_moderator = TRUE;
+						}else{
+							$is_moderator = FALSE;
+						}
 						$this->ci->session->set_userdata(array(
 								'user_id'	=> $user->id,
 								'username'	=> $user->username,
 								'status'	=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
+								'is_moderator' => $is_moderator, // made by ZombieSource, not Tank Auth 
 						));
 
 						if ($user->activated == 0) {							// fail - not activated
@@ -91,7 +100,7 @@ class Tank_auth
 
                             // event logging
                             $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','succeeded');
-                            $analyticslogger->addToPayload('userid',$user->id);
+                            $analyticslogger->addToPayload('user_id',$user->id);
                             LogManager::storeLog($analyticslogger);
 							return TRUE;
 						}
@@ -99,16 +108,22 @@ class Tank_auth
 				} else {														// fail - wrong password
 					$this->increase_login_attempt($login);
 					$this->error = array('password' => 'auth_incorrect_password');
+			        // event logging
+			        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','failed');
+			        $analyticslogger->addToPayload('supplied_login',$login);
+			        $analyticslogger->addToPayload('error','auth_incorrect_password');
+			        LogManager::storeLog($analyticslogger);
 				}
 			} else {															// fail - wrong login
 				$this->increase_login_attempt($login);
 				$this->error = array('login' => 'auth_incorrect_login');
+		        // event logging
+		        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','failed');
+		        $analyticslogger->addToPayload('supplied_login',$login);
+		        $analyticslogger->addToPayload('error','auth_incorrect_login');
+		        LogManager::storeLog($analyticslogger);
 			}
 		}
-        // event logging
-        $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_login','failed');
-        $analyticslogger->addToPayload('userid',$user->id);
-        LogManager::storeLog($analyticslogger);
 		return FALSE;
 	}
 
@@ -119,12 +134,19 @@ class Tank_auth
 	 */
 	function logout()
 	{
+		$current_user_id = $this->ci->session->userdata('user_id');
+
 		$this->delete_autologin();
 
 		// See http://codeigniter.com/forums/viewreply/662369/ as the reason for the next line
 		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => ''));
 
 		$this->ci->session->sess_destroy();
+
+		// event logging
+		$analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_logout','succeeded');
+		$analyticslogger->addToPayload('user_id',$current_user_id);
+		LogManager::storeLog($analyticslogger);
 	}
 
 	/**
@@ -162,6 +184,11 @@ class Tank_auth
 	{
 		$data = $this->ci->users->get_email_by_userid($this->ci->session->userdata('user_id'));
 		return $data->email;
+	}
+
+	function is_moderator() // made by ZombieSource, not Tank Auth
+	{
+		return $this->ci->session->userdata('is_moderator');
 	}
 
 	/**
@@ -202,6 +229,14 @@ class Tank_auth
 			if (!is_null($res = $this->ci->users->create_user($data, !$email_activation))) {
 				$data['user_id'] = $res['user_id'];
 				$data['password'] = $password;
+
+				// event logging
+				$analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('tank_auth_create_user','succeeded');
+				$analyticslogger->addToPayload('user_id',$data['user_id']);
+				$analyticslogger->addToPayload('ip_address',$data['last_ip']);
+				$analyticslogger->addToPayload('email',$data['email']);
+				LogManager::storeLog($analyticslogger);
+		
 				unset($data['last_ip']);
 				return $data;
 			}
@@ -655,6 +690,7 @@ class Tank_auth
 		}
 	}
 }
+
 
 /* End of file Tank_auth.php */
 /* Location: ./application/libraries/Tank_auth.php */

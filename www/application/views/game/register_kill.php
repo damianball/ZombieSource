@@ -1,6 +1,7 @@
 
 
       <h2> Register a Kill </h2>
+      <hr>
          <?php //echo form_open("http://postcatcher.in/catchers/4f1182876366150100000004"); 
              echo form_open($this->uri->uri_string());
          ?>
@@ -45,7 +46,7 @@
 
         ?>
         <div class="actions">
-          <input type="submit" value = "Submit kill" class = "btn success"/></form> 
+          <input type="submit" value = "Submit kill" class = "btn btn-margin"/></form> 
         </div>
 
 

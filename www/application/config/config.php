@@ -14,7 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8888/ZombieSource/www/';
+
+$config['base_url']  = 'http://localhost/zombies';
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +92,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -180,7 +181,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 3;
 
 /*
 |--------------------------------------------------------------------------
@@ -191,7 +192,7 @@ $config['log_threshold'] = 0;
 | application/logs/ folder. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '';
+$config['log_path'] = '/tmp';
 
 /*
 |--------------------------------------------------------------------------

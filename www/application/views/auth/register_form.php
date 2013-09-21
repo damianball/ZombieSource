@@ -1,3 +1,5 @@
+
+
 <?php
 if ($use_username) {
     $username = array(
@@ -41,39 +43,57 @@ $captcha = array(
 ?>
 
 <div class="page-header">
- <h1>Humans vs Zombies <small> Dead of Winter </small></h1>
+ <h1>Humans vs Zombies</h1>
 </div>
 <div class = "row" >
    <div class="main">
-      <div id = "title">
-      <h2>New User Registration </h2>
-      </div>
+    <div class="alert fade in">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Did you play in Dead of Winter?</strong>
+         Then you're already registered!
+    </div>
+      <div class="row">
+      <div class="span12">
+      <div class="span7">
       <div id = "fields">
           <fieldset>
 
-            <?php echo form_open($this->uri->uri_string()); ?>
-            <table>
+            <?php echo form_open($this->uri->uri_string(), array('class' => 'form-horizontal')); ?>
+            <!-- still working on this! Works, but no red -->
+                  <legend>User Registration</legend>
                 <?php if ($use_username) { ?>
                 <tr>
                     <td><?php echo form_label('Username', $username['id']); ?></td>
                     <td><?php echo form_input($username); ?></td>
-                    <td style="color: red;"><?php echo form_error($username['name']); ?><?php echo isset($errors[$username['name']])?$errors[$username['name']]:''; ?></td>
+                    <div class="error-text"><?php 
+                        if(isset($errors["username"])){
+                            echo $errors["username"];
+                        }
+                        echo form_error($username['name']); ?>
+                    </div>
                 </tr>
                 <?php } ?>
                 <tr>
                     <td><?php echo form_label('Email Address', $email['id']); ?></td>
                     <td><?php echo form_input($email); ?> <? //echo form_dropdown('emailsuffix', $emailsuffixoptions, '1'); ?></td>
-                    <td style="color: red;"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']])?$errors[$email['name']]:''; ?></td>
+                    <div class="error-text"><?php 
+                        if(isset($errors["email"])){
+                            echo $errors["email"];
+                        }
+                        echo form_error($email['name']); ?>
+                  </div>
                 </tr>
                 <tr>
                     <td><?php echo form_label('Password', $password['id']); ?></td>
                     <td><?php echo form_password($password); ?></td>
-                    <td style="color: red;"><?php echo form_error($password['name']); ?></td>
+                    <div class="error-text"><?php echo form_error($password['name']); ?>
+                    </div>
                 </tr>
                 <tr>
                     <td><?php echo form_label('Confirm Password', $confirm_password['id']); ?></td>
                     <td><?php echo form_password($confirm_password); ?></td>
-                    <td style="color: red;"><?php echo form_error($confirm_password['name']); ?></td>
+                    <div class="error-text"><?php echo form_error($confirm_password['name']); ?>
+                    </div>
                 </tr>
 
                 <?php if ($captcha_registration) {
@@ -94,7 +114,8 @@ $captcha = array(
                         <div class="recaptcha_only_if_audio">Enter the numbers you hear</div>
                     </td>
                     <td><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" /></td>
-                    <td style="color: red;"><?php echo form_error('recaptcha_response_field'); ?></td>
+                    <div class="error-text"><?php echo form_error('recaptcha_response_field'); ?>
+                    </div>
                     <?php echo $recaptcha_html; ?>
                 </tr>
                 <?php } else { ?>
@@ -107,44 +128,29 @@ $captcha = array(
                 <tr>
                     <td><?php echo form_label('Confirmation Code', $captcha['id']); ?></td>
                     <td><?php echo form_input($captcha); ?></td>
-                    <td style="color: red;"><?php echo form_error($captcha['name']); ?></td>
+                    <div class="error-text"><?php echo form_error($captcha['name']); ?>
+                    </div>
                 </tr>
                 <?php }
                 } ?>
             </table>
+            <br>
               <div id = "register_button">
-                    <input type="submit" value = "Register" class = "btn success"/>  </form> 
-                    <?php echo form_close(); ?> 
+                    <input type="submit" value = "Register" class = "btn"/>  </form>
+                    <?php echo form_close(); ?>
               </div>
+          
             </fieldset>
       </div>
    </div>
-   <div class="sidebar">
-      <h3>Info</h3>
-      <div class = "infoitem">
-         <b> Game Play:</b> <br>
-         Feb 6th - Feb 12th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Registration Deadline:</b><br>
-         Jan 27th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Contact:</b><br>
-         <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
-      </div>
+   <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
+        </div>
+   </div>
+   </div>
    </div>
 </div>
 
+
+<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-alert.js"></script>

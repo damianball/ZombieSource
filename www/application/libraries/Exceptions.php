@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class DatastoreException extends Exception{
     public function __construct($message, $code=null) {
@@ -19,6 +19,13 @@ class PlayerMemberOfTeamException extends Exception{
 }
 
 class PlayerDoesNotExistException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+
+class GameDoesNotExistException extends Exception{
     public function __construct($message, $code=null) {
         parent::__construct($message, $code);
     }
@@ -48,9 +55,40 @@ class PlayerDoesNotHaveAnyValidFeedsException extends Exception{
     }
 }
 
+class InvalidParametersException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 class LogManagerException extends Exception{
     public function __construct($message, $code=null) {
         parent::__construct($message, $code);
     }
 }
+
+class UserIsNotModeratorException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class NoJobException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class NoNotificationException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
+class NoSubscriptionGroupException extends Exception{
+    public function __construct($message, $code=null) {
+        parent::__construct($message, $code);
+    }
+}
+
 ?>

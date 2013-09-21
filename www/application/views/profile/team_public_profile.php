@@ -1,61 +1,91 @@
-<div class = "row" >
-  <div class="main">  
-      <?php 
-        echo $team_profile_buttons;
-        echo $team_edit_button;
-      ?>
-      <?php echo $profile_pic_url ?> 
+<div class = "row-fluid" >
+  <?php
+  $data['active_sidebar'] = $active_sidebar;
+  $this->load->view("layouts/game_sidebar", $data); ?>
+  <div class="span6">
+    <div class="well">
+      <div class="main">
+        <div class="row-fluid">
+          <h2><span class="profile_data_item"> <?php echo $team_name; ?> </span></h2>
+          </div>
+          <div class="row-fluid">
+            <div class="span6">
+              <?php echo $profile_pic_url ?>
+            </div>
+          </div>
+          <br>
+          <div class="row-fluid">
+              <?php
+                if ($team_edit_button) {
+                   echo "<div class=\"span3\">";
+                    echo $team_edit_button;
+                    echo "</div>";
+                 }
+                ?>
 
-       <div id = "teamlist">
-      <?php
-      foreach($members_list as $member){          
-        $team_member_photo = getGravatarHTML($member->getData('gravatar_email'), $member->getUser()->getEmail(), 50);      
-        $team_member_name = getHTMLLinkToProfile($member);
-        echo "<div class = \"team_member\">
-                  <div id = \"team_member_photo\" class = \"team_member_attribute\">
-                      $team_member_photo          
-                  </div>
-                  <div id = \"team_member_name\" class = \"team_member_attribute\">
-                      $team_member_name         
-                  </div>
-                </div>
-              ";
-        }
-      ?>
-   </div>
-    <div class = "line"> 
-      Name: <span class = "profile_data_item"> <?php echo $team_name; ?> </span>
+            <div class="span3">
+                  <?php echo $team_profile_buttons;?>
+
+            </div>
+          </div>
+
+          <br>
+          <div class = "line">
+            <h4> Description </h4>
+            <span class = "profile_data_item"> <?php echo $description; ?> </span>
+          </div>
+          <hr>
+          <h4>Members</h4>
+          <br>
+          <div id = "teamlist">
+            <?php
+            #TODO: move the getting gravitar and link to the controller
+            foreach($members_list as $member){
+              $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
+              $team_member_name = getHTMLLinkToProfile($member);
+              echo "<div class = \"team_member\">
+                        <div class = \"team_member_attribute\">
+                            $team_member_photo
+                        </div>
+                            $team_member_name
+                      </div>
+                    ";
+              }
+            ?>
+          </div>
+          <?php if(count($zombies_list) > 0){ ?>
+        <h4>Fallen Members</h4>
+        <br>
+          <div id = "zombielist">
+            <?php
+            #TODO: move the getting gravitar and link to the controller
+            foreach($zombies_list as $member){
+              $team_member_photo = getGravatarHTML($member->getUser()->getData('gravatar_email'), $member->getUser()->getEmail(), 50);
+              $team_member_name = getHTMLLinkToProfile($member);
+              $greenx = site_url('images/green-x.png');
+
+              echo "<div class = \"team_member\">
+                      
+                        <div class=\"image-overlay\">
+                            <img class=\"overlay-image\" src=\"$greenx\" />
+                            $team_member_photo
+                        </div>
+                        <div class = \"zombie_member_text\">
+                            $team_member_name
+                        </div>
+                      </div>
+                    ";
+              }
+            ?>
+          </div>
+        <?php } ?>
+      </div>
     </div>
-    <div class = "line"> 
-      description: <span class = "profile_data_item"> <?php echo $description; ?> </span>
-    </div>    
-   </div>
+  </div>
 
-   <div class="sidebar">
-      <h3>Info</h3>
-      <div class = "infoitem">
-         <b> Game Play:</b> <br>
-         Feb 6th - Feb 12th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Registration Deadline:</b><br>
-         Jan 27th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Contact:</b><br>
-         <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
-      </div>
-   </div>
+  <div class="span4">
+    <div class="well">
+      <?php $this->load->view("layouts/gameinfo"); ?>
+    </div>
+  </div>
 </div>
