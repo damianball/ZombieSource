@@ -1,5 +1,74 @@
 <?php
 
+function gmt_to_timezone($offset, $date){
+    $offset_seconds = $offset * 3600;
+    $datetime_seconds = strtotime($date);
+    $new_date = date("Y-m-d H:i:s", $datetime_seconds + $offset_seconds);
+    return $new_date;
+}
+
+function validate_phone($phone){
+    $valid_phone = null;    
+    $stripped = preg_replace("/[^0-9]/", "", $phone);
+    $length = strlen($stripped);
+    if(($length == 10) && ($stripped[0] != "1")){
+      $valid_phone = "1" . $stripped;
+    }else if(($length == 11) && ($stripped[0] == "1")){
+      $valid_phone = $stripped;
+    }
+    return $valid_phone;
+}
+
+
+function validGameSlug($game_slug){
+    $CI =& get_instance();
+    $CI->load->model('Game_model','',TRUE);
+    try{
+        $CI->Game_model->getGameIDBySlug($game_slug);
+        return true;
+    }catch(GameDoesNotExistException $e){
+        return false;
+    }
+}
+
+function validGameID($gameid){
+    $CI =& get_instance();
+    $CI->load->model('Game_model','',TRUE);
+    try{
+        $CI->Game_model->getGameName($gameid);
+        return true;
+    }catch(GameDoesNotExistException $e){
+        return false;
+    }
+}
+
+
+function validGameName($gamename){
+    return true;
+}
+
+
+function getOZCandidatePlayers($gameid){
+    if(!$gameid){
+        throw new UnexpectedValueException('Gameid not set.');
+    }
+    $CI =& get_instance();
+    $CI->load->model('Player_model','',TRUE);
+    $playerids = $CI->Player_model->getActivePlayerIDsByGameID($gameid);
+
+    $CI->load->library('PlayerCreator');
+    $playerArray = array();
+    foreach($playerids as $i){
+        $player = $CI->playercreator->getPlayerByPlayerID($i);
+        if($player->isActive() && ($player->getData('OriginalZombiePool') == 1)) {
+            $playerArray[] = $player;
+        }
+    }
+
+    return $playerArray;
+}
+
+
 function getActivePlayers($gameid){
     if(!$gameid){
         throw new UnexpectedValueException('Gameid not set.');
@@ -169,8 +238,15 @@ function getPlayerString($gameid){
     $players = getActivePlayers($gameid);
     $my_string = "[";
     foreach($players as $player){
-        $username = $player->getUser()->getUsername();
-        $my_string .= "\"$username\",";
+        $user = $player ->getUser();
+        $username = $user->getUsername();
+        $real_name = $user->getData('real_name');
+        if($real_name) {
+          $substring = $username . ' - ' . $real_name;
+        }else{
+          $substring = $username;
+        }
+        $my_string .= "\"$substring\",";
     }
     $my_string .= "\"\"]";
     return $my_string;

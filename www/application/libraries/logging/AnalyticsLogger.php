@@ -9,6 +9,7 @@ class AnalyticsLogger extends AbstractLogger implements ILogger{
     private $action;
     private $value;
     private $payload;
+    private $version = 1;
 
     public function __construct(){
         $this->action = null;
@@ -28,13 +29,19 @@ class AnalyticsLogger extends AbstractLogger implements ILogger{
         return $this->logger_name;
     }
 
+    public function addArrayToPayload($array){
+        foreach($array as $key => $value){
+            $this->payload[$key] = $value;
+        }
+    }
+
     public function addToPayload($key, $value){
         $this->payload[$key] = $value;
     }
 
     public function toArray(){
         $data = array(
-            'version' => 1,
+            'version' => $this->version,
             'action' => $this->action,
             'value' => $this->value,
             'payload' => $this->payload

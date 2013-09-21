@@ -27,9 +27,26 @@ class Tag{
         return $this->ci->Tag_model->getData($this->tagid, 'datetimeclaimed');
     }
 
+    public function getTagDateTime(){
+        return $this->ci->Tag_model->getData($this->tagid, 'datetimecreated');
+    }
+
     public function getTagger(){
-        $taggerid = $this->ci->Tag_model->getData($this->tagid, 'taggerid');
+        $taggerid = $this->getTaggerID();
         return $this->ci->playercreator->getPlayerByPlayerID($taggerid);
+    }
+
+    public function getTaggerID(){
+        return $this->ci->Tag_model->getData($this->tagid, 'taggerid');
+    }
+
+    public function getTaggee(){
+        $taggeeid = $this->getTaggeeID();
+        return $this->ci->playercreator->getPlayerByPlayerID($taggeeid);
+    }
+
+    public function getTaggeeID(){
+        return $this->ci->Tag_model->getData($this->tagid, 'taggeeid');
     }
 
     public function invalidate(){

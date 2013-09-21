@@ -27,7 +27,7 @@ class FeedCreator{
             // event logging
             $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('create_new_feed','succeeded');
             $analyticslogger->addToPayload('fed_zombie_playerid',$zombie->getPlayerID());
-            $analyticslogger->addToPayload('tagid', $tag->getTagID());
+            $analyticslogger->addToPayload('tagid', $tagid);
             $analyticslogger->addToPayload('is_admin', $isAdmin);
             $analyticslogger->addToPayload('feedid', $feedid);
             LogManager::storeLog($analyticslogger);
@@ -35,7 +35,7 @@ class FeedCreator{
             // event logging
             $analyticslogger = AnalyticsLogger::getNewAnalyticsLogger('create_new_feed','failed');
             $analyticslogger->addToPayload('fed_zombie_playerid',$zombie->getPlayerID());
-            $analyticslogger->addToPayload('tagid', $tag->getTagID());
+            $analyticslogger->addToPayload('tagid', $tagid);
             $analyticslogger->addToPayload('is_admin', $isAdmin);
             LogManager::storeLog($analyticslogger);
         }

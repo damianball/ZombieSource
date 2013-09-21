@@ -9,6 +9,12 @@ function getUTCTimeDifferenceInSeconds($new, $old){
     return $newSeconds - $oldSeconds;
 }
 
+function getUTCTimeLessXSeconds($time, $X){
+    date_default_timezone_set('UTC');
+    $time_seconds = strtotime($time);
+    return gmdate("Y-m-d H:i:s", $time_seconds - $X);
+}
+
 function getTimeStringFromSeconds($seconds){
     if (!$seconds) {
         return null;

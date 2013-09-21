@@ -1,70 +1,146 @@
-<div class = "row" >
-   <div class="main">
-     <div id = "player_status" class = "alert-message
-       <?php 
-        if($status == 'zombie'){
-          echo "danger";
-        }else{
-          echo "warning";
-        }
-        ?>
-    "> 
-    <?php echo $status; ?> 
-  </div>
+<div class="row-fluid">
+  <div class="span8">
+    <div class="well-profile">
+      <div class = "line">
+        <span class = "profile_data_item"> <h3><?php echo $username; ?></h3></span>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">
 
-  <div id = "gravatar"> 
-    <?php echo $profile_pic_url ?></br>
-   <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile" class = "btn success"> Edit Profile</a>  
-  </div>
-  <div class = "line"> 
-    Username: <span class = "profile_data_item"> <?php echo $username; ?> </span>
-  </div>
-  <div class = "line"> 
-    Email: <span class = "profile_data_item"> <?php echo $email; ?> (not public) </span>
-  </div>  
-  <div class = "line"> 
-    Age: <span class = "profile_data_item"> <?php echo $age; ?> </span>
-  </div>   <div class = "line"> 
-    Gender: <span class = "profile_data_item"> <?php echo $gender; ?> </span>
-  </div>
-  <div class = "line"> 
-    Major: <span class = "profile_data_item"> <?php echo $major; ?> </span>
-  </div>
-  <div class = "line"> Team: <?php echo $link_to_team; ?> </div>
+          <div id = "gravatar" class="thumbnail">
+            <?php echo $profile_pic_url ?>
+          </div>
+          <br>
+          <div class="row-fluid">
+              <a href=" <?php echo site_url("profile/edit_profile"); ?> " id = "edit_profile">
+                <div class="btn btn-info btn-mid">
+                    Edit Profile
+                </div>
+              </a>
 
-  <div id ="human_code"> 
-    <div id = "code_text"> Human Code! </div>
-    <div id = "color_box"> 
-      <div id = "code">  <?php echo $human_code ?> </div>  
+          </div>
+
+              <?php
+                if($phone){
+                  echo'
+                    <a href="';
+                    echo site_url("profile/sms_settings");
+                    echo '" id = "sms_settings">
+                <div class="btn btn-light-blue btn-margin btn-mid">
+                   Edit SMS Settings
+                </div>
+              </a>'
+                  ;
+                }
+                ?>
+
+
+
+        </div>
+        <div class="span9">
+          <div class="font-profile">
+            <dl class="dl-horizontal">
+              <dt>Game</dt>
+                <dd><?php echo $game_name ?></dd>
+              <dt>Status </dt>
+              <div id = "player_status" class = "alert-message">
+                <?php
+                  if($status == 'zombie'){
+                  #  echo "danger";
+                    echo "
+                    <dd><span class=\"label label-warning\">";
+                      echo $status;
+                    echo "</span></dd>";
+
+                  }else if($status == 'starved zombie'){
+                  #  echo "warning";
+                    echo "
+                    <dd><span class=\"label label-important\">";
+                      echo $status;
+                    echo "</span></dd>";
+                  }else{
+                    echo "
+                    <dd><span class=\"label label-success\">";
+                      echo $status;
+                    echo "</span></dd>";
+                  }
+
+                ?>
+              </div>
+              <dt>Email </dt><span class = "profile_data_item"> <dd><?php echo $email; ?> <gray-font>(not public)</gray-font></dd></span>
+              <dt>Age </dt> <span class = "profile_data_item"> <dd><?php echo $age ? $age : "not given"; ?></dd></span>
+              <dt>Gender </dt> <span class = "profile_data_item"> <dd><?php echo $gender ? $gender : "not given"; ?></dd> </span>
+              <dt>Major </dt><span class = "profile_data_item"> <dd><?php echo $major ? $major : "not given"; ?></dd> </span>
+              <dt>Team </dt> <dd><?php echo $link_to_team ? $link_to_team : "No Team"; ?><dd>
+              <dt>SMS </dt><span class = "profile_data_item"> <dd><?php echo $phone ? $phone : "not given"; ?> <gray-font>(not public)</gray-font></dd></span>
+
+            </dl>
+          </div>
+        <?php if($human_code){ ?>
+        <div id="human_code" class="pull-right">
+            <h4 style="text-align: center;">Human Code</h4>
+            <br>
+            <a href="<?php echo site_url('profile/print_human_code'); ?>">
+            <div class="btn btn-large btn-yellow">
+                <h1><big><?php echo $human_code ?></big></h1>
+            </div>
+            </a>
+        </div>
+        <?php } ?>
+        </div>
+      </div>
     </div>
+        <?php
+                if(isset($achievements) && count($achievements) > 0){
+                    echo "<div class=\"well\">";
+                    echo '<h3>Achievements</h3>';
+                    echo count($achievements);
+                    echo "hey";
+                    foreach($achievements as $ach){
+                        $img = $ach['image_url'];
+                        $desc = $ach['description'];
+                        $name = $ach['name'];
+                        echo "<div class=\"achievement team_member\" rel=\"tooltip\" title=\"$desc\">";
+                        echo "<img src=\"$img\" class=\"twtr-pic\">";
+                        echo "<p>$name</p>";
+                        echo "</div>";
+                    }
+                    echo "</div>";
+                }
+        ?>
+
   </div>
 
-   </div>
-   <div class="sidebar">
-      <h3>Info</h3>
-      <div class = "infoitem">
-         <b> Game Play:</b> <br>
-         Feb 6th - Feb 12th
+    <div class="span4">
+        <div class="well">
+        <?php $this->load->view("layouts/gameinfo"); ?>
       </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Registration Deadline:</b><br>
-         Jan 27th
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Orientation Dates:</b><br>
-         Jan 30th - Feb 3rd 
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <b> Contact:</b><br>
-         <a href = "mailto:UofIHvZ@gmail.com"> UofIHvZ@gmail.com </a> <br>
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Facebook Group </a>
-      </div>
-      <div class = "tinyline"></div>
-      <div class = "infoitem">
-         <a href = "http://www.facebook.com/groups/194292097284119/"> Rules </a>
-      </div>
-   </div>
+    </div>
+
+
 </div>
+
+              <?php
+                if(!$phone){
+                  echo'
+                    <div class="row-fluid sms_settings_box well">
+                    <h3>Do you have Texting?</h3>
+                    <dd> Setup an <strong>SMS Number</strong> to: </dd>
+                    <li> Tag via text </li>
+                    <li> Recieve optional game updates </li>
+                    <li> More! </li>';
+                    echo '<a href="';
+                    echo site_url("profile/sms_settings");
+                    echo' " id = "sms_settings">
+                <div class="btn btn-light-blue btn-margin">
+                    SMS Setup/FAQ
+                </div>
+              </a>';
+                }
+                ?>
+                </div>
+          </div>
+
+<script>
+    $('.achievement').tooltip();
+</script>

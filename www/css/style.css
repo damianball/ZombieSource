@@ -1,4 +1,6 @@
-  /* Override some defaults */
+  /* THIS FILE IS NOT IN USE. IT'S HISTORICAl CSS FROM ZOMBIES V1
+     Maybe we should delete it... : ( ;
+  */
 
   /*================================================
   #
@@ -557,6 +559,21 @@ background-image: linear-gradient(top, #333333, #222222);
     width: 150px;
     font-size: 10px;
   }
+
+    /*================================================
+  #
+  #   Game overview
+  #
+  #=================================================*/
+
+  .game_summary{
+    width: 300px;
+    height: 100px;
+    border-style: solid;
+    border-color: #000;
+    margin: 20px;
+  }
+ 
 
   /*================================================
   #
